@@ -1,0 +1,65 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="RadioButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:textColor">@color/rgs_text_color_selector</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:drawablePadding">3dp</item>
+    </style>
+
+
+    <style name="TableLayoutStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:drawablePadding">9dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/light_gray_7a</item>
+    </style>
+
+
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="TableItemLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/mycenter_item_bg</item>
+    </style>
+
+    <style name="Animation.CustomPopup" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+
+    <style name="AlertDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog.Alert" tools:ignore="NewApi">
+        <!--<item name="android:background">@android:color/white</item>-->
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

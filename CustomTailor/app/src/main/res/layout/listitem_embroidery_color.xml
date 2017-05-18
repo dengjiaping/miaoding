@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp">
+
+
+    <cn.cloudworkshop.miaoding.view.CircleImageView
+        android:id="@+id/img_embroidery_color"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"/>
+
+    <cn.cloudworkshop.miaoding.view.CircleImageView
+        android:id="@+id/img_color_mask"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/icon_check_mask"
+        android:visibility="gone"/>
+</RelativeLayout>

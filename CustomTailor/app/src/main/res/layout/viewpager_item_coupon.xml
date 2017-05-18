@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_exchange_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_input_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/text_black_bg"
+            android:hint="请输入邀请码、兑换码"
+            android:maxLength="20"
+            android:paddingLeft="10dp"
+            android:textColor="@color/dark_gray_22"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/tv_exchange_coupon"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_gray_bg"
+            android:gravity="center"
+            android:text="兑换"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_exchange_coupon"
+
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+    <ImageView
+        android:id="@+id/img_null_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/icon_null_coupon"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view_main"
+        android:background="@android:color/white"/>
+
+    <View
+        android:id="@+id/view_main"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/rgs_main"
+        android:background="@android:color/darker_gray"/>
+
+    <RadioGroup
+        android:id="@+id/rgs_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_bottom_money"
+            style="@style/RadioButtonStyle"
+            android:drawableTop="@drawable/rgs_homepage_selector"
+            android:text="首页"/>
+
+        <RadioButton
+            android:id="@+id/main_bottom_gift"
+            style="@style/RadioButtonStyle"
+            android:drawableTop="@drawable/rgs_goods_selector"
+            android:text="定制"/>
+
+        <RadioButton
+            android:id="@+id/main_bottom_activities"
+            style="@style/RadioButtonStyle"
+            android:drawableTop="@drawable/rgs_designer_selector"
+            android:text="腔调"/>
+
+        <RadioButton
+            android:id="@+id/main_bottom_convert"
+            style="@style/RadioButtonStyle"
+            android:drawableTop="@drawable/rgs_mycenter_selector"
+            android:text="我"/>
+    </RadioGroup>
+</RelativeLayout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/widget_header_layout"/>
+
+    <ScrollView
+        android:id="@+id/scroll_embroidery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="绣花位置"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray_e5"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_embroidery_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="12dp">
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/app_bg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="绣花颜色"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray_e5"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_embroidery_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="12dp">
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/app_bg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="绣花字体"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray_e5"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_embroidery_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="12dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/app_bg"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="绣花内容"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray_e5"/>
+
+
+            <EditText
+                android:id="@+id/et_embroidery_content"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/text_gray_bg"
+                android:hint="请输入绣花内容(不超过12个字符)"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/dark_gray_22"
+                android:textColorHint="@color/app_bg"
+                android:textSize="15sp"
+                android:layout_marginBottom="60dp"/>
+
+            <TextView
+                android:id="@+id/tv_confirm_embroidery"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_tailor_preview"
+                android:text="预览"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

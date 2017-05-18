@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/widget_header_layout"/>
+
+    <cn.cloudworkshop.miaoding.view.ShadowLayout
+        android:id="@+id/sl_member_center"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="87dp"
+        android:background="@android:color/white"
+        app:sl_shadowRadius="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+            <ProgressBar
+                android:id="@+id/progress_grade"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="293dp"
+                android:layout_height="4dp"
+                android:layout_centerInParent="true"
+                android:max="100"
+                android:progressDrawable="@drawable/progressbar_horizontal"/>
+
+            <TextView
+                android:id="@+id/tv_total_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/progress_grade"
+                android:layout_below="@id/progress_grade"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="10sp"/>
+
+            <TextView
+                android:id="@+id/tv_member_growth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tv_total_score"
+                android:layout_toLeftOf="@id/tv_total_score"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="10sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_member_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:text="MORE >>"
+                android:textColor="@color/light_gray_3d"
+                android:textSize="10sp"/>
+        </RelativeLayout>
+
+
+    </cn.cloudworkshop.miaoding.view.ShadowLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_center_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp">
+
+        <cn.cloudworkshop.miaoding.view.CircleImageView
+            android:id="@+id/img_member_icon"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/tv_member_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_member_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/dark_gray_22"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/img_member_grade"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_member_icon"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/tv_member_nickname"
+            android:scaleType="fitCenter"/>
+    </RelativeLayout>
+
+    <cn.cloudworkshop.miaoding.view.ShadowLayout
+        android:id="@+id/sl_member_rights"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="263dp"
+        app:sl_shadowRadius="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+            <TextView
+                android:id="@+id/tv_member_rights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="29dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_member_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_member_rights">
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+
+    </cn.cloudworkshop.miaoding.view.ShadowLayout>
+
+    <TextView
+        android:id="@+id/tv_check_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sl_member_rights"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="查看更多权益  >>"
+        android:textColor="@color/light_gray_3d"
+        android:textSize="10sp"/>
+
+
+</RelativeLayout>

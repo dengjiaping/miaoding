@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_buy_works"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@mipmap/icon_gray_mask"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_goods_like"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@mipmap/icon_cancel_like"/>
+
+        <ImageView
+            android:id="@+id/img_goods_consult"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@mipmap/icon_consult_large"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_works_cart"
+            android:layout_width="113dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/light_gray_3d"
+            android:gravity="center"
+            android:text="加入购物车"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_works_buy"
+            android:layout_width="113dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/dark_gray_22"
+            android:gravity="center"
+            android:text="立即购买"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <cn.cloudworkshop.miaoding.view.ScrollViewContainer
+        android:id="@+id/scroll_container_works"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_buy_works">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_works"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="162dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <cn.cloudworkshop.miaoding.view.CircleImageView
+                        android:id="@+id/img_works_designer"
+                        android:layout_width="41dp"
+                        android:layout_height="41dp"
+                        android:layout_marginRight="16dp"
+                        android:scaleType="centerCrop"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_name_works"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/light_gray_3d"
+                            android:singleLine="true"
+                            android:layout_marginRight="20dp"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_works_feature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/light_gray_93"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_content_works"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/light_gray_3d"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="4dp"
+                    android:maxLines="3"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="上滑继续阅读"
+                android:textColor="@color/light_gray_93"
+                android:textSize="10sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp"/>
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_works_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"/>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </cn.cloudworkshop.miaoding.view.ScrollViewContainer>
+
+    <ImageView
+        android:id="@+id/img_back_works"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:scaleType="center"
+        android:src="@mipmap/icon_back_white"/>
+
+    <ImageView
+        android:id="@+id/img_share_works"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:scaleType="center"
+        android:src="@mipmap/icon_share_goods"/>
+
+</RelativeLayout>

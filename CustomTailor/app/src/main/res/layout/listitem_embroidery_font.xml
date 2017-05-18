@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp">
+
+    <ImageView
+        android:id="@+id/img_embroidery_font"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bound_corner_3d"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_embroidery_font"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_embroidery_font"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:textColor="@color/dark_gray_22"
+        android:textSize="12sp"/>
+</RelativeLayout>
