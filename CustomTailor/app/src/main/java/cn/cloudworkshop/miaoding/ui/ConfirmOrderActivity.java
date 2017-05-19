@@ -219,6 +219,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             protected void convert(final ViewHolder holder, ConfirmOrderBean.DataBean.CarListBean
                     carListBean, final int position) {
                 holder.setVisible(R.id.checkbox_goods_select, false);
+                holder.setVisible(R.id.view_cart_divide, true);
                 Glide.with(ConfirmOrderActivity.this)
                         .load(Constant.HOST + carListBean.getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -348,7 +349,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     }
                                 }
                                 getTotalPrice();
-
                             } else {
                                 Toast.makeText(ConfirmOrderActivity.this, "库存不足",
                                         Toast.LENGTH_SHORT).show();

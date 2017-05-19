@@ -39,10 +39,10 @@
                 android:id="@+id/checkbox_all_select"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="16dp"
                 android:button="@null"
                 android:checked="true"
-                android:drawablePadding="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:drawableRight="@drawable/checkbox_selector"/>
 
             <TextView

@@ -16,17 +16,22 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/checkbox_selector"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:drawableLeft="@drawable/checkbox_selector"
             android:button="@null"
             android:checked="true"/>
+        <View
+            android:id="@+id/view_cart_divide"
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/img_item_goods"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
             android:layout_marginRight="15dp"
             android:scaleType="centerCrop"/>
     </LinearLayout>
