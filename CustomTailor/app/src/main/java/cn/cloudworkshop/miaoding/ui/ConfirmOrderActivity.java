@@ -25,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -381,19 +380,29 @@ public class ConfirmOrderActivity extends BaseActivity {
         return maxPrice >= Float.parseFloat(couponMinMoney);
     }
 
-
     /**
      * @return 单种商品最高总价
      */
-    private float getMaxPrice() {
+    private String getMaxPriceGoods(int type) {
         float maxPrice = 0;
+        int maxGoodsId = 0;
         for (int i = 0; i < confirmOrderBean.getData().getCar_list().size(); i++) {
             float price = Float.parseFloat(confirmOrderBean.getData().getCar_list().get(i).getPrice());
             int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
-            maxPrice = price * num > maxPrice
-                    ? price * num : maxPrice;
+            if (price * num > maxPrice) {
+                maxPrice = price * num;
+                maxGoodsId = confirmOrderBean.getData().getCar_list().get(i).getGoods_id();
+            }
+
         }
-        return maxPrice;
+        //1:总价格 2：商品id
+        if (type == 1) {
+            return maxPrice + "";
+        } else if (type == 2) {
+            return maxGoodsId + "";
+        }
+
+        return null;
     }
 
 
@@ -468,7 +477,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                 }
                 Intent intent = new Intent(this, SelectCouponActivity.class);
                 intent.putExtra("goods_id", sb.toString());
-                intent.putExtra("max_price", getMaxPrice() + "");
+                intent.putExtra("max_price", getMaxPriceGoods(1));
+                intent.putExtra("max_goods_id", getMaxPriceGoods(2));
                 startActivityForResult(intent, 1);
                 break;
             default:

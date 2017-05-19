@@ -200,7 +200,6 @@
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>
-        <!--<activity android:name=".ui.CameraActivity"/>-->
         <activity android:name=".ui.NewGoodsDetailsActivity"/>
         <activity android:name=".ui.WorksDetailsActivity"/>
         <activity android:name=".ui.NewTailorActivity"/>

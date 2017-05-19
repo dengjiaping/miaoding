@@ -176,17 +176,18 @@ public class TailorFragment extends BaseFragment {
                                 Matrix matrix = new Matrix();
                                 float s = Math.max(sx, sy);
                                 matrix.postScale(s, s);
-                                if (bitmap.getWidth() > 0 && bitmap.getHeight() > 0) {
+                                if (!bitmap.isRecycled() && bitmap.getWidth() > 0 && bitmap.getHeight() > 0) {
                                     Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                                             bitmap.getHeight(), matrix, true);
                                     //截取中间部分，居中显示
                                     Bitmap newBitmap = Bitmap.createBitmap(resizeBmp,
                                             (resizeBmp.getWidth() - width) / 2,
                                             (resizeBmp.getHeight() - height) / 2, width, height);
-
                                     bitmapList.add(newBitmap);
-                                    bitmap.recycle();
-                                    resizeBmp.recycle();
+                                    if (!bitmap.isRecycled() && !resizeBmp.isRecycled()) {
+                                        bitmap.recycle();
+                                        resizeBmp.recycle();
+                                    }
                                 }
 
                             }
@@ -257,7 +258,9 @@ public class TailorFragment extends BaseFragment {
 
     @OnClick(R.id.img_goods_type)
     public void onViewClicked() {
-        showPopWindow();
+        if (titleBean != null) {
+            showPopWindow();
+        }
     }
 
     /**

@@ -65,10 +65,12 @@ public class SelectCouponActivity extends BaseActivity {
     private String goodsId;
     //单种商品最高价格
     private String maxPrice;
-
+    //单种商品id
+    private String maxGoodsId;
+    //优惠券数量
+    private int couponNum;
     private List<SelectCouponBean.DataBean.UsableBean> usableList = new ArrayList<>();
     private List<SelectCouponBean.DataBean.DisableBean> disableList = new ArrayList<>();
-    private int couponNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class SelectCouponActivity extends BaseActivity {
     private void getData() {
         goodsId = getIntent().getStringExtra("goods_id");
         maxPrice = getIntent().getStringExtra("max_price");
+        maxGoodsId = getIntent().getStringExtra("max_goods_id");
     }
 
     /**
@@ -94,6 +97,7 @@ public class SelectCouponActivity extends BaseActivity {
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("goods_ids", goodsId)
                 .addParams("max_price", maxPrice)
+                .addParams("max_goods_id",maxGoodsId)
                 .build()
                 .execute(new StringCallback() {
                     @Override

@@ -63,7 +63,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        TitleBarUtils.setNoTitleBar(MainActivity.this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -72,6 +71,9 @@ public class MainActivity extends BaseActivity {
         isLogin();
         submitClientId();
         getData();
+
+
+
 
     }
 

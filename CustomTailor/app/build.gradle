@@ -9,7 +9,7 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 16
+        versionCode 17
         versionName "1.5.0"
         multiDexEnabled true
 
@@ -56,7 +56,7 @@ android {
         flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
     }
 
-    sourceSets { main { jni.srcDirs = [] } }
+//    sourceSets { main { jni.srcDirs = [] } }
 
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
