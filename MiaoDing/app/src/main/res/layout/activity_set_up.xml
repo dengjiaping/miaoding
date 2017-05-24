@@ -350,7 +350,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="关于云工场"
+                android:text="关于妙定"
                 android:textColor="@color/dark_gray_22"
                 android:textSize="14sp"
                 android:textStyle="bold"/>

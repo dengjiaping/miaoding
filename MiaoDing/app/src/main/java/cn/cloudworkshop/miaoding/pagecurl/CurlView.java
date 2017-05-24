@@ -99,7 +99,6 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
     private OnPageChangeListener onPageChangeListener;
 
 
-
     private OnPageClickListener onPageClickListener;
 
     /**
@@ -379,8 +378,8 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
                     }
                     mAnimate = true;
                     requestRender();
-                }else {
-                    if (!isFirstOrLast){
+                } else {
+                    if (!isFirstOrLast) {
                         onPageClickListener.currentItem(mCurrentIndex);
                     }
                 }
@@ -672,11 +671,11 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
         if (isFirstMove) {
             RectF rightRect = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT);
             RectF leftRect = mRenderer.getPageRect(CurlRenderer.PAGE_LEFT);
-            if (mStartPos.x - mPointerPos.mPos.x < 10 && mCurrentIndex > 0) {
+            if (mStartPos.x - mPointerPos.mPos.x < 0 && mCurrentIndex > 0) {
 //				Log.i("CURLVIEW", "left");
                 mDragStartPos.x = rightRect.left;
                 startCurl(CURL_LEFT);
-            } else if (mStartPos.x - mPointerPos.mPos.x > 10
+            } else if (mStartPos.x - mPointerPos.mPos.x > 0
                     && mCurrentIndex < mPageProvider.getPageCount()) {
 //				Log.i("CURLVIEW", "right");
                 mDragStartPos.x = rightRect.right;
@@ -686,7 +685,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
                 }
                 startCurl(CURL_RIGHT);
             } else {
-                if (mStartPos.x - mPointerPos.mPos.x < 0 && mCurrentIndex == 0){
+                if (mStartPos.x - mPointerPos.mPos.x < 0 && mCurrentIndex == 0) {
                     isFirstOrLast = true;
                 }
                 return;
