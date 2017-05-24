@@ -33,7 +33,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +44,11 @@ import cn.cloudworkshop.miaoding.bean.PayTypeBean;
 import cn.cloudworkshop.miaoding.bean.WeChatPayBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
+import cn.cloudworkshop.miaoding.ui.CustomResultActivity;
 import cn.cloudworkshop.miaoding.ui.EmbroideryActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
-import cn.cloudworkshop.miaoding.ui.NewTailorActivity;
+import cn.cloudworkshop.miaoding.ui.CustomDiyActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
-import cn.cloudworkshop.miaoding.ui.TailorInfoActivity;
 import okhttp3.Call;
 
 /**
@@ -139,15 +138,15 @@ public class PayOrderUtils {
             @Override
             public void onDismiss() {
                 DisplayUtils.setBackgroundAlpha(context, 1.0f);
-                if (NewTailorActivity.tailorActivity != null) {
-                    NewTailorActivity.tailorActivity.finish();
+                if (CustomDiyActivity.tailorActivity != null) {
+                    CustomDiyActivity.tailorActivity.finish();
                 }
                 if (EmbroideryActivity.embroideryActivity != null) {
                     EmbroideryActivity.embroideryActivity.finish();
                 }
 
-                if (TailorInfoActivity.tailorInfoActivity != null) {
-                    TailorInfoActivity.tailorInfoActivity.finish();
+                if (CustomResultActivity.tailorInfoActivity != null) {
+                    CustomResultActivity.tailorInfoActivity.finish();
                 }
                 if (ShoppingCartActivity.cartActivity != null) {
                     ShoppingCartActivity.cartActivity.finish();

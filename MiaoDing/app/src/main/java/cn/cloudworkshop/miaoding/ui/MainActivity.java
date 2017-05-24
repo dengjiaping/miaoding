@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.widget.RadioGroup;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,12 +32,13 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CheckUpdateBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.fragment.CustomGoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
+import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
-import cn.cloudworkshop.miaoding.fragment.NewDesignerFragment;
-import cn.cloudworkshop.miaoding.fragment.NewHomepageFragment;
 
-import cn.cloudworkshop.miaoding.fragment.TailorFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
@@ -71,9 +71,6 @@ public class MainActivity extends BaseActivity {
         isLogin();
         submitClientId();
         getData();
-
-
-
 
     }
 
@@ -248,9 +245,9 @@ public class MainActivity extends BaseActivity {
      * 加载Fragment
      */
     public void initView() {
-        fragmentList.add(NewHomepageFragment.newInstance());
-        fragmentList.add(TailorFragment.newInstance());
-        fragmentList.add(NewDesignerFragment.newInstance());
+        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(CustomGoodsFragment.newInstance());
+        fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);

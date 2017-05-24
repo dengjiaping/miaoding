@@ -533,15 +533,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
                                     Toast.makeText(ConfirmOrderActivity.this, "下单成功",
                                             Toast.LENGTH_SHORT).show();
-                                    if (NewTailorActivity.tailorActivity != null) {
-                                        NewTailorActivity.tailorActivity.finish();
+                                    if (CustomDiyActivity.tailorActivity != null) {
+                                        CustomDiyActivity.tailorActivity.finish();
                                     }
                                     if (EmbroideryActivity.embroideryActivity != null) {
                                         EmbroideryActivity.embroideryActivity.finish();
                                     }
 
-                                    if (TailorInfoActivity.tailorInfoActivity != null) {
-                                        TailorInfoActivity.tailorInfoActivity.finish();
+                                    if (CustomResultActivity.tailorInfoActivity != null) {
+                                        CustomResultActivity.tailorInfoActivity.finish();
                                     }
                                     if (ShoppingCartActivity.cartActivity != null) {
                                         ShoppingCartActivity.cartActivity.finish();

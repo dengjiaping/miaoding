@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
-import com.flyco.tablayout.CommonTabLayout;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -24,7 +21,6 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -61,7 +57,6 @@ public class CollectionActivity extends BaseActivity {
     LinearLayout llNullCollection;
     @BindView(R.id.tv_my_collection)
     TextView tvMyCollection;
-
 
     private List<CollectionBean.DataBean> itemList = new ArrayList<>();
 
@@ -194,9 +189,9 @@ public class CollectionActivity extends BaseActivity {
             public void onItemClick(View view, int position) {
                 Intent intent;
                 if (itemList.get(position).getType() == 1) {
-                    intent = new Intent(CollectionActivity.this, NewGoodsDetailsActivity.class);
+                    intent = new Intent(CollectionActivity.this, CustomGoodsActivity.class);
                 } else {
-                    intent = new Intent(CollectionActivity.this, WorksDetailsActivity.class);
+                    intent = new Intent(CollectionActivity.this, WorksDetailActivity.class);
                 }
 
                 intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));
@@ -215,9 +210,9 @@ public class CollectionActivity extends BaseActivity {
 //            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
 //                Intent intent;
 //                if (itemList.get(position - 1).getType() == 1) {
-//                    intent = new Intent(CollectionActivity.this, NewGoodsDetailsActivity.class);
+//                    intent = new Intent(CollectionActivity.this, CustomGoodsActivity.class);
 //                } else {
-//                    intent = new Intent(CollectionActivity.this, WorksDetailsActivity.class);
+//                    intent = new Intent(CollectionActivity.this, WorksDetailActivity.class);
 //                }
 //
 //                intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));

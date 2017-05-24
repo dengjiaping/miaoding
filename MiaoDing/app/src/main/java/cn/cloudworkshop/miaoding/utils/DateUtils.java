@@ -17,22 +17,33 @@ public class DateUtils {
      * @param time
      * @return 获取日期
      */
-    public static String getDate(String type, long time) {
+    public static String getDate(String type, int time) {
         SimpleDateFormat sdf = new SimpleDateFormat(type, Locale.CHINA);
-        String str = sdf.format(new Date(time * 1000));
-        return str;
+        return sdf.format(new Date(time * 1000));
     }
 
-    public static long getSeconds(String type, String time) {
-        SimpleDateFormat sdf = new SimpleDateFormat(type);
+    /**
+     * @param type
+     * @param time
+     * @return 毫秒
+     */
+    public static long getMillisecond(String type, String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat(type,Locale.CHINA);
         long seconds = 0;
         try {
-            seconds = sdf.parse(time).getTime() / 1000;
+            seconds = sdf.parse(time).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         return seconds;
+    }
 
+    /**
+     * @return 当前时间，精确都秒
+     */
+
+    public static long getCurrentTime() {
+        return System.currentTimeMillis() / 1000;
     }
 }

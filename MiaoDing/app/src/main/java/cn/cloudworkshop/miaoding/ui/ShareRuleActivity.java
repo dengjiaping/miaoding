@@ -73,8 +73,13 @@ public class ShareRuleActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack();// 返回前一个页面
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (webView.canGoBack()) {
+                webView.goBack();// 返回前一个页面
+            } else {
+                finish();
+            }
+
             return true;
         }
         return super.onKeyDown(keyCode, event);

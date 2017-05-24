@@ -19,7 +19,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.fragment.CouponFragment;
+import cn.cloudworkshop.miaoding.fragment.MyCouponFragment;
 
 /**
  * Author：binge on 2016/12/15 16:40
@@ -68,9 +68,9 @@ public class CouponActivity extends BaseActivity {
         titleList.add("已使用");
         titleList.add("已失效");
 
-        fragmentList.add(CouponFragment.newInstance(1));
-        fragmentList.add(CouponFragment.newInstance(2));
-        fragmentList.add(CouponFragment.newInstance(-1));
+        fragmentList.add(MyCouponFragment.newInstance(1));
+        fragmentList.add(MyCouponFragment.newInstance(2));
+        fragmentList.add(MyCouponFragment.newInstance(-1));
 
         initView();
     }

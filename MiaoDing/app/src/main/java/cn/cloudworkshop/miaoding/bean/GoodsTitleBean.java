@@ -18,7 +18,18 @@ public class GoodsTitleBean {
 
     private int code;
     private String msg;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
+
      * id : 5
      * name : 领带
      */

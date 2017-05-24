@@ -98,7 +98,7 @@ public class SelectCouponActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.NEW_SELECT_COUPON)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("get_car_ticket",cartIds)
+                .addParams("car_ids",cartIds)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -256,8 +256,6 @@ public class SelectCouponActivity extends BaseActivity {
                 break;
             case R.id.tv_exchange:
                 exchangeCoupon();
-                break;
-            default:
                 break;
         }
     }

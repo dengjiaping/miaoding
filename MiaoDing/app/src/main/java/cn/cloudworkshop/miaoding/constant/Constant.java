@@ -6,10 +6,9 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-    //      public static final String HOST = "http://139.196.113.61";
-    public static final String HOST = "http://www.cloudworkshop.cn";
-//    public static final String HOST = "https://www.c2mbay.cn";
-
+    public static final String HOST = "http://139.196.113.61";
+//    public static final String HOST = "http://www.cloudworkshop.cn";
+//public static final String HOST = "http://192.168.1.156";
     public static final String APP_ID = "wx07c2173e7686741e";
     public static final String HOMEPAGE_BANNER = HOST + "/index.php/index/index/get_img";
     public static final String HOMEPAGE_LIST = HOST + "/index.php/index/index/index_news";
@@ -65,7 +64,7 @@ public class Constant {
     public static final String MY_COUPON = HOST + "/index.php/index/ticket/my_ticket";
     public static final String EXCHANGE_COUPON = HOST + "/index.php/index/ticket/exchange_ticket";
     public static final String SELECT_COUPON = HOST + "/index.php/index/ticket/get_ticket";
-    public static final String NEW_SELECT_COUPON = HOST + "/index.php/index/ticket/new_get_ticket";
+    public static final String NEW_SELECT_COUPON = HOST + "/index.php/index/ticket/get_car_ticket";
     public static final String CHECK_LOGIN = HOST + "/index.php/index/index/check_login";
     public static final String MESSAGE_TYPE = HOST + "/index.php/index/message/message_type";
     public static final String MESSAGE_DETAIL = HOST + "/index.php/index/message/message_list";
@@ -85,6 +84,10 @@ public class Constant {
     public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img";
     public static final String POP_DESIGNER = HOST + "/index.php/index/index/get_pop_designer";
     public static final String DESIGNER_DETAILS = HOST + "/index.php/index/index/user_intro";
+
+    public static final String HOMEPAGE_LOG = HOST + "/index.php/index/index/save_index_log";
+    public static final String GOODS_LOG = HOST + "/index.php/index/index/save_goods_log";
+    public static final String LOGIN_LOG = HOST + "/index.php/index/index/save_user_login_log";
 
 
     //WebView

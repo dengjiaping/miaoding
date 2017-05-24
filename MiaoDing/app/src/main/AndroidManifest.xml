@@ -86,11 +86,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".ui.GoodsDetailsActivity"/>
         <activity android:name=".ui.TailorActivity"/>
-        <activity android:name=".ui.TailorInfoActivity"/>
+        <activity android:name=".ui.CustomResultActivity"/>
         <activity android:name=".ui.JoinUsActivity"/>
         <activity android:name=".ui.ShoppingCartActivity"/>
-        <activity android:name=".ui.DesignerInfoActivity"/>
-        <activity android:name=".ui.WorksInfoActivity"/>
         <activity android:name=".ui.SetUpActivity"/>
         <activity
             android:name=".ui.FeedbackActivity"
@@ -153,9 +151,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MapViewActivity"
+            android:name=".ui.ApplyMeasureActivity"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
-        <activity android:name=".ui.HelpAndFeedbackActivity"/>
+        <activity android:name=".ui.UserHelpActivity"/>
         <activity android:name=".ui.CommonQuestionActivity"/>
         <activity android:name=".ui.QuestionDetailsActivity"/>
         <activity android:name=".ui.LogisticsActivity"/>
@@ -200,12 +198,10 @@
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>
-        <activity android:name=".ui.NewGoodsDetailsActivity"/>
-        <activity android:name=".ui.WorksDetailsActivity"/>
-        <activity android:name=".ui.NewTailorActivity"/>
-        <activity android:name=".ui.DesignerDetailsActivity"/>
-        <activity android:name=".ui.NewMemberCenterActivity"/>
-        <activity android:name=".ui.MemberRightActivity"/>
+        <activity android:name=".ui.CustomGoodsActivity"/>
+        <activity android:name=".ui.WorksDetailActivity"/>
+        <activity android:name=".ui.CustomDiyActivity"/>
+        <activity android:name=".ui.DesignerInfoActivity"/>
 
 
         <service android:name="com.amap.api.location.APSService"/>

@@ -9,10 +9,11 @@ import com.igexin.sdk.message.GTTransmitMessage;
 
 import cn.cloudworkshop.miaoding.bean.GeTuiBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.DesignerDetailsActivity;
+import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
+import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MessageDetailActivity;
-import cn.cloudworkshop.miaoding.ui.WorksDetailsActivity;
+import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 
@@ -73,22 +74,22 @@ public class GeTuiIntentService extends GTIntentService {
                 startActivity(intent4);
                 break;
             case "5":
-                Intent intent5 = new Intent(context, WorksDetailsActivity.class);
+                Intent intent5 = new Intent(context, WorksDetailActivity.class);
                 intent5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent5.putExtra("id", bean.getId());
                 startActivity(intent5);
                 break;
             case "6":
-                Intent intent6 = new Intent(context, DesignerDetailsActivity.class);
+                Intent intent6 = new Intent(context, DesignerInfoActivity.class);
                 intent6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent6.putExtra("id", bean.getId());
                 startActivity(intent6);
                 break;
             case "7":
-//                Intent intent7 = new Intent(context, NewGoodsDetailsActivity.class);
-//                intent7.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent7.putExtra("id", bean.getId());
-//                startActivity(intent7);
+                Intent intent7 = new Intent(context, CustomGoodsActivity.class);
+                intent7.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent7.putExtra("id", bean.getId());
+                startActivity(intent7);
                 break;
         }
     }

@@ -12,13 +12,20 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import okhttp3.Call;
 
 /**
  * Author：Libin on 2016/10/12 09:59
@@ -46,6 +53,7 @@ public class HomepageDetailActivity extends BaseActivity {
     private String content = "";
     //分享 url
     private String shareUrl = "";
+    private long enterTime;
 
 
     @Override
@@ -53,6 +61,7 @@ public class HomepageDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage_detail);
         ButterKnife.bind(this);
+        enterTime = DateUtils.getCurrentTime();
         initData();
     }
 
@@ -73,11 +82,12 @@ public class HomepageDetailActivity extends BaseActivity {
         content = intent.getStringExtra("content");
         imgUrl = intent.getStringExtra("img_url");
         shareUrl = intent.getStringExtra("share_url");
-        initView();
 
+        initView();
     }
 
-    /**V
+    /**
+     * V
      * 加载webView
      */
     private void initView() {
@@ -91,7 +101,7 @@ public class HomepageDetailActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.addJavascriptInterface(this, "nativeMethod");
 
-        webView.loadUrl(url + "&token=" + SharedPreferencesUtils.getString(this,"token"));
+        webView.loadUrl(url + "&token=" + SharedPreferencesUtils.getString(this, "token"));
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -106,10 +116,12 @@ public class HomepageDetailActivity extends BaseActivity {
     @JavascriptInterface
     public void toActivity(String str) {
         if (TextUtils.equals(str, "a")) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("page_name", "首页资讯详情");
+            startActivity(intent);
+        } else {
             String[] split = str.split(",");
-            Intent intent = new Intent(HomepageDetailActivity.this, NewGoodsDetailsActivity.class);
+            Intent intent = new Intent(HomepageDetailActivity.this, CustomGoodsActivity.class);
             intent.putExtra("id", split[0]);
             startActivity(intent);
         }
@@ -117,8 +129,13 @@ public class HomepageDetailActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack();// 返回前一个页面
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (webView.canGoBack()) {
+                webView.goBack();// 返回前一个页面
+            } else {
+                finish();
+            }
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -132,13 +149,41 @@ public class HomepageDetailActivity extends BaseActivity {
                 if (webView.canGoBack()) {
                     webView.goBack();
                 } else {
+                    homepageLog();
                     finish();
                 }
                 break;
             case R.id.img_header_share:
                 ShareUtils.showShare(this, imgUrl, title, content, shareUrl + "&token=" +
-                        SharedPreferencesUtils.getString(this,"token"));
+                        SharedPreferencesUtils.getString(this, "token"));
                 break;
         }
     }
+
+
+    /**
+     * 首页跟踪
+     */
+    private void homepageLog() {
+        long time = DateUtils.getCurrentTime() - enterTime;
+        OkHttpUtils.post()
+                .url(Constant.HOMEPAGE_LOG)
+                .addParams("time", time + "")
+                .addParams("module_name", "首页")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        LogUtils.log("homepage");
+                    }
+                });
+
+    }
+
 }

@@ -307,7 +307,7 @@ public class TailorActivity extends BaseActivity {
         });
 
         rvTailor.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
-        adapter = new CommonAdapter<String>(TailorActivity.this, R.layout.listitem_tailor, typeList) {
+        adapter = new CommonAdapter<String>(TailorActivity.this, R.layout.listitem_custom_parts, typeList) {
             @Override
             protected void convert(ViewHolder holder, String imgUrl, int position) {
                 Glide.with(TailorActivity.this)
@@ -334,7 +334,7 @@ public class TailorActivity extends BaseActivity {
                 rvTailorItem.setLayoutManager(new GridLayoutManager(TailorActivity.this, 1,
                         GridLayoutManager.HORIZONTAL, false));
                 itemAdapter = new CommonAdapter<String>(TailorActivity.this,
-                        R.layout.listitem_tailor, itemList.get(index)) {
+                        R.layout.listitem_custom_parts, itemList.get(index)) {
                     @Override
                     protected void convert(ViewHolder holder, String imgUrl, int position) {
                         Glide.with(TailorActivity.this)
@@ -849,7 +849,7 @@ public class TailorActivity extends BaseActivity {
 //            if (MyApplication.classifyId == 1 || MyApplication.classifyId == 2) {
 //                nextStep(EmbroideryActivity.class);
 //            } else {
-//                nextStep(TailorInfoActivity.class);
+//                nextStep(CustomResultActivity.class);
 //            }
             nextStep();
         }
@@ -921,7 +921,7 @@ public class TailorActivity extends BaseActivity {
         rvTailorButton.setVisibility(View.VISIBLE);
         rvTailorButton.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
         CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean> buttonAdapter = new
-                CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this, R.layout.listitem_tailor, dataBean.getSpec_list()
+                CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this, R.layout.listitem_custom_parts, dataBean.getSpec_list()
                         .get(index).getList().get(itemIndex).getChild_list()) {
                     @Override
                     protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean

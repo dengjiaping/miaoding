@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +47,11 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.DesignerDetailsActivity;
+import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import okhttp3.Call;
 
@@ -72,11 +75,10 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     //加载更多
     private boolean isLoadMore;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_recommend, container, false);
         unbinder = ButterKnife.bind(this, view);
         initData();
         return view;
@@ -262,6 +264,13 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                 @Override
                 protected void convert(ViewHolder holder, NewHomepageBean.DesignerListBean designerListBean
                         , int position) {
+                    //平分显示三个卡片
+                    CardView cardView = holder.getView(R.id.cv_recommend_designer);
+                    ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
+                    int widthPixels = DisplayUtils.getMetrics(getActivity()).widthPixels;
+                    layoutParams.width = (int) ((widthPixels - DisplayUtils.dp2px(getActivity(),18))/3);
+                    cardView.setLayoutParams(layoutParams);
+
                     SimpleDraweeView imageView = holder.getView(R.id.img_recommend_designer);
                     TextView tvName = holder.getView(R.id.tv_name_designer);
                     tvName.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
@@ -274,7 +283,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailsActivity.class);
+                    Intent intent = new Intent(getParentFragment().getActivity(), DesignerInfoActivity.class);
                     intent.putExtra("id", homepageBean.getDesigner_list().get(position).getId() + "");
                     startActivity(intent);
                 }
@@ -284,7 +293,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     return false;
                 }
             });
-        }else {
+        } else {
             ImageView imgTitle = (ImageView) view.findViewById(R.id.img_designer_title);
             imgTitle.setVisibility(View.GONE);
         }

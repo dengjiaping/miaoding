@@ -314,6 +314,15 @@ public class NewTailorBean {
                 private int status;
                 private int position_id;
                 private String img_a;
+                private int c_time;
+                private int display_type;
+                private Object danwei;
+                private Object liebiao;
+                private String banxin_id;
+
+
+
+                private List<SpecListBean> spec_list;
 
                 public String getImg_a() {
                     return img_a;
@@ -322,13 +331,6 @@ public class NewTailorBean {
                 public void setImg_a(String img_a) {
                     this.img_a = img_a;
                 }
-
-                private int c_time;
-                private int display_type;
-                private Object danwei;
-                private Object liebiao;
-                private String banxin_id;
-                private List<SpecListBean> spec_list;
 
                 public int getId() {
                     return id;
@@ -448,6 +450,17 @@ public class NewTailorBean {
                     private String img_a;
                     private String img_b;
                     private String img_c;
+                    private int mianliao_id;
+
+                    public int getMianliao_id() {
+                        return mianliao_id;
+                    }
+
+                    public void setMianliao_id(int mianliao_id) {
+                        this.mianliao_id = mianliao_id;
+                    }
+
+
 
                     public String getImg_a() {
                         return img_a;

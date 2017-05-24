@@ -189,9 +189,9 @@ public class ShoppingCartActivity extends BaseActivity {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent;
                 if (recommendBean.getData().getData().get(position).getType() == 1) {
-                    intent = new Intent(ShoppingCartActivity.this, NewGoodsDetailsActivity.class);
+                    intent = new Intent(ShoppingCartActivity.this, CustomGoodsActivity.class);
                 } else {
-                    intent = new Intent(ShoppingCartActivity.this, WorksDetailsActivity.class);
+                    intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
                 }
 
                 intent.putExtra("id", String.valueOf(recommendBean.getData().getData().get(position)
@@ -324,7 +324,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             cartToTailorInfo(position);
                             break;
                         case 2:
-                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailsActivity.class);
+                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
                             intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
                             startActivity(intent);
                             break;
@@ -364,7 +364,7 @@ public class ShoppingCartActivity extends BaseActivity {
                         CartDetailsBean cartDetails = GsonUtils.jsonToBean(response, CartDetailsBean.class);
 
                         if (cartDetails.getData() != null) {
-                            Intent intent = new Intent(ShoppingCartActivity.this, TailorInfoActivity.class);
+                            Intent intent = new Intent(ShoppingCartActivity.this, CustomResultActivity.class);
                             Bundle bundle = new Bundle();
                             TailorItemBean tailorBean = new TailorItemBean();
                             tailorBean.setId(cartDetails.getData().getId() + "");

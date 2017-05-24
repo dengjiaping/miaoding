@@ -2,27 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:fitsSystemWindows="true"
               android:background="@android:color/white"
+              android:fitsSystemWindows="true"
               android:orientation="vertical">
 
     <include layout="@layout/widget_header_layout"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         android:scrollbars="none">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/img_user_rule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/img_user_rule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"/>
-        </LinearLayout>
+            android:adjustViewBounds="true"/>
+
     </ScrollView>
 
 </LinearLayout>

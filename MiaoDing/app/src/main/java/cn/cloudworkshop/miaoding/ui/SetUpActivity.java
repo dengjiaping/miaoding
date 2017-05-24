@@ -51,7 +51,6 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -329,7 +328,7 @@ public class SetUpActivity extends BaseActivity {
                 changeBirthday();
                 break;
             case R.id.ll_feed_back:
-                startActivity(new Intent(SetUpActivity.this, HelpAndFeedbackActivity.class));
+                startActivity(new Intent(SetUpActivity.this, UserHelpActivity.class));
                 break;
         }
 
@@ -352,7 +351,7 @@ public class SetUpActivity extends BaseActivity {
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
-                if (DateUtils.getSeconds("yyyyMMdd", year + month + day) * 1000 < System.currentTimeMillis()) {
+                if (DateUtils.getMillisecond("yyyyMMdd", year + month + day) < System.currentTimeMillis()) {
                     changeInfo("birthday", year + "-" + month + "-" + day);
                 } else {
                     Toast.makeText(SetUpActivity.this, "请选择正确的出生日期", Toast.LENGTH_SHORT).show();

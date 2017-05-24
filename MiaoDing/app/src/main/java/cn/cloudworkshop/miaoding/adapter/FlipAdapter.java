@@ -17,8 +17,8 @@ import java.util.List;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.DesignerDetailsActivity;
-import cn.cloudworkshop.miaoding.ui.WorksDetailsActivity;
+import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
+import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 
 /**
  * Author：binge on 2017-04-21 10:43
@@ -78,7 +78,7 @@ public class FlipAdapter extends BaseAdapter {
         holder.imgWorks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, WorksDetailsActivity.class);
+                Intent intent = new Intent(context, WorksDetailActivity.class);
                 intent.putExtra("id", String.valueOf(itemBean.getGoods_id()));
                 context.startActivity(intent);
 
@@ -88,7 +88,7 @@ public class FlipAdapter extends BaseAdapter {
         holder.tvDesigner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DesignerDetailsActivity.class);
+                Intent intent = new Intent(context, DesignerInfoActivity.class);
                 intent.putExtra("id", itemBean.getUid() + "");
                 context.startActivity(intent);
             }

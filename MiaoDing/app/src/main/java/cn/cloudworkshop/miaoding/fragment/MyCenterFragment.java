@@ -34,7 +34,7 @@ import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
 import cn.cloudworkshop.miaoding.ui.InviteFriendActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.ui.LoginActivity;
-import cn.cloudworkshop.miaoding.ui.MapViewActivity;
+import cn.cloudworkshop.miaoding.ui.ApplyMeasureActivity;
 import cn.cloudworkshop.miaoding.ui.MemberCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MessageCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
@@ -258,7 +258,7 @@ public class MyCenterFragment extends BaseFragment {
                     intent.putExtra("type", "appoint");
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getActivity(), MapViewActivity.class);
+                    Intent intent = new Intent(getActivity(), ApplyMeasureActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -278,7 +278,9 @@ public class MyCenterFragment extends BaseFragment {
                 startActivity(setUp);
                 break;
             case R.id.img_login:
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                Intent login = new Intent(getActivity(), LoginActivity.class);
+                login.putExtra("page_name", "个人中心");
+                startActivity(login);
                 break;
             case R.id.tv_mycenter_invite:
                 Intent invite = new Intent(getActivity(), InviteFriendActivity.class);
@@ -300,8 +302,6 @@ public class MyCenterFragment extends BaseFragment {
                 break;
             case R.id.rl_center_user:
                 startActivity(new Intent(getActivity(), MemberCenterActivity.class));
-                break;
-            default:
                 break;
         }
     }

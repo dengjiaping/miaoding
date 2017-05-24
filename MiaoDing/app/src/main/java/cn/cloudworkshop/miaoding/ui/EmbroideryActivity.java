@@ -375,7 +375,7 @@ public class EmbroideryActivity extends BaseActivity {
     private void confirmTailor(boolean isEmbroidery) {
         TailorItemBean tailorBean1 = (TailorItemBean) getIntent().getExtras().getSerializable("tailor");
 
-        Intent intent = new Intent(this, TailorInfoActivity.class);
+        Intent intent = new Intent(this, CustomResultActivity.class);
         Bundle bundle = new Bundle();
         if (isEmbroidery){
             //个性绣花

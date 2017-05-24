@@ -30,6 +30,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -89,12 +90,33 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        TitleBarUtils.setNoTitleBar(LoginActivity.this);
-//        StatusBarUtils.setStatusBarLight(this, getWindow(), true);
         setContentView(R.layout.activity_login);
         msgToken = SharedPreferencesUtils.getString(this, "msgToken");
         ButterKnife.bind(this);
+        loginLog();
         initView();
+    }
+
+    /**
+     * 登录跟踪
+     */
+    private void loginLog() {
+        String pageName = getIntent().getStringExtra("page_name");
+        OkHttpUtils.post()
+                .url(Constant.LOGIN_LOG)
+                .addParams("p_module_name", pageName)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.log("login");
+                    }
+                });
     }
 
     /**

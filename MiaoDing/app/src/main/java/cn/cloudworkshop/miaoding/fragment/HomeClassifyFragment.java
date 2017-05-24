@@ -63,7 +63,7 @@ public class HomeClassifyFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_recommend, container, false);
         unbinder = ButterKnife.bind(this, view);
         getData();
         initData();

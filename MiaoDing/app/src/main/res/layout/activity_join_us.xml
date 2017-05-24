@@ -22,23 +22,20 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/tv_apply_join"
         android:layout_marginTop="44dp"
+        android:fillViewport="true"
         android:scrollbars="none">
 
-        <LinearLayout
+
+        <ImageView
+            android:id="@+id/img_join_us"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
 
-            <ImageView
-                android:id="@+id/img_join_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"/>
-        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

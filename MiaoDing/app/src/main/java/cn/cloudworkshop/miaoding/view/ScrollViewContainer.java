@@ -7,10 +7,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 
 /**
  * Author：binge on 2016/11/30 13:35
@@ -34,7 +38,7 @@ public class ScrollViewContainer extends RelativeLayout {
     /**
      * 动画速度
      */
-    public static final float SPEED = 6.5f;
+    public static final float SPEED = 8f;
 
     private boolean isMeasured = false;
 
@@ -65,6 +69,8 @@ public class ScrollViewContainer extends RelativeLayout {
     private float mMoveLen;
     private MyTimer mTimer;
     private float mLastY;
+
+
     /**
      * 用于控制是否变动布局的另一个条件，mEvents==0时布局可以拖拽了，mEvents==-1时可以舍弃将要到来的第一个move事件，
      * 这点是去除多点拖动剧变的关键
@@ -82,7 +88,7 @@ public class ScrollViewContainer extends RelativeLayout {
                         mMoveLen = -mViewHeight;
                         state = DONE;
                         mCurrentViewIndex = 1;
-                        if (currentPage != null){
+                        if (currentPage != null) {
                             currentPage.getCurrentPage(mCurrentViewIndex);
                         }
 
@@ -93,7 +99,7 @@ public class ScrollViewContainer extends RelativeLayout {
                         mMoveLen = 0;
                         state = DONE;
                         mCurrentViewIndex = 0;
-                        if (currentPage != null){
+                        if (currentPage != null) {
                             currentPage.getCurrentPage(mCurrentViewIndex);
                         }
                     }
@@ -123,10 +129,9 @@ public class ScrollViewContainer extends RelativeLayout {
 
     private void init() {
         mTimer = new MyTimer(handler);
-
     }
 
-    public void getCurrentView(CurrentPageListener currentPage){
+    public void getCurrentView(CurrentPageListener currentPage) {
         this.currentPage = currentPage;
     }
 
@@ -158,7 +163,6 @@ public class ScrollViewContainer extends RelativeLayout {
                     } else if (mMoveLen < -mViewHeight) {
                         mMoveLen = -mViewHeight;
                         mCurrentViewIndex = 1;
-
                     }
                     if (mMoveLen < -8) {
                         // 防止事件冲突
@@ -181,6 +185,7 @@ public class ScrollViewContainer extends RelativeLayout {
                 } else
                     mEvents++;
                 mLastY = ev.getY();
+
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
@@ -220,13 +225,22 @@ public class ScrollViewContainer extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        topView.layout(0, (int) mMoveLen, mViewWidth, mViewHeight + (int) mMoveLen);
-        bottomView.layout(0, mViewHeight + (int) mMoveLen, mViewWidth, 2 * mViewHeight + (int) mMoveLen);
+        if (mCurrentViewIndex == 0) {
+            topView.layout(0, (int) mMoveLen, mViewWidth, topView.getMeasuredHeight() + (int) mMoveLen);
+            bottomView.layout(0, topView.getMeasuredHeight() + (int) mMoveLen, mViewWidth,
+                    topView.getMeasuredHeight() + bottomView.getMeasuredHeight() + (int) mMoveLen);
+        } else {
+            topView.layout(0, (int) mMoveLen, mViewWidth, mViewHeight + (int) mMoveLen);
+            bottomView.layout(0, mViewHeight + (int) mMoveLen, mViewWidth, topView.getMeasuredHeight()
+                    + bottomView.getMeasuredHeight() + (int) mMoveLen);
+        }
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         if (!isMeasured) {
             isMeasured = true;
 
@@ -251,10 +265,7 @@ public class ScrollViewContainer extends RelativeLayout {
 //            //滑动到第一页的底部 处理事件
 //            if (viewPager.getCurrentItem() == viewPager.getChildCount() - 1 && viewPager.getScrollY() == (viewPager.getChildAt(0).getMeasuredHeight() - viewPager
 //                    .getMeasuredHeight()) && mCurrentViewIndex == 0)
-            if (v.getScrollY() == 0 && mCurrentViewIndex == 0)
-                canPullUp = true;
-            else
-                canPullUp = false;
+            canPullUp = v.getScrollY() == 0 && mCurrentViewIndex == 0;
             return false;
 
         }
@@ -263,10 +274,7 @@ public class ScrollViewContainer extends RelativeLayout {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (v.getScrollY() == 0 && mCurrentViewIndex == 1)
-                canPullDown = true;
-            else
-                canPullDown = false;
+            canPullDown = v.getScrollY() == 0 && mCurrentViewIndex == 1;
             return false;
         }
     };
