@@ -3,8 +3,10 @@ package cn.cloudworkshop.miaoding.utils;
 import android.app.Activity;
 
 import android.content.Context;
+
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 /**
@@ -49,7 +51,7 @@ public class DisplayUtils {
      * @return 状态栏高度
      */
     public static int getStatusBarHeight(Activity activity) {
-        int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = activity.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         return resourceId > 0 ? activity.getResources().getDimensionPixelSize(resourceId) : 0;
     }
 
@@ -72,4 +74,13 @@ public class DisplayUtils {
         lp.alpha = bgAlpha;
         ((Activity) mContext).getWindow().setAttributes(lp);
     }
+
+    /**
+     * @return 虚拟导航栏高度
+     */
+    public static int getNavigationBarHeight(Activity activity) {
+        int resourceId = activity.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        return resourceId > 0 ? activity.getResources().getDimensionPixelSize(resourceId) : 0;
+    }
+
 }

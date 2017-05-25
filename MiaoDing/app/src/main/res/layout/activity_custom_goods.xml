@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+
+    <cn.cloudworkshop.miaoding.view.ScrollViewContainer
+        android:id="@+id/scroll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <com.bigkoo.convenientbanner.ConvenientBanner
+                android:id="@+id/banner_goods"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/ll_goods_content"
+                app:canLoop="true">
+
+            </com.bigkoo.convenientbanner.ConvenientBanner>
+
+            <LinearLayout
+                android:id="@+id/ll_goods_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_goods_sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/light_gray_3d"
+                    android:textSize="26sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_goods_introduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:maxLength="16"
+                    android:singleLine="true"
+                    android:textColor="@color/light_gray_7a"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_tailor_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"/>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </cn.cloudworkshop.miaoding.view.ScrollViewContainer>
+
+    <LinearLayout
+        android:id="@+id/ll_goods_tailor"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@mipmap/icon_gray_mask"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_add_like"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@mipmap/icon_cancel_like"/>
+
+            <ImageView
+                android:id="@+id/img_tailor_consult"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@mipmap/icon_consult_large"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_goods_tailor"
+            android:layout_width="113dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/light_gray_3d"
+            android:gravity="center"
+            android:text="立即定制"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/img_tailor_back"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:scaleType="center"
+        android:src="@mipmap/icon_back_white"/>
+
+    <ImageView
+        android:id="@+id/img_tailor_share"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:scaleType="center"
+        android:src="@mipmap/icon_share_goods"/>
+
+</RelativeLayout>
