@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -209,7 +210,15 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_cancel_login:
-                finish();
+               String cancel =  getIntent().getStringExtra("log_in");
+                if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("fragid", 0);
+                    finish();
+                    startActivity(intent);
+                }else {
+                    finish();
+                }
                 break;
             case R.id.tv_verification_code:
                 getVerificationCode();
@@ -379,5 +388,20 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String cancel =  getIntent().getStringExtra("log_in");
+            if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("fragid", 0);
+                finish();
+                startActivity(intent);
+            }else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

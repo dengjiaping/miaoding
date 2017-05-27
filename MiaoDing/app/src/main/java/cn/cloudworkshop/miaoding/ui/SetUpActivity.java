@@ -268,7 +268,12 @@ public class SetUpActivity extends BaseActivity {
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "token");
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "icon");
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "phone");
+                                Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
+                                intent.putExtra("fragid", 0);
                                 finish();
+                                startActivity(intent);
+
+
                             }
                         });
             }

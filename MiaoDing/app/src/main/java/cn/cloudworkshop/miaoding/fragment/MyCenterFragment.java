@@ -73,38 +73,24 @@ public class MyCenterFragment extends BaseFragment {
     TextView tvMycenterCloth;
     @BindView(R.id.tv_mycenter_designer)
     TextView tvMycenterDesigner;
-
-    @BindView(R.id.img_login)
-    ImageView imgLogin;
-    @BindView(R.id.rl_login_page)
-    RelativeLayout rlLoginPage;
     @BindView(R.id.tv_center_name)
     TextView tvCenterName;
-
     @BindView(R.id.tv_mycenter_invite)
     TextView tvMycenterInvite;
-    @BindView(R.id.tv_about_me)
-    TextView tvAboutMe;
-    @BindView(R.id.tv_tailor_guide)
-    TextView tvTailorGuide;
-    @BindView(R.id.tv_seek_designer)
-    TextView tvSeekDesigner;
     @BindView(R.id.tv_mycenter_coupon)
     TextView tvCoupon;
     @BindView(R.id.img_center_message)
     ImageView imgMessage;
-
     @BindView(R.id.rl_msg_center)
     RelativeLayout rlMsgCenter;
     @BindView(R.id.img_center_grade)
     ImageView imgCenterGrade;
     @BindView(R.id.rl_set_center)
     RelativeLayout rlSetCenter;
-    @BindView(R.id.rl_center_user)
+    @BindView(R.id.rl_center_user1)
     RelativeLayout rlCenterUser;
     @BindView(R.id.rl_mycenter)
     RelativeLayout rlMycenter;
-
 
     private Unbinder unbinder;
     private String imgUrl;
@@ -125,10 +111,11 @@ public class MyCenterFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         badgeView = new BadgeView(getActivity());
         if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
-            rlLoginPage.setVisibility(View.VISIBLE);
-            rlMycenter.setVisibility(View.GONE);
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtra("log_in", "center");
+            intent.putExtra("page_name", "个人中心");
+            startActivity(intent);
         } else {
-            rlLoginPage.setVisibility(View.GONE);
             rlMycenter.setVisibility(View.VISIBLE);
             initData();
         }
@@ -209,14 +196,13 @@ public class MyCenterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
-            rlLoginPage.setVisibility(View.VISIBLE);
             rlMycenter.setVisibility(View.GONE);
         } else {
-            rlLoginPage.setVisibility(View.GONE);
             rlMycenter.setVisibility(View.VISIBLE);
             initData();
         }
     }
+
 
     public static MyCenterFragment newInstance() {
         Bundle args = new Bundle();
@@ -228,9 +214,9 @@ public class MyCenterFragment extends BaseFragment {
 
     @OnClick({R.id.tv_mycenter_order, R.id.tv_mycenter_cart, R.id.tv_mycenter_collection,
             R.id.tv_mycenter_test, R.id.tv_mycenter_measure, R.id.tv_mycenter_consult,
-            R.id.tv_mycenter_cloth, R.id.tv_mycenter_designer, R.id.img_login,
+            R.id.tv_mycenter_cloth, R.id.tv_mycenter_designer,
             R.id.tv_mycenter_invite, R.id.rl_msg_center, R.id.tv_mycenter_coupon,
-            R.id.rl_set_center, R.id.rl_center_user})
+            R.id.rl_set_center, R.id.rl_center_user1})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_mycenter_order:
@@ -277,22 +263,9 @@ public class MyCenterFragment extends BaseFragment {
                 Intent setUp = new Intent(getActivity(), SetUpActivity.class);
                 startActivity(setUp);
                 break;
-            case R.id.img_login:
-                Intent login = new Intent(getActivity(), LoginActivity.class);
-                login.putExtra("page_name", "个人中心");
-                startActivity(login);
-                break;
             case R.id.tv_mycenter_invite:
                 Intent invite = new Intent(getActivity(), InviteFriendActivity.class);
                 startActivity(invite);
-                break;
-            case R.id.tv_about_me:
-                startActivity(new Intent(getActivity(), AboutUsActivity.class));
-                break;
-            case R.id.tv_tailor_guide:
-                break;
-            case R.id.tv_seek_designer:
-                startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.tv_mycenter_coupon:
                 startActivity(new Intent(getActivity(), CouponActivity.class));
@@ -300,7 +273,7 @@ public class MyCenterFragment extends BaseFragment {
             case R.id.rl_msg_center:
                 startActivity(new Intent(getActivity(), MessageCenterActivity.class));
                 break;
-            case R.id.rl_center_user:
+            case R.id.rl_center_user1:
                 startActivity(new Intent(getActivity(), MemberCenterActivity.class));
                 break;
         }
