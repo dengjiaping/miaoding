@@ -9,7 +9,7 @@
         android:layout_width="110dp"
         android:layout_height="30dp"
         android:background="@drawable/bound_corner_3d"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/tv_embroidery_font"
