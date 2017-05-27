@@ -7,7 +7,7 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class MessageBean {
+public class MsgCenterBean {
 
     /**
      * code : 1

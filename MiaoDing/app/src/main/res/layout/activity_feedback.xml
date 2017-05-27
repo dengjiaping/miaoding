@@ -99,7 +99,7 @@
                 android:background="@drawable/text_gray_bg"
                 android:hint="请留下您的联系方式（手机号、QQ或者电子邮箱）"
                 android:maxLength="20"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="@color/dark_gray_22"
                 android:textColorHint="@color/hint_gray"

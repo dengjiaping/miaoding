@@ -27,7 +27,7 @@ public class Recycler {
 		if (viewTypeCount < 1) {
 			throw new IllegalArgumentException("Can't have a viewTypeCount < 1");
 		}
-		// do nothing if the view type count has not changed.
+		// do nothing if the view content count has not changed.
 		if (currentScraps != null && viewTypeCount == scraps.length) {
 			return;
 		}

@@ -82,6 +82,7 @@ public class CustomResultActivity extends BaseActivity {
 
     private TailorItemBean tailorBean;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -264,21 +265,13 @@ public class CustomResultActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_buy_now:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
-                    type = 1;
-                    addToCart();
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
-
+                type = 1;
+                addToCart();
                 break;
             case R.id.tv_add_bag:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
-                    type = 2;
-                    addToCart();
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
+                type = 2;
+                addToCart();
+
                 break;
             case R.id.img_header_share:
                 startActivity(new Intent(this, ShoppingCartActivity.class));
@@ -294,7 +287,7 @@ public class CustomResultActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("type", type + "")
+                .addParams("content", type + "")
                 .addParams("goods_id", tailorBean.getId())
                 .addParams("goods_type", "1")
                 .addParams("price", tailorBean.getPrice())
@@ -326,6 +319,11 @@ public class CustomResultActivity extends BaseActivity {
                                             ConfirmOrderActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putString("cart_id", cartId);
+                                    bundle.putString("log_id",tailorBean.getLog_id());
+                                    bundle.putLong("goods_time",tailorBean.getGoods_time());
+                                    bundle.putLong("dingzhi_time",tailorBean.getDingzhi_time());
+                                    bundle.putString("goods_id",tailorBean.getId());
+                                    bundle.putString("goods_name",tailorBean.getGoods_name());
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                 }

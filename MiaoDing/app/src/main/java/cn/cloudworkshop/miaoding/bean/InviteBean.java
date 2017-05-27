@@ -17,6 +17,16 @@ public class InviteBean {
     private DataBean data;
     private String msg;
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    private String img;
+
     public int getCode() {
         return code;
     }

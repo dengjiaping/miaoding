@@ -22,9 +22,9 @@
         android:textColor="@android:color/white"
         android:textSize="10sp"
         android:layout_alignParentBottom="true"
-        android:paddingLeft="12dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="20dp"/>
+        android:layout_marginLeft="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="12dp"/>
 
     <TextView
         android:id="@+id/tv_works_name"
@@ -34,6 +34,5 @@
         android:textSize="20sp"
         android:layout_above="@id/tv_works_content"
         android:layout_marginLeft="12dp"/>
-
 
 </RelativeLayout>

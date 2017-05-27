@@ -8,7 +8,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +40,8 @@ import cn.cloudworkshop.miaoding.utils.CharacterUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
+
+import static android.R.attr.filter;
 
 /**
  * Author：Libin on 2016/10/13 11:47
@@ -236,7 +240,7 @@ public class EmbroideryActivity extends BaseActivity {
                     imgFont.setBackgroundResource(R.drawable.bound_corner_3d);
                 } else {
                     tvFont.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_7a));
-                    imgFont.setBackgroundResource(0);
+                    imgFont.setBackgroundResource(R.drawable.bound_corner_aa);
                 }
 
             }
@@ -260,6 +264,9 @@ public class EmbroideryActivity extends BaseActivity {
                 return false;
             }
         });
+
+
+        etEmbroideryContent.setFilters(new InputFilter[]{filter});
 
 
         etEmbroideryContent.setOnTouchListener(new View.OnTouchListener() {
@@ -303,26 +310,33 @@ public class EmbroideryActivity extends BaseActivity {
 
     }
 
+    private InputFilter filter=new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            else return null;
+        }
+    };
+
 
     /**
      * 输入中英文判断
      */
     private void judgeInputWords() {
         if (etEmbroideryContent.getText().toString().trim().length() > 0) {
-            switch (embroideryBean.getData().getFont().get(flowerFont).getName()) {
-                case "英文":
-                    if (!CharacterUtils.inputEnglish(EmbroideryActivity.this,
-                            etEmbroideryContent.getText().toString().trim())) {
-                        etEmbroideryContent.setText(null);
-                    }
-                    break;
-                case "中文":
-                    if (!CharacterUtils.inputChinese(EmbroideryActivity.this,
-                            etEmbroideryContent.getText().toString().trim())) {
-                        etEmbroideryContent.setText(null);
-                    }
-                    break;
+            //1：英文
+            if (embroideryBean.getData().getFont().get(flowerFont).getIs_english() == 1){
+                if (!CharacterUtils.inputEnglish(EmbroideryActivity.this,
+                        etEmbroideryContent.getText().toString().trim())) {
+                    etEmbroideryContent.setText(null);
+                }
+            }else {
+                if (!CharacterUtils.inputChinese(EmbroideryActivity.this,
+                        etEmbroideryContent.getText().toString().trim())) {
+                    etEmbroideryContent.setText(null);
+                }
             }
+
         }
     }
 
@@ -363,9 +377,10 @@ public class EmbroideryActivity extends BaseActivity {
                 confirmTailor(true);
                 break;
 
-
         }
     }
+
+
 
 
     /**

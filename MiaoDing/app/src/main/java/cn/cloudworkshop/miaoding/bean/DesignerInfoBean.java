@@ -7,11 +7,11 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class DesignerBean {
+public class DesignerInfoBean {
 
     /**
      * code : 1
-     * data : {"img":"/uploads/img/2017042411502549989751.jpg","content":"<p><span style=\"color: rgb(204, 0, 0); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">杜嘉班纳<\/span><span style=\"color: rgb(51, 51, 51); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。<\/span><span style=\"color: rgb(204, 0, 0); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">杜嘉班纳<\/span><span style=\"color: rgb(51, 51, 51); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。<\/span><\/p>","view_nums":1,"like_nums":1,"recommend_goods_ids":null,"name":"青衣","avatar":"/uploads/img/2017041314512157481021.jpg","goods_num":1,"collect_num":2,"sale_num":"6","goods_list":[{"name":"云工场&杜嘉班纳 2017春夏新款","sub_name":"东西方文化的碰撞","thumb":"/uploads/img/2017042411432510057545.jpg","id":49,"type":2,"c_time":"04-24 11:43"}]}
+     * data : {"img":"/uploads/img/2017042411502549989751.jpg","content":"<p><span style=\"color: rgb(204, 0, 0); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">杜嘉班纳<\/span><span style=\"color: rgb(51, 51, 51); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。<\/span><span style=\"color: rgb(204, 0, 0); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">杜嘉班纳<\/span><span style=\"color: rgb(51, 51, 51); font-family: arial; font-size: 13px; background-color: rgb(255, 255, 255);\">公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。<\/span><\/p>","view_nums":1,"like_nums":1,"recommend_goods_ids":null,"name":"青衣","avatar":"/uploads/img/2017041314512157481021.jpg","goods_num":1,"collect_num":2,"sale_num":"6","goods_list":[{"name":"云工场&杜嘉班纳 2017春夏新款","sub_name":"东西方文化的碰撞","thumb":"/uploads/img/2017042411432510057545.jpg","id":49,"content":2,"c_time":"04-24 11:43"}]}
      * msg : 成功
      */
 
@@ -55,7 +55,7 @@ public class DesignerBean {
          * goods_num : 1
          * collect_num : 2
          * sale_num : 6
-         * goods_list : [{"name":"云工场&杜嘉班纳 2017春夏新款","sub_name":"东西方文化的碰撞","thumb":"/uploads/img/2017042411432510057545.jpg","id":49,"type":2,"c_time":"04-24 11:43"}]
+         * goods_list : [{"name":"云工场&杜嘉班纳 2017春夏新款","sub_name":"东西方文化的碰撞","thumb":"/uploads/img/2017042411432510057545.jpg","id":49,"content":2,"c_time":"04-24 11:43"}]
          */
 
         private String img;
@@ -65,7 +65,7 @@ public class DesignerBean {
         private String avatar;
         private int goods_num;
         private int collect_num;
-        private String sale_num;
+        private int sale_num;
         private String content;
         private String tag;
 
@@ -143,11 +143,11 @@ public class DesignerBean {
             this.collect_num = collect_num;
         }
 
-        public String getSale_num() {
+        public int getSale_num() {
             return sale_num;
         }
 
-        public void setSale_num(String sale_num) {
+        public void setSale_num(int sale_num) {
             this.sale_num = sale_num;
         }
 
@@ -165,7 +165,7 @@ public class DesignerBean {
              * sub_name : 东西方文化的碰撞
              * thumb : /uploads/img/2017042411432510057545.jpg
              * id : 49
-             * type : 2
+             * content : 2
              * c_time : 04-24 11:43
              */
 

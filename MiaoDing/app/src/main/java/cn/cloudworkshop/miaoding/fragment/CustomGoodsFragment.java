@@ -48,6 +48,8 @@ import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -75,8 +77,6 @@ public class CustomGoodsFragment extends BaseFragment {
     private GoodsTitleBean.DataBean currentGoods;
     private int currentItem = 0;
     private TreeMap<Integer, Bitmap> treeMap = new TreeMap<>();
-    private long enterTime;
-
 
     @Nullable
     @Override
@@ -91,12 +91,12 @@ public class CustomGoodsFragment extends BaseFragment {
      * 加载商品种类
      */
     private void initTitle() {
-        enterTime = DateUtils.getCurrentTime();
         loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
         loadingView.setIndicatorColor(Color.GRAY);
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_TITLE)
+                .addParams("token", SharedPreferencesUtils.getString(getActivity(),"token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -123,7 +123,7 @@ public class CustomGoodsFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_LIST)
-                .addParams("type", String.valueOf(1))
+                .addParams("type", "1")
                 .addParams("classify_id", currentGoods.getId() + "")
                 .addParams("page", page + "")
                 .build()
@@ -211,6 +211,7 @@ public class CustomGoodsFragment extends BaseFragment {
     private void initView() {
         tvGoodsTitle.setText(currentGoods.getName());
 
+//        curlPage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         ImagePageProvider imagePageProvider = new ImagePageProvider(curlPage.getWidth(),
                 curlPage.getHeight()+DisplayUtils.getNavigationBarHeight(getActivity()));
         imagePageProvider.setBitmaps(bitmapList);
@@ -237,11 +238,8 @@ public class CustomGoodsFragment extends BaseFragment {
         curlPage.setOnPageClickListener(new CurlView.OnPageClickListener() {
             @Override
             public void currentItem(int position) {
-                long time = DateUtils.getCurrentTime() - enterTime;
                 Intent intent = new Intent(getActivity(), CustomGoodsActivity.class);
                 intent.putExtra("id", String.valueOf(listBean.getData().getData().get(position).getId()));
-                intent.putExtra("log_id", titleBean.getId() + "");
-                intent.putExtra("custom_time", time + "");
                 startActivity(intent);
             }
         });

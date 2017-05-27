@@ -13,7 +13,7 @@ public class GoodsListBean {
 
     /**
      * code : 1
-     * data : {"total":5,"per_page":5,"current_page":1,"data":[{"id":1,"name":"衬衣A","sub_name":"衬衣A衬衣A","thumb":"/uploads/img/2016101210473555521019a2.jpg","type":1},{"id":2,"name":"衬衣B","sub_name":"衬衣B衬衣B衬衣B","thumb":"/uploads/img/2016101210474852994848a5.jpg","type":1},{"id":5,"name":"成品01","sub_name":"fb","thumb":"/uploads/img/2016101116064957521025a2.jpg","type":2},{"id":4,"name":"测试衬衣","sub_name":"11","thumb":"/uploads/img/2016101109124499501005a6.jpg","type":1},{"id":3,"name":"测试商品","sub_name":"测试试试","thumb":null,"type":1}]}
+     * data : {"total":5,"per_page":5,"current_page":1,"data":[{"id":1,"name":"衬衣A","sub_name":"衬衣A衬衣A","thumb":"/uploads/img/2016101210473555521019a2.jpg","content":1},{"id":2,"name":"衬衣B","sub_name":"衬衣B衬衣B衬衣B","thumb":"/uploads/img/2016101210474852994848a5.jpg","content":1},{"id":5,"name":"成品01","sub_name":"fb","thumb":"/uploads/img/2016101116064957521025a2.jpg","content":2},{"id":4,"name":"测试衬衣","sub_name":"11","thumb":"/uploads/img/2016101109124499501005a6.jpg","content":1},{"id":3,"name":"测试商品","sub_name":"测试试试","thumb":null,"content":1}]}
      * msg : 成功
      */
 
@@ -22,7 +22,7 @@ public class GoodsListBean {
      * total : 5
      * per_page : 5
      * current_page : 1
-     * data : [{"id":1,"name":"衬衣A","sub_name":"衬衣A衬衣A","thumb":"/uploads/img/2016101210473555521019a2.jpg","type":1},{"id":2,"name":"衬衣B","sub_name":"衬衣B衬衣B衬衣B","thumb":"/uploads/img/2016101210474852994848a5.jpg","type":1},{"id":5,"name":"成品01","sub_name":"fb","thumb":"/uploads/img/2016101116064957521025a2.jpg","type":2},{"id":4,"name":"测试衬衣","sub_name":"11","thumb":"/uploads/img/2016101109124499501005a6.jpg","type":1},{"id":3,"name":"测试商品","sub_name":"测试试试","thumb":null,"type":1}]
+     * data : [{"id":1,"name":"衬衣A","sub_name":"衬衣A衬衣A","thumb":"/uploads/img/2016101210473555521019a2.jpg","content":1},{"id":2,"name":"衬衣B","sub_name":"衬衣B衬衣B衬衣B","thumb":"/uploads/img/2016101210474852994848a5.jpg","content":1},{"id":5,"name":"成品01","sub_name":"fb","thumb":"/uploads/img/2016101116064957521025a2.jpg","content":2},{"id":4,"name":"测试衬衣","sub_name":"11","thumb":"/uploads/img/2016101109124499501005a6.jpg","content":1},{"id":3,"name":"测试商品","sub_name":"测试试试","thumb":null,"content":1}]
      */
 
     private DataBean data;
@@ -61,7 +61,7 @@ public class GoodsListBean {
          * name : 衬衣A
          * sub_name : 衬衣A衬衣A
          * thumb : /uploads/img/2016101210473555521019a2.jpg
-         * type : 1
+         * content : 1
          */
 
         private List<itemDataBean> data;

@@ -60,7 +60,7 @@ public class JoinUsActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.JOIN_US)
-                .addParams("type", "3")
+                .addParams("content", "3")
                 .addParams("phone", SharedPreferencesUtils.getString(this, "phone"))
                 .build()
                 .execute(new StringCallback() {

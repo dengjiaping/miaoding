@@ -76,7 +76,6 @@ public class PayOrderUtils {
         MyApplication.orderId = orderId;
     }
 
-
     private static final int SDK_PAY_FLAG = 1;
 
     @SuppressLint("HandlerLeak")
@@ -95,7 +94,7 @@ public class PayOrderUtils {
                         MobclickAgent.onEvent(context, "pay");
 
                         Intent intent = new Intent(context, AppointmentActivity.class);
-                        intent.putExtra("type", "pay_success");
+                        intent.putExtra("content", "pay_success");
                         intent.putExtra("order_id", orderId);
 
                         ((Activity) context).finish();
@@ -104,7 +103,7 @@ public class PayOrderUtils {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         Toast.makeText(context, "支付失败", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, AppointmentActivity.class);
-                        intent.putExtra("type", "pay_fail");
+                        intent.putExtra("content", "pay_fail");
                         intent.putExtra("order_id", orderId);
                         ((Activity) context).finish();
                         context.startActivity(intent);
@@ -127,7 +126,7 @@ public class PayOrderUtils {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources(), (Bitmap) null));
         mPopupWindow.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-        DisplayUtils.setBackgroundAlpha(context, 0.5f);
+        DisplayUtils.setBackgroundAlpha(context, true);
         RecyclerView recyclerView = (RecyclerView) popupView.findViewById(R.id.rv_pay_type);
         TextView tvTotalPrice = (TextView) popupView.findViewById(R.id.tv_pay_price);
         TextView tvConfirmBuy = (TextView) popupView.findViewById(R.id.tv_pay_confirm);
@@ -137,7 +136,7 @@ public class PayOrderUtils {
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(context, 1.0f);
+                DisplayUtils.setBackgroundAlpha(context, false);
                 if (CustomDiyActivity.tailorActivity != null) {
                     CustomDiyActivity.tailorActivity.finish();
                 }
@@ -153,6 +152,7 @@ public class PayOrderUtils {
                 }
 
                 if (!isConfirmBuy) {
+
                     Toast.makeText(context, "取消支付", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, MyOrderActivity.class);
                     intent.putExtra("page", 1);
@@ -292,7 +292,6 @@ public class PayOrderUtils {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             int code = jsonObject.getInt("code");
-                            String msg = jsonObject.getString("msg");
                             if (code == 1) {
                                 final String orderInfo = jsonObject.getString("data");
                                 Runnable payRunnable = new Runnable() {

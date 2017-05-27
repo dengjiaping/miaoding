@@ -35,7 +35,7 @@ public class UserAgreementActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("type");
+        type = getIntent().getStringExtra("content");
     }
 
     private void initView() {

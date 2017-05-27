@@ -61,12 +61,6 @@ public class SelectCouponActivity extends BaseActivity {
     EditText etCouponCode;
     @BindView(R.id.tv_exchange)
     TextView tvExchange;
-    //商品id
-//    private String goodsId;
-    //单种商品最高价格
-//    private String maxPrice;
-//    //单种商品id
-//    private String maxGoodsId;
 
     private String cartIds;
     //优惠券数量
@@ -84,10 +78,7 @@ public class SelectCouponActivity extends BaseActivity {
     }
 
     private void getData() {
-//        goodsId = getIntent().getStringExtra("goods_id");
         cartIds = getIntent().getStringExtra("cart_ids");
-//        maxPrice = getIntent().getStringExtra("max_price");
-//        maxGoodsId = getIntent().getStringExtra("max_goods_id");
     }
 
     /**
@@ -124,7 +115,6 @@ public class SelectCouponActivity extends BaseActivity {
                     }
                 });
 
-
     }
 
     /**
@@ -155,21 +145,18 @@ public class SelectCouponActivity extends BaseActivity {
             }
         });
 
-
-
         MyLinearLayoutManager linearLayoutManager1 = new MyLinearLayoutManager(this);
         linearLayoutManager1.setScrollEnabled(false);
         rvAvailable.setLayoutManager(linearLayoutManager1);
-        CommonAdapter<SelectCouponBean.DataBean.UsableBean> usableAdapter
-                = new CommonAdapter<SelectCouponBean.DataBean.UsableBean>
-                (this, R.layout.listitem_coupon, usableList) {
+        CommonAdapter<SelectCouponBean.DataBean.UsableBean> usableAdapter = new CommonAdapter
+                <SelectCouponBean.DataBean.UsableBean>(this, R.layout.listitem_coupon, usableList) {
             @Override
             protected void convert(ViewHolder holder, SelectCouponBean.DataBean.UsableBean usableBean,
                                    int position) {
                 holder.getView(R.id.ll_coupon_bg).setBackgroundResource(R.mipmap.icon_coupon_available);
                 TextView tvMoney = holder.getView(R.id.tv_coupon_money);
                 tvMoney.setTypeface(DisplayUtils.setTextType(SelectCouponActivity.this));
-                tvMoney.setText("¥" + usableBean.getMoney().split("\\.")[0]);
+                tvMoney.setText("¥" + (int) Float.parseFloat(usableBean.getMoney()));
                 holder.setText(R.id.tv_coupon_range, usableBean.getTitle());
                 holder.setText(R.id.tv_coupon_discount, usableBean.getSub_title());
                 StringBuilder sb = new StringBuilder();
@@ -220,7 +207,7 @@ public class SelectCouponActivity extends BaseActivity {
                 holder.getView(R.id.ll_coupon_bg).setBackgroundResource(R.mipmap.icon_coupon_available);
                 TextView tvMoney = holder.getView(R.id.tv_coupon_money);
                 tvMoney.setTypeface(DisplayUtils.setTextType(SelectCouponActivity.this));
-                tvMoney.setText("¥" + disableBean.getMoney().split("\\.")[0]);
+                tvMoney.setText("¥" + (int) Float.parseFloat(disableBean.getMoney()));
                 holder.setText(R.id.tv_coupon_range, disableBean.getTitle());
                 holder.setText(R.id.tv_coupon_discount, disableBean.getSub_title());
                 StringBuilder sb = new StringBuilder();
@@ -288,6 +275,7 @@ public class SelectCouponActivity extends BaseActivity {
                                 initData();
                             }
                             Toast.makeText(SelectCouponActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            etCouponCode.setText("");
 
                         } catch (JSONException e) {
                             e.printStackTrace();

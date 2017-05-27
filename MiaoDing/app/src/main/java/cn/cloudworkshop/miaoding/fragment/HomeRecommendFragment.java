@@ -8,7 +8,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,16 +42,19 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.SectionedRVAdapter;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
+import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -75,6 +77,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     //加载更多
     private boolean isLoadMore;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         initData();
         return view;
     }
+
 
     /**
      * 加载数据
@@ -113,11 +118,12 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                                 for (int j = 0; j < itemList.get(i).size(); j++) {
                                     dataList.add(new HomepageItemBean(Constant.HOST
                                             + itemList.get(i).get(j).getImg(),
-                                            Constant.HOMEPAGE_INFO + "?type=1&id="
+                                            Constant.HOMEPAGE_INFO + "?content=1&id="
                                                     + itemList.get(i).get(j).getId(),
                                             itemList.get(i).get(j).getP_time(),
                                             itemList.get(i).get(j).getImg_list(),
                                             itemList.get(i).get(j).getTitle(),
+                                            itemList.get(i).get(j).getTag_name(),
                                             itemList.get(i).get(j).getTag_name() + " · " +
                                                     itemList.get(i).get(j).getSub_title(),
                                             itemList.get(i).get(j).getId()));
@@ -237,12 +243,14 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             banner.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
+
+                    homepageLog("banner");
                     //banner点击事件统计
                     MobclickAgent.onEvent(getParentFragment().getActivity(), "banner");
                     Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
                     intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
                     intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
-                    intent.putExtra("content", "");
+                    intent.putExtra("content", "banner");
                     intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
                     intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
                     startActivity(intent);
@@ -346,7 +354,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         @Override
         public void onBindViewHolder(final HomeRecommendFragment.MyViewHolder holder, final int position) {
             holder.tvTitle.setText(dataList.get(position).title);
-            holder.tvContent.setText(dataList.get(position).type);
+            holder.tvContent.setText(dataList.get(position).content);
             Glide.with(getParentFragment().getActivity())
                     .load(dataList.get(position).img)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -355,12 +363,14 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                 @Override
                 public void onClick(View view) {
 
+                    homepageLog(dataList.get(position).type);
+
                     Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
                     intent.putExtra("url", dataList.get(position).link);
                     intent.putExtra("title", dataList.get(position).title);
                     intent.putExtra("content", dataList.get(position).type);
                     intent.putExtra("img_url", dataList.get(position).img);
-                    intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?type=1&id=" +
+                    intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
                             dataList.get(position).id);
                     startActivity(intent);
                 }
@@ -386,6 +396,35 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+
+    /**
+     * 首页跟踪
+     */
+    private void homepageLog(String module_name) {
+        long time = DateUtils.getCurrentTime() - MyApplication.homeEnterTime;
+        OkHttpUtils.post()
+                .url(Constant.HOMEPAGE_LOG)
+                .addParams("token", SharedPreferencesUtils.getString(getParentFragment().getActivity(),"token"))
+                .addParams("time", time + "")
+                .addParams("p_module_name","首页")
+                .addParams("module_name", module_name)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        LogUtils.log("homepage");
+                    }
+                });
+
     }
 
 

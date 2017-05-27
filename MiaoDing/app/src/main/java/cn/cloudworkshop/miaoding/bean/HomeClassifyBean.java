@@ -7,7 +7,7 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class HomeTabBean {
+public class HomeClassifyBean {
     /**
      * code : 1
      * data : [{"id":8,"name":"搭配"},{"id":9,"name":"潮流"},{"id":10,"name":"风尚"}]

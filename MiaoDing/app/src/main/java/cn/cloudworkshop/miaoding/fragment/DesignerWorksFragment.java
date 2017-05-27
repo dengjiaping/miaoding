@@ -88,12 +88,7 @@ public class DesignerWorksFragment extends BaseFragment {
         if (designerList.size() > 1) {
             flipView.flipTo(designerList.size() - 1);
         }
-        //翻转一次，引导作用
-        boolean firstIn = SharedPreferencesUtils.getBoolean(getActivity(), "works_first", true);
-        if (firstIn) {
-            flipView.peakNext(true);
-            SharedPreferencesUtils.saveBoolean(getActivity(), "works_first", false);
-        }
+
     }
 
     public static DesignerWorksFragment newInstance() {

@@ -7,12 +7,10 @@ import com.flyco.tablayout.listener.CustomTabEntity;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class TabBean implements CustomTabEntity {
+public class MemberTabBean implements CustomTabEntity {
     public String title;
 
-
-
-    public TabBean(String title) {
+    public MemberTabBean(String title) {
         this.title = title;
 
     }

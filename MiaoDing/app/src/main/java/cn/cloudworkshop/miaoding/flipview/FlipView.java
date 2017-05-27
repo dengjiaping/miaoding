@@ -407,7 +407,7 @@ public class FlipView extends FrameLayout {
 
 	private View getView(int index, int viewType) {
 		// get the scrap from the recycler corresponding to the correct view
-		// type
+		// content
 		Recycler.Scrap scrap = mRecycler.getScrapView(index, viewType);
 
 		// get a view from the adapter if a scrap was not found or it is

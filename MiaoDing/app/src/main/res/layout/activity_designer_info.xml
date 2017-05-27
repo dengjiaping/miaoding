@@ -143,6 +143,17 @@
 
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/img_null_works"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_null_works"
+                android:scaleType="center"
+                android:layout_below="@id/ll_designer_works"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="100dp"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

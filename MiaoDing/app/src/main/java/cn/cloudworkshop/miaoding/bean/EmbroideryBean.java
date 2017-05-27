@@ -12,7 +12,7 @@ public class EmbroideryBean {
 
     /**
      * code : 1
-     * data : {"currentPos":[{"id":1,"name":"右袖口","img":"/uploads/img/2016102809545510299575.png","a_name":"位置"},{"id":2,"name":"左袖口","img":"/uploads/img/2016102809552610150501.png","a_name":"位置"},{"id":4,"name":"三角布","img":"/uploads/img/2016102809554110051102.png","a_name":"位置"},{"id":5,"name":"口袋","img":"/uploads/img/2016102809560755974951.png","a_name":"位置"}],"font":[{"name":"英文","img":"/uploads/img/2016102810582953545157.png","id":1,"a_name":"字体"},{"name":"中文","img":"/uploads/img/2016102810584048100100.png","id":2,"a_name":"字体"}],"color":[{"name":"蓝色","img":"/uploads/img/2016102811045757495157.png","id":1,"a_name":"颜色"},{"name":"红色","img":"/uploads/img/2016102811051054101101.png","id":2,"a_name":"颜色"},{"name":"墨绿色","img":"/uploads/img/2016102811053510254495.png","id":4,"a_name":"颜色"},{"name":"淡色","img":"/uploads/img/2016102811051810197511.png","id":3,"a_name":"颜色"}],"spec_templets_recommend":[{"name":"","spec_ids":"345,348,350,359,407,423","type":1,"list":[{"id":345,"name":"暗门襟","img_a":"/uploads/img/2016111515552499535698.png","img_b":"/uploads/img/2016111515563450995249.png","img_c":"/uploads/img/2016111515574697529852.png","position_id":1,"spec_id":9,"spec_name":"门襟"},{"id":348,"name":"圆摆","img_a":"/uploads/img/2016122916491810149515.png","img_b":"/uploads/img/2016122916495248495356.png","img_c":"/uploads/img/2017010216234953979799.png","position_id":1,"spec_id":2,"spec_name":"下摆"},{"id":350,"name":" 带扣尖领","img_a":"/uploads/img/2016111516144452974910.png","img_b":"/uploads/img/2016111516150910055485.png","img_c":"/uploads/img/2016111516152949100559.png","position_id":1,"spec_id":1,"spec_name":"领子"},{"id":359,"name":"腰省","img_a":"/uploads/img/2016111517013850565097.png","img_b":"/uploads/img/2016111517015450525256.png","img_c":"/uploads/img/2017010216283854481025.png","position_id":2,"spec_id":7,"spec_name":"后背"},{"id":407,"name":"三角口袋","img_a":"/uploads/img/2016111609285998521025.png","img_b":"/uploads/img/2016111609312157995054.png","img_c":"/uploads/img/2016111609324610151545.png","position_id":1,"spec_id":4,"spec_name":"口袋"},{"id":423,"name":"单袖头六角两粒扣","img_a":"/uploads/img/2016111609421998100100.png","img_b":"/uploads/img/2016111609423598555097.png","img_c":"/uploads/img/2016123010065749575749.png","position_id":2,"spec_id":5,"spec_name":"袖口"}]}]}
+     * data : {"currentPos":[{"id":1,"name":"右袖口","img":"/uploads/img/2016102809545510299575.png","a_name":"位置"},{"id":2,"name":"左袖口","img":"/uploads/img/2016102809552610150501.png","a_name":"位置"},{"id":4,"name":"三角布","img":"/uploads/img/2016102809554110051102.png","a_name":"位置"},{"id":5,"name":"口袋","img":"/uploads/img/2016102809560755974951.png","a_name":"位置"}],"font":[{"name":"英文","img":"/uploads/img/2016102810582953545157.png","id":1,"a_name":"字体"},{"name":"中文","img":"/uploads/img/2016102810584048100100.png","id":2,"a_name":"字体"}],"color":[{"name":"蓝色","img":"/uploads/img/2016102811045757495157.png","id":1,"a_name":"颜色"},{"name":"红色","img":"/uploads/img/2016102811051054101101.png","id":2,"a_name":"颜色"},{"name":"墨绿色","img":"/uploads/img/2016102811053510254495.png","id":4,"a_name":"颜色"},{"name":"淡色","img":"/uploads/img/2016102811051810197511.png","id":3,"a_name":"颜色"}],"spec_templets_recommend":[{"name":"","spec_ids":"345,348,350,359,407,423","content":1,"list":[{"id":345,"name":"暗门襟","img_a":"/uploads/img/2016111515552499535698.png","img_b":"/uploads/img/2016111515563450995249.png","img_c":"/uploads/img/2016111515574697529852.png","position_id":1,"spec_id":9,"spec_name":"门襟"},{"id":348,"name":"圆摆","img_a":"/uploads/img/2016122916491810149515.png","img_b":"/uploads/img/2016122916495248495356.png","img_c":"/uploads/img/2017010216234953979799.png","position_id":1,"spec_id":2,"spec_name":"下摆"},{"id":350,"name":" 带扣尖领","img_a":"/uploads/img/2016111516144452974910.png","img_b":"/uploads/img/2016111516150910055485.png","img_c":"/uploads/img/2016111516152949100559.png","position_id":1,"spec_id":1,"spec_name":"领子"},{"id":359,"name":"腰省","img_a":"/uploads/img/2016111517013850565097.png","img_b":"/uploads/img/2016111517015450525256.png","img_c":"/uploads/img/2017010216283854481025.png","position_id":2,"spec_id":7,"spec_name":"后背"},{"id":407,"name":"三角口袋","img_a":"/uploads/img/2016111609285998521025.png","img_b":"/uploads/img/2016111609312157995054.png","img_c":"/uploads/img/2016111609324610151545.png","position_id":1,"spec_id":4,"spec_name":"口袋"},{"id":423,"name":"单袖头六角两粒扣","img_a":"/uploads/img/2016111609421998100100.png","img_b":"/uploads/img/2016111609423598555097.png","img_c":"/uploads/img/2016123010065749575749.png","position_id":2,"spec_id":5,"spec_name":"袖口"}]}]}
      * msg : 成功
      */
 
@@ -133,6 +133,15 @@ public class EmbroideryBean {
             private String img;
             private int id;
             private String a_name;
+            private int is_english;
+
+            public int getIs_english() {
+                return is_english;
+            }
+
+            public void setIs_english(int is_english) {
+                this.is_english = is_english;
+            }
 
             public String getName() {
                 return name;
@@ -217,7 +226,7 @@ public class EmbroideryBean {
             /**
              * name :
              * spec_ids : 345,348,350,359,407,423
-             * type : 1
+             * content : 1
              * list : [{"id":345,"name":"暗门襟","img_a":"/uploads/img/2016111515552499535698.png","img_b":"/uploads/img/2016111515563450995249.png","img_c":"/uploads/img/2016111515574697529852.png","position_id":1,"spec_id":9,"spec_name":"门襟"},{"id":348,"name":"圆摆","img_a":"/uploads/img/2016122916491810149515.png","img_b":"/uploads/img/2016122916495248495356.png","img_c":"/uploads/img/2017010216234953979799.png","position_id":1,"spec_id":2,"spec_name":"下摆"},{"id":350,"name":" 带扣尖领","img_a":"/uploads/img/2016111516144452974910.png","img_b":"/uploads/img/2016111516150910055485.png","img_c":"/uploads/img/2016111516152949100559.png","position_id":1,"spec_id":1,"spec_name":"领子"},{"id":359,"name":"腰省","img_a":"/uploads/img/2016111517013850565097.png","img_b":"/uploads/img/2016111517015450525256.png","img_c":"/uploads/img/2017010216283854481025.png","position_id":2,"spec_id":7,"spec_name":"后背"},{"id":407,"name":"三角口袋","img_a":"/uploads/img/2016111609285998521025.png","img_b":"/uploads/img/2016111609312157995054.png","img_c":"/uploads/img/2016111609324610151545.png","position_id":1,"spec_id":4,"spec_name":"口袋"},{"id":423,"name":"单袖头六角两粒扣","img_a":"/uploads/img/2016111609421998100100.png","img_b":"/uploads/img/2016111609423598555097.png","img_c":"/uploads/img/2016123010065749575749.png","position_id":2,"spec_id":5,"spec_name":"袖口"}]
              */
 

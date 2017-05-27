@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.WorksBean;
+import cn.cloudworkshop.miaoding.bean.WorksDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
@@ -88,10 +88,10 @@ WorksDetailActivity extends BaseActivity {
 
     private String id;
 
-    private WorksBean.DataBean worksBean;
+    private WorksDetailBean.DataBean worksBean;
 
-    private List<WorksBean.DataBean.SizeListBeanX.SizeListBean> colorList = new ArrayList<>();
-    private CommonAdapter<WorksBean.DataBean.SizeListBeanX.SizeListBean> colorAdapter;
+    private List<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean> colorList = new ArrayList<>();
+    private CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean> colorAdapter;
     //库存
     private int stock;
     //购买数量
@@ -140,7 +140,7 @@ WorksDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        worksBean = GsonUtils.jsonToBean(response, WorksBean.class).getData();
+                        worksBean = GsonUtils.jsonToBean(response, WorksDetailBean.class).getData();
                         if (worksBean != null) {
                             initView();
                         }
@@ -173,6 +173,7 @@ WorksDetailActivity extends BaseActivity {
         tvDesignerName.setText(worksBean.getDesigner().getName());
         tvDesignerFeature.setText(worksBean.getDesigner().getTag());
         tvDesignerInfo.setText(worksBean.getDesigner().getIntroduce());
+
         Glide.with(getApplicationContext())
                 .load(Constant.HOST + worksBean.getContent2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -201,7 +202,7 @@ WorksDetailActivity extends BaseActivity {
                     addCollection();
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
-                    login.putExtra("page_name", "成品详情");
+                    login.putExtra("page_name", "收藏");
                     startActivity(login);
                 }
                 break;
@@ -215,7 +216,7 @@ WorksDetailActivity extends BaseActivity {
                 ShareUtils.showShare(this, Constant.HOST + worksBean.getThumb(),
                         worksBean.getName(),
                         worksBean.getContent(),
-                        Constant.DESIGNER_WORKS_SHARE + "?type=2&id=" + id + "&token=" +
+                        Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id + "&token=" +
                                 SharedPreferencesUtils.getString(this, "token"));
                 break;
             case R.id.tv_works_cart:
@@ -249,11 +250,11 @@ WorksDetailActivity extends BaseActivity {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-        DisplayUtils.setBackgroundAlpha(this, 0.5f);
+        DisplayUtils.setBackgroundAlpha(this, true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(WorksDetailActivity.this, 1.0f);
+                DisplayUtils.setBackgroundAlpha(WorksDetailActivity.this, false);
                 currentColor = 0;
                 currentSize = 0;
                 count = 1;
@@ -289,11 +290,11 @@ WorksDetailActivity extends BaseActivity {
 
             //尺码
             rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            final CommonAdapter<WorksBean.DataBean.SizeListBeanX> sizeAdapter
-                    = new CommonAdapter<WorksBean.DataBean.SizeListBeanX>(WorksDetailActivity.this,
+            final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
+                    = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(WorksDetailActivity.this,
                     R.layout.listitem_works_size, worksBean.getSize_list()) {
                 @Override
-                protected void convert(ViewHolder holder, WorksBean.DataBean.SizeListBeanX positionBean, int position) {
+                protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
                     TextView tvSize = holder.getView(R.id.tv_works_size);
                     tvSize.setText(positionBean.getSize_name());
 
@@ -330,10 +331,10 @@ WorksDetailActivity extends BaseActivity {
 
             //颜色
             rvColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            colorAdapter = new CommonAdapter<WorksBean.DataBean.SizeListBeanX.SizeListBean>
+            colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
                     (WorksDetailActivity.this, R.layout.listitem_works_color, colorList) {
                 @Override
-                protected void convert(ViewHolder holder, WorksBean.DataBean.SizeListBeanX.SizeListBean
+                protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
                         positionBean, int position) {
                     CircleImageView imgColor = holder.getView(R.id.img_works_color);
                     CircleImageView imgMask = holder.getView(R.id.img_works_mask);
@@ -395,7 +396,7 @@ WorksDetailActivity extends BaseActivity {
                         addToCart();
                     } else {
                         Intent login = new Intent(WorksDetailActivity.this, LoginActivity.class);
-                        login.putExtra("page_name", "成品详情");
+                        login.putExtra("page_name", "立即购买");
                         startActivity(login);
                     }
                 }
@@ -439,7 +440,7 @@ WorksDetailActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("type", index + "")
+                .addParams("content", index + "")
                 .addParams("goods_id", id)
                 .addParams("goods_type", "2")
                 .addParams("price", worksBean.getSize_list().get(currentSize)

@@ -81,10 +81,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.MainActivity"/>
-        <activity
-            android:name=".ui.MeasureActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-        <activity android:name=".ui.GoodsDetailsActivity"/>
         <activity android:name=".ui.TailorActivity"/>
         <activity android:name=".ui.CustomResultActivity"/>
         <activity android:name=".ui.JoinUsActivity"/>
@@ -198,7 +194,8 @@
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>
-        <activity android:name=".ui.CustomGoodsActivity"/>
+        <activity android:name=".ui.CustomGoodsActivity"
+            android:hardwareAccelerated="false"/>
         <activity android:name=".ui.WorksDetailActivity"/>
         <activity android:name=".ui.CustomDiyActivity"/>
         <activity android:name=".ui.DesignerInfoActivity"/>
@@ -218,7 +215,6 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
             </intent-filter>
         </receiver>
-
 
     </application>
 

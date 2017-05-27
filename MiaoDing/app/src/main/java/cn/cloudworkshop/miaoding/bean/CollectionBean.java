@@ -13,7 +13,7 @@ public class CollectionBean {
 
     /**
      * code : 1
-     * data : [{"name":"衬衣AB","thumb":"/uploads/img/20161014172840565749515897242250_2_3_1.jpg","type":1,"goods_type":1,"cid":1,"id":346,"price2":"500~2000"}]
+     * data : [{"name":"衬衣AB","thumb":"/uploads/img/20161014172840565749515897242250_2_3_1.jpg","content":1,"goods_type":1,"cid":1,"id":346,"price2":"500~2000"}]
      * msg : 成功
      */
 
@@ -22,7 +22,7 @@ public class CollectionBean {
     /**
      * name : 衬衣AB
      * thumb : /uploads/img/20161014172840565749515897242250_2_3_1.jpg
-     * type : 1
+     * content : 1
      * goods_type : 1
      * cid : 1
      * id : 346

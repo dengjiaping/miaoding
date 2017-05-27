@@ -37,7 +37,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CartDetailsBean;
-import cn.cloudworkshop.miaoding.bean.RecommendBean;
+import cn.cloudworkshop.miaoding.bean.RecommendGoodsBean;
 import cn.cloudworkshop.miaoding.bean.ShoppingCartBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
@@ -85,7 +85,7 @@ public class ShoppingCartActivity extends BaseActivity {
     //编辑状态
     private boolean flag;
     public static ShoppingCartActivity cartActivity;
-    private RecommendBean recommendBean;
+    private RecommendGoodsBean recommendBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +158,7 @@ public class ShoppingCartActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        recommendBean = GsonUtils.jsonToBean(response, RecommendBean.class);
+                        recommendBean = GsonUtils.jsonToBean(response, RecommendGoodsBean.class);
                         if (recommendBean.getData().getData() != null) {
                             recommendGoods();
                         }
@@ -171,11 +171,11 @@ public class ShoppingCartActivity extends BaseActivity {
      */
     private void recommendGoods() {
         rvRecommend.setLayoutManager(new GridLayoutManager(ShoppingCartActivity.this, 2));
-        CommonAdapter<RecommendBean.DataBeanX.DataBean> adapter = new CommonAdapter<RecommendBean
+        CommonAdapter<RecommendGoodsBean.DataBeanX.DataBean> adapter = new CommonAdapter<RecommendGoodsBean
                 .DataBeanX.DataBean>(this,
                 R.layout.listitem_goods_recommend, recommendBean.getData().getData()) {
             @Override
-            protected void convert(ViewHolder holder, RecommendBean.DataBeanX.DataBean dataBean,
+            protected void convert(ViewHolder holder, RecommendGoodsBean.DataBeanX.DataBean dataBean,
                                    int position) {
                 Glide.with(ShoppingCartActivity.this)
                         .load(Constant.HOST + dataBean.getThumb())
@@ -412,7 +412,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
                 .addParams("num", counts + "")
-                .addParams("type", "1")
+                .addParams("content", "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -562,7 +562,7 @@ public class ShoppingCartActivity extends BaseActivity {
     private void buyGoods() {
         Intent intent = new Intent(this, ConfirmOrderActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("type", 3);
+        bundle.putInt("content", 3);
         bundle.putString("cart_id", getCartIds());
         intent.putExtras(bundle);
         startActivity(intent);

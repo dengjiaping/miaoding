@@ -43,13 +43,14 @@ public class MessageDetailActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.rv_message_detail)
     RecyclerView rvMessage;
-    @BindView(R.id.tv_none_message)
+    @BindView(R.id.tv_no_message)
     TextView tvNoneMsg;
     private int type;
     //消息详情布局id
     private int layoutId;
     private List<MsgDetailBean.DataBean> msgList = new ArrayList<>();
-    private String[] split;
+    //物流字段分割
+    private String[] logisticsStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class MessageDetailActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.MESSAGE_DETAIL)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("type", type + "")
+                .addParams("content", type + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -78,9 +79,9 @@ public class MessageDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        MsgDetailBean bean = GsonUtils.jsonToBean(response, MsgDetailBean.class);
-                        if (bean.getData() != null && bean.getData().size() > 0) {
-                            msgList.addAll(bean.getData());
+                        MsgDetailBean msgBean = GsonUtils.jsonToBean(response, MsgDetailBean.class);
+                        if (msgBean.getData() != null && msgBean.getData().size() > 0) {
+                            msgList.addAll(msgBean.getData());
                             tvNoneMsg.setVisibility(View.GONE);
                             initView(layoutId);
                         } else {
@@ -125,15 +126,15 @@ public class MessageDetailActivity extends BaseActivity {
                                 .load(Constant.HOST + dataBean.getImg())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_logistics_goods));
-                        split = dataBean.getContent().split(",");
-                        holder.setText(R.id.tv_logistics_name, split[0]);
-                        if (split[1].equals("1")) {
+                        logisticsStr = dataBean.getContent().split(",");
+                        holder.setText(R.id.tv_logistics_name, logisticsStr[0]);
+                        if (logisticsStr[1].equals("1")) {
                             holder.setText(R.id.tv_logistics_size, "定制款");
                         } else {
-                            holder.setText(R.id.tv_logistics_size, split[1]);
+                            holder.setText(R.id.tv_logistics_size, logisticsStr[1]);
                         }
 
-                        holder.setText(R.id.tv_logistics_company, "配送单位：" + split[2]);
+                        holder.setText(R.id.tv_logistics_company, "配送单位：" + logisticsStr[2]);
                         break;
                     default:
                         break;
@@ -148,18 +149,15 @@ public class MessageDetailActivity extends BaseActivity {
 
                 switch (type) {
                     case 2:
-//                        Intent intent2 = new Intent(MessageDetailActivity.this, GoodsDetailsActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("id", String.valueOf("38"));
-//                        bundle.putString("img_url", msgList.get(position).getImg());
-//                        intent2.putExtras(bundle);
-//                        startActivity(intent2);
+                        Intent intent2 = new Intent(MessageDetailActivity.this, CustomGoodsActivity.class);
+                        intent2.putExtra("id", String.valueOf("38"));
+                        startActivity(intent2);
                         break;
                     case 3:
                         Intent intent3 = new Intent(MessageDetailActivity.this, LogisticsActivity.class);
-                        intent3.putExtra("number", split[4].trim());
-                        intent3.putExtra("company", split[3]);
-                        intent3.putExtra("company_name", split[2]);
+                        intent3.putExtra("number", logisticsStr[4].trim());
+                        intent3.putExtra("company", logisticsStr[3]);
+                        intent3.putExtra("company_name", logisticsStr[2]);
                         intent3.putExtra("img_url", msgList.get(position).getImg());
                         startActivity(intent3);
                         break;
@@ -174,7 +172,7 @@ public class MessageDetailActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getIntExtra("type", 1);
+        type = getIntent().getIntExtra("content", 1);
         switch (type) {
             case 1:
                 layoutId = R.layout.listitem_notice_message;

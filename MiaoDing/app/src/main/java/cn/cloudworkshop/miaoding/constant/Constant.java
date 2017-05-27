@@ -6,8 +6,8 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-    public static final String HOST = "http://139.196.113.61";
-//    public static final String HOST = "http://www.cloudworkshop.cn";
+//    public static final String HOST = "http://139.196.113.61";
+    public static final String HOST = "http://www.cloudworkshop.cn";
 //public static final String HOST = "http://192.168.1.156";
     public static final String APP_ID = "wx07c2173e7686741e";
     public static final String HOMEPAGE_BANNER = HOST + "/index.php/index/index/get_img";
@@ -33,7 +33,7 @@ public class Constant {
     public static final String MY_ADDRESS = HOST + "/index.php/index/index/my_address";
     public static final String DELETE_ADDRESS = HOST + "/index.php/index/index/delete_address";
     public static final String DEFAULT_ADDRESS = HOST + "/index.php/index/index/set_default_address";
-    public static final String EMBROIDERY_TAILOR = HOST + "/index.php/index/index/goods_gxh";
+    public static final String EMBROIDERY_TAILOR = HOST + "/index.php/index/index/new_goods_gxh";
     public static final String JOIN_US = HOST + "/index.php/index/index/get_img";
     public static final String APPLY_JOIN = HOST + "/index.php/index/index/apply_in";
     public static final String USER_INFO = HOST + "/index.php/index/index/user_info";
@@ -89,7 +89,6 @@ public class Constant {
     public static final String GOODS_LOG = HOST + "/index.php/index/index/save_goods_log";
     public static final String LOGIN_LOG = HOST + "/index.php/index/index/save_user_login_log";
 
-
     //WebView
     public static final String CLOTH_TEST_RESULT = HOST + "/web/jquery-obj/static/web/html/clo.html";
     public static final String DESIGNER_INFO = HOST + "/web/jquery-obj/static/web/html/jiangxin.html";
@@ -97,6 +96,7 @@ public class Constant {
     public static final String GOODS_COMMENT = HOST + "/web/jquery-obj/static/web/html/comment.html";
     public static final String DESIGNER_WORKS_INFO = HOST + "/web/jquery-obj/static/web/html/detail.html";
     public static final String GOODS_SHARE = HOST + "/web/jquery-obj/static/fx/html/youpin_one.html";
+    public static final String CUSTOM_SHARE = HOST + "/web/jquery-obj/static/fx/html/dingzhi.html";
     public static final String HOMEPAGE_SHARE = HOST + "/web/jquery-obj/static/fx/html/designer.html";
     public static final String DESIGNER_WORKS_SHARE = HOST + "/web/jquery-obj/static/fx/html/detail.html";
     public static final String DRESSING_TEST_SHARE = HOST + "/web/jquery-obj/static/fx/html/clo.html";

@@ -11,7 +11,7 @@ public class CartDetailsBean {
 
     /**
      * code : 1
-     * data : {"id":456,"uid":18,"goods_id":4,"goods_type":1,"price":"3000.00","spec_ids":"39,28,22,42,36,33","gxh_id":null,"font_id":null,"words":null,"size_ids":"","c_time":1478002149,"status":1,"content":null,"goods_name":"衬衣01","goods_thumb":"/uploads/img/20161014172554505257560072370400_2_1_1.jpg","goods_no":"","num":1,"spec_content":"门襟:里三褶门襟;下摆:圆摆大身前;领子:方开领;袖口:单袖头六角一粒扣;后背:后背无褶;口袋:圆角口袋;","size_content":"","diy_content":"","type":1,"img_list":[{"img_c":"/uploads/img/2016102411214910098489.png"},{"img_c":"/uploads/img/2016102717352510053481.png"},{"img_c":"/uploads/img/2016102412150899100100.png"},{"img_c":"/uploads/img/2016102414591753575154.png"}]}
+     * data : {"id":456,"uid":18,"goods_id":4,"goods_type":1,"price":"3000.00","spec_ids":"39,28,22,42,36,33","gxh_id":null,"font_id":null,"words":null,"size_ids":"","c_time":1478002149,"status":1,"content":null,"goods_name":"衬衣01","goods_thumb":"/uploads/img/20161014172554505257560072370400_2_1_1.jpg","goods_no":"","num":1,"spec_content":"门襟:里三褶门襟;下摆:圆摆大身前;领子:方开领;袖口:单袖头六角一粒扣;后背:后背无褶;口袋:圆角口袋;","size_content":"","diy_content":"","content":1,"img_list":[{"img_c":"/uploads/img/2016102411214910098489.png"},{"img_c":"/uploads/img/2016102717352510053481.png"},{"img_c":"/uploads/img/2016102412150899100100.png"},{"img_c":"/uploads/img/2016102414591753575154.png"}]}
      * msg : 成功
      */
 
@@ -37,7 +37,7 @@ public class CartDetailsBean {
      * spec_content : 门襟:里三褶门襟;下摆:圆摆大身前;领子:方开领;袖口:单袖头六角一粒扣;后背:后背无褶;口袋:圆角口袋;
      * size_content :
      * diy_content :
-     * type : 1
+     * content : 1
      * img_list : [{"img_c":"/uploads/img/2016102411214910098489.png"},{"img_c":"/uploads/img/2016102717352510053481.png"},{"img_c":"/uploads/img/2016102412150899100100.png"},{"img_c":"/uploads/img/2016102414591753575154.png"}]
      */
 

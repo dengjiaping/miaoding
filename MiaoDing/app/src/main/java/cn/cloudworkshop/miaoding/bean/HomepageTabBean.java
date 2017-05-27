@@ -12,7 +12,7 @@ public class HomepageTabBean {
 
     /**
      * code : 1
-     * data : {"total":1,"per_page":5,"current_page":1,"data":[{"id":10,"sub_title":"黄新芸到此一游~","title":"男士衬衫如何穿 光是扣子就有大学问","tags_id":8,"img":"","uid":81,"content":"","recommend_goods_ids":"","c_time":1482835651,"status":2,"type":8,"p_time":"2016-12-28","sort":1,"img_list":"","link":null,"view_nums":0,"like_nums":33,"head_img":""}]}
+     * data : {"total":1,"per_page":5,"current_page":1,"data":[{"id":10,"sub_title":"黄新芸到此一游~","title":"男士衬衫如何穿 光是扣子就有大学问","tags_id":8,"img":"","uid":81,"content":"","recommend_goods_ids":"","c_time":1482835651,"status":2,"content":8,"p_time":"2016-12-28","sort":1,"img_list":"","link":null,"view_nums":0,"like_nums":33,"head_img":""}]}
      * msg : 成功
      */
 
@@ -49,7 +49,7 @@ public class HomepageTabBean {
          * total : 1
          * per_page : 5
          * current_page : 1
-         * data : [{"id":10,"sub_title":"黄新芸到此一游~","title":"男士衬衫如何穿 光是扣子就有大学问","tags_id":8,"img":"","uid":81,"content":"","recommend_goods_ids":"","c_time":1482835651,"status":2,"type":8,"p_time":"2016-12-28","sort":1,"img_list":"","link":null,"view_nums":0,"like_nums":33,"head_img":""}]
+         * data : [{"id":10,"sub_title":"黄新芸到此一游~","title":"男士衬衫如何穿 光是扣子就有大学问","tags_id":8,"img":"","uid":81,"content":"","recommend_goods_ids":"","c_time":1482835651,"status":2,"content":8,"p_time":"2016-12-28","sort":1,"img_list":"","link":null,"view_nums":0,"like_nums":33,"head_img":""}]
          */
 
         private int total;
@@ -101,7 +101,7 @@ public class HomepageTabBean {
              * recommend_goods_ids :
              * c_time : 1482835651
              * status : 2
-             * type : 8
+             * content : 8
              * p_time : 2016-12-28
              * sort : 1
              * img_list :
@@ -129,6 +129,15 @@ public class HomepageTabBean {
             private int view_nums;
             private int like_nums;
             private String head_img;
+            private String tags_name;
+
+            public String getTags_name() {
+                return tags_name;
+            }
+
+            public void setTags_name(String tags_name) {
+                this.tags_name = tags_name;
+            }
 
             public int getId() {
                 return id;

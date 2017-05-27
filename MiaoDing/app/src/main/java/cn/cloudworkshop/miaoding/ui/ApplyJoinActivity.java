@@ -240,7 +240,7 @@ public class ApplyJoinActivity extends BaseActivity {
                             MobclickAgent.onEvent(ApplyJoinActivity.this, "apply_join");
 
                             Intent intent = new Intent(ApplyJoinActivity.this, AppointmentActivity.class);
-                            intent.putExtra("type", "apply");
+                            intent.putExtra("content", "apply");
                             finish();
                             startActivity(intent);
                         }

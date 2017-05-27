@@ -12,7 +12,7 @@ public class NewHomepageBean {
     /**
      * code : 1
      * data : [[{"title":"没有吴亦凡的高颜值 就学他的好衣品吧","sub_title":null,"img":"/uploads/img/2016123018170099505252.png","id":11,"link":null,"img_list":["/uploads/img/2016122718552398555156.png","/uploads/img/2016122718552848100995.png","/uploads/img/2016122718553252975651.png"],"p_time":"- DEC.27 -","view_nums":0,"name":"推荐","uname":"云小编"}]]
-     * designer_list : [{"id":79,"name":"Eric","phone":"13916905124","pwd":null,"nickname":"","avatar":"/uploads/img/2017041314512157481021.jpg","sex":1,"reg_time":1482836170,"status":1,"type":2,"remark":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","age":0,"c_time":0,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"44.00","birthday":"2017-02-28","tag":"爸爸","introduce":"杜嘉班纳公司创立于1985年，"},{"id":257,"name":"黄梦炜","phone":"17012348909","pwd":null,"nickname":"","avatar":"/uploads/img/2017042809461151981015.jpg","sex":1,"reg_time":null,"status":1,"type":2,"remark":"热特瑞","age":0,"c_time":1493372778,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"失恋阵线联盟","introduce":"罚单还感觉很尴尬"}]
+     * designer_list : [{"id":79,"name":"Eric","phone":"13916905124","pwd":null,"nickname":"","avatar":"/uploads/img/2017041314512157481021.jpg","sex":1,"reg_time":1482836170,"status":1,"content":2,"remark":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","age":0,"c_time":0,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"44.00","birthday":"2017-02-28","tag":"爸爸","introduce":"杜嘉班纳公司创立于1985年，"},{"id":257,"name":"黄梦炜","phone":"17012348909","pwd":null,"nickname":"","avatar":"/uploads/img/2017042809461151981015.jpg","sex":1,"reg_time":null,"status":1,"content":2,"remark":"热特瑞","age":0,"c_time":1493372778,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"失恋阵线联盟","introduce":"罚单还感觉很尴尬"}]
      * lunbo : [{"img":"/uploads/img/2016101715541897515149","link":"","title":"1","share_link":""},{"img":"/uploads/img/2016101716465850555498","link":"","title":"设计师入住","share_link":""},{"img":"/uploads/img/2016101716475054525010","link":"","title":"设计师入住","share_link":""},{"img":"/uploads/img/2016101716485050545249","link":"","title":"设计师入住","share_link":""}]
      * msg : 成功
      */
@@ -192,7 +192,7 @@ public class NewHomepageBean {
          * sex : 1
          * reg_time : 1482836170
          * status : 1
-         * type : 2
+         * content : 2
          * remark : 杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。
          * age : 0
          * c_time : 0

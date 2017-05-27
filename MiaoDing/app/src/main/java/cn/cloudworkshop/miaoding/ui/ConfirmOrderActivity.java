@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +37,9 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -133,6 +136,12 @@ public class ConfirmOrderActivity extends BaseActivity {
     static Activity orderActivity;
     private int isAddressDelete;
 
+    private String goodsId;
+    private String goodsName;
+    private String logId;
+    private long goodsTime;
+    private long dingzhiTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +187,12 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         cartIds = bundle.getString("cart_id");
+        logId = bundle.getString("log_id");
+        goodsTime = bundle.getLong("goods_time");
+        dingzhiTime = bundle.getLong("dingzhi_time");
+        goodsId = bundle.getString("goods_id");
+        goodsName = bundle.getString("goods_name");
+
         tvHeaderTitle.setText("确认订单");
     }
 
@@ -204,10 +219,6 @@ public class ConfirmOrderActivity extends BaseActivity {
 
         initAddress();
         initCoupon();
-        if (confirmOrderBean.getData().getTicket_num() > 0) {
-            Toast.makeText(ConfirmOrderActivity.this, "温馨提示：您有可用的优惠券，请选择！",
-                    Toast.LENGTH_SHORT).show();
-        }
 
 
         MyLinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(this);
@@ -326,7 +337,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("car_id", confirmOrderBean.getData().getCar_list().get(position).getId() + "")
                 .addParams("num", currentCount + "")
-                .addParams("type", "1")
+                .addParams("content", "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -381,33 +392,6 @@ public class ConfirmOrderActivity extends BaseActivity {
     }
 
 
-
-    /**
-     * @return 单种商品最高总价
-     */
-    private String getMaxPriceGoods(int type) {
-        float maxPrice = 0;
-        int maxGoodsId = 0;
-        for (int i = 0; i < confirmOrderBean.getData().getCar_list().size(); i++) {
-            float price = Float.parseFloat(confirmOrderBean.getData().getCar_list().get(i).getPrice());
-            int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
-            if (price * num > maxPrice) {
-                maxPrice = price * num;
-                maxGoodsId = confirmOrderBean.getData().getCar_list().get(i).getGoods_id();
-            }
-
-        }
-        //1:总价格 2：商品id
-        if (type == 1) {
-            return maxPrice + "";
-        } else if (type == 2) {
-            return maxGoodsId + "";
-        }
-
-        return null;
-    }
-
-
     /**
      * 获取总价格
      */
@@ -434,6 +418,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
+                customGoodsLog();
                 finish();
                 break;
             case R.id.rl_select_address:
@@ -441,19 +426,19 @@ public class ConfirmOrderActivity extends BaseActivity {
                     switch (isAddressDelete) {
                         case 0:
                             Intent intent = new Intent(ConfirmOrderActivity.this, AddAddressActivity.class);
-                            intent.putExtra("type", "add");
+                            intent.putExtra("content", "add");
                             startActivityForResult(intent, 2);
                             break;
                         case 1:
                             Intent intent1 = new Intent(ConfirmOrderActivity.this, DeliveryAddressActivity.class);
-                            intent1.putExtra("type", "2");
+                            intent1.putExtra("content", "2");
                             startActivityForResult(intent1, 3);
                             break;
                     }
 
                 } else {
                     Intent intent = new Intent(ConfirmOrderActivity.this, DeliveryAddressActivity.class);
-                    intent.putExtra("type", "2");
+                    intent.putExtra("content", "2");
                     intent.putExtra("address_id", addressId);
                     startActivityForResult(intent, 3);
                 }
@@ -466,24 +451,9 @@ public class ConfirmOrderActivity extends BaseActivity {
                 }
                 break;
             case R.id.ll_select_coupon:
-                //商品ids
-//                StringBuilder sb = new StringBuilder();
-//                for (int i = 0; i < confirmOrderBean.getData().getCar_list().size(); i++) {
-//                    if (i < confirmOrderBean.getData().getCar_list().size() - 1) {
-//                        sb.append(confirmOrderBean.getData().getCar_list().get(i)
-//                                .getGoods_id()).append(",");
-//                    } else {
-//                        sb.append(confirmOrderBean.getData().getCar_list().get(i)
-//                                .getGoods_id());
-//                    }
-//                }
                 Intent intent = new Intent(this, SelectCouponActivity.class);
                 intent.putExtra("cart_ids", cartIds);
-//                intent.putExtra("max_price", getMaxPriceGoods(1));
-//                intent.putExtra("max_goods_id", getMaxPriceGoods(2));
                 startActivityForResult(intent, 1);
-                break;
-            default:
                 break;
         }
     }
@@ -506,6 +476,9 @@ public class ConfirmOrderActivity extends BaseActivity {
         map.put("area", areaAddress);
         map.put("address", detailAddress);
         map.put("address_id", addressId);
+        if (logId != null) {
+            map.put("log_id", logId);
+        }
 
         OkHttpUtils.post()
                 .url(Constant.CONFIRM_BUY)
@@ -639,7 +612,50 @@ public class ConfirmOrderActivity extends BaseActivity {
         phoneNumber = intent.getStringExtra("phone");
         defaultAddress = intent.getIntExtra("is_default", 0);
         initAddress();
+    }
 
+
+    /**
+     * 商品订制跟踪
+     */
+    private void customGoodsLog() {
+        if (logId != null) {
+            OkHttpUtils.post()
+                    .url(Constant.GOODS_LOG)
+                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("id", logId)
+                    .addParams("goods_time", (DateUtils.getCurrentTime() - goodsTime) + "")
+                    .addParams("dingzhi_time", dingzhiTime + "")
+                    .addParams("goods_id", goodsId)
+                    .addParams("goods_name", goodsName)
+                    .addParams("click_dingzhi", "1")
+                    .addParams("click_pay", "0")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            LogUtils.log("goods:" + response);
+                        }
+                    });
+        }
+
+
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            customGoodsLog();
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 

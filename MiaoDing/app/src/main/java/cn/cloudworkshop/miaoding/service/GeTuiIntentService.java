@@ -48,29 +48,29 @@ public class GeTuiIntentService extends GTIntentService {
             case "1":
                 Intent intent1 = new Intent(context, MessageDetailActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent1.putExtra("type", 1);
+                intent1.putExtra("content", 1);
                 startActivity(intent1);
                 break;
             case "2":
                 Intent intent2 = new Intent(context, MessageDetailActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent2.putExtra("type", 2);
+                intent2.putExtra("content", 2);
                 startActivity(intent2);
                 break;
             case "3":
                 Intent intent3 = new Intent(context, MessageDetailActivity.class);
                 intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent3.putExtra("type", 3);
+                intent3.putExtra("content", 3);
                 startActivity(intent3);
                 break;
             case "4":
                 Intent intent4 = new Intent(context, HomepageDetailActivity.class);
                 intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent4.putExtra("url", Constant.HOMEPAGE_INFO + "?type=1&id=" + bean.getId());
+                intent4.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" + bean.getId());
                 intent4.putExtra("title", bean.getTitle());
                 intent4.putExtra("content", bean.getContent());
                 intent4.putExtra("img_url", Constant.HOST + bean.getImg_url());
-                intent4.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?type=1&id=" + bean.getId());
+                intent4.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" + bean.getId());
                 startActivity(intent4);
                 break;
             case "5":

@@ -9,6 +9,7 @@
         android:id="@+id/img_embroidery_color"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@drawable/ring_gray"
         android:scaleType="centerCrop"/>
 
     <cn.cloudworkshop.miaoding.view.CircleImageView

@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="28dp"
                     android:text="活动规则>>"
                     android:textColor="#868686"
                     android:textSize="10sp"/>

@@ -8,7 +8,8 @@
         android:id="@+id/img_works_color"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:background="@drawable/ring_gray"/>
 
     <cn.cloudworkshop.miaoding.view.CircleImageView
         android:id="@+id/img_works_mask"

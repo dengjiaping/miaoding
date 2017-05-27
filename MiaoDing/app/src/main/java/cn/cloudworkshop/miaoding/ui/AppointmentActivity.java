@@ -133,7 +133,7 @@ public class AppointmentActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("type");
+        type = getIntent().getStringExtra("content");
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.tv_go_back, R.id.tv_check_order})
@@ -144,7 +144,7 @@ public class AppointmentActivity extends BaseActivity {
                 break;
             case R.id.tv_header_next:
                 Intent intent = new Intent(this, UserAgreementActivity.class);
-                intent.putExtra("type", "measure");
+                intent.putExtra("content", "measure");
                 startActivity(intent);
                 break;
             case R.id.tv_go_back:

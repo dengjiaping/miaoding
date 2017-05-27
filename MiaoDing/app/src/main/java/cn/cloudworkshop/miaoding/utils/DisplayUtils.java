@@ -65,14 +65,23 @@ public class DisplayUtils {
 
     /**
      * 设置添加屏幕的背景透明度
-     *
-     * @param bgAlpha 屏幕透明度0.0-1.0 1表示完全不透明
+     * @param
      */
-    public static void setBackgroundAlpha(Context mContext, float bgAlpha) {
+    public static void setBackgroundAlpha(Context mContext, boolean isShow) {
         WindowManager.LayoutParams lp = ((Activity) mContext).getWindow()
                 .getAttributes();
-        lp.alpha = bgAlpha;
+        if (isShow) {
+            lp.alpha = 0.5f;
+            ((Activity) mContext).getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        } else {
+            lp.alpha = 1.0f;
+            ((Activity) mContext).getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        }
+
         ((Activity) mContext).getWindow().setAttributes(lp);
+
     }
 
     /**

@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity {
 
             OkHttpUtils.get()
                     .url(Constant.CLIENT_ID)
-                    .addParams("type", 1 + "")
+                    .addParams("content", 1 + "")
                     .addParams("device_id", clientId)
                     .build()
                     .execute(new StringCallback() {

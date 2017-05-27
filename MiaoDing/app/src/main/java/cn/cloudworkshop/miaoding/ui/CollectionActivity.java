@@ -200,7 +200,7 @@ public class CollectionActivity extends BaseActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-                cancelCollection(itemList.get(position).getId(), position);
+                cancelCollection(itemList.get(position).getId());
             }
         });
 
@@ -231,7 +231,7 @@ public class CollectionActivity extends BaseActivity {
     /**
      * 取消收藏
      */
-    private void cancelCollection(final int id, final int position) {
+    private void cancelCollection(final int id) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
         dialog.setTitle("取消收藏");
         dialog.setMessage("您确定要取消收藏？");

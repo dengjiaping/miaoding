@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true"
+                android:windowSoftInputMode="adjustPan">
 
     <include
         layout="@layout/widget_header_layout"/>
@@ -13,6 +13,7 @@
         android:id="@+id/scroll_embroidery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -129,30 +130,31 @@
                 android:id="@+id/et_embroidery_content"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginBottom="60dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/text_gray_bg"
                 android:hint="请输入绣花内容(不超过12个字符)"
                 android:maxLength="12"
-                android:maxLines="1"
                 android:paddingLeft="10dp"
+                android:singleLine="true"
                 android:textColor="@color/dark_gray_22"
                 android:textColorHint="@color/app_bg"
-                android:textSize="15sp"
-                android:layout_marginBottom="60dp"/>
-
-            <TextView
-                android:id="@+id/tv_confirm_embroidery"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/btn_tailor_preview"
-                android:text="预览"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
+                android:textSize="15sp"/>
 
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_confirm_embroidery"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_tailor_preview"
+        android:gravity="center"
+        android:text="预览"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+
+</RelativeLayout>

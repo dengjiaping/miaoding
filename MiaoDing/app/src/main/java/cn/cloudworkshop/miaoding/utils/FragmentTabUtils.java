@@ -1,7 +1,6 @@
 package cn.cloudworkshop.miaoding.utils;
 
 
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +9,8 @@ import android.widget.RadioGroup;
 
 
 import java.util.List;
+
+import cn.cloudworkshop.miaoding.application.MyApplication;
 
 /**
  * 主界面 底部切换tab工具类
@@ -20,7 +21,6 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
     private FragmentManager fragmentManager; // Fragment所属的Activity
     private int fragmentContentId; // Activity中当前fragment的区域的id
     private int currentTab; // 当前Tab页面索引
-    private TabLayout tabLayout;
 
 
 
@@ -38,41 +38,18 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
         this.fragmentContentId = fragmentContentId;
         rgs.setOnCheckedChangeListener(this);
         ((RadioButton) rgs.getChildAt(0)).setChecked(true);
+        MyApplication.homeEnterTime = DateUtils.getCurrentTime();
     }
 
-    public FragmentTabUtils(FragmentManager fragmentManager, List<Fragment> fragmentList,
-                            int fragmentContentId, TabLayout tabLayout) {
-        this.fragmentList = fragmentList;
-        this.fragmentManager = fragmentManager;
-        this.fragmentContentId = fragmentContentId;
-        this.tabLayout = tabLayout;
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                initFragment(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        initFragment(0);
-
-    }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         for (int i = 0; i < rgs.getChildCount(); i++) {
+            if (i == 0) {
+                MyApplication.homeEnterTime = DateUtils.getCurrentTime();
+            }
             if (rgs.getChildAt(i).getId() == checkedId) {
                 initFragment(i);
-
             }
         }
     }
@@ -87,7 +64,7 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
         if (fragment.isAdded()) {
             fragment.onStart(); // 启动目标tab的fragment onStart()
         } else {
-            ft.add(fragmentContentId, fragment,fragment.getClass().getName());
+            ft.add(fragmentContentId, fragment, fragment.getClass().getName());
             ft.commit();
         }
         showTab(i); // 显示目标tab

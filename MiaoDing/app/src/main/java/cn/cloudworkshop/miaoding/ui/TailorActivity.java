@@ -346,7 +346,6 @@ public class TailorActivity extends BaseActivity {
                 };
                 rvTailorItem.setAdapter(itemAdapter);
 
-
                 if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null){
                     imgTailorGuide.setVisibility(View.VISIBLE);
                     Glide.with(TailorActivity.this)

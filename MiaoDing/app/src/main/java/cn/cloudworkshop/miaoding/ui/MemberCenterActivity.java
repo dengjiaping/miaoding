@@ -43,12 +43,11 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberBean;
-import cn.cloudworkshop.miaoding.bean.TabBean;
+import cn.cloudworkshop.miaoding.bean.MemberTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
-import cn.cloudworkshop.miaoding.view.AutoHeightViewPager;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -154,7 +153,7 @@ public class MemberCenterActivity extends BaseActivity {
 
         ArrayList<CustomTabEntity> tabList = new ArrayList<>();
         for (int i = 0; i < memberBean.getData().getUser_grade().size(); i++) {
-            tabList.add(new TabBean(memberBean.getData().getUser_grade().get(i).getName() + "权益"));
+            tabList.add(new MemberTabBean(memberBean.getData().getUser_grade().get(i).getName() + "权益"));
         }
 
         tabMemberGrade.setTabData(tabList);
@@ -266,7 +265,7 @@ public class MemberCenterActivity extends BaseActivity {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-        DisplayUtils.setBackgroundAlpha(this, 0.5f);
+        DisplayUtils.setBackgroundAlpha(this, true);
 
         TextView tvTitle = (TextView) popupView.findViewById(R.id.tv_gift_title);
         CircleImageView imgGift = (CircleImageView) popupView.findViewById(R.id.img_gift);
@@ -306,7 +305,7 @@ public class MemberCenterActivity extends BaseActivity {
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(MemberCenterActivity.this, 1.0f);
+                DisplayUtils.setBackgroundAlpha(MemberCenterActivity.this, false);
             }
         });
 

@@ -16,6 +16,34 @@ public class TailorItemBean implements Serializable {
     private String price_type;
     private String spec_ids;
     private String spec_content;
+    private String log_id;
+    private long goods_time;
+    private long dingzhi_time;
+
+    public String getLog_id() {
+        return log_id;
+    }
+
+    public void setLog_id(String log_id) {
+        this.log_id = log_id;
+    }
+
+    public long getGoods_time() {
+        return goods_time;
+    }
+
+    public void setGoods_time(long goods_time) {
+        this.goods_time = goods_time;
+    }
+
+    public long getDingzhi_time() {
+        return dingzhi_time;
+    }
+
+    public void setDingzhi_time(long dingzhi_time) {
+        this.dingzhi_time = dingzhi_time;
+    }
+
     private List<ItemBean> itemBean;
 
     private String fabric_id;

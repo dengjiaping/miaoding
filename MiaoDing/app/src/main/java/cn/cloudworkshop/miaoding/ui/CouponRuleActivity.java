@@ -27,6 +27,8 @@ public class CouponRuleActivity extends BaseActivity {
     @BindView(R.id.img_user_rule)
     ImageView imgUserRule;
     private String type;
+    private String title;
+    private String imgUrl;
 
 
     @Override
@@ -40,7 +42,8 @@ public class CouponRuleActivity extends BaseActivity {
 
     private void getData() {
         type = getIntent().getStringExtra("type");
-
+        title = getIntent().getStringExtra("title");
+        imgUrl = getIntent().getStringExtra("img_url");
     }
 
     private void initView() {
@@ -50,8 +53,6 @@ public class CouponRuleActivity extends BaseActivity {
                 imgUserRule.setImageResource(R.mipmap.icon_coupon_rule);
                 break;
             case "member_rule":
-                String title = getIntent().getStringExtra("title");
-                String imgUrl = getIntent().getStringExtra("img_url");
                 tvHeaderTitle.setText(title);
                 Glide.with(getApplicationContext())
                         .load(Constant.HOST + imgUrl)
@@ -59,10 +60,12 @@ public class CouponRuleActivity extends BaseActivity {
                         .into(imgUserRule);
                 break;
             case "invite_friend":
-                tvHeaderTitle.setText("活动规则");
-                imgUserRule.setImageResource(R.mipmap.icon_invite_rule);
+                tvHeaderTitle.setText(title);
+                Glide.with(getApplicationContext())
+                        .load(Constant.HOST + imgUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(imgUserRule);
                 break;
-
 
         }
     }

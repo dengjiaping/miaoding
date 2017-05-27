@@ -23,6 +23,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,6 +73,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPhone;
     //是否输入验证码
     private boolean isCode;
+    private String logId;
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -102,21 +106,30 @@ public class LoginActivity extends BaseActivity {
      */
     private void loginLog() {
         String pageName = getIntent().getStringExtra("page_name");
-        OkHttpUtils.post()
-                .url(Constant.LOGIN_LOG)
-                .addParams("p_module_name", pageName)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
+        if (pageName != null){
+            OkHttpUtils.post()
+                    .url(Constant.LOGIN_LOG)
+                    .addParams("p_module_name", pageName)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.log("login");
-                    }
-                });
+                        @Override
+                        public void onResponse(String response, int id) {
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                logId = jsonObject.getString("id");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        }
+
     }
 
     /**
@@ -206,7 +219,7 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_user_agreement:
                 Intent intent = new Intent(this, UserAgreementActivity.class);
-                intent.putExtra("type", "register");
+                intent.putExtra("content", "register");
                 startActivity(intent);
                 break;
         }
@@ -221,12 +234,18 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "手机号或验证码有误，请重新输入", Toast.LENGTH_SHORT).show();
         } else {
             if (!TextUtils.isEmpty(msgToken)) {
+                Map<String ,String> map = new HashMap<>();
+                map.put("phone", etUserName.getText().toString().trim());
+                map.put("code", etUserPassword.getText().toString().trim());
+                map.put("token", msgToken);
+                map.put("device_id", SharedPreferencesUtils.getString(LoginActivity.this, "client_id"));
+                if (logId != null){
+                    map.put("id", logId);
+                }
+
                 OkHttpUtils.post()
                         .url(Constant.LOG_IN)
-                        .addParams("phone", etUserName.getText().toString().trim())
-                        .addParams("code", etUserPassword.getText().toString().trim())
-                        .addParams("token", msgToken)
-                        .addParams("device_id", SharedPreferencesUtils.getString(LoginActivity.this, "client_id"))
+                        .params(map)
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -331,7 +350,7 @@ public class LoginActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.VERIFICATION_CODE)
                 .addParams("phone", etUserName.getText().toString().trim())
-                .addParams("type", "1")
+                .addParams("content", "1")
                 .build()
                 .execute(new StringCallback() {
 

@@ -48,6 +48,8 @@ public class MyApplication extends Application {
     public static String measureAgreement;
     //订单号
     public static String orderId;
+    //首页时间
+    public static long homeEnterTime;
 
     public static MyApplication getInstance() {
         return application;

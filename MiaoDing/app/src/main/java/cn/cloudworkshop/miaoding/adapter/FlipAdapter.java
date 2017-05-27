@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ public class FlipAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private Context context;
     private List<DesignWorksBean.DataBean.ItemBean> dataList;
-
 
     public FlipAdapter(Context context, List<DesignWorksBean.DataBean.ItemBean> dataList) {
         this.dataList = dataList;
@@ -70,27 +70,31 @@ public class FlipAdapter extends BaseAdapter {
                 .load(Constant.HOST + itemBean.getImg())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.imgWorks);
-
-        holder.tvWorks.setText(itemBean.getName());
-        holder.tvDesigner.setText(itemBean.getP_time() + "         " + itemBean.getUsername());
+        if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+            holder.tvWorks.setText(itemBean.getName());
+            holder.tvDesigner.setText(itemBean.getP_time() + "         " + itemBean.getUsername());
+        }
 
 
         holder.imgWorks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, WorksDetailActivity.class);
-                intent.putExtra("id", String.valueOf(itemBean.getGoods_id()));
-                context.startActivity(intent);
-
+                if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+                    Intent intent = new Intent(context, WorksDetailActivity.class);
+                    intent.putExtra("id", String.valueOf(itemBean.getGoods_id()));
+                    context.startActivity(intent);
+                }
             }
         });
 
         holder.tvDesigner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DesignerInfoActivity.class);
-                intent.putExtra("id", itemBean.getUid() + "");
-                context.startActivity(intent);
+                if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+                    Intent intent = new Intent(context, DesignerInfoActivity.class);
+                    intent.putExtra("id", itemBean.getUid() + "");
+                    context.startActivity(intent);
+                }
             }
         });
         return convertView;

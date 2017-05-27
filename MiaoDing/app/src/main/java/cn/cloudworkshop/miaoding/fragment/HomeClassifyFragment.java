@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -33,11 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -71,9 +73,7 @@ public class HomeClassifyFragment extends BaseFragment {
     }
 
     private void getData() {
-        type = getArguments().getInt("type");
-        Toast toast = new Toast(getParentFragment().getActivity());
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        type = getArguments().getInt("tags_id");
     }
 
     /**
@@ -169,13 +169,14 @@ public class HomeClassifyFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                homepageLog( itemList.get(position).getTags_name());
                 Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
-                intent.putExtra("url", Constant.HOMEPAGE_INFO + "?type=1&id=" +
+                intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" +
                         itemList.get(position).getId());
                 intent.putExtra("title", itemList.get(position).getTitle());
                 intent.putExtra("content", itemList.get(position).getContent());
                 intent.putExtra("img_url", itemList.get(position).getImg());
-                intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?type=1&id="
+                intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id="
                         + itemList.get(position).getId());
                 startActivity(intent);
             }
@@ -191,7 +192,7 @@ public class HomeClassifyFragment extends BaseFragment {
 
     public static HomeClassifyFragment newInstance(int type) {
         Bundle args = new Bundle();
-        args.putInt("type", type);
+        args.putInt("tags_id", type);
         HomeClassifyFragment fragment = new HomeClassifyFragment();
         fragment.setArguments(args);
         return fragment;
@@ -201,5 +202,33 @@ public class HomeClassifyFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    /**
+     * 首页跟踪
+     */
+    private void homepageLog(String module_name) {
+        long time = DateUtils.getCurrentTime() - MyApplication.homeEnterTime;
+        OkHttpUtils.post()
+                .url(Constant.HOMEPAGE_LOG)
+                .addParams("token", SharedPreferencesUtils.getString(getParentFragment().getActivity(), "token"))
+                .addParams("time", time + "")
+                .addParams("p_module_name", "首页")
+                .addParams("module_name", module_name)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        LogUtils.log("homepage");
+                    }
+                });
+
     }
 }

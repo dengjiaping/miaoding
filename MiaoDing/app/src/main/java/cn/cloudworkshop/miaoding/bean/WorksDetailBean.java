@@ -7,11 +7,11 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class WorksBean {
+public class WorksDetailBean {
 
     /**
      * code : 1
-     * data : {"name":"【云工场&杜嘉班纳】 2017春夏新款","sub_name":"东西方文化的碰撞","img_list":["/uploads/img/2017050208401097979951.jpg","/uploads/img/2017050208401310054101.png"],"view_num":0,"like_num":0,"price":[],"content":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","type":2,"heat":149,"thumb":"/uploads/img/2017042411432510057545.jpg","classify_id":1,"uid":79,"designer":{"id":47,"uid":79,"name":"胡","phone":"136161635979","weixin":"13916905124","email":"13916905124@qq","img_list1":"/uploads/apply/2017011394696.jpg,","img_list2":"/uploads/apply/2017011319413.jpg,","c_time":1484294467,"status":2,"pop_num":0,"tag":"标签123123","introduce":null},"size_list":[{"id":7,"name":"X","sku_num":107,"sale_num":16,"price":"123.00","size_name":"2","size_list":[{"id":7,"gid":49,"name":"X","sku_num":107,"sale_num":16,"price":"123.00","c_time":1493690270,"size_list_id":0,"size_id":0,"color_img":"1","size":"2","sort":null,"status":1}]},{"id":8,"name":"XL","sku_num":111,"sale_num":5,"price":"44.00","size_name":"3","size_list":[{"id":8,"gid":49,"name":"XL","sku_num":111,"sale_num":5,"price":"44.00","c_time":1493690293,"size_list_id":0,"size_id":0,"color_img":"2","size":"3","sort":null,"status":1}]},{"id":9,"name":"XXL","sku_num":111,"sale_num":6,"price":"55.00","size_name":"4","size_list":[{"id":9,"gid":49,"name":"XXL","sku_num":111,"sale_num":6,"price":"55.00","c_time":1493690355,"size_list_id":0,"size_id":0,"color_img":"3","size":"4","sort":null,"status":1}]}],"is_collect":-1,"is_yuyue":0}
+     * data : {"name":"【云工场&杜嘉班纳】 2017春夏新款","sub_name":"东西方文化的碰撞","img_list":["/uploads/img/2017050208401097979951.jpg","/uploads/img/2017050208401310054101.png"],"view_num":0,"like_num":0,"price":[],"content":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","content":2,"heat":149,"thumb":"/uploads/img/2017042411432510057545.jpg","classify_id":1,"uid":79,"designer":{"id":47,"uid":79,"name":"胡","phone":"136161635979","weixin":"13916905124","email":"13916905124@qq","img_list1":"/uploads/apply/2017011394696.jpg,","img_list2":"/uploads/apply/2017011319413.jpg,","c_time":1484294467,"status":2,"pop_num":0,"tag":"标签123123","introduce":null},"size_list":[{"id":7,"name":"X","sku_num":107,"sale_num":16,"price":"123.00","size_name":"2","size_list":[{"id":7,"gid":49,"name":"X","sku_num":107,"sale_num":16,"price":"123.00","c_time":1493690270,"size_list_id":0,"size_id":0,"color_img":"1","size":"2","sort":null,"status":1}]},{"id":8,"name":"XL","sku_num":111,"sale_num":5,"price":"44.00","size_name":"3","size_list":[{"id":8,"gid":49,"name":"XL","sku_num":111,"sale_num":5,"price":"44.00","c_time":1493690293,"size_list_id":0,"size_id":0,"color_img":"2","size":"3","sort":null,"status":1}]},{"id":9,"name":"XXL","sku_num":111,"sale_num":6,"price":"55.00","size_name":"4","size_list":[{"id":9,"gid":49,"name":"XXL","sku_num":111,"sale_num":6,"price":"55.00","c_time":1493690355,"size_list_id":0,"size_id":0,"color_img":"3","size":"4","sort":null,"status":1}]}],"is_collect":-1,"is_yuyue":0}
      * msg : 成功
      */
 
@@ -52,7 +52,7 @@ public class WorksBean {
          * like_num : 0
          * price : []
          * content : 杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。
-         * type : 2
+         * content : 2
          * heat : 149
          * thumb : /uploads/img/2017042411432510057545.jpg
          * classify_id : 1

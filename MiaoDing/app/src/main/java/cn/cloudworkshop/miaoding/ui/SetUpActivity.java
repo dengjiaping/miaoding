@@ -297,7 +297,7 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.ll_deliver_address:
                 Intent intent = new Intent(SetUpActivity.this, DeliveryAddressActivity.class);
-                intent.putExtra("type", "1");
+                intent.putExtra("content", "1");
                 startActivity(intent);
                 break;
             case R.id.tv_log_out:
@@ -401,7 +401,7 @@ public class SetUpActivity extends BaseActivity {
         display.getSize(size);
         int width = size.x;
         mPopupWindow.showAsDropDown(llUserIcon, (width - (int) (250 * scale + 0.5f)) / 2, 0);
-        DisplayUtils.setBackgroundAlpha(this, 0.5f);
+        DisplayUtils.setBackgroundAlpha(this, true);
 
         final EditText etName = (EditText) popupView.findViewById(R.id.et_change_name);
         TextView tvConfirm = (TextView) popupView.findViewById(R.id.tv_confirm_change);
@@ -429,7 +429,7 @@ public class SetUpActivity extends BaseActivity {
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(SetUpActivity.this, 1.0f);
+                DisplayUtils.setBackgroundAlpha(SetUpActivity.this, false);
             }
         });
 

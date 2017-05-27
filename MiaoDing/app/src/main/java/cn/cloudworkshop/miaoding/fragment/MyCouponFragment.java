@@ -161,7 +161,7 @@ public class MyCouponFragment extends BaseFragment {
 
                 TextView tvMoney = holder.getView(R.id.tv_coupon_money);
                 tvMoney.setTypeface(DisplayUtils.setTextType(getActivity()));
-                tvMoney.setText("¥" + dataBean.getMoney().split("\\.")[0]);
+                tvMoney.setText("¥" + (int) Float.parseFloat(dataBean.getMoney()));
                 holder.setText(R.id.tv_coupon_range, dataBean.getTitle());
                 holder.setText(R.id.tv_coupon_discount, dataBean.getSub_title());
                 StringBuilder sb = new StringBuilder();
@@ -242,6 +242,7 @@ public class MyCouponFragment extends BaseFragment {
                                 initData();
                             }
                             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            etInputCode.setText("");
 
                         } catch (JSONException e) {
                             e.printStackTrace();

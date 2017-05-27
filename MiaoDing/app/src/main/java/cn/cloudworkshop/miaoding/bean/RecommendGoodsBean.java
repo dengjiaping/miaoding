@@ -7,11 +7,11 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class RecommendBean {
+public class RecommendGoodsBean {
 
     /**
      * code : 1
-     * data : {"total":3,"per_page":10,"current_page":1,"data":[{"id":1,"goods_id":43,"sort":1,"c_time":1486624258,"status":1,"name":"中国风","thumb":"/uploads/img/2016122812560351504852.png","classify_id":2,"type":1},{"id":2,"goods_id":47,"sort":1,"c_time":1486624264,"status":1,"name":"礼服系列","thumb":"/uploads/img/2016122814332048991024.png","classify_id":2,"type":1},{"id":3,"goods_id":40,"sort":1,"c_time":1486624278,"status":1,"name":"经典商务","thumb":"/uploads/img/2016122812095450995797.png","classify_id":1,"type":1}]}
+     * data : {"total":3,"per_page":10,"current_page":1,"data":[{"id":1,"goods_id":43,"sort":1,"c_time":1486624258,"status":1,"name":"中国风","thumb":"/uploads/img/2016122812560351504852.png","classify_id":2,"content":1},{"id":2,"goods_id":47,"sort":1,"c_time":1486624264,"status":1,"name":"礼服系列","thumb":"/uploads/img/2016122814332048991024.png","classify_id":2,"content":1},{"id":3,"goods_id":40,"sort":1,"c_time":1486624278,"status":1,"name":"经典商务","thumb":"/uploads/img/2016122812095450995797.png","classify_id":1,"content":1}]}
      * msg : 成功
      */
 
@@ -48,7 +48,7 @@ public class RecommendBean {
          * total : 3
          * per_page : 10
          * current_page : 1
-         * data : [{"id":1,"goods_id":43,"sort":1,"c_time":1486624258,"status":1,"name":"中国风","thumb":"/uploads/img/2016122812560351504852.png","classify_id":2,"type":1},{"id":2,"goods_id":47,"sort":1,"c_time":1486624264,"status":1,"name":"礼服系列","thumb":"/uploads/img/2016122814332048991024.png","classify_id":2,"type":1},{"id":3,"goods_id":40,"sort":1,"c_time":1486624278,"status":1,"name":"经典商务","thumb":"/uploads/img/2016122812095450995797.png","classify_id":1,"type":1}]
+         * data : [{"id":1,"goods_id":43,"sort":1,"c_time":1486624258,"status":1,"name":"中国风","thumb":"/uploads/img/2016122812560351504852.png","classify_id":2,"content":1},{"id":2,"goods_id":47,"sort":1,"c_time":1486624264,"status":1,"name":"礼服系列","thumb":"/uploads/img/2016122814332048991024.png","classify_id":2,"content":1},{"id":3,"goods_id":40,"sort":1,"c_time":1486624278,"status":1,"name":"经典商务","thumb":"/uploads/img/2016122812095450995797.png","classify_id":1,"content":1}]
          */
 
         private int total;
@@ -98,7 +98,7 @@ public class RecommendBean {
              * name : 中国风
              * thumb : /uploads/img/2016122812560351504852.png
              * classify_id : 2
-             * type : 1
+             * content : 1
              */
 
             private int id;

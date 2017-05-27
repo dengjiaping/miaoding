@@ -81,7 +81,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("type");
+        type = getIntent().getStringExtra("content");
     }
 
     @Override
@@ -204,7 +204,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("type", "alert");
+                        bundle.putString("content", "alert");
                         bundle.putSerializable("alert", dataBean);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -217,7 +217,7 @@ public class DeliveryAddressActivity extends BaseActivity {
 //                    public void onClick(View view) {
 //                        Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
 //                        Bundle bundle = new Bundle();
-//                        bundle.putString("type", "alert");
+//                        bundle.putString("content", "alert");
 //                        bundle.putSerializable("alert", dataBean);
 //                        intent.putExtras(bundle);
 //                        startActivity(intent);
@@ -262,7 +262,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                     case "1":
 //                        Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
 //                        Bundle bundle = new Bundle();
-//                        bundle.putString("type", "alert");
+//                        bundle.putString("content", "alert");
 //                        bundle.putSerializable("alert", dataList.get(position));
 //                        intent.putExtras(bundle);
 //                        startActivity(intent);
@@ -371,7 +371,7 @@ public class DeliveryAddressActivity extends BaseActivity {
             case R.id.tv_add_address:
                 Intent intent1 = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("type", "add");
+                bundle1.putString("content", "add");
                 intent1.putExtras(bundle1);
                 startActivity(intent1);
                 break;

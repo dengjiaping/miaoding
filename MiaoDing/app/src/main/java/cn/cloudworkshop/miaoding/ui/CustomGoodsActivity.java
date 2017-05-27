@@ -38,9 +38,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.TailorGoodsBean;
+import cn.cloudworkshop.miaoding.bean.CustomGoodsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -52,8 +51,6 @@ import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
-
-import static android.view.KeyEvent.KEYCODE_BACK;
 
 
 /**
@@ -85,12 +82,8 @@ public class CustomGoodsActivity extends BaseActivity {
     @BindView(R.id.img_tailor_details)
     ImageView imgDetails;
     private String id;
-    private TailorGoodsBean.DataBean tailorBean;
-
+    private CustomGoodsBean tailorBean;
     private long enterTime;
-    private int isBuy;
-    private String logId;
-    private String customTime;
 
 
     @Override
@@ -106,11 +99,9 @@ public class CustomGoodsActivity extends BaseActivity {
      * 商品详情
      */
     private void getData() {
-        enterTime = DateUtils.getCurrentTime();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        logId = intent.getStringExtra("log_id");
-        customTime = intent.getStringExtra("custom_time");
+        enterTime  = DateUtils.getCurrentTime();
     }
 
     /**
@@ -131,7 +122,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        tailorBean = GsonUtils.jsonToBean(response, TailorGoodsBean.class).getData();
+                        tailorBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
                         if (tailorBean != null) {
                             initView();
                         }
@@ -146,9 +137,9 @@ public class CustomGoodsActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        tvGoodsName.setText(tailorBean.getName());
-        tvGoodsContent.setText(tailorBean.getSub_name());
-        if (tailorBean.getIs_collect() == 1) {
+        tvGoodsName.setText(tailorBean.getData().getName());
+        tvGoodsContent.setText(tailorBean.getData().getSub_name());
+        if (tailorBean.getData().getIs_collect() == 1) {
             imgAddLike.setImageResource(R.mipmap.icon_add_like);
         } else {
             imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
@@ -160,7 +151,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     public NetworkImageHolderView createHolder() {
                         return new NetworkImageHolderView();
                     }
-                }, tailorBean.getImg_list())
+                }, tailorBean.getData().getImg_list())
                 //设置两个点图片作为翻页指示器
                 .setPageIndicator(new int[]{R.drawable.dot_black, R.drawable.dot_white})
                 //设置指示器的方向
@@ -174,9 +165,12 @@ public class CustomGoodsActivity extends BaseActivity {
 //                startActivity(intent);
 //            }
 //        });
+
+
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + tailorBean.getContent2())
+                .load(Constant.HOST + tailorBean.getData().getContent2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .error(R.mipmap.icon_coupon_rule)
                 .into(imgDetails);
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
@@ -205,22 +199,22 @@ public class CustomGoodsActivity extends BaseActivity {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-        DisplayUtils.setBackgroundAlpha(this, 0.5f);
+        DisplayUtils.setBackgroundAlpha(this, true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(CustomGoodsActivity.this, 1.0f);
+                DisplayUtils.setBackgroundAlpha(CustomGoodsActivity.this, false);
             }
         });
         RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
 
         rvTailor.setLayoutManager(new LinearLayoutManager(CustomGoodsActivity.this));
 
-        CommonAdapter<TailorGoodsBean.DataBean.PriceBean> priceAdapter = new CommonAdapter
-                <TailorGoodsBean.DataBean.PriceBean>(CustomGoodsActivity.this,
-                R.layout.listitem_price_type, tailorBean.getPrice()) {
+        CommonAdapter<CustomGoodsBean.DataBean.PriceBean> priceAdapter = new CommonAdapter
+                <CustomGoodsBean.DataBean.PriceBean>(CustomGoodsActivity.this,
+                R.layout.listitem_price_type, tailorBean.getData().getPrice()) {
             @Override
-            protected void convert(ViewHolder holder, TailorGoodsBean.DataBean.PriceBean priceBean, int position) {
+            protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.PriceBean priceBean, int position) {
                 TextView tvPrice = holder.getView(R.id.tv_type_item);
                 tvPrice.setTypeface(DisplayUtils.setTextType(CustomGoodsActivity.this));
                 tvPrice.setText("¥" + new DecimalFormat("#0.00").format(priceBean.getPrice()));
@@ -233,18 +227,18 @@ public class CustomGoodsActivity extends BaseActivity {
         priceAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                isBuy = 1;
-                customGoodsLog();
                 mPopupWindow.dismiss();
                 Intent intent = new Intent(CustomGoodsActivity.this, CustomDiyActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
-                bundle.putString("goods_name", tailorBean.getName());
-                bundle.putString("img_url", tailorBean.getThumb());
-                bundle.putString("price", new DecimalFormat("#0.00").format(tailorBean.getPrice()
-                        .get(position).getPrice()));
-                bundle.putString("price_type", tailorBean.getPrice().get(position).getId() + "");
-                bundle.putInt("classify_id", tailorBean.getClassify_id());
+                bundle.putString("goods_name", tailorBean.getData().getName());
+                bundle.putString("img_url", tailorBean.getData().getThumb());
+                bundle.putString("price", new DecimalFormat("#0.00").format(tailorBean.getData().
+                        getPrice().get(position).getPrice()));
+                bundle.putString("price_type", tailorBean.getData().getPrice().get(position).getId() + "");
+                bundle.putInt("classify_id", tailorBean.getData().getClassify_id());
+                bundle.putString("log_id",tailorBean.getId());
+                bundle.putLong("goods_time",enterTime);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -266,7 +260,7 @@ public class CustomGoodsActivity extends BaseActivity {
             case R.id.tv_goods_tailor:
                 if (TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
                     Intent login = new Intent(this, LoginActivity.class);
-                    login.putExtra("page_name", "定制商品详情");
+                    login.putExtra("page_name", "定制");
                     startActivity(login);
                 } else {
                     selectGoodsPrice();
@@ -280,7 +274,6 @@ public class CustomGoodsActivity extends BaseActivity {
                 }
                 break;
             case R.id.img_tailor_back:
-                isBuy = 0;
                 customGoodsLog();
                 finish();
                 break;
@@ -289,7 +282,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     addCollection();
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
-                    login.putExtra("page_name", "定制商品详情");
+                    login.putExtra("page_name", "收藏");
                     startActivity(login);
                 }
                 break;
@@ -297,11 +290,10 @@ public class CustomGoodsActivity extends BaseActivity {
                 ContactService.contactService(this);
                 break;
             case R.id.img_tailor_share:
-                ShareUtils.showShare(this, Constant.HOST + tailorBean.getThumb(),
-                        tailorBean.getName(),
-                        tailorBean.getContent(),
-                        Constant.GOODS_SHARE + "?type=2&id=" + id + "&token=" +
-                                SharedPreferencesUtils.getString(this, "token"));
+                ShareUtils.showShare(this, Constant.HOST + tailorBean.getData().getThumb(),
+                        tailorBean.getData().getName(),
+                        tailorBean.getData().getContent(),
+                        Constant.CUSTOM_SHARE + "?goods_id=" + id);
                 break;
         }
     }
@@ -310,16 +302,16 @@ public class CustomGoodsActivity extends BaseActivity {
      * 商品订制跟踪
      */
     private void customGoodsLog() {
-        if (tailorBean != null && logId != null && customTime != null) {
-            long time = DateUtils.getCurrentTime() - enterTime;
+        if (tailorBean != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
-                    .addParams("id", logId)
-                    .addParams("dingzhi_time",customTime)
-                    .addParams("goods_time", time + "")
+                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("id", tailorBean.getId())
+                    .addParams("goods_time", (DateUtils.getCurrentTime() - enterTime) + "")
                     .addParams("goods_id", id)
-                    .addParams("goods_name", tailorBean.getName())
-                    .addParams("click_dingzhi", isBuy + "")
+                    .addParams("goods_name", tailorBean.getData().getName())
+                    .addParams("click_dingzhi", "0")
+                    .addParams("click_pay", "0")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -344,7 +336,7 @@ public class CustomGoodsActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.ADD_COLLECTION)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("type", String.valueOf(2))
+                .addParams("type", "2")
                 .addParams("cid", id)
                 .build()
                 .execute(new StringCallback() {
@@ -387,7 +379,7 @@ public class CustomGoodsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1) {
-            tailorBean.setIs_yuyue(1);
+            tailorBean.getData().setIs_yuyue(1);
             selectGoodsPrice();
         }
     }
@@ -395,7 +387,6 @@ public class CustomGoodsActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isBuy = 0;
             customGoodsLog();
             finish();
             return true;

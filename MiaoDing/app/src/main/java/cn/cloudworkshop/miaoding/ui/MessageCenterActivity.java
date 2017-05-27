@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.MessageBean;
+import cn.cloudworkshop.miaoding.bean.MsgCenterBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -43,7 +43,7 @@ public class MessageCenterActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.rv_message_center)
     RecyclerView rvMessage;
-    private List<MessageBean.DataBean> msgList;
+    private List<MsgCenterBean.DataBean> msgList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class MessageCenterActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        MessageBean messageBean = GsonUtils.jsonToBean(response, MessageBean.class);
+                        MsgCenterBean messageBean = GsonUtils.jsonToBean(response, MsgCenterBean.class);
                         msgList = new ArrayList<>();
                         if (messageBean.getData() != null && messageBean.getData().size() > 0) {
                             msgList.addAll(messageBean.getData());
@@ -92,10 +92,10 @@ public class MessageCenterActivity extends BaseActivity {
      */
     private void initView() {
         rvMessage.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<MessageBean.DataBean> adapter = new CommonAdapter<MessageBean.DataBean>
+        CommonAdapter<MsgCenterBean.DataBean> adapter = new CommonAdapter<MsgCenterBean.DataBean>
                 (this, R.layout.listitem_message_center, msgList) {
             @Override
-            protected void convert(ViewHolder holder, MessageBean.DataBean dataBean, int position) {
+            protected void convert(ViewHolder holder, MsgCenterBean.DataBean dataBean, int position) {
                 Glide.with(MessageCenterActivity.this)
                         .load(Constant.HOST + dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -127,7 +127,7 @@ public class MessageCenterActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(MessageCenterActivity.this, MessageDetailActivity.class);
-                intent.putExtra("type", msgList.get(position).getType());
+                intent.putExtra("content", msgList.get(position).getType());
                 startActivity(intent);
             }
 

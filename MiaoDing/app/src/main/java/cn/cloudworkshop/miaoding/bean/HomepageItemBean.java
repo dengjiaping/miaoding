@@ -14,15 +14,18 @@ public class HomepageItemBean {
     public List<String> imgList;
     public String title;
     public String type;
+    public String content;
     public int id;
 
-    public HomepageItemBean(String img, String link, String time, List<String> imgList, String title, String type, int id) {
+    public HomepageItemBean(String img, String link, String time, List<String> imgList, String title,
+                            String type, String content, int id) {
         this.img = img;
         this.link = link;
         this.time = time;
         this.imgList = imgList;
         this.title = title;
         this.type = type;
+        this.content = content;
         this.id = id;
     }
 }

@@ -14,6 +14,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="54dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
         <EditText
@@ -24,6 +26,7 @@
             android:background="@drawable/text_black_bg"
             android:hint="请输入邀请码、兑换码"
             android:maxLength="20"
+            android:singleLine="true"
             android:paddingLeft="10dp"
             android:textColor="@color/dark_gray_22"
             android:textColorHint="@android:color/darker_gray"

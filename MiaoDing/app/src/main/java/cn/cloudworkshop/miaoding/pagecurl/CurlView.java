@@ -27,6 +27,8 @@ import android.view.View;
 
 import java.util.Stack;
 
+import cn.cloudworkshop.miaoding.utils.LogUtils;
+
 
 /**
  * OpenGL ES View.
@@ -49,7 +51,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
     // Shows two pages side by side.
     public static final int SHOW_TWO_PAGES = 2;
 
-    private boolean mAllowLastPageCurl = true;
+    private boolean mAllowLastPageCurl = false;
 
     private boolean mAnimate = false;
     public boolean isCurling = false;
@@ -380,6 +382,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
                     requestRender();
                 } else {
                     if (!isFirstOrLast) {
+                        LogUtils.log(mCurrentIndex+"");
                         onPageClickListener.currentItem(mCurrentIndex);
                     }
                 }

@@ -16,7 +16,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/tv_none_message"
+        android:id="@+id/tv_no_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="暂无相关消息~"

@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -53,6 +54,7 @@ public class HomepageDetailActivity extends BaseActivity {
     private String content = "";
     //分享 url
     private String shareUrl = "";
+
     private long enterTime;
 
 
@@ -115,14 +117,9 @@ public class HomepageDetailActivity extends BaseActivity {
 
     @JavascriptInterface
     public void toActivity(String str) {
-        if (TextUtils.equals(str, "a")) {
+        if (!TextUtils.isEmpty(str)) {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("page_name", "首页资讯详情");
-            startActivity(intent);
-        } else {
-            String[] split = str.split(",");
-            Intent intent = new Intent(HomepageDetailActivity.this, CustomGoodsActivity.class);
-            intent.putExtra("id", split[0]);
+            intent.putExtra("page_name", str);
             startActivity(intent);
         }
     }
@@ -133,6 +130,8 @@ public class HomepageDetailActivity extends BaseActivity {
             if (webView.canGoBack()) {
                 webView.goBack();// 返回前一个页面
             } else {
+                homepageLog();
+                MyApplication.homeEnterTime = DateUtils.getCurrentTime();
                 finish();
             }
 
@@ -150,6 +149,7 @@ public class HomepageDetailActivity extends BaseActivity {
                     webView.goBack();
                 } else {
                     homepageLog();
+                    MyApplication.homeEnterTime = DateUtils.getCurrentTime();
                     finish();
                 }
                 break;
@@ -160,7 +160,6 @@ public class HomepageDetailActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 首页跟踪
      */
@@ -168,7 +167,9 @@ public class HomepageDetailActivity extends BaseActivity {
         long time = DateUtils.getCurrentTime() - enterTime;
         OkHttpUtils.post()
                 .url(Constant.HOMEPAGE_LOG)
+                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("time", time + "")
+                .addParams("p_module_name", content)
                 .addParams("module_name", "首页")
                 .build()
                 .execute(new StringCallback() {
@@ -179,11 +180,11 @@ public class HomepageDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-
                         LogUtils.log("homepage");
                     }
                 });
 
     }
+
 
 }

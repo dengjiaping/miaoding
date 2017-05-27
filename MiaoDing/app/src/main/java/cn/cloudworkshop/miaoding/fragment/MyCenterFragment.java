@@ -255,7 +255,7 @@ public class MyCenterFragment extends BaseFragment {
 
                 if (isOrdered == 1) {
                     Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-                    intent.putExtra("type", "appoint");
+                    intent.putExtra("content", "appoint");
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), ApplyMeasureActivity.class);
