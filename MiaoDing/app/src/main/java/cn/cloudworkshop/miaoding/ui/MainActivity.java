@@ -37,6 +37,7 @@ import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 
+import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
@@ -246,7 +247,7 @@ public class MainActivity extends BaseActivity {
      */
     public void initView() {
         fragmentList.add(HomepageFragment.newInstance());
-        fragmentList.add(CustomGoodsFragment.newInstance());
+        fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
