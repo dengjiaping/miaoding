@@ -87,7 +87,7 @@ public class MyCenterFragment extends BaseFragment {
     ImageView imgCenterGrade;
     @BindView(R.id.rl_set_center)
     RelativeLayout rlSetCenter;
-    @BindView(R.id.rl_center_user1)
+    @BindView(R.id.rl_user_center)
     RelativeLayout rlCenterUser;
     @BindView(R.id.rl_mycenter)
     RelativeLayout rlMycenter;
@@ -214,9 +214,8 @@ public class MyCenterFragment extends BaseFragment {
 
     @OnClick({R.id.tv_mycenter_order, R.id.tv_mycenter_cart, R.id.tv_mycenter_collection,
             R.id.tv_mycenter_test, R.id.tv_mycenter_measure, R.id.tv_mycenter_consult,
-            R.id.tv_mycenter_cloth, R.id.tv_mycenter_designer,
-            R.id.tv_mycenter_invite, R.id.rl_msg_center, R.id.tv_mycenter_coupon,
-            R.id.rl_set_center, R.id.rl_center_user1})
+            R.id.tv_mycenter_cloth, R.id.tv_mycenter_designer, R.id.tv_mycenter_invite,
+            R.id.rl_msg_center, R.id.tv_mycenter_coupon, R.id.rl_set_center, R.id.rl_user_center})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_mycenter_order:
@@ -273,7 +272,7 @@ public class MyCenterFragment extends BaseFragment {
             case R.id.rl_msg_center:
                 startActivity(new Intent(getActivity(), MessageCenterActivity.class));
                 break;
-            case R.id.rl_center_user1:
+            case R.id.rl_user_center:
                 startActivity(new Intent(getActivity(), MemberCenterActivity.class));
                 break;
         }

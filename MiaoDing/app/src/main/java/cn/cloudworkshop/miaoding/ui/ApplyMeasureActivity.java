@@ -172,6 +172,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
             isRequireCheck = false;
+
         } else {
             isRequireCheck = true;
             permissionUtils.showPermissionDialog();

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -55,10 +57,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.rgs_main)
     RadioGroup mRgs;
     private List<Fragment> fragmentList = new ArrayList<>();
-    FragmentTabUtils fragmentUtils;
     private CheckUpdateBean updateBean;
     private DownloadService service;
-
 
 
     @Override
@@ -239,18 +239,19 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getData() {
-        fragmentUtils.setCurrentFragment(getIntent().getIntExtra("fragid", 0));
+        ((RadioButton) mRgs.getChildAt(getIntent().getIntExtra("fragid", 0))).setChecked(true);
     }
 
     /**
      * 加载Fragment
      */
     public void initView() {
+
         fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
-        fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
+        new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);
 
     }
@@ -262,5 +263,4 @@ public class MainActivity extends BaseActivity {
         }
         super.onDestroy();
     }
-
 }
