@@ -101,13 +101,7 @@ public class ChangeOrderActivity extends BaseActivity {
     private int num = 300;
     private PhotoAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
-    // 是否需要系统权限检测
-    private boolean isRequireCheck = true;
-    //危险权限（运行时权限）
-    static final String[] permissionStr = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    PermissionUtils permissionUtils = new PermissionUtils(this);
+
 
     private String orderId;
     private OrderDetailsBean entity;
@@ -298,24 +292,12 @@ public class ChangeOrderActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
-            isRequireCheck = false;
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         } else {
-            isRequireCheck = true;
-            permissionUtils.showPermissionDialog();
+            new PermissionUtils(this).showPermissionDialog("读写内存");
         }
     }
 
-
-    // 含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     @OnClick({R.id.img_header_back, R.id.img_select_photo, R.id.tv_next_step, R.id.tv_back_sales,
             R.id.tv_first_next})
@@ -325,16 +307,7 @@ public class ChangeOrderActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_select_photo:
-                if (isRequireCheck) {
-                    //权限没有授权，进入授权界面
-                    if (permissionUtils.judgePermissions(permissionStr)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            ActivityCompat.requestPermissions(this, permissionStr, 1);
-                        } else {
-                            permissionUtils.showPermissionDialog();
-                        }
-                    }
-                }
+
                 PhotoPicker.builder()
                         .setPhotoCount(4)
                         .setShowCamera(true)

@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -7,12 +8,18 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -32,18 +39,17 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CheckUpdateBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.fragment.CustomGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
-import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.SystemBarTintManager;
 import okhttp3.Call;
 
 /**
@@ -58,21 +64,81 @@ public class MainActivity extends BaseActivity {
     FragmentTabUtils fragmentUtils;
     private CheckUpdateBean updateBean;
     private DownloadService service;
+    public static MainActivity instance;
 
+    // 是否需要系统权限检测
+    private boolean isRequireCheck = true;
+    //危险权限（运行时权限）
+    static final String[] permissionStr = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    PermissionUtils permissionUtils = new PermissionUtils(this);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        //Android4.4及以上版本才能设置此效果
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //Android5.0版本
+//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                //设置状态栏颜色
+//                getWindow().setStatusBarColor(Color.TRANSPARENT);
+//                //设置导航栏颜色
+//                getWindow().setNavigationBarColor(Color.TRANSPARENT);
+//            }else {
+//                //透明状态栏
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                //透明导航栏
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//                //创建状态栏的管理实例
+//                SystemBarTintManager tintManager = new SystemBarTintManager(this);
+//                //激活状态栏设置
+//                tintManager.setStatusBarTintEnabled(true);
+//                //设置状态栏颜色
+//                tintManager.setTintResource(Color.TRANSPARENT);
+//                //激活导航栏设置
+//                tintManager.setNavigationBarTintEnabled(true);
+//                //设置导航栏颜色
+//                tintManager.setNavigationBarTintResource(Color.TRANSPARENT);
+//            }
+//        }
+
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        checkWritePermission();
         initView();
         checkUpdate();
         isLogin();
         submitClientId();
-        getData();
+        setCurrentPage();
 
+    }
+
+    /**
+     * 检测读写权限
+     */
+    private void checkWritePermission() {
+        if (isRequireCheck) {
+            //权限没有授权，进入授权界面
+            if (permissionUtils.judgePermissions(permissionStr)) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    ActivityCompat.requestPermissions(this, permissionStr, 1);
+                } else {
+                    permissionUtils.showPermissionDialog("读写内存");
+                }
+            }
+        }
     }
 
 
@@ -85,7 +151,7 @@ public class MainActivity extends BaseActivity {
 
             OkHttpUtils.get()
                     .url(Constant.CLIENT_ID)
-                    .addParams("content", 1 + "")
+                    .addParams("type", "1")
                     .addParams("device_id", clientId)
                     .build()
                     .execute(new StringCallback() {
@@ -238,7 +304,10 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void getData() {
+    /**
+     * 设置当前页面
+     */
+    private void setCurrentPage() {
         fragmentUtils.setCurrentFragment(getIntent().getIntExtra("fragid", 0));
     }
 
@@ -246,12 +315,25 @@ public class MainActivity extends BaseActivity {
      * 加载Fragment
      */
     public void initView() {
+
+        instance = this;
         fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            isRequireCheck = false;
+        } else {
+            isRequireCheck = true;
+            permissionUtils.showPermissionDialog("读写内存");
+        }
 
     }
 

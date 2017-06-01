@@ -7,10 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import cn.cloudworkshop.miaoding.R;
+
+import static android.R.attr.targetSdkVersion;
 
 
 /**
@@ -20,6 +23,7 @@ import cn.cloudworkshop.miaoding.R;
  */
 public class PermissionUtils {
     private Context mContext;
+
 
     public PermissionUtils(Context context) {
         this.mContext = context;
@@ -35,6 +39,7 @@ public class PermissionUtils {
             }
         }
         return false;
+
     }
 
     /**
@@ -49,10 +54,10 @@ public class PermissionUtils {
     /**
      * 提示对话框
      */
-    public void showPermissionDialog() {
+    public void showPermissionDialog(String msg) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mContext, R.style.AlertDialog);
         dialog.setTitle("帮助");
-        dialog.setMessage("当前应用缺少读取内存权限，请点击\"设置\" - \"权限管理\"，打开所需权限。");
+        dialog.setMessage("当前应用缺少" + msg + "权限，请点击\"设置\" - \"权限管理\"，打开所需权限。");
         //为“确定”按钮注册监听事件
         dialog.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @Override

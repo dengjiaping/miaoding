@@ -43,6 +43,7 @@ public class AppointmentActivity extends BaseActivity {
     TextView tvCheckOrder;
     @BindView(R.id.img_pay_result)
     ImageView imgPayResult;
+    //intent 传值
     private String type;
 
     @Override
@@ -59,7 +60,7 @@ public class AppointmentActivity extends BaseActivity {
      */
     private void initView() {
         switch (type) {
-            case "appoint":
+            case "appoint_measure":
                 tvHeaderTitle.setText("预约详情");
                 tvAppointResult.setTextSize(15);
                 tvHeaderNext.setText("量体协议");
@@ -106,7 +107,7 @@ public class AppointmentActivity extends BaseActivity {
                             }
                         });
                 break;
-            case "apply":
+            case "apply_join":
                 tvHeaderTitle.setText("申请详情");
                 tvAppointResult.setText("申请成功");
                 imgPayResult.setImageResource(R.mipmap.icon_appoint_success);
@@ -150,6 +151,8 @@ public class AppointmentActivity extends BaseActivity {
             case R.id.tv_go_back:
                 if (type.equals("pay")) {
                     Intent intent2 = new Intent(this, MainActivity.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    MainActivity.instance.finish();
                     finish();
                     startActivity(intent2);
                 } else {

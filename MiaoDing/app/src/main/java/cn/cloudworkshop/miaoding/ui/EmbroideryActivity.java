@@ -41,8 +41,6 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
-import static android.R.attr.filter;
-
 /**
  * Author：Libin on 2016/10/13 11:47
  * Email：1993911441@qq.com
@@ -78,7 +76,7 @@ public class EmbroideryActivity extends BaseActivity {
     //商品分类
     private int classifyId;
 
-    public static Activity embroideryActivity;
+    public static Activity instance;
     private TailorItemBean tailorBean;
 
 
@@ -87,7 +85,7 @@ public class EmbroideryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_embroidery);
         ButterKnife.bind(this);
-        embroideryActivity = this;
+        instance = this;
         tvHeaderTitle.setText("个性绣花");
         tvHeaderNext.setVisibility(View.VISIBLE);
         tvHeaderNext.setText("跳过");

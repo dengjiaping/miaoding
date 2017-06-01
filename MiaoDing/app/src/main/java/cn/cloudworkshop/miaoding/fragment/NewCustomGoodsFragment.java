@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
@@ -76,7 +78,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_TITLE)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(),"token"))
+                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -125,13 +127,38 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
     }
 
+    /**
+     * 加载视图
+     */
     private void initView() {
         imgSelectType.setEnabled(true);
         tvCustomTitle.setText(currentGoods.getName());
         vpCustomGoods.setOffscreenPageLimit(listBean.getData().getData().size());
         vpCustomGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
-        JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(),getActivity(),vpCustomGoods);
+        JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(), getActivity(), vpCustomGoods);
         vpCustomGoods.setAdapter(adapter);
+
+        vpCustomGoods.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == listBean.getData().getData().size() - 1) {
+                    Toast.makeText(getActivity(), "已经是最后一页了", Toast.LENGTH_SHORT).show();
+                }
+                if (position == 0) {
+                    Toast.makeText(getActivity(), "已经是第一页了", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
@@ -142,7 +169,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
             showPopWindow();
         }
     }
-
 
 
     /**
@@ -209,7 +235,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 
 }

@@ -337,7 +337,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("car_id", confirmOrderBean.getData().getCar_list().get(position).getId() + "")
                 .addParams("num", currentCount + "")
-                .addParams("content", "1")
+                .addParams("type", "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -506,18 +506,18 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
                                     Toast.makeText(ConfirmOrderActivity.this, "下单成功",
                                             Toast.LENGTH_SHORT).show();
-                                    if (CustomDiyActivity.tailorActivity != null) {
-                                        CustomDiyActivity.tailorActivity.finish();
+                                    if (CustomDiyActivity.instance != null) {
+                                        CustomDiyActivity.instance.finish();
                                     }
-                                    if (EmbroideryActivity.embroideryActivity != null) {
-                                        EmbroideryActivity.embroideryActivity.finish();
+                                    if (EmbroideryActivity.instance != null) {
+                                        EmbroideryActivity.instance.finish();
                                     }
 
-                                    if (CustomResultActivity.tailorInfoActivity != null) {
-                                        CustomResultActivity.tailorInfoActivity.finish();
+                                    if (CustomResultActivity.instance != null) {
+                                        CustomResultActivity.instance.finish();
                                     }
-                                    if (ShoppingCartActivity.cartActivity != null) {
-                                        ShoppingCartActivity.cartActivity.finish();
+                                    if (ShoppingCartActivity.instance != null) {
+                                        ShoppingCartActivity.instance.finish();
                                     }
 
                                     payOrderUtil = new PayOrderUtils(ConfirmOrderActivity.this,

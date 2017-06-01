@@ -108,7 +108,7 @@ public class CustomDiyActivity extends BaseActivity {
     //选择部件
     private SparseIntArray itemArray = new SparseIntArray();
 
-    public static Activity tailorActivity;
+    public static Activity instance;
 
     private long enterTime;
 
@@ -118,7 +118,7 @@ public class CustomDiyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_diy);
         ButterKnife.bind(this);
-        tailorActivity = this;
+        instance = this;
         getData();
         initData();
 

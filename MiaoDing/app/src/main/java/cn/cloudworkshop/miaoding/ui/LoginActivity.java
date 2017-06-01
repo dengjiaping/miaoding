@@ -34,7 +34,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -213,7 +212,7 @@ public class LoginActivity extends BaseActivity {
                String cancel =  getIntent().getStringExtra("log_in");
                 if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("fragid", 0);
+                    MainActivity.instance.finish();
                     finish();
                     startActivity(intent);
                 }else {
@@ -359,7 +358,7 @@ public class LoginActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.VERIFICATION_CODE)
                 .addParams("phone", etUserName.getText().toString().trim())
-                .addParams("content", "1")
+                .addParams("type", "1")
                 .build()
                 .execute(new StringCallback() {
 
@@ -394,7 +393,8 @@ public class LoginActivity extends BaseActivity {
             String cancel =  getIntent().getStringExtra("log_in");
             if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("fragid", 0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                MainActivity.instance.finish();
                 finish();
                 startActivity(intent);
             }else {

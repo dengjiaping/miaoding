@@ -98,7 +98,9 @@
         <activity android:name=".ui.DeliveryAddressActivity"/>
         <activity android:name=".ui.AddAddressActivity"/>
         <activity android:name=".ui.HomepageDetailActivity"/>
-        <activity android:name=".ui.EmbroideryActivity"/>
+        <activity
+            android:name=".ui.EmbroideryActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.LoginActivity"/>
         <activity
             android:name=".ui.ApplyJoinActivity"
@@ -194,7 +196,8 @@
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>
-        <activity android:name=".ui.CustomGoodsActivity"
+        <activity
+            android:name=".ui.CustomGoodsActivity"
             android:hardwareAccelerated="false"/>
         <activity android:name=".ui.WorksDetailActivity"/>
         <activity android:name=".ui.CustomDiyActivity"/>

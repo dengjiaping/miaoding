@@ -173,16 +173,7 @@
                 android:visibility="gone"/>
         </RadioGroup>
 
-        <ImageView
-            android:id="@+id/img_cloth_large"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:layout_centerHorizontal="true"
-            android:background="@color/gray_mask"
-            android:scaleType="fitCenter"
-            android:visibility="gone"/>
+
 
         <ImageView
             android:id="@+id/img_reset_tailor"
@@ -196,4 +187,16 @@
             android:src="@mipmap/icon_reset"
             android:visibility="gone"/>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_cloth_large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/gray_mask"
+        android:layout_marginBottom="125dp"
+        android:scaleType="fitCenter"
+        android:visibility="gone"/>
 </RelativeLayout>

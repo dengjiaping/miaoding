@@ -84,7 +84,7 @@ public class ShoppingCartActivity extends BaseActivity {
 
     //编辑状态
     private boolean flag;
-    public static ShoppingCartActivity cartActivity;
+    public static ShoppingCartActivity instance;
     private RecommendGoodsBean recommendBean;
 
     @Override
@@ -92,7 +92,7 @@ public class ShoppingCartActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
         ButterKnife.bind(this);
-        cartActivity = this;
+        instance = this;
         tvHeaderTitle.setText("购物袋");
         tvHeaderNext.setText("编辑");
 
@@ -125,9 +125,7 @@ public class ShoppingCartActivity extends BaseActivity {
                         ShoppingCartBean shoppingCartBean = GsonUtils.jsonToBean(response,
                                 ShoppingCartBean.class);
                         dataList = new ArrayList<>();
-                        if (shoppingCartBean.getData().size() == 0 || shoppingCartBean.getData() == null) {
-                            nullCart();
-                        } else {
+                        if (shoppingCartBean.getData() != null && shoppingCartBean.getData().size() > 0) {
                             rlNullBag.setVisibility(View.GONE);
                             llCartGoods.setVisibility(View.VISIBLE);
                             tvHeaderNext.setVisibility(View.VISIBLE);
@@ -135,6 +133,8 @@ public class ShoppingCartActivity extends BaseActivity {
                             dataList.addAll(shoppingCartBean.getData());
 
                             initView();
+                        } else {
+                            nullCart();
                         }
                     }
                 });
@@ -412,7 +412,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
                 .addParams("num", counts + "")
-                .addParams("content", "1")
+                .addParams("type", "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override

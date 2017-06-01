@@ -123,7 +123,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         tailorBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
-                        if (tailorBean != null) {
+                        if (tailorBean.getData() != null) {
                             initView();
                         }
 

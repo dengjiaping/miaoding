@@ -82,13 +82,6 @@ public class ApplyJoinActivity extends BaseActivity {
     private int id;
 
 
-    private boolean isRequireCheck = true; // 是否需要系统权限检测
-    //危险权限（运行时权限）
-    static final String[] permissionStr = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private PermissionUtils mPermissionUtils = new PermissionUtils(this);//检查权限
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,22 +106,10 @@ public class ApplyJoinActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
-            isRequireCheck = false;
+        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         } else {
-            isRequireCheck = true;
-            mPermissionUtils.showPermissionDialog();
+            new PermissionUtils(this).showPermissionDialog("打开相机");
         }
-    }
-
-    // 含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
     }
 
 
@@ -157,16 +138,6 @@ public class ApplyJoinActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_apply_works:
-                if (isRequireCheck) {
-                    //权限没有授权，进入授权界面
-                    if (mPermissionUtils.judgePermissions(permissionStr)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            ActivityCompat.requestPermissions(this, permissionStr, 1);
-                        } else {
-                            mPermissionUtils.showPermissionDialog();
-                        }
-                    }
-                }
                 photoAdapter1 = initView(rvApplyWorks, selectedPhotos1);
                 PhotoPicker.builder()
                         .setPhotoCount(4)
@@ -176,16 +147,6 @@ public class ApplyJoinActivity extends BaseActivity {
                 currentClickId1 = view.getId();
                 break;
             case R.id.img_apply_company:
-                if (isRequireCheck) {
-                    //权限没有授权，进入授权界面
-                    if (mPermissionUtils.judgePermissions(permissionStr)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            ActivityCompat.requestPermissions(this, permissionStr, 1);
-                        } else {
-                            mPermissionUtils.showPermissionDialog();
-                        }
-                    }
-                }
                 photoAdapter2 = initView(rvApplyCompany, selectedPhotos2);
                 PhotoPicker.builder()
                         .setPhotoCount(2)
@@ -240,7 +201,7 @@ public class ApplyJoinActivity extends BaseActivity {
                             MobclickAgent.onEvent(ApplyJoinActivity.this, "apply_join");
 
                             Intent intent = new Intent(ApplyJoinActivity.this, AppointmentActivity.class);
-                            intent.putExtra("content", "apply");
+                            intent.putExtra("content", "apply_join");
                             finish();
                             startActivity(intent);
                         }
@@ -282,9 +243,5 @@ public class ApplyJoinActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public boolean shouldShowRequestPermissionRationale(String permission) {
-        return false;
-    }
 
 }

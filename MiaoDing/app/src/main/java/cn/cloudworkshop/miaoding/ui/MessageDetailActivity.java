@@ -69,7 +69,7 @@ public class MessageDetailActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.MESSAGE_DETAIL)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("content", type + "")
+                .addParams("type", type + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override

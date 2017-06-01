@@ -137,18 +137,18 @@ public class PayOrderUtils {
             @Override
             public void onDismiss() {
                 DisplayUtils.setBackgroundAlpha(context, false);
-                if (CustomDiyActivity.tailorActivity != null) {
-                    CustomDiyActivity.tailorActivity.finish();
+                if (CustomDiyActivity.instance != null) {
+                    CustomDiyActivity.instance.finish();
                 }
-                if (EmbroideryActivity.embroideryActivity != null) {
-                    EmbroideryActivity.embroideryActivity.finish();
+                if (EmbroideryActivity.instance != null) {
+                    EmbroideryActivity.instance.finish();
                 }
 
-                if (CustomResultActivity.tailorInfoActivity != null) {
-                    CustomResultActivity.tailorInfoActivity.finish();
+                if (CustomResultActivity.instance != null) {
+                    CustomResultActivity.instance.finish();
                 }
-                if (ShoppingCartActivity.cartActivity != null) {
-                    ShoppingCartActivity.cartActivity.finish();
+                if (ShoppingCartActivity.instance != null) {
+                    ShoppingCartActivity.instance.finish();
                 }
 
                 if (!isConfirmBuy) {

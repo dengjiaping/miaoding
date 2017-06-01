@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -161,7 +162,7 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
                 if (Build.VERSION.SDK_INT >= 23){
                     ActivityCompat.requestPermissions(this, permissionStr, 1);
                 }else {
-                    mPermissionUtils.showPermissionDialog();
+                    mPermissionUtils.showPermissionDialog("打电话");
                 }
             }
         }
@@ -187,22 +188,11 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             isRequireCheck = false;
         } else {
             isRequireCheck = true;
-            mPermissionUtils.showPermissionDialog();
+            mPermissionUtils.showPermissionDialog("打电话");
         }
     }
-
-    // 含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

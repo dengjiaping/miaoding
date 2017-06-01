@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -75,7 +74,7 @@ public class CustomResultActivity extends BaseActivity {
     //1:直接购买 2：加入购物袋
     private int type = 0;
     private String cartId;
-    public static Activity tailorInfoActivity;
+    public static Activity instance;
 
     private float x1 = 0;
     private float x2 = 0;
@@ -88,7 +87,7 @@ public class CustomResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_result);
         ButterKnife.bind(this);
-        tailorInfoActivity = this;
+        instance = this;
         tvHeaderTitle.setText("订制详情");
         imgShoppingBag.setVisibility(View.VISIBLE);
         imgShoppingBag.setImageResource(R.mipmap.icon_shopping_bag);
@@ -287,7 +286,7 @@ public class CustomResultActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("content", type + "")
+                .addParams("type", type + "")
                 .addParams("goods_id", tailorBean.getId())
                 .addParams("goods_type", "1")
                 .addParams("price", tailorBean.getPrice())

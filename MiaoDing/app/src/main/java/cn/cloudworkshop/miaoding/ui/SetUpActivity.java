@@ -51,6 +51,7 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -123,12 +124,7 @@ public class SetUpActivity extends BaseActivity {
 
     private ArrayList<String> selectedPhotos = new ArrayList<>();
 
-    private boolean isRequireCheck = true; // 是否需要系统权限检测
-    //危险权限（运行时权限）
-    static final String[] permissionStr = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private PermissionUtils mPermissionUtils = new PermissionUtils(this);//检查权限
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,22 +184,10 @@ public class SetUpActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
-            isRequireCheck = false;
+        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         } else {
-            isRequireCheck = true;
-            mPermissionUtils.showPermissionDialog();
+            new PermissionUtils(this).showPermissionDialog("读写内存");
         }
-    }
-
-    //是否含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
     }
 
 
@@ -269,10 +253,10 @@ public class SetUpActivity extends BaseActivity {
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "icon");
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "phone");
                                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
-                                intent.putExtra("fragid", 0);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                MainActivity.instance.finish();
                                 finish();
                                 startActivity(intent);
-
 
                             }
                         });
@@ -282,7 +266,6 @@ public class SetUpActivity extends BaseActivity {
         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 根据实际情况编写相应代码。
                 dialog.dismiss();
             }
         });
@@ -493,16 +476,7 @@ public class SetUpActivity extends BaseActivity {
      * 修改头像
      */
     private void changeIcon() {
-        if (isRequireCheck) {
-            //权限没有授权，进入授权界面
-            if (mPermissionUtils.judgePermissions(permissionStr)) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    ActivityCompat.requestPermissions(this, permissionStr, 1);
-                } else {
-                    mPermissionUtils.showPermissionDialog();
-                }
-            }
-        }
+
         PhotoPicker.builder()
                 .setPhotoCount(1)
                 .start(this);
@@ -539,8 +513,8 @@ public class SetUpActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+        if (resultCode == RESULT_OK && (requestCode == PhotoPicker.REQUEST_CODE ||
+                requestCode == PhotoPreview.REQUEST_CODE)) {
 
             List<String> photos = null;
             if (data != null) {
@@ -585,11 +559,5 @@ public class SetUpActivity extends BaseActivity {
             }
         }
     }
-
-    @Override
-    public boolean shouldShowRequestPermissionRationale(String permission) {
-        return false;
-    }
-
 
 }
