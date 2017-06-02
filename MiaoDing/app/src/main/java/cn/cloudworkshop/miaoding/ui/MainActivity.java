@@ -1,20 +1,25 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.widget.RadioButton;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -34,18 +39,17 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CheckUpdateBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.fragment.CustomGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
-import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.SystemBarTintManager;
 import okhttp3.Call;
 
 /**
@@ -57,22 +61,51 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.rgs_main)
     RadioGroup mRgs;
     private List<Fragment> fragmentList = new ArrayList<>();
+    FragmentTabUtils fragmentUtils;
     private CheckUpdateBean updateBean;
     private DownloadService service;
+    public static MainActivity instance;
+
+    // 是否需要系统权限检测
+    private boolean isRequireCheck = true;
+    //危险权限（运行时权限）
+    static final String[] permissionStr = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    PermissionUtils permissionUtils = new PermissionUtils(this);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        checkWritePermission();
         initView();
         checkUpdate();
         isLogin();
         submitClientId();
-        getData();
+        setCurrentPage();
 
+    }
+
+    /**
+     * 检测读写权限
+     */
+    private void checkWritePermission() {
+        if (isRequireCheck) {
+            //权限没有授权，进入授权界面
+            if (permissionUtils.judgePermissions(permissionStr)) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    ActivityCompat.requestPermissions(this, permissionStr, 1);
+                } else {
+                    permissionUtils.showPermissionDialog("读写内存");
+                }
+            }
+        }
     }
 
 
@@ -85,7 +118,7 @@ public class MainActivity extends BaseActivity {
 
             OkHttpUtils.get()
                     .url(Constant.CLIENT_ID)
-                    .addParams("content", 1 + "")
+                    .addParams("type", "1")
                     .addParams("device_id", clientId)
                     .build()
                     .execute(new StringCallback() {
@@ -238,8 +271,11 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void getData() {
-        ((RadioButton) mRgs.getChildAt(getIntent().getIntExtra("fragid", 0))).setChecked(true);
+    /**
+     * 设置当前页面
+     */
+    private void setCurrentPage() {
+        fragmentUtils.setCurrentFragment(getIntent().getIntExtra("fragid", 0));
     }
 
     /**
@@ -247,14 +283,28 @@ public class MainActivity extends BaseActivity {
      */
     public void initView() {
 
+        instance = this;
         fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
-        new FragmentTabUtils(getSupportFragmentManager(),
+        fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1 && grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            isRequireCheck = false;
+        } else {
+            isRequireCheck = true;
+            permissionUtils.showPermissionDialog("读写内存");
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -263,4 +313,5 @@ public class MainActivity extends BaseActivity {
         }
         super.onDestroy();
     }
+
 }

@@ -9,7 +9,7 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 19
+        versionCode 23
         versionName "1.5.1"
         multiDexEnabled true
 
@@ -109,4 +109,5 @@ dependencies {
     compile 'com.wang.avi:library:2.1.3'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':wheelpicker')
+
 }

@@ -272,7 +272,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                 @Override
                 protected void convert(ViewHolder holder, NewHomepageBean.DesignerListBean designerListBean
                         , int position) {
-                    //平分显示三个卡片
+                    //recyclerView横向,分为三个item
                     CardView cardView = holder.getView(R.id.cv_recommend_designer);
                     ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
                     int widthPixels = DisplayUtils.getMetrics(getActivity()).widthPixels;

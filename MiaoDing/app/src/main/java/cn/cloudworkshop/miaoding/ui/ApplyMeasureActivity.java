@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -122,12 +123,12 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
 
         if (isRequireCheck) {
             //权限没有授权，进入授权界面
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (permissionUtils.judgePermissions(permissionStr)) {
+            if (permissionUtils.judgePermissions(permissionStr)) {
+                if (Build.VERSION.SDK_INT >= 23) {
                     ActivityCompat.requestPermissions(this, permissionStr, 1);
+                } else {
+                    permissionUtils.showPermissionDialog("定位");
                 }
-            } else {
-                permissionUtils.showPermissionDialog();
             }
         }
 
@@ -170,24 +171,15 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             isRequireCheck = false;
 
         } else {
             isRequireCheck = true;
-            permissionUtils.showPermissionDialog();
+            permissionUtils.showPermissionDialog("定位");
         }
     }
 
-    // 含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void getData() {
         goodsName = getIntent().getStringExtra("goods_name");
@@ -333,15 +325,11 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                 }
                 break;
             case R.id.tv_submit_appointment:
-                if (TextUtils.isEmpty(location) && TextUtils.isEmpty(etCurrentAddress.getText().toString().trim())) {
-                    Toast.makeText(this, "请检查网络是否畅通或定位权限是否授予", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(etCurrentAddress.getText().toString().trim())) {
+                    Toast.makeText(this, "请输入地址", Toast.LENGTH_LONG).show();
                     ActivityCompat.requestPermissions(this, permissionStr, 1);
                 } else {
-                    if (TextUtils.isEmpty(etCurrentAddress.getText().toString().trim())) {
-                        Toast.makeText(this, "请输入地址", Toast.LENGTH_LONG).show();
-                    } else {
-                        showPopupWindow();
-                    }
+                    showPopupWindow();
                 }
                 break;
             case R.id.img_header_back:
@@ -382,7 +370,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                         }
                         tvSubmit.setEnabled(true);
                         Intent intent = new Intent(ApplyMeasureActivity.this, AppointmentActivity.class);
-                        intent.putExtra("content", "appoint");
+                        intent.putExtra("content", "appoint_measure");
                         finish();
                         startActivity(intent);
 

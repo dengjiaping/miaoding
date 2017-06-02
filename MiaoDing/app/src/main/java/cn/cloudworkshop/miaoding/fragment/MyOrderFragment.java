@@ -41,7 +41,7 @@ import cn.cloudworkshop.miaoding.ui.AfterSalesActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
-import cn.cloudworkshop.miaoding.ui.OrderDetailsActivity;
+import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
@@ -259,7 +259,7 @@ public class MyOrderFragment extends BaseFragment {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
                 intent.putExtra("id", dataList.get(position).getId() + "");
                 startActivity(intent);
             }

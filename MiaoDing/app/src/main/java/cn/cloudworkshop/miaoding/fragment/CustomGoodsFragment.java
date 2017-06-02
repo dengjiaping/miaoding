@@ -167,9 +167,9 @@ public class CustomGoodsFragment extends BaseFragment {
                     public void onResponse(Bitmap response, int id) {
                         treeMap.put(i, response);
                         if (treeMap.size() == listBean.getData().getData().size()) {
-                            Iterator titer = treeMap.entrySet().iterator();
-                            while (titer.hasNext()) {
-                                Map.Entry entry = (Map.Entry) titer.next();
+                            Iterator title = treeMap.entrySet().iterator();
+                            while (title.hasNext()) {
+                                Map.Entry entry = (Map.Entry) title.next();
                                 Bitmap bitmap = (Bitmap) entry.getValue();
                                 //控件宽高
                                 int width = curlPage.getWidth();

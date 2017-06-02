@@ -53,12 +53,21 @@
                 <TextView
                     android:id="@+id/tv_goods_introduce"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginBottom="15dp"
                     android:textColor="@color/light_gray_7a"
                     android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@color/light_gray_93"
+                    android:text="上滑继续阅读"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="15dp"/>
             </LinearLayout>
 
         </RelativeLayout>

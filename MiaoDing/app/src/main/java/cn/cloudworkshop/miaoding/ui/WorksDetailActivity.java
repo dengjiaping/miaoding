@@ -440,7 +440,7 @@ WorksDetailActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("content", index + "")
+                .addParams("type", index + "")
                 .addParams("goods_id", id)
                 .addParams("goods_type", "2")
                 .addParams("price", worksBean.getSize_list().get(currentSize)

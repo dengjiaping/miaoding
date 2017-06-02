@@ -31,6 +31,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.ReceiveAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.AddressPickTask;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -80,7 +81,6 @@ public class AddAddressActivity extends BaseActivity {
 
     //add:添加地址 alert:修改地址
     private String type;
-    private AddressPicker addressPicker;
 
 
     @Override
@@ -220,29 +220,26 @@ public class AddAddressActivity extends BaseActivity {
      */
     private void selectAddress() {
 
-        try {
-            ArrayList<Province> data = new ArrayList<>();
-            String json = ConvertUtils.toString(getAssets().open("city.json"));
-            data.addAll(GsonUtils.jsonToArray(json, Province.class));
-            if (addressPicker == null) {
-                addressPicker = new AddressPicker(this, data);
-            }
-            addressPicker.setSelectedItem("北京市", "北京市", "朝阳区");
-            addressPicker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
-                @Override
-                public void onAddressPicked(Province province, City city, County county) {
-                    tvSelectAddress.setText(province.getAreaName() + city.getAreaName() + county.getAreaName());
-                    provinceAddress = province.getAreaName();
-                    cityAddress = city.getAreaName();
-                    countAddress = county.getAreaName();
-                }
-            });
-            if (addressPicker != null && !addressPicker.isShowing()) {
-                addressPicker.show();
+        AddressPickTask task = new AddressPickTask(this);
+        task.setHideProvince(false);
+        task.setHideCounty(false);
+        task.setCallback(new AddressPickTask.Callback() {
+            @Override
+            public void onAddressInitFailed() {
             }
 
-        } catch (Exception e) {
-
+            @Override
+            public void onAddressPicked(Province province, City city, County county) {
+                tvSelectAddress.setText(province.getAreaName() + city.getAreaName() + county.getAreaName());
+                provinceAddress = province.getAreaName();
+                cityAddress = city.getAreaName();
+                countAddress = county.getAreaName();
+            }
+        });
+        if (provinceAddress != null) {
+            task.execute(provinceAddress, cityAddress, countAddress);
+        } else {
+            task.execute("北京市", "北京市", "朝阳区");
         }
 
     }

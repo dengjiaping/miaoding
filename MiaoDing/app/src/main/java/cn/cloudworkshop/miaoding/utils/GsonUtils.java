@@ -28,8 +28,8 @@ public class GsonUtils {
     static {
         if (gson == null) {
 //            gson = new Gson();
-//            gson = new GsonBuilder().serializeNulls().create();
-            gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+            gson = new GsonBuilder().serializeNulls().create();
+//            gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
         }
     }
 

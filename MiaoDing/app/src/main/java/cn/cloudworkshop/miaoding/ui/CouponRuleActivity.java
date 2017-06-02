@@ -48,7 +48,7 @@ public class CouponRuleActivity extends BaseActivity {
 
     private void initView() {
         switch (type) {
-            case "coupon":
+            case "coupon_rule":
                 tvHeaderTitle.setText("使用规则");
                 imgUserRule.setImageResource(R.mipmap.icon_coupon_rule);
                 break;
@@ -59,7 +59,7 @@ public class CouponRuleActivity extends BaseActivity {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgUserRule);
                 break;
-            case "invite_friend":
+            case "invite_rule":
                 tvHeaderTitle.setText(title);
                 Glide.with(getApplicationContext())
                         .load(Constant.HOST + imgUrl)

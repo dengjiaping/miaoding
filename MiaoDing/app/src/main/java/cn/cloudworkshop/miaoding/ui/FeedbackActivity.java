@@ -83,13 +83,6 @@ public class FeedbackActivity extends BaseActivity {
     private int num = 300;
     private PhotoAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
-    // 是否需要系统权限检测
-    private boolean isRequireCheck = true;
-    //危险权限（运行时权限）
-    static final String[] permissionStr = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private PermissionUtils mPermissionUtils = new PermissionUtils(this);//检查权限
     private String imgEncode;
 
 
@@ -124,23 +117,12 @@ public class FeedbackActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && hasAllPermissionsGranted(grantResults)) {
-            isRequireCheck = false;
+        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         } else {
-            isRequireCheck = true;
-            mPermissionUtils.showPermissionDialog();
+            new PermissionUtils(this).showPermissionDialog("读写内存");
         }
     }
 
-    // 含有全部的权限
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }
 
 
     Handler handler = new Handler() {
@@ -284,18 +266,6 @@ public class FeedbackActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_add_feed_back:
-                if (isRequireCheck) {
-                    //权限没有授权，进入授权界面
-                    if (mPermissionUtils.judgePermissions(permissionStr)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            ActivityCompat.requestPermissions(this, permissionStr, 1);
-                        } else {
-                            mPermissionUtils.showPermissionDialog();
-                        }
-                    }
-                } else {
-                    isRequireCheck = true;
-                }
                 PhotoPicker.builder()
                         .setPhotoCount(4)
                         .setShowCamera(true)
@@ -335,10 +305,5 @@ public class FeedbackActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public boolean shouldShowRequestPermissionRationale(String permission) {
-        return false;
-    }
 
 }

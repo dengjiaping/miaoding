@@ -43,7 +43,7 @@ import okhttp3.Call;
  * Email：1993911441@qq.com
  * Describe：订单详情
  */
-public class OrderDetailsActivity extends BaseActivity {
+public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
@@ -94,18 +94,21 @@ public class OrderDetailsActivity extends BaseActivity {
                 public void run() {
                     recLen--;
                     if (recLen > 0) {
-                        tvPayTime.setTextColor(ContextCompat.getColor(OrderDetailsActivity.this, R.color.dark_red));
+                        tvPayTime.setTextColor(ContextCompat.getColor(OrderDetailActivity.this, R.color.dark_red));
                         tvPayTime.setText("请在 " + recLen / 60 + "分" + recLen % 60 + "秒 内完成支付，超时订单将自动取消");
                     } else {
                         timer.cancel();
                         task.cancel();
 
-                        MyOrderActivity.orderActivity.finish();
-                        Intent intent = new Intent(OrderDetailsActivity.this, MyOrderActivity.class);
+                        Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
                         intent.putExtra("page", 0);
+                        if (MyOrderActivity.instance != null) {
+                            MyOrderActivity.instance.finish();
+                        }
+
                         finish();
                         startActivity(intent);
-                        Toast.makeText(OrderDetailsActivity.this, "订单已过期", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderDetailActivity.this, "订单已过期", Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -116,7 +119,7 @@ public class OrderDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_details);
+        setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
         tvHeaderTitle.setText("订单详情");
         getData();
@@ -231,7 +234,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     , int position) {
                 holder.setVisible(R.id.checkbox_goods_select, false);
                 holder.setVisible(R.id.view_cart_divide, true);
-                Glide.with(OrderDetailsActivity.this)
+                Glide.with(OrderDetailActivity.this)
                         .load(Constant.HOST + carListBean.getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
@@ -348,7 +351,7 @@ public class OrderDetailsActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CONFIRM_RECEIVE)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailsActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
                         .addParams("order_id", id + "")
                         .build()
                         .execute(new StringCallback() {
@@ -360,11 +363,13 @@ public class OrderDetailsActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Intent intent = new Intent(OrderDetailsActivity.this, MyOrderActivity.class);
-                                MyOrderActivity.orderActivity.finish();
+                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
+                                if (MyOrderActivity.instance != null) {
+                                    MyOrderActivity.instance.finish();
+                                }
                                 finish();
                                 startActivity(intent);
-                                Toast.makeText(OrderDetailsActivity.this,
+                                Toast.makeText(OrderDetailActivity.this,
                                         "交易完成，祝您购物愉快！", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -397,7 +402,7 @@ public class OrderDetailsActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.DELETE_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailsActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
                         .addParams("order_id", orderId)
                         .build()
                         .execute(new StringCallback() {
@@ -408,11 +413,13 @@ public class OrderDetailsActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Intent intent = new Intent(OrderDetailsActivity.this, MyOrderActivity.class);
-                                MyOrderActivity.orderActivity.finish();
+                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
+                                if (MyOrderActivity.instance != null) {
+                                    MyOrderActivity.instance.finish();
+                                }
                                 finish();
                                 startActivity(intent);
-                                Toast.makeText(OrderDetailsActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -442,7 +449,7 @@ public class OrderDetailsActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailsActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
                         .addParams("order_id", orderId)
                         .build()
                         .execute(new StringCallback() {
@@ -453,12 +460,14 @@ public class OrderDetailsActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                MobclickAgent.onEvent(OrderDetailsActivity.this, "cancel_order");
-                                Intent intent = new Intent(OrderDetailsActivity.this, MyOrderActivity.class);
-                                MyOrderActivity.orderActivity.finish();
+                                MobclickAgent.onEvent(OrderDetailActivity.this, "cancel_order");
+                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
+                                if (MyOrderActivity.instance != null) {
+                                    MyOrderActivity.instance.finish();
+                                }
                                 finish();
                                 startActivity(intent);
-                                Toast.makeText(OrderDetailsActivity.this, "取消成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderDetailActivity.this, "取消成功", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

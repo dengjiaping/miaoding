@@ -36,6 +36,8 @@ public class JazzyPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return dataList.size();
+
+//        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -45,6 +47,7 @@ public class JazzyPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.viewpager_item_custom, null);
         ImageView imgWorks = (ImageView) view.findViewById(R.id.img_custom_goods);
 
@@ -52,6 +55,7 @@ public class JazzyPagerAdapter extends PagerAdapter {
                 .load(Constant.HOST + dataList.get(position).getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
+
 
         imgWorks.setOnClickListener(new View.OnClickListener() {
             @Override

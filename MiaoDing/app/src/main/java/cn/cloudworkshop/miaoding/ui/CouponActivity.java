@@ -100,7 +100,7 @@ public class CouponActivity extends BaseActivity {
                 break;
             case R.id.img_header_share:
                 Intent intent = new Intent(this, CouponRuleActivity.class);
-                intent.putExtra("type", "coupon");
+                intent.putExtra("type", "coupon_rule");
                 startActivity(intent);
                 break;
         }

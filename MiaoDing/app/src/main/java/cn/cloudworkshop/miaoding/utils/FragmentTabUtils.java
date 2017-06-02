@@ -23,7 +23,6 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
     private int currentTab; // 当前Tab页面索引
 
 
-
     /**
      * @param fragmentManager
      * @param fragmentList
@@ -70,9 +69,17 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
         showTab(i); // 显示目标tab
     }
 
+    /**
+     * @param position 设置当前fragment
+     */
+    public void setCurrentFragment(int position) {
+        ((RadioButton) rgs.getChildAt(position)).setChecked(true);
+    }
+
 
     /**
      * 切换tab
+     *
      * @param index
      */
     private void showTab(int index) {

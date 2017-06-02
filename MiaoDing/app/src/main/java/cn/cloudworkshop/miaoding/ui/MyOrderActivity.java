@@ -45,14 +45,14 @@ public class MyOrderActivity extends BaseActivity {
     private List<String> titleList;
     private List<Fragment> fragmentList;
 
-    public static Activity orderActivity;
+    public static Activity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder);
         ButterKnife.bind(this);
-        orderActivity = this;
+        instance = this;
         getData();
         initData();
     }

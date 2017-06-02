@@ -34,7 +34,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -107,7 +106,7 @@ public class LoginActivity extends BaseActivity {
      */
     private void loginLog() {
         String pageName = getIntent().getStringExtra("page_name");
-        if (pageName != null) {
+        if (pageName != null){
             OkHttpUtils.post()
                     .url(Constant.LOGIN_LOG)
                     .addParams("p_module_name", pageName)
@@ -210,14 +209,17 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_cancel_login:
-                String cancel = getIntent().getStringExtra("log_in");
-                if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
-                    Intent intent = new Intent(this,MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               String cancel =  getIntent().getStringExtra("log_in");
+                if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    if (MainActivity.instance != null) {
+                        MainActivity.instance.finish();
+                    }
+                    finish();
                     startActivity(intent);
+                }else {
+                    finish();
                 }
-                finish();
-
                 break;
             case R.id.tv_verification_code:
                 getVerificationCode();
@@ -242,12 +244,12 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "手机号或验证码有误，请重新输入", Toast.LENGTH_SHORT).show();
         } else {
             if (!TextUtils.isEmpty(msgToken)) {
-                Map<String, String> map = new HashMap<>();
+                Map<String ,String> map = new HashMap<>();
                 map.put("phone", etUserName.getText().toString().trim());
                 map.put("code", etUserPassword.getText().toString().trim());
                 map.put("token", msgToken);
                 map.put("device_id", SharedPreferencesUtils.getString(LoginActivity.this, "client_id"));
-                if (logId != null) {
+                if (logId != null){
                     map.put("id", logId);
                 }
 
@@ -358,7 +360,7 @@ public class LoginActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.VERIFICATION_CODE)
                 .addParams("phone", etUserName.getText().toString().trim())
-                .addParams("content", "1")
+                .addParams("type", "1")
                 .build()
                 .execute(new StringCallback() {
 
@@ -390,13 +392,18 @@ public class LoginActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            String cancel = getIntent().getStringExtra("log_in");
-            if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
-                Intent intent = new Intent(this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            String cancel =  getIntent().getStringExtra("log_in");
+            if (!TextUtils.isEmpty(cancel) && cancel.equals("center")){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (MainActivity.instance != null) {
+                    MainActivity.instance.finish();
+                }
+                finish();
                 startActivity(intent);
+            }else {
+                finish();
             }
-            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
