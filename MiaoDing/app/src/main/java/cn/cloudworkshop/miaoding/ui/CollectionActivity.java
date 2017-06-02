@@ -60,7 +60,6 @@ public class CollectionActivity extends BaseActivity {
 
     private List<CollectionBean.DataBean> itemList = new ArrayList<>();
 
-
     //页数
     private int page = 1;
     //刷新
@@ -99,7 +98,6 @@ public class CollectionActivity extends BaseActivity {
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
@@ -152,7 +150,7 @@ public class CollectionActivity extends BaseActivity {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_collection_goods));
                 holder.setText(R.id.tv_collection_name, itemBean.getName());
-                holder.setText(R.id.tv_collection_price, "¥" + itemBean.getPrice2());
+//                holder.setText(R.id.tv_collection_price, "¥" + itemBean.getPrice2());
             }
         };
 
@@ -205,26 +203,6 @@ public class CollectionActivity extends BaseActivity {
         });
 
 
-//        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                Intent intent;
-//                if (itemList.get(position - 1).getType() == 1) {
-//                    intent = new Intent(CollectionActivity.this, CustomGoodsActivity.class);
-//                } else {
-//                    intent = new Intent(CollectionActivity.this, WorksDetailActivity.class);
-//                }
-//
-//                intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));
-//                startActivity(intent);
-//            }
-//
-//            @Override
-//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                cancelCollection(itemList.get(position).getId(), position);
-//                return false;
-//            }
-//        });
     }
 
 

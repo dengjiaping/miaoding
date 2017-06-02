@@ -79,8 +79,6 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
             AddressPicker picker = new AddressPicker(activity, result);
             picker.setHideProvince(hideProvince);
             picker.setHideCounty(hideCounty);
-            picker.setOffset(2);
-
             if (hideCounty) {
                 picker.setColumnWeight(0.8f, 1.0f);
             } else if (hideProvince) {
@@ -89,7 +87,7 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
                 picker.setColumnWeight(0.8f, 1.0f, 1.0f);
             }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
-
+            picker.setOnAddressPickListener(callback);
             picker.show();
         } else {
             callback.onAddressInitFailed();

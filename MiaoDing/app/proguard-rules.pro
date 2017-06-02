@@ -91,8 +91,10 @@
 #---------------------------------------------------------------------------------------------------
 #---------------------------------实体类---------------------------------
 
--keep class [cn.cloudworkshop.miaoding].** { *;}
+-keep class [cn.cloudworkshop.miaoding].** {*;}
 -keep class cn.cloudworkshop.miaoding.bean.**{*;}
+
+-keep class cn.cloudworkshop.miaoding.utils.GsonUtils{*;}
 
 #---------------------------------第三方包-------------------------------
 

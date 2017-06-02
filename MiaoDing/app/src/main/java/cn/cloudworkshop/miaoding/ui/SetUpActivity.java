@@ -254,7 +254,9 @@ public class SetUpActivity extends BaseActivity {
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "phone");
                                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                MainActivity.instance.finish();
+                                if (MainActivity.instance != null) {
+                                    MainActivity.instance.finish();
+                                }
                                 finish();
                                 startActivity(intent);
 

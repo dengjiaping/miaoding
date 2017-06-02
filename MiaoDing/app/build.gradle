@@ -9,7 +9,7 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 22
+        versionCode 23
         versionName "1.5.1"
         multiDexEnabled true
 

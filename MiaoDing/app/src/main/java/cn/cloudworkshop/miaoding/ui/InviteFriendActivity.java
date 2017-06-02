@@ -116,7 +116,7 @@ public class InviteFriendActivity extends BaseActivity {
                 break;
             case R.id.tv_activity_rule:
                 Intent intent = new Intent(this, CouponRuleActivity.class);
-                intent.putExtra("type", "invite_friend");
+                intent.putExtra("type", "invite_rule");
                 intent.putExtra("title","活动规则");
                 intent.putExtra("img_url",inviteBean.getImg());
                 startActivity(intent);

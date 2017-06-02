@@ -133,7 +133,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private CommonAdapter<ConfirmOrderBean.DataBean.CarListBean> adapter;
 
     private PayOrderUtils payOrderUtil;
-    static Activity orderActivity;
+
     private int isAddressDelete;
 
     private String goodsId;
@@ -148,7 +148,6 @@ public class ConfirmOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
         ButterKnife.bind(this);
-        orderActivity = this;
         getData();
         initData();
     }

@@ -152,7 +152,9 @@ public class AppointmentActivity extends BaseActivity {
                 if (type.equals("pay")) {
                     Intent intent2 = new Intent(this, MainActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    MainActivity.instance.finish();
+                    if (MainActivity.instance != null) {
+                        MainActivity.instance.finish();
+                    }
                     finish();
                     startActivity(intent2);
                 } else {
@@ -160,7 +162,7 @@ public class AppointmentActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_check_order:
-                Intent intent1 = new Intent(this, OrderDetailsActivity.class);
+                Intent intent1 = new Intent(this, OrderDetailActivity.class);
                 intent1.putExtra("id", getIntent().getStringExtra("order_id"));
                 finish();
                 startActivity(intent1);
