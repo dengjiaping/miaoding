@@ -351,7 +351,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 .url(Constant.CART_TO_TAILOR)
                 .addParams("token", SharedPreferencesUtils.getString(ShoppingCartActivity.this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
-                .addParams("phone_type", 3 + "")
+                .addParams("phone_type", "6")
                 .build()
                 .execute(new StringCallback() {
                     @Override

@@ -425,7 +425,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                     switch (isAddressDelete) {
                         case 0:
                             Intent intent = new Intent(ConfirmOrderActivity.this, AddAddressActivity.class);
-                            intent.putExtra("content", "add");
+                            intent.putExtra("type", "add");
                             startActivityForResult(intent, 2);
                             break;
                         case 1:

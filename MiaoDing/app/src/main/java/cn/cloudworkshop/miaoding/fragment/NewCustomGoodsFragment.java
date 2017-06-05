@@ -118,6 +118,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response, int id) {
                         loadingView.smoothToHide();
+                        imgSelectType.setEnabled(true);
                         listBean = GsonUtils.jsonToBean(response, GoodsListBean.class);
                         if (listBean.getData().getData() != null && listBean.getData().getData().size() > 0) {
                             initView();
@@ -131,7 +132,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
      * 加载视图
      */
     private void initView() {
-        imgSelectType.setEnabled(true);
+
         tvCustomTitle.setText(currentGoods.getName());
         vpCustomGoods.setOffscreenPageLimit(listBean.getData().getData().size());
         vpCustomGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
