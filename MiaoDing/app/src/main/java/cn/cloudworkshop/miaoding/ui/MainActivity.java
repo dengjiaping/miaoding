@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
 
 
     /**
-     * 个推，提交设备id
+     * 推送，提交设备id
      */
     private void submitClientId() {
         String clientId = SharedPreferencesUtils.getString(this, "client_id");
