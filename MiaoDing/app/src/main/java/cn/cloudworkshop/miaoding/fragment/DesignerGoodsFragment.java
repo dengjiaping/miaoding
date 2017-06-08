@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -40,6 +41,8 @@ public class DesignerGoodsFragment extends BaseFragment {
     RecyclerView rvWorks;
     @BindView(R.id.img_no_works)
     ImageView imgNoWorks;
+    @BindView(R.id.nest_scroll)
+    NestedScrollView mNestScroll;
     private Unbinder unbinder;
 
     private List<DesignerInfoBean.DataBean.GoodsListBean> worksList;
@@ -85,7 +88,7 @@ public class DesignerGoodsFragment extends BaseFragment {
                 }
             });
         } else {
-            imgNoWorks.setVisibility(View.VISIBLE);
+            mNestScroll.setVisibility(View.VISIBLE);
         }
 
     }
