@@ -295,6 +295,7 @@ public class CustomResultActivity extends BaseActivity {
                 .addParams("spec_ids", tailorBean.getSpec_ids())
                 .addParams("spec_content", tailorBean.getSpec_content())
                 .addParams("mianliao_id", tailorBean.getFabric_id())
+                .addParams("banxing_id",tailorBean.getBanxing_id())
                 .build()
                 .execute(new StringCallback() {
                     @Override

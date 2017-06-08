@@ -5,11 +5,11 @@
               android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_select_type"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/light_gray_3d"
         android:gravity="center"
-        android:text="选择定制价格区间"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"/>

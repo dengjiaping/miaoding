@@ -19,6 +19,18 @@ public class TailorItemBean implements Serializable {
     private String log_id;
     private long goods_time;
     private long dingzhi_time;
+    private List<ItemBean> itemBean;
+    private String banxing_id;
+
+    public String getBanxing_id() {
+        return banxing_id;
+    }
+
+    public void setBanxing_id(String banxing_id) {
+        this.banxing_id = banxing_id;
+    }
+
+    private String fabric_id;
 
     public String getLog_id() {
         return log_id;
@@ -44,9 +56,7 @@ public class TailorItemBean implements Serializable {
         this.dingzhi_time = dingzhi_time;
     }
 
-    private List<ItemBean> itemBean;
 
-    private String fabric_id;
 
 
     public String getFabric_id() {

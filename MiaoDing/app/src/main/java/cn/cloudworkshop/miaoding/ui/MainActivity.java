@@ -37,10 +37,12 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
+import cn.cloudworkshop.miaoding.fragment.HomeRecommendFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -280,9 +282,9 @@ public class MainActivity extends BaseActivity {
     public void initView() {
 
         instance = this;
-        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(HomeRecommendFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(DesignerWorksFragment.newInstance());
+        fragmentList.add(NewDesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);

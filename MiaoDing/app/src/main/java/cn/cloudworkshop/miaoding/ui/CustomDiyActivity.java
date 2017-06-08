@@ -785,6 +785,7 @@ public class CustomDiyActivity extends BaseActivity {
         tailorItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
         //面料
         tailorItemBean.setFabric_id(tailorBean.getData().getMianliao().get(currentFabric).getId() + "");
+        tailorItemBean.setBanxing_id(tailorBean.getData().getBanxin().get(currentType).getId() + "");
 
         //部件
         List<TailorItemBean.ItemBean> itemList = new ArrayList<>();

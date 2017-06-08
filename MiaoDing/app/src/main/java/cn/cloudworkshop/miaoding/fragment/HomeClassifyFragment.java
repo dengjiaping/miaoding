@@ -127,14 +127,12 @@ public class HomeClassifyFragment extends BaseFragment {
                 .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_homepage, itemList) {
             @Override
             protected void convert(ViewHolder holder, HomepageTabBean.DataBeanX.DataBean dataBean, int position) {
-                holder.setVisible(R.id.view_homepage1, false);
-                holder.setVisible(R.id.view_homepage2, true);
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_home_item));
-                holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
-                holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
+//                holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
+//                holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
             }
 
         };

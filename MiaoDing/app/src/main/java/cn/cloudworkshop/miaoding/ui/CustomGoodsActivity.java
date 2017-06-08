@@ -33,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +42,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CustomGoodsBean;
+import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -81,6 +84,8 @@ public class CustomGoodsActivity extends BaseActivity {
     ImageView imgShare;
     @BindView(R.id.img_tailor_details)
     ImageView imgDetails;
+    @BindView(R.id.tv_custom_goods)
+    TextView tvCustomGoods;
     private String id;
     private CustomGoodsBean tailorBean;
     private long enterTime;
@@ -101,7 +106,7 @@ public class CustomGoodsActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        enterTime  = DateUtils.getCurrentTime();
+        enterTime = DateUtils.getCurrentTime();
     }
 
     /**
@@ -205,13 +210,17 @@ public class CustomGoodsActivity extends BaseActivity {
                 DisplayUtils.setBackgroundAlpha(CustomGoodsActivity.this, false);
             }
         });
+
+        TextView tvTitle = (TextView) contentView.findViewById(R.id.tv_select_type);
         RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
 
+
+        tvTitle.setText("选择价格定制区间");
         rvTailor.setLayoutManager(new LinearLayoutManager(CustomGoodsActivity.this));
 
         CommonAdapter<CustomGoodsBean.DataBean.PriceBean> priceAdapter = new CommonAdapter
                 <CustomGoodsBean.DataBean.PriceBean>(CustomGoodsActivity.this,
-                R.layout.listitem_price_type, tailorBean.getData().getPrice()) {
+                R.layout.listitem_select_price, tailorBean.getData().getPrice()) {
             @Override
             protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.PriceBean priceBean, int position) {
                 TextView tvPrice = holder.getView(R.id.tv_type_item);
@@ -236,8 +245,8 @@ public class CustomGoodsActivity extends BaseActivity {
                         getPrice().get(position).getPrice()));
                 bundle.putString("price_type", tailorBean.getData().getPrice().get(position).getId() + "");
                 bundle.putInt("classify_id", tailorBean.getData().getClassify_id());
-                bundle.putString("log_id",tailorBean.getId());
-                bundle.putLong("goods_time",enterTime);
+                bundle.putString("log_id", tailorBean.getId());
+                bundle.putLong("goods_time", enterTime);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -253,7 +262,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
 
     @OnClick({R.id.tv_goods_tailor, R.id.img_tailor_back, R.id.img_add_like, R.id.img_tailor_consult,
-            R.id.img_tailor_share})
+            R.id.img_tailor_share, R.id.tv_custom_goods})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goods_tailor:
@@ -270,6 +279,15 @@ public class CustomGoodsActivity extends BaseActivity {
 //                        intent.putExtra("goods_name", tailorBean.getName());
 //                        startActivityForResult(intent, 1);
 //                    }
+                }
+                break;
+            case R.id.tv_custom_goods:
+                if (TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                    Intent login = new Intent(this, LoginActivity.class);
+                    login.putExtra("page_name", "定制");
+                    startActivity(login);
+                } else {
+                    selectGoodsType();
                 }
                 break;
             case R.id.img_tailor_back:
@@ -298,6 +316,104 @@ public class CustomGoodsActivity extends BaseActivity {
     }
 
     /**
+     * 定制同款选择版型
+     */
+    private void selectGoodsType() {
+
+        View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_price, null);
+        final PopupWindow mPopupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setContentView(contentView);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        DisplayUtils.setBackgroundAlpha(this, true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                DisplayUtils.setBackgroundAlpha(CustomGoodsActivity.this, false);
+            }
+        });
+
+        TextView tvTitle = (TextView) contentView.findViewById(R.id.tv_select_type);
+        RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
+
+
+        tvTitle.setText("选择版型");
+        rvTailor.setLayoutManager(new LinearLayoutManager(CustomGoodsActivity.this));
+
+        CommonAdapter<CustomGoodsBean.DataBean.BanxingListBean> typeAdapter = new CommonAdapter
+                <CustomGoodsBean.DataBean.BanxingListBean>(CustomGoodsActivity.this,
+                R.layout.listitem_select_type, tailorBean.getData().getBanxing_list()) {
+            @Override
+            protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.BanxingListBean
+                    banxingListBean, int position) {
+                holder.setText(R.id.tv_item_type, banxingListBean.getName());
+            }
+        };
+
+        rvTailor.setAdapter(typeAdapter);
+
+
+        typeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                mPopupWindow.dismiss();
+                Intent intent;
+                Bundle bundle = new Bundle();
+                int classifyId = tailorBean.getData().getClassify_id();
+                if (classifyId == 1 || classifyId == 2) {
+                    intent = new Intent(CustomGoodsActivity.this, EmbroideryActivity.class);
+                    bundle.putInt("classify_id", classifyId);
+                } else {
+                    intent = new Intent(CustomGoodsActivity.this, CustomResultActivity.class);
+                }
+
+
+                TailorItemBean tailorItemBean = new TailorItemBean();
+                tailorItemBean.setId(id);
+                tailorItemBean.setGoods_name(tailorBean.getData().getName());
+                tailorItemBean.setPrice(new DecimalFormat("#0.00").format(tailorBean.getData().getDefault_price()));
+                tailorItemBean.setImg_url(tailorBean.getData().getThumb());
+                tailorItemBean.setPrice_type(tailorBean.getData().getPrice_type() + "");
+                tailorItemBean.setLog_id(tailorBean.getId());
+                tailorItemBean.setGoods_time(enterTime);
+                tailorItemBean.setDingzhi_time(0);
+                //面料
+                tailorItemBean.setFabric_id(tailorBean.getData().getDefault_mianliao() + "");
+                tailorItemBean.setBanxing_id(tailorBean.getData().getBanxing_list().get(position).getId() + "");
+
+                //部件
+                List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+
+                for (int i = 0; i < tailorBean.getData().getDefault_spec_list().size(); i++) {
+                    TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+                    itemBean.setImg(tailorBean.getData().getDefault_spec_list().get(i).getImg_c());
+                    itemBean.setPosition_id(tailorBean.getData().getDefault_spec_list().get(i).getPosition_id());
+                    itemList.add(itemBean);
+                }
+
+
+                tailorItemBean.setSpec_ids(tailorBean.getData().getDefault_spec_ids());
+                tailorItemBean.setSpec_content(tailorBean.getData().getDefault_spec_content());
+
+                tailorItemBean.setItemBean(itemList);
+                bundle.putSerializable("tailor", tailorItemBean);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+
+    }
+
+    /**
      * 商品订制跟踪
      */
     private void customGoodsLog() {
@@ -320,7 +436,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response, int id) {
-                            LogUtils.log("goods:"+response);
+                            LogUtils.log("goods:" + response);
                         }
                     });
         }
@@ -392,4 +508,5 @@ public class CustomGoodsActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

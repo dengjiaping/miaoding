@@ -389,6 +389,8 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setItemBean(itemList);
                             //面料
                             tailorBean.setFabric_id(cartDetails.getData().getMianliao_id());
+                            //版型
+                            tailorBean.setBanxing_id(cartDetails.getData().getBanxing_id());
                             //部件id
                             tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
                             //部件名称
