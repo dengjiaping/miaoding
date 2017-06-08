@@ -10,9 +10,10 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:layout_behavior="android.support.design.widget.ParallaxScaleBehavior">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.github.anzewei.design.CollapsingCenterLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:fitsSystemWindows="true"
@@ -39,7 +40,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp"/>
             </RelativeLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </com.github.anzewei.design.CollapsingCenterLayout>
 
 
         <com.flyco.tablayout.SlidingTabLayout
