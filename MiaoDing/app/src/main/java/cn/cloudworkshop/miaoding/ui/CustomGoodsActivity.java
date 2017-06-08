@@ -215,6 +215,7 @@ public class CustomGoodsActivity extends BaseActivity {
         RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
 
 
+
         tvTitle.setText("选择价格定制区间");
         rvTailor.setLayoutManager(new LinearLayoutManager(CustomGoodsActivity.this));
 
