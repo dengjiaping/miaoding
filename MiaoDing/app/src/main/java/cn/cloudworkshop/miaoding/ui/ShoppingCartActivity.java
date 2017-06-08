@@ -351,7 +351,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 .url(Constant.CART_TO_TAILOR)
                 .addParams("token", SharedPreferencesUtils.getString(ShoppingCartActivity.this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
-                .addParams("phone_type", 3 + "")
+                .addParams("phone_type", "6")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -389,6 +389,8 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setItemBean(itemList);
                             //面料
                             tailorBean.setFabric_id(cartDetails.getData().getMianliao_id());
+                            //版型
+                            tailorBean.setBanxing_id(cartDetails.getData().getBanxing_id());
                             //部件id
                             tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
                             //部件名称

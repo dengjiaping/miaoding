@@ -40,10 +40,6 @@ public class UserAgreementActivity extends BaseActivity {
 
     private void initView() {
         switch (type){
-            case "register":
-                tvHeaderTitle.setText("用户协议");
-                tvAgreement.setText(MyApplication.userAgreement);
-                break;
             case "measure":
                 tvHeaderTitle.setText("量体协议");
                 tvAgreement.setText(MyApplication.measureAgreement);

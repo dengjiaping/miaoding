@@ -228,7 +228,7 @@ WorksDetailActivity extends BaseActivity {
                 showWorksType();
                 break;
             case R.id.img_works_designer:
-                Intent intent = new Intent(this, DesignerInfoActivity.class);
+                Intent intent = new Intent(this, DesignerDetailActivity.class);
                 intent.putExtra("id", worksBean.getDesigner().getId() + "");
                 startActivity(intent);
                 break;

@@ -83,6 +83,10 @@ public class CustomDiyActivity extends BaseActivity {
     ImageView imgClothLarge;
     @BindView(R.id.img_reset_tailor)
     ImageView imgResetTailor;
+    @BindView(R.id.tv_item_introduce)
+    TextView tvIntroduce;
+    @BindView(R.id.rl_cloth_detail)
+    RelativeLayout rlClothDetail;
 
     private String id;
     private String goodsName;
@@ -297,7 +301,7 @@ public class CustomDiyActivity extends BaseActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    imgClothLarge.setVisibility(View.GONE);
+                    rlClothDetail.setVisibility(View.GONE);
                 }
                 return false;
             }
@@ -370,8 +374,8 @@ public class CustomDiyActivity extends BaseActivity {
                     currentFabric = position;
                     fabricAdapter.notifyDataSetChanged();
                     tvHeaderTitle.setText(tailorBean.getData().getMianliao().get(position).getName());
-                    if (imgClothLarge.getVisibility() == View.VISIBLE) {
-                        imgClothLarge.setVisibility(View.GONE);
+                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                        rlClothDetail.setVisibility(View.GONE);
                     }
 
                     initCloth();
@@ -386,8 +390,9 @@ public class CustomDiyActivity extends BaseActivity {
                             .load(Constant.HOST + tailorBean.getData().getMianliao().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(imgClothLarge);
-                    if (imgClothLarge.getVisibility() == View.GONE) {
-                        imgClothLarge.setVisibility(View.VISIBLE);
+                    tvIntroduce.setText("");
+                    if (rlClothDetail.getVisibility() == View.GONE) {
+                        rlClothDetail.setVisibility(View.VISIBLE);
                     }
                     return false;
                 }
@@ -515,8 +520,8 @@ public class CustomDiyActivity extends BaseActivity {
                     currentType = position;
                     typeAdapter.notifyDataSetChanged();
                     tvHeaderTitle.setText(tailorBean.getData().getBanxin().get(position).getName());
-                    if (imgClothLarge.getVisibility() == View.VISIBLE) {
-                        imgClothLarge.setVisibility(View.GONE);
+                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                        rlClothDetail.setVisibility(View.GONE);
                     }
 
                     initCloth();
@@ -531,8 +536,9 @@ public class CustomDiyActivity extends BaseActivity {
                             .load(Constant.HOST + tailorBean.getData().getBanxin().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(imgClothLarge);
-                    if (imgClothLarge.getVisibility() == View.GONE) {
-                        imgClothLarge.setVisibility(View.VISIBLE);
+                    tvIntroduce.setText("");
+                    if (rlClothDetail.getVisibility() == View.GONE) {
+                        rlClothDetail.setVisibility(View.VISIBLE);
                     }
                     return false;
                 }
@@ -672,8 +678,8 @@ public class CustomDiyActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
 
-                if (imgClothLarge.getVisibility() == View.VISIBLE) {
-                    imgClothLarge.setVisibility(View.GONE);
+                if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                    rlClothDetail.setVisibility(View.GONE);
                 }
 
                 CircleImageView imgItem = (CircleImageView) rvSelectType
@@ -744,8 +750,9 @@ public class CustomDiyActivity extends BaseActivity {
                         .load(Constant.HOST + itemList.get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgClothLarge);
-                if (imgClothLarge.getVisibility() == View.GONE) {
-                    imgClothLarge.setVisibility(View.VISIBLE);
+                tvIntroduce.setText(itemList.get(position).getIntroduce());
+                if (rlClothDetail.getVisibility() == View.GONE) {
+                    rlClothDetail.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -778,6 +785,7 @@ public class CustomDiyActivity extends BaseActivity {
         tailorItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
         //面料
         tailorItemBean.setFabric_id(tailorBean.getData().getMianliao().get(currentFabric).getId() + "");
+        tailorItemBean.setBanxing_id(tailorBean.getData().getBanxin().get(currentType).getId() + "");
 
         //部件
         List<TailorItemBean.ItemBean> itemList = new ArrayList<>();

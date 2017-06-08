@@ -6,8 +6,8 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-//    public static final String HOST = "http://139.196.113.61";
-    public static final String HOST = "http://www.cloudworkshop.cn";
+    public static final String HOST = "http://139.196.113.61";
+//    public static final String HOST = "http://www.cloudworkshop.cn";
 //public static final String HOST = "http://192.168.1.156";
     public static final String APP_ID = "wx07c2173e7686741e";
     public static final String HOMEPAGE_BANNER = HOST + "/index.php/index/index/get_img";
@@ -56,7 +56,7 @@ public class Constant {
     public static final String QUESTION_CLASSIFY = HOST + "/index.php/index/index/help_classify";
     public static final String QUESTION_LIST = HOST + "/index.php/index/index/help_list";
     public static final String QUESTION_DETAIL = HOST + "/index.php/index/index/help_detail";
-    public static final String CHECK_UPDATE = HOST + "/index.php/index/sys/index";
+    public static final String APP_INDEX = HOST + "/index.php/index/sys/index";
     public static final String ALI_PAY = HOST + "/index.php/index/index/mk_pay_order";
     public static final String LOGISTICS_TRACK = HOST + "/index.php/index/index/kdcx";
     public static final String WE_CHAT_PAY = HOST + "/index.php/index/wxpay/mk_pay_order";
@@ -82,8 +82,9 @@ public class Constant {
     public static final String UPGRADE_GIFT = HOST + "/index.php/index/user/user_upgrade_gift";
     public static final String BIRTHDAY_GIFT = HOST + "/index.php/index/user/get_birthday_gift";
     public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img";
-    public static final String POP_DESIGNER = HOST + "/index.php/index/index/get_pop_designer";
+    public static final String DESIGNER_LIST = HOST + "/index.php/index/index/get_designer_list";
     public static final String DESIGNER_DETAILS = HOST + "/index.php/index/index/user_intro";
+    public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";
 
     public static final String HOMEPAGE_LOG = HOST + "/index.php/index/index/save_index_log";
     public static final String GOODS_LOG = HOST + "/index.php/index/index/save_goods_log";

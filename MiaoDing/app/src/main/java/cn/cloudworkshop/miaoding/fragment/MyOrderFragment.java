@@ -134,7 +134,7 @@ public class MyOrderFragment extends BaseFragment {
 
                 holder.setText(R.id.tv_order_number, dataBean.getOrder_no());
 
-                if (dataBean.getList() != null && dataBean.getList().size() > 0){
+                if (dataBean.getList() != null && dataBean.getList().size() > 0) {
                     Glide.with(getActivity())
                             .load(Constant.HOST + dataBean.getList().get(0).getGoods_thumb())
                             .into((ImageView) holder.getView(R.id.img_order_info));
@@ -184,11 +184,11 @@ public class MyOrderFragment extends BaseFragment {
                     case 4:
                         holder.setVisible(R.id.tv_after_sale, false);
                         holder.setVisible(R.id.tv_order_control, true);
-                        holder.setVisible(R.id.tv_order_pay, false);
+                        holder.setVisible(R.id.tv_order_pay, true);
                         holder.setText(R.id.tv_order_status, "已完成");
                         holder.setText(R.id.tv_after_sale, "售后服务");
                         holder.setText(R.id.tv_order_control, "查看物流");
-
+                        holder.setText(R.id.tv_order_pay, "评价");
                         break;
                     case -2:
                         holder.setVisible(R.id.tv_after_sale, false);
@@ -237,6 +237,9 @@ public class MyOrderFragment extends BaseFragment {
                                 break;
                             case 3:
                                 confirmReceive(dataList.get(position).getId());
+                                break;
+                            case 4:
+
                                 break;
 
                         }
@@ -350,7 +353,7 @@ public class MyOrderFragment extends BaseFragment {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
-                                    if (code == 1){
+                                    if (code == 1) {
                                         dataList.remove(position);
                                         adapter.notifyItemRemoved(position);
                                         adapter.notifyItemRangeChanged(position, adapter.getItemCount());

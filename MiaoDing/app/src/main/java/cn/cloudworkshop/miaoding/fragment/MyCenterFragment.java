@@ -113,7 +113,7 @@ public class MyCenterFragment extends BaseFragment {
         if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra("log_in", "center");
-            intent.putExtra("page_name", "个人中心");
+            intent.putExtra("page_name", "我的");
             startActivity(intent);
         } else {
             rlMycenter.setVisibility(View.VISIBLE);

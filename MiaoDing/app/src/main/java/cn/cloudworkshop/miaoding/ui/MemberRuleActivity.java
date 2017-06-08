@@ -94,7 +94,6 @@ public class MemberRuleActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(MemberRuleActivity.this, CouponRuleActivity.class);
-                intent.putExtra("type", "member_rule");
                 intent.putExtra("title", dataList.get(position).getName());
                 intent.putExtra("img_url", dataList.get(position).getImg_list().get(0));
                 startActivity(intent);

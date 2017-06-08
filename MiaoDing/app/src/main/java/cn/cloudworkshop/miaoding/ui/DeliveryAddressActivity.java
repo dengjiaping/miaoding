@@ -66,7 +66,6 @@ public class DeliveryAddressActivity extends BaseActivity {
     private int page = 1;
     //加载更多
     private boolean isLoadMore;
-    private CommonAdapter<ReceiveAddressBean.DataBean> adapter;
     private List<ReceiveAddressBean.DataBean> dataList = new ArrayList<>();
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
     private boolean isRefresh;
@@ -157,7 +156,8 @@ public class DeliveryAddressActivity extends BaseActivity {
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new CommonAdapter<ReceiveAddressBean.DataBean>(this, R.layout.listitem_address, dataList) {
+        CommonAdapter<ReceiveAddressBean.DataBean> adapter = new CommonAdapter<ReceiveAddressBean
+                .DataBean>(this, R.layout.listitem_address, dataList) {
             @Override
             protected void convert(ViewHolder holder, final ReceiveAddressBean.DataBean dataBean, final int position) {
                 holder.setText(R.id.tv_user_name, dataBean.getName());
@@ -204,7 +204,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("content", "alert");
+                        bundle.putString("type", "alert");
                         bundle.putSerializable("alert", dataBean);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -371,7 +371,7 @@ public class DeliveryAddressActivity extends BaseActivity {
             case R.id.tv_add_address:
                 Intent intent1 = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("content", "add");
+                bundle1.putString("type", "add");
                 intent1.putExtras(bundle1);
                 startActivity(intent1);
                 break;

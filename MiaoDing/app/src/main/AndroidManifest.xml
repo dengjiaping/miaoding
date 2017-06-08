@@ -202,6 +202,7 @@
         <activity android:name=".ui.WorksDetailActivity"/>
         <activity android:name=".ui.CustomDiyActivity"/>
         <activity android:name=".ui.DesignerInfoActivity"/>
+        <activity android:name=".ui.DesignerDetailActivity"/>
 
 
         <service android:name="com.amap.api.location.APSService"/>

@@ -1,5 +1,9 @@
 package cn.cloudworkshop.miaoding.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -68,6 +72,15 @@ public class DesignerInfoBean {
         private int sale_num;
         private String content;
         private String tag;
+        private String story;
+
+        public String getStory() {
+            return story;
+        }
+
+        public void setStory(String story) {
+            this.story = story;
+        }
 
         public String getTag() {
             return tag;
@@ -159,7 +172,7 @@ public class DesignerInfoBean {
             this.goods_list = goods_list;
         }
 
-        public static class GoodsListBean {
+        public static class GoodsListBean implements Parcelable{
             /**
              * name : 云工场&杜嘉班纳 2017春夏新款
              * sub_name : 东西方文化的碰撞
@@ -175,6 +188,27 @@ public class DesignerInfoBean {
             private int id;
             private int type;
             private String c_time;
+
+            protected GoodsListBean(Parcel in) {
+                name = in.readString();
+                sub_name = in.readString();
+                thumb = in.readString();
+                id = in.readInt();
+                type = in.readInt();
+                c_time = in.readString();
+            }
+
+            public static final Creator<GoodsListBean> CREATOR = new Creator<GoodsListBean>() {
+                @Override
+                public GoodsListBean createFromParcel(Parcel in) {
+                    return new GoodsListBean(in);
+                }
+
+                @Override
+                public GoodsListBean[] newArray(int size) {
+                    return new GoodsListBean[size];
+                }
+            };
 
             public String getName() {
                 return name;
@@ -222,6 +256,22 @@ public class DesignerInfoBean {
 
             public void setC_time(String c_time) {
                 this.c_time = c_time;
+            }
+
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(name);
+                dest.writeString(sub_name);
+                dest.writeString(thumb);
+                dest.writeInt(id);
+                dest.writeInt(type);
+                dest.writeString(c_time);
             }
         }
     }

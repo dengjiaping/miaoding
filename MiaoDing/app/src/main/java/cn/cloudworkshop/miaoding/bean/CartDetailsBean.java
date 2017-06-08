@@ -90,6 +90,15 @@ public class CartDetailsBean {
         private String size_content;
         private String diy_content;
         private String mianliao_id;
+        private String banxing_id;
+
+        public String getBanxing_id() {
+            return banxing_id;
+        }
+
+        public void setBanxing_id(String banxing_id) {
+            this.banxing_id = banxing_id;
+        }
 
         public String getMianliao_id() {
             return mianliao_id;

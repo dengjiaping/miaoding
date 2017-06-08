@@ -93,7 +93,7 @@ public class AddAddressActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getExtras().getString("content");
+        type = getIntent().getExtras().getString("type");
     }
 
     /**
