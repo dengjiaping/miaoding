@@ -451,6 +451,15 @@ public class NewTailorBean {
                     private String img_b;
                     private String img_c;
                     private int mianliao_id;
+                    private String introduce;
+
+                    public String getIntroduce() {
+                        return introduce;
+                    }
+
+                    public void setIntroduce(String introduce) {
+                        this.introduce = introduce;
+                    }
 
                     public int getMianliao_id() {
                         return mianliao_id;

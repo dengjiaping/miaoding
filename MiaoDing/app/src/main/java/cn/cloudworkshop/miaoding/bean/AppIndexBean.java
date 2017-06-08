@@ -5,7 +5,7 @@ package cn.cloudworkshop.miaoding.bean;
  * Email：1993911441@qq.com
  * Describe：检查更新
  */
-public class CheckUpdateBean {
+public class AppIndexBean {
 
     /**
      * code : 1
@@ -72,6 +72,15 @@ public class CheckUpdateBean {
         private String kf_tel;
         private String reg_agreement;
         private String lt_agreement;
+        private String user_manual;
+
+        public String getUser_manual() {
+            return user_manual;
+        }
+
+        public void setUser_manual(String user_manual) {
+            this.user_manual = user_manual;
+        }
 
         public String getLt_agreement() {
             return lt_agreement;

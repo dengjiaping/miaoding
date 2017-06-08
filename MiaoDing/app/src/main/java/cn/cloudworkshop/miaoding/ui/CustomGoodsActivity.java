@@ -170,7 +170,6 @@ public class CustomGoodsActivity extends BaseActivity {
         Glide.with(getApplicationContext())
                 .load(Constant.HOST + tailorBean.getData().getContent2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .error(R.mipmap.icon_coupon_rule)
                 .into(imgDetails);
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {

@@ -9,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +24,9 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.MyCouponFragment;
+import okhttp3.Call;
 
 /**
  * Author：binge on 2016/12/15 16:40
@@ -44,6 +51,7 @@ public class CouponActivity extends BaseActivity {
 
     private List<String> titleList;
     private List<Fragment> fragmentList;
+    private String couponRule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,28 @@ public class CouponActivity extends BaseActivity {
      * 加载数据
      */
     private void initData() {
+
+        OkHttpUtils.get()
+                .url(Constant.COUPON_RULE)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            couponRule = jsonObject.getString("introduce_img");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
         tvHeaderTitle.setText("优惠券");
         imgHeaderShare.setVisibility(View.VISIBLE);
         imgHeaderShare.setImageResource(R.mipmap.icon_member_rule);
@@ -99,9 +129,13 @@ public class CouponActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_header_share:
-                Intent intent = new Intent(this, CouponRuleActivity.class);
-                intent.putExtra("type", "coupon_rule");
-                startActivity(intent);
+                if (couponRule != null) {
+                    Intent intent = new Intent(this, CouponRuleActivity.class);
+                    intent.putExtra("title", "使用规则");
+                    intent.putExtra("img_url", couponRule);
+                    startActivity(intent);
+                }
+
                 break;
         }
     }

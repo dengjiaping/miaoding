@@ -26,7 +26,6 @@ public class CouponRuleActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.img_user_rule)
     ImageView imgUserRule;
-    private String type;
     private String title;
     private String imgUrl;
 
@@ -41,33 +40,18 @@ public class CouponRuleActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("type");
         title = getIntent().getStringExtra("title");
         imgUrl = getIntent().getStringExtra("img_url");
     }
 
     private void initView() {
-        switch (type) {
-            case "coupon_rule":
-                tvHeaderTitle.setText("使用规则");
-                imgUserRule.setImageResource(R.mipmap.icon_coupon_rule);
-                break;
-            case "member_rule":
-                tvHeaderTitle.setText(title);
-                Glide.with(getApplicationContext())
-                        .load(Constant.HOST + imgUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imgUserRule);
-                break;
-            case "invite_rule":
-                tvHeaderTitle.setText(title);
-                Glide.with(getApplicationContext())
-                        .load(Constant.HOST + imgUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imgUserRule);
-                break;
 
-        }
+        tvHeaderTitle.setText(title);
+        Glide.with(getApplicationContext())
+                .load(Constant.HOST + imgUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgUserRule);
+
     }
 
     @OnClick(R.id.img_header_back)

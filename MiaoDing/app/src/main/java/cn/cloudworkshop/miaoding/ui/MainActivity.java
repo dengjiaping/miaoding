@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,8 +17,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.RadioGroup;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -37,7 +34,7 @@ import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.CheckUpdateBean;
+import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
@@ -49,7 +46,6 @@ import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
-import cn.cloudworkshop.miaoding.utils.SystemBarTintManager;
 import okhttp3.Call;
 
 /**
@@ -62,18 +58,18 @@ public class MainActivity extends BaseActivity {
     RadioGroup mRgs;
     private List<Fragment> fragmentList = new ArrayList<>();
     FragmentTabUtils fragmentUtils;
-    private CheckUpdateBean updateBean;
+    private AppIndexBean appIndexBean;
     private DownloadService service;
     public static MainActivity instance;
 
-    // 是否需要系统权限检测
-    private boolean isRequireCheck = true;
-    //危险权限（运行时权限）
-    static final String[] permissionStr = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    PermissionUtils permissionUtils = new PermissionUtils(this);
+//    // 是否需要系统权限检测
+//    private boolean isRequireCheck = true;
+//    //危险权限（运行时权限）
+//    static final String[] permissionStr = new String[]{
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//    };
+//
+//    PermissionUtils permissionUtils = new PermissionUtils(this);
 
 
     @Override
@@ -83,7 +79,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        checkWritePermission();
+//        checkWritePermission();
         initView();
         checkUpdate();
         isLogin();
@@ -92,21 +88,21 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    /**
-     * 检测读写权限
-     */
-    private void checkWritePermission() {
-        if (isRequireCheck) {
-            //权限没有授权，进入授权界面
-            if (permissionUtils.judgePermissions(permissionStr)) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    ActivityCompat.requestPermissions(this, permissionStr, 1);
-                } else {
-                    permissionUtils.showPermissionDialog("读写内存");
-                }
-            }
-        }
-    }
+//    /**
+//     * 检测读写权限
+//     */
+//    private void checkWritePermission() {
+//        if (isRequireCheck) {
+//            //权限没有授权，进入授权界面
+//            if (permissionUtils.judgePermissions(permissionStr)) {
+//                if (Build.VERSION.SDK_INT >= 23) {
+//                    ActivityCompat.requestPermissions(this, permissionStr, 2);
+//                } else {
+//                    permissionUtils.showPermissionDialog("读写内存");
+//                }
+//            }
+//        }
+//    }
 
 
     /**
@@ -175,7 +171,7 @@ public class MainActivity extends BaseActivity {
     private void checkUpdate() {
 
         OkHttpUtils.get()
-                .url(Constant.CHECK_UPDATE)
+                .url(Constant.APP_INDEX)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -185,21 +181,21 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        updateBean = GsonUtils.jsonToBean(response, CheckUpdateBean.class);
-                        MyApplication.loginBg = updateBean.getData().getLogin_img();
-                        MyApplication.serverPhone = updateBean.getData().getKf_tel();
-                        MyApplication.userAgreement = updateBean.getData().getReg_agreement();
-                        MyApplication.measureAgreement = updateBean.getData().getLt_agreement();
-                        if (updateBean.getData().getVersion().getAndroid() != null &&
-                                Integer.valueOf(updateBean.getData().getVersion().getAndroid()
+                        appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
+                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
+                        MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
+                        MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
+                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
+                        if (appIndexBean.getData().getVersion().getAndroid() != null &&
+                                Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
                                         .getVersion()) > getVersionCode()) {
-                            MyApplication.updateUrl = updateBean.getData().getDownload_url();
-                            MyApplication.updateContent = updateBean.getData().getVersion().getAndroid()
+                            MyApplication.updateUrl = appIndexBean.getData().getDownload_url();
+                            MyApplication.updateContent = appIndexBean.getData().getVersion().getAndroid()
                                     .getRemark();
                             AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
                                     R.style.AlertDialog);
                             dialog.setTitle("检测到新版本，请更新");
-                            dialog.setMessage(updateBean.getData().getVersion().getAndroid().getRemark());
+                            dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
                             //为“确定”按钮注册监听事件
                             dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
                                 @Override
@@ -293,17 +289,17 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1 && grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            isRequireCheck = false;
-        } else {
-            isRequireCheck = true;
-            permissionUtils.showPermissionDialog("读写内存");
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == 2) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                isRequireCheck = false;
+//            } else {
+//                isRequireCheck = true;
+//                permissionUtils.showPermissionDialog("读写内存");
+//            }
+//        }
+//    }
 
 
     @Override
