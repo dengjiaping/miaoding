@@ -203,6 +203,9 @@
         <activity android:name=".ui.CustomDiyActivity"/>
         <activity android:name=".ui.DesignerInfoActivity"/>
         <activity android:name=".ui.DesignerDetailActivity"/>
+        <activity android:name=".ui.EvaluateActivity"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".ui.TestActivity"/>
 
 
         <service android:name="com.amap.api.location.APSService"/>

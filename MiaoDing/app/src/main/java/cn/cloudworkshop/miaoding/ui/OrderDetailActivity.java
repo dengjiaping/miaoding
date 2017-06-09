@@ -80,6 +80,8 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvOrderAfter;
     //订单id
     private String orderId;
+    //评价
+    private int commentId;
     private OrderDetailsBean orderBean;
     //倒计时时间
     private int recLen;
@@ -126,6 +128,11 @@ public class OrderDetailActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
 
     /**
      * 获取网络数据
@@ -151,7 +158,6 @@ public class OrderDetailActivity extends BaseActivity {
                     }
                 });
     }
-
 
     /**
      * 加载视图
@@ -192,6 +198,10 @@ public class OrderDetailActivity extends BaseActivity {
                 tvOrderCancel.setVisibility(View.VISIBLE);
                 tvOrderStatus.setText("已完成");
                 tvOrderCancel.setText("查看物流");
+                if (commentId == 0) {
+                    tvOrderPayMoney.setVisibility(View.VISIBLE);
+                    tvOrderPayMoney.setText("评价");
+                }
                 break;
             case -2:
                 tvPayTime.setText("已取消");
@@ -271,6 +281,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         orderId = intent.getStringExtra("id");
+        commentId = intent.getIntExtra("comment_id", 0);
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_order_pay_money, R.id.tv_order_cancel, R.id.tv_order_after})
@@ -310,6 +321,26 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
             case 3:
                 confirmReceive(orderId);
+                break;
+            case 4:
+
+                //订单评价
+                Intent intent = new Intent(this, EvaluateActivity.class);
+                intent.putExtra("order_id", orderId);
+                intent.putExtra("goods_id", orderBean.getData().getCar_list().get(0).getGoods_id()+"");
+                intent.putExtra("goods_img", orderBean.getData().getCar_list().get(0).getGoods_thumb());
+                intent.putExtra("goods_name", orderBean.getData().getCar_list().get(0).getGoods_name());
+
+                switch (orderBean.getData().getCar_list().get(0).getGoods_type()) {
+                    case 2:
+                        intent.putExtra("goods_type", orderBean.getData().getCar_list().get(0).getSize_content());
+                        break;
+                    default:
+                        intent.putExtra("goods_type", "定制款");
+                        break;
+                }
+
+                startActivity(intent);
                 break;
         }
     }

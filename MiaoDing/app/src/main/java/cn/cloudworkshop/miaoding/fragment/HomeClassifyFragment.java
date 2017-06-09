@@ -223,7 +223,6 @@ public class HomeClassifyFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-
                         LogUtils.log("homepage");
                     }
                 });

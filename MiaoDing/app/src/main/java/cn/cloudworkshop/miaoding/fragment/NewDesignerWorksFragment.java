@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.FlipAdapter;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
-import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import okhttp3.Call;
 
 /**
  * Author：binge on 2017-06-08 11:25
@@ -36,14 +30,16 @@ import okhttp3.Call;
  */
 public class NewDesignerWorksFragment extends BaseFragment {
 
-    @BindView(R.id.img_designer_works)
-    ImageView imgDesignerWorks;
+
     @BindView(R.id.tv_designer_works)
     TextView tvDesignerWorks;
     @BindView(R.id.tab_designer_works)
     SlidingTabLayout tabDesignerWorks;
     @BindView(R.id.vp_designer_works)
     ViewPager vpDesignerWorks;
+    @BindView(R.id.img_designer_works)
+    ImageView imgDesignerWorks;
+
     private Unbinder unbinder;
 
     private List<DesignWorksBean.DataBean.ItemBean> designerList = new ArrayList<>();
@@ -51,37 +47,38 @@ public class NewDesignerWorksFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_fragment_designer_works, container, false);
+        View view = inflater.inflate(R.layout.fragment_designer_works_new, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+//        initData();
+        initView();
         return view;
     }
 
-    /**
-     * 加载数据
-     */
-    private void initData() {
-
-
-        OkHttpUtils.get()
-                .url(Constant.DESIGNER_WORKS)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        DesignWorksBean designerBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
-                        if (designerBean.getData().getData() != null) {
-                            designerList.addAll(designerBean.getData().getData());
-                            initView();
-                        }
-                    }
-                });
-    }
+//    /**
+//     * 加载数据
+//     */
+//    private void initData() {
+//
+//
+//        OkHttpUtils.get()
+//                .url(Constant.DESIGNER_WORKS)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        DesignWorksBean designerBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
+//                        if (designerBean.getData().getData() != null) {
+//                            designerList.addAll(designerBean.getData().getData());
+//
+//                        }
+//                    }
+//                });
+//    }
 
     private void initView() {
         List<String> titleList = new ArrayList<>();

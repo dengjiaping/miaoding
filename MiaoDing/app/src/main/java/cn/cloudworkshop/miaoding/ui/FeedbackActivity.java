@@ -1,14 +1,11 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -124,7 +121,6 @@ public class FeedbackActivity extends BaseActivity {
     }
 
 
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -178,7 +174,7 @@ public class FeedbackActivity extends BaseActivity {
                     if (selectedPhotos.size() != 0) {
                         imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
                         handler.sendEmptyMessage(1);
-                    }else {
+                    } else {
                         handler.sendEmptyMessage(2);
                     }
                 }

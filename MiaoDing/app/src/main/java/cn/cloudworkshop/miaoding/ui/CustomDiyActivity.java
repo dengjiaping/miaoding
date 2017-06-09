@@ -79,14 +79,16 @@ public class CustomDiyActivity extends BaseActivity {
     RelativeLayout rlClothInside;
     @BindView(R.id.rgs_select_cloth)
     RadioGroup rgsSelect;
-    @BindView(R.id.img_cloth_large)
-    ImageView imgClothLarge;
     @BindView(R.id.img_reset_tailor)
     ImageView imgResetTailor;
     @BindView(R.id.tv_item_introduce)
     TextView tvIntroduce;
     @BindView(R.id.rl_cloth_detail)
     RelativeLayout rlClothDetail;
+    @BindView(R.id.tv_item_title)
+    TextView tvItemTitle;
+    @BindView(R.id.img_cloth_large)
+    CircleImageView imgClothLarge;
 
     private String id;
     private String goodsName;
@@ -177,6 +179,7 @@ public class CustomDiyActivity extends BaseActivity {
     private void initView() {
         tvHeaderNext.setVisibility(View.VISIBLE);
         tvHeaderNext.setText("下一步");
+        tvItemTitle.setTypeface(DisplayUtils.setTextType(this));
         ((RadioButton) rgsSelect.getChildAt(0)).setChecked(true);
 
         for (int i = 0; i < tailorBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
@@ -389,8 +392,10 @@ public class CustomDiyActivity extends BaseActivity {
                     Glide.with(CustomDiyActivity.this)
                             .load(Constant.HOST + tailorBean.getData().getMianliao().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .fitCenter()
                             .into(imgClothLarge);
-                    tvIntroduce.setText("");
+                    tvItemTitle.setText(tailorBean.getData().getMianliao().get(position).getName());
+                    tvIntroduce.setText(tailorBean.getData().getMianliao().get(position).getIntroduce());
                     if (rlClothDetail.getVisibility() == View.GONE) {
                         rlClothDetail.setVisibility(View.VISIBLE);
                     }
@@ -535,7 +540,9 @@ public class CustomDiyActivity extends BaseActivity {
                     Glide.with(CustomDiyActivity.this)
                             .load(Constant.HOST + tailorBean.getData().getBanxin().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .fitCenter()
                             .into(imgClothLarge);
+                    tvItemTitle.setText(tailorBean.getData().getBanxin().get(position).getName());
                     tvIntroduce.setText("");
                     if (rlClothDetail.getVisibility() == View.GONE) {
                         rlClothDetail.setVisibility(View.VISIBLE);
@@ -749,7 +756,9 @@ public class CustomDiyActivity extends BaseActivity {
                 Glide.with(CustomDiyActivity.this)
                         .load(Constant.HOST + itemList.get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .fitCenter()
                         .into(imgClothLarge);
+                tvItemTitle.setText(itemList.get(position).getName());
                 tvIntroduce.setText(itemList.get(position).getIntroduce());
                 if (rlClothDetail.getVisibility() == View.GONE) {
                     rlClothDetail.setVisibility(View.VISIBLE);
@@ -821,6 +830,9 @@ public class CustomDiyActivity extends BaseActivity {
 
         sbContent.append("面料:")
                 .append(tailorBean.getData().getMianliao().get(currentFabric).getName())
+                .append(";");
+        sbContent.append("版型:")
+                .append(tailorBean.getData().getBanxin().get(currentType).getName())
                 .append(";");
 
         tailorItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());

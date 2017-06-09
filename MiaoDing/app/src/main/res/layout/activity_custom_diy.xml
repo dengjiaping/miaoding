@@ -196,24 +196,66 @@
         android:background="@color/gray_mask"
         android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/img_cloth_large"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:scaleType="fitCenter"/>
 
-        <TextView
-            android:id="@+id/tv_item_introduce"
+        <ImageView
+            android:id="@+id/img_item_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/img_cloth_large"
-            android:layout_margin="50dp"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="82dp"
+            android:layout_marginBottom="82dp"
+            android:src="@mipmap/icon_item_introduce"/>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@id/img_item_bg"
+            android:layout_marginTop="82dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="12"/>
+
+            <cn.cloudworkshop.miaoding.view.CircleImageView
+                android:id="@+id/img_cloth_large"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="193"
+                android:src="@mipmap/icon_appoint_success"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="195"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tv_item_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_gray_22"
+                    android:singleLine="true"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/tv_item_introduce"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray_6a"
+                    android:textSize="12sp"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="1.5dp"
+                    android:layout_marginTop="15dp"/>
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

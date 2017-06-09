@@ -216,6 +216,16 @@ public class NewTailorBean {
             private int status;
             private int c_time;
             private int sort;
+            private String introduce;
+
+            public String getIntroduce() {
+                return introduce;
+            }
+
+            public void setIntroduce(String introduce) {
+                this.introduce = introduce;
+            }
+
             private List<PeijianBean> peijian;
 
             public int getId() {

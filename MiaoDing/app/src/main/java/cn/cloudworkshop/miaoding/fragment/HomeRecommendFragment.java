@@ -49,6 +49,7 @@ import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.TestActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -241,6 +242,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                 @Override
                 public void onItemClick(int position) {
 
+//                    startActivity(new Intent(getActivity(), TestActivity.class));
                     homepageLog("banner");
                     //banner点击事件统计
                     MobclickAgent.onEvent(getActivity(), "banner");

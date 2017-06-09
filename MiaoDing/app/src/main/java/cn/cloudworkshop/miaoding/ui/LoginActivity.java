@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -47,8 +46,6 @@ import okhttp3.Call;
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_cancel_login)
     ImageView imgCancelLogin;
-    @BindView(R.id.img_app_icon)
-    ImageView imgAppIcon;
     @BindView(R.id.et_user_name)
     EditText etUserName;
     @BindView(R.id.tv_verification_code)
@@ -61,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     TextView tvUserAgreement;
     @BindView(R.id.img_login)
     ImageView imgLogin;
+
 
     //验证码token
     private String msgToken;
@@ -79,13 +77,11 @@ public class LoginActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             if (msg.what == -9) {
                 tvVerificationCode.setText("重发(" + i + ")");
-                tvVerificationCode.setBackgroundColor(ContextCompat.getColor(LoginActivity.this
-                        , R.color.light_gray));
+                tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
             } else if (msg.what == -8) {
                 tvVerificationCode.setText("获取验证码");
                 tvVerificationCode.setClickable(true);
-                tvVerificationCode.setBackgroundColor(ContextCompat.getColor(LoginActivity.this
-                        , R.color.light_gray_3d));
+                tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
                 i = 30;
             }
         }
@@ -156,18 +152,15 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim())) {
-                    tvVerificationCode.setBackgroundColor(ContextCompat.getColor(LoginActivity.this
-                            , R.color.light_gray_3d));
+                    tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
                     isPhone = true;
                     if (isCode) {
-
                         imgLogin.setEnabled(true);
                     } else {
                         imgLogin.setEnabled(false);
                     }
                 } else {
-                    tvVerificationCode.setBackgroundColor(ContextCompat.getColor(LoginActivity.this
-                            , R.color.light_gray));
+                    tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
                     isPhone = false;
                     imgLogin.setEnabled(false);
                 }
@@ -205,7 +198,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_cancel_login, R.id.tv_verification_code, R.id.img_login, R.id.tv_user_agreement})
+    @OnClick({R.id.img_cancel_login, R.id.tv_verification_code, R.id.tv_user_agreement, R.id.img_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_cancel_login:
@@ -411,4 +404,6 @@ public class LoginActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    
 }

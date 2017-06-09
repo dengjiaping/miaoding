@@ -285,6 +285,15 @@ public class OrderDetailsBean {
             private String size_content;
             private int goods_type;
             private int id;
+            private int goods_id;
+
+            public int getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(int goods_id) {
+                this.goods_id = goods_id;
+            }
 
             public int getId() {
                 return id;

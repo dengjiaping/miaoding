@@ -139,7 +139,7 @@
             android:layout_alignParentRight="true"
             android:background="@color/light_gray_3d"
             android:gravity="center"
-            android:text="一键定制"
+            android:text="购买同款"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"/>
@@ -151,7 +151,7 @@
             android:layout_alignParentRight="true"
             android:background="@color/dark_gray_22"
             android:gravity="center"
-            android:text="立即定制"
+            android:text="个性定制"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"/>

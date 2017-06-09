@@ -16,6 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.recyclerview.ProgressStyle;
+import com.github.jdsjlzx.util.RecyclerViewStateUtils;
+import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -38,12 +46,15 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.OrderInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.AfterSalesActivity;
+import cn.cloudworkshop.miaoding.ui.DeliveryAddressActivity;
+import cn.cloudworkshop.miaoding.ui.EvaluateActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -59,14 +70,21 @@ public class MyOrderFragment extends BaseFragment {
     @BindView(R.id.tv_my_order)
     TextView tvMyOrder;
     @BindView(R.id.rv_goods)
-    RecyclerView rvGoods;
+    LRecyclerView rvGoods;
     @BindView(R.id.ll_null_order)
     LinearLayout llNullOrder;
 
-    private CommonAdapter<OrderInfoBean.DataBean> adapter;
-    private List<OrderInfoBean.DataBean> dataList = new ArrayList<>();
+    private CommonAdapter<OrderInfoBean.DataBeanX.DataBean> adapter;
+    private List<OrderInfoBean.DataBeanX.DataBean> dataList = new ArrayList<>();
     //订单状态
     private int orderStatus;
+    //页面
+    private int page = 1;
+    //刷新
+    private boolean isRefresh;
+    //加载更多
+    private boolean isLoadMore;
+    private LRecyclerViewAdapter mLRecyclerViewAdapter;
 
     @Nullable
     @Override
@@ -97,9 +115,10 @@ public class MyOrderFragment extends BaseFragment {
             isAfterSale = 0;
         }
         OkHttpUtils.get()
-                .url(Constant.MY_ORDER)
+                .url(Constant.GOODS_ORDER)
                 .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
                 .addParams("status", orderStatus + "")
+                .addParams("page", page + "")
                 .addParams("sh_status", isAfterSale + "")
                 .build()
                 .execute(new StringCallback() {
@@ -110,13 +129,30 @@ public class MyOrderFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        OrderInfoBean orderInfoBean = GsonUtils.jsonToBean(response, OrderInfoBean.class);
+                        if (orderInfoBean.getData().getData() != null && orderInfoBean.getData().getData().size() > 0) {
+                            if (isRefresh) {
+                                dataList.clear();
+                            }
+                            dataList.addAll(orderInfoBean.getData().getData());
+                            if (isRefresh || isLoadMore) {
+                                rvGoods.refreshComplete();
+                                mLRecyclerViewAdapter.notifyDataSetChanged();
 
-                        OrderInfoBean entity = GsonUtils.jsonToBean(response, OrderInfoBean.class);
-                        if (entity.getData() != null && entity.getData().size() > 0) {
-                            dataList.addAll(entity.getData());
-                            initView();
+                            } else {
+                                initView();
+                            }
+                            isRefresh = false;
+                            isLoadMore = false;
+                            llNullOrder.setVisibility(View.GONE);
+                            rvGoods.setVisibility(View.VISIBLE);
                         } else {
-                            llNullOrder.setVisibility(View.VISIBLE);
+                            RecyclerViewStateUtils.setFooterViewState(getActivity(),
+                                    rvGoods, 0, LoadingFooter.State.TheEnd, null);
+                            if (page == 1) {
+                                rvGoods.setVisibility(View.GONE);
+                                llNullOrder.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });
@@ -127,11 +163,9 @@ public class MyOrderFragment extends BaseFragment {
      */
     protected void initView() {
         rvGoods.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new CommonAdapter<OrderInfoBean.DataBean>(getActivity(), R.layout.listitem_order, dataList) {
+        adapter = new CommonAdapter<OrderInfoBean.DataBeanX.DataBean>(getActivity(), R.layout.listitem_order, dataList) {
             @Override
-            protected void convert(final ViewHolder holder, final OrderInfoBean.DataBean dataBean,
-                                   final int position) {
-
+            protected void convert(ViewHolder holder, final OrderInfoBean.DataBeanX.DataBean dataBean, final int position) {
                 holder.setText(R.id.tv_order_number, dataBean.getOrder_no());
 
                 if (dataBean.getList() != null && dataBean.getList().size() > 0) {
@@ -155,7 +189,7 @@ public class MyOrderFragment extends BaseFragment {
 
                 holder.setText(R.id.tv_order_price, "¥" + dataBean.getMoney());
 
-                switch (dataList.get(position).getStatus()) {
+                switch (dataBean.getStatus()) {
                     case 1:
                         holder.setVisible(R.id.tv_after_sale, false);
                         holder.setVisible(R.id.tv_order_control, true);
@@ -184,11 +218,17 @@ public class MyOrderFragment extends BaseFragment {
                     case 4:
                         holder.setVisible(R.id.tv_after_sale, false);
                         holder.setVisible(R.id.tv_order_control, true);
-                        holder.setVisible(R.id.tv_order_pay, true);
+
                         holder.setText(R.id.tv_order_status, "已完成");
                         holder.setText(R.id.tv_after_sale, "售后服务");
                         holder.setText(R.id.tv_order_control, "查看物流");
-                        holder.setText(R.id.tv_order_pay, "评价");
+                        //订单未评价
+                        if (dataBean.getComment_id() == 0) {
+                            holder.setVisible(R.id.tv_order_pay, true);
+                            holder.setText(R.id.tv_order_pay, "评价");
+                        } else {
+                            holder.setVisible(R.id.tv_order_pay, false);
+                        }
                         break;
                     case -2:
                         holder.setVisible(R.id.tv_after_sale, false);
@@ -202,9 +242,9 @@ public class MyOrderFragment extends BaseFragment {
                 holder.getView(R.id.tv_order_control).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        switch (dataList.get(position).getStatus()) {
+                        switch (dataBean.getStatus()) {
                             case 1:
-                                cancelOrder(dataList.get(position).getId());
+                                cancelOrder(dataBean.getId());
                                 break;
                             case 2:
                                 Toast.makeText(getActivity(), "已提醒商家发货，请耐心等待",
@@ -213,15 +253,14 @@ public class MyOrderFragment extends BaseFragment {
                             case 3:
                             case 4:
                                 Intent intent = new Intent(getActivity(), LogisticsActivity.class);
-                                intent.putExtra("number", dataList.get(position).getEms_no());
-                                intent.putExtra("company", dataList.get(position).getEms_com());
-                                intent.putExtra("company_name", dataList.get(position).getEms_com_name());
-                                intent.putExtra("img_url", dataList.get(position).getList().get(0)
-                                        .getGoods_thumb());
+                                intent.putExtra("number", dataBean.getEms_no());
+                                intent.putExtra("company", dataBean.getEms_com());
+                                intent.putExtra("company_name", dataBean.getEms_com_name());
+                                intent.putExtra("img_url", dataBean.getList().get(0).getGoods_thumb());
                                 startActivity(intent);
                                 break;
                             case -2:
-                                deleteOrder(dataList.get(position).getId(), position);
+                                deleteOrder(dataBean.getId(), position - 1);
                                 break;
                         }
                     }
@@ -229,19 +268,34 @@ public class MyOrderFragment extends BaseFragment {
                 holder.getView(R.id.tv_order_pay).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        switch (dataList.get(position).getStatus()) {
+                        switch (dataBean.getStatus()) {
                             case 1:
                                 PayOrderUtils payOrderUtil = new PayOrderUtils(getActivity(),
-                                        dataBean.getMoney(), dataList.get(position).getId() + "");
+                                        dataBean.getMoney(), dataBean.getId() + "");
                                 payOrderUtil.payMoney();
                                 break;
                             case 3:
-                                confirmReceive(dataList.get(position).getId());
+                                confirmReceive(dataBean.getId());
                                 break;
                             case 4:
+                                //订单评价
+                                Intent intent = new Intent(getActivity(), EvaluateActivity.class);
+                                intent.putExtra("order_id", dataBean.getId() + "");
+                                intent.putExtra("goods_id", dataBean.getList().get(0).getGoods_id() + "");
+                                intent.putExtra("goods_img", dataBean.getList().get(0).getGoods_thumb());
+                                intent.putExtra("goods_name", dataBean.getList().get(0).getGoods_name());
 
+                                switch (dataBean.getList().get(0).getGoods_type()) {
+                                    case 2:
+                                        intent.putExtra("goods_type", dataBean.getList().get(0).getSize_content());
+                                        break;
+                                    default:
+                                        intent.putExtra("goods_type", "定制款");
+                                        break;
+                                }
+
+                                startActivity(intent);
                                 break;
-
                         }
                     }
                 });
@@ -249,7 +303,7 @@ public class MyOrderFragment extends BaseFragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), AfterSalesActivity.class);
-                        intent.putExtra("order_id", dataList.get(position).getId());
+                        intent.putExtra("order_id", dataBean.getId());
                         startActivity(intent);
                     }
                 });
@@ -257,21 +311,49 @@ public class MyOrderFragment extends BaseFragment {
             }
         };
 
-        rvGoods.setAdapter(adapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
+        rvGoods.setAdapter(mLRecyclerViewAdapter);
+        rvGoods.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        rvGoods.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        //刷新
+        rvGoods.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+            public void onRefresh() {
+                isRefresh = true;
+                page = 1;
+                initData();
+            }
+        });
+
+        //加载更多
+        rvGoods.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                RecyclerViewStateUtils.setFooterViewState(getActivity(), rvGoods,
+                        0, LoadingFooter.State.Loading, null);
+                isLoadMore = true;
+                page++;
+                initData();
+            }
+        });
+
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
                 intent.putExtra("id", dataList.get(position).getId() + "");
+                intent.putExtra("comment_id", dataList.get(position).getComment_id());
                 startActivity(intent);
             }
 
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+            public void onItemLongClick(View view, int position) {
+
             }
         });
+
 
     }
 
@@ -407,9 +489,6 @@ public class MyOrderFragment extends BaseFragment {
 
                             @Override
                             public void onResponse(String response, int id) {
-//                                dataList.clear();
-//                                initGoods();
-//                                adapter.notifyDataSetChanged();
                                 MobclickAgent.onEvent(getActivity(), "cancel_order");
                                 Intent intent = new Intent(getActivity(), MyOrderActivity.class);
                                 intent.putExtra("page", orderStatus);

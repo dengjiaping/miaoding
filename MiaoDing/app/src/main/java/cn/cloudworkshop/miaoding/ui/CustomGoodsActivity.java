@@ -131,7 +131,6 @@ public class CustomGoodsActivity extends BaseActivity {
                         if (tailorBean.getData() != null) {
                             initView();
                         }
-
                     }
                 });
 
@@ -213,7 +212,6 @@ public class CustomGoodsActivity extends BaseActivity {
 
         TextView tvTitle = (TextView) contentView.findViewById(R.id.tv_select_type);
         RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
-
 
 
         tvTitle.setText("选择价格定制区间");

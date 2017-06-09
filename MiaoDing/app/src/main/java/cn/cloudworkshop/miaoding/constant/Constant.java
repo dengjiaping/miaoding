@@ -45,6 +45,7 @@ public class Constant {
     public static final String CART_COUNT = HOST + "/index.php/index/index/change_car_num";
     public static final String DELETE_CART = HOST + "/index.php/index/index/delete_car";
     public static final String MY_ORDER = HOST + "/index.php/index/index/goods_order";
+    public static final String GOODS_ORDER = HOST + "/index.php/index/index/goods_order_v5_2";
     public static final String ORDER_DETAIL = HOST + "/index.php/index/index/order_detail";
     public static final String CANCEL_ORDER = HOST + "/index.php/index/index/cancel_order";
     public static final String DELETE_ORDER = HOST + "/index.php/index/index/delete_order";
@@ -85,10 +86,12 @@ public class Constant {
     public static final String DESIGNER_LIST = HOST + "/index.php/index/index/get_designer_list";
     public static final String DESIGNER_DETAILS = HOST + "/index.php/index/index/user_intro";
     public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";
+    public static final String EVALUATE = HOST + "/index.php/index/index/save_order_comment";
 
     public static final String HOMEPAGE_LOG = HOST + "/index.php/index/index/save_index_log";
     public static final String GOODS_LOG = HOST + "/index.php/index/index/save_goods_log";
     public static final String LOGIN_LOG = HOST + "/index.php/index/index/save_user_login_log";
+
 
     //WebView
     public static final String CLOTH_TEST_RESULT = HOST + "/web/jquery-obj/static/web/html/clo.html";

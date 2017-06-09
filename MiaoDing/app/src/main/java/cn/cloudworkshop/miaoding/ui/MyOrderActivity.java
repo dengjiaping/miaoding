@@ -61,6 +61,11 @@ public class MyOrderActivity extends BaseActivity {
         currentPage = getIntent().getIntExtra("page", 0);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
 
     /**
      * 加载数据
