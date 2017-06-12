@@ -10,6 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -28,41 +29,64 @@
                 <ImageView
                     android:id="@+id/img_designer_works"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="271dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_test"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="271dp"
+                    android:background="@color/gray_mask"/>
+
+                <TextView
+                    android:id="@+id/tv_designer_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_horizontal"
+                    android:text="腔调设计师"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_designer_works"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="dcdcsdsdddcdcssdc"
+                    android:layout_below="@id/tv_designer_title"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="8dp"
+                    android:text="国内顶级设计师\n国内顶级设计师国内设计师\n国内顶级设计师"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"/>
+                    android:textSize="15sp"/>
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/tab_designer_works"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_width="180dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_horizontal"
             android:background="@android:color/white"
+            app:layout_scrollFlags="scroll"
             app:tl_indicator_color="#414141"
             app:tl_indicator_height="2.5dp"
-            app:tl_indicator_margin_bottom="5dp"
+            app:tl_indicator_margin_bottom="7dp"
             app:tl_indicator_width_equal_title="true"
             app:tl_tab_space_equal="true"
             app:tl_textBold="SELECT"
             app:tl_textSelectColor="#4F4F4F"
             app:tl_textUnselectColor="#7A7A7A"
-            app:tl_textsize="12sp"
-            app:layout_scrollFlags="scroll">
+            app:tl_textsize="12sp">
         </com.flyco.tablayout.SlidingTabLayout>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_designer_works"

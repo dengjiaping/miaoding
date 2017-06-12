@@ -13,9 +13,9 @@ public class CustomGoodsBean {
 
     /**
      * code : 1
-     * data : {"name":"始终如\u201c衣\u201d","sub_name":"三百七十一个小时的匠心大作","img_list":["/uploads/img/2017052508025648569752.png","/uploads/img/2017052508025648995210.jpg","/uploads/img/2017052508025749509948.jpg","/uploads/img/2017052508025749974998.jpg"],"view_num":0,"like_num":0,"price":[{"id":2,"price":799,"introduce":"白银"},{"id":3,"price":999,"introduce":"黄金"},{"id":4,"price":1888,"introduce":"钻石"}],"content":"选择你的衬衫\n选择你的生活态度\n是将就一份不适合\n还是去定制一份专属?\n你会如何选择?\n\n自带经纬度编织扎染效果的面料，赋予衬衫简约中\n的繁复感，清新怡人的色调，适合年轻时尚男士穿\n着，柔软亲肤面料，穿着更舒适，文艺风圆领设计，\n更时尚。\n\n面料成份:100%亚麻。","content2":"/uploads/img/2017052508053310049102.jpg","type":1,"heat":3862,"thumb":"/uploads/img/2017060517293951515557.jpg","classify_id":1,"uid":0,"default_spec_content":"领子: 带扣尖领;领子: 带扣尖领","default_spec_ids":"348,350","default_mianliao":1,"designer":null,"default_spec_list":[{"id":348,"gid":null,"spec_id":2,"mianliao_id":1,"name":"圆摆","type":0,"img_a":"/uploads/img/2016122916520957534954.png","img_b":"/uploads/img/2016122916523110297529.png","img_c":"/uploads/img/2017010216243248971019.png","introduce":null,"spec_name":"下摆","position_id":1},{"id":350,"gid":null,"spec_id":1,"mianliao_id":1,"name":" 带扣尖领","type":0,"img_a":"/uploads/img/2016111516165998519952.png","img_b":"/uploads/img/2016111516170751531001.png","img_c":"/uploads/img/2016111516152610149535.png","introduce":null,"spec_name":"领子","position_id":1}],"banxing_list":[{"id":1,"name":"修身"},{"id":2,"name":"宽松"},{"id":3,"name":"合适"}],"default_price":399,"is_collect":1,"is_yuyue":0}
+     * data : {"name":"始终如\u201c衣\u201d","sub_name":"三百七十一个小时的匠心大作","img_list":["/uploads/img/2017052508025648569752.png","/uploads/img/2017052508025648995210.jpg","/uploads/img/2017052508025749509948.jpg","/uploads/img/2017052508025749974998.jpg"],"view_num":0,"like_num":0,"price":[{"id":2,"price":799,"introduce":"白银"},{"id":3,"price":999,"introduce":"黄金"},{"id":4,"price":1888,"introduce":"钻石"}],"content":"选择你的衬衫\n选择你的生活态度\n是将就一份不适合\n还是去定制一份专属?\n你会如何选择?\n\n自带经纬度编织扎染效果的面料，赋予衬衫简约中\n的繁复感，清新怡人的色调，适合年轻时尚男士穿\n着，柔软亲肤面料，穿着更舒适，文艺风圆领设计，\n更时尚。\n\n面料成份:100%亚麻。","content2":"/uploads/img/2017052508053310049102.jpg","type":1,"heat":4047,"thumb":"/uploads/img/2017060517293951515557.jpg","classify_id":1,"uid":0,"default_spec_content":"领子: 带扣尖领;领子: 带扣尖领;面料:黑","default_spec_ids":"348,350","default_mianliao":1,"designer":null,"default_spec_list":[{"id":348,"gid":null,"spec_id":2,"mianliao_id":1,"name":"圆摆","type":0,"img_a":"/uploads/img/2016122916520957534954.png","img_b":"/uploads/img/2016122916523110297529.png","img_c":"/uploads/img/2017010216243248971019.png","introduce":null,"spec_name":"下摆","position_id":1},{"id":350,"gid":null,"spec_id":1,"mianliao_id":1,"name":" 带扣尖领","type":0,"img_a":"/uploads/img/2016111516165998519952.png","img_b":"/uploads/img/2016111516170751531001.png","img_c":"/uploads/img/2016111516152610149535.png","introduce":null,"spec_name":"领子","position_id":1}],"banxing_list":[{"id":1,"name":"修身"},{"id":2,"name":"宽松"},{"id":3,"name":"合适"}],"default_mianliao_name":"黑","default_price":399,"price_type":1,"new_comment":{"id":9,"uid":75,"content":"嗯这个商品的价值在于，独一无二，然后超级超级合身，好评好评好评好评好评。特别特别六六六","img_list":["/uploads/opencv/2017061211013712c10ebc0c4e7eb56676dd46fa2dc3ef.jpg","/uploads/opencv/2017061211013759b0245ebc61cef586111a3981d0a3ff.jpg","/uploads/opencv/20170612110137ee9603f73bfdf1dc6af642ae8d324f90.jpg",""],"order_id":1069,"c_time":1497236497,"status":1,"goods_id":39,"user_name":"黄哥哥","avatar":"/uploads/user/2017060619272.jpg"},"comment_num":6,"collect_user":[{"avatar":"/uploads/img/2016122211012553521024.png","id":132,"name":"云工场7558"},{"avatar":"/uploads/user/2016122882797.jpg","id":87,"name":"Recall.L"},{"avatar":"/uploads/img/2016122211012553521024.png","id":133,"name":"云工场7768"},{"avatar":"/uploads/user/2017011156485.jpg","id":78,"name":"白山黑水"},{"avatar":"/uploads/img/2016122211012553521024.png","id":123,"name":"云工场1427"},{"avatar":"/uploads/user/2017022204883.jpg","id":186,"name":"云工场5558"},{"avatar":"/uploads/img/2016122211012553521024.png","id":189,"name":"云工场5046"},{"avatar":"/uploads/user/2017060619272.jpg","id":75,"name":"黄哥哥"}],"is_collect":-1,"is_yuyue":0}
      * msg : 成功
-     * id : 397
+     * id : 578
      */
 
     private int code;
@@ -77,18 +77,23 @@ public class CustomGoodsBean {
          面料成份:100%亚麻。
          * content2 : /uploads/img/2017052508053310049102.jpg
          * type : 1
-         * heat : 3862
+         * heat : 4047
          * thumb : /uploads/img/2017060517293951515557.jpg
          * classify_id : 1
          * uid : 0
-         * default_spec_content : 领子: 带扣尖领;领子: 带扣尖领
+         * default_spec_content : 领子: 带扣尖领;领子: 带扣尖领;面料:黑
          * default_spec_ids : 348,350
          * default_mianliao : 1
          * designer : null
          * default_spec_list : [{"id":348,"gid":null,"spec_id":2,"mianliao_id":1,"name":"圆摆","type":0,"img_a":"/uploads/img/2016122916520957534954.png","img_b":"/uploads/img/2016122916523110297529.png","img_c":"/uploads/img/2017010216243248971019.png","introduce":null,"spec_name":"下摆","position_id":1},{"id":350,"gid":null,"spec_id":1,"mianliao_id":1,"name":" 带扣尖领","type":0,"img_a":"/uploads/img/2016111516165998519952.png","img_b":"/uploads/img/2016111516170751531001.png","img_c":"/uploads/img/2016111516152610149535.png","introduce":null,"spec_name":"领子","position_id":1}]
          * banxing_list : [{"id":1,"name":"修身"},{"id":2,"name":"宽松"},{"id":3,"name":"合适"}]
+         * default_mianliao_name : 黑
          * default_price : 399
-         * is_collect : 1
+         * price_type : 1
+         * new_comment : {"id":9,"uid":75,"content":"嗯这个商品的价值在于，独一无二，然后超级超级合身，好评好评好评好评好评。特别特别六六六","img_list":["/uploads/opencv/2017061211013712c10ebc0c4e7eb56676dd46fa2dc3ef.jpg","/uploads/opencv/2017061211013759b0245ebc61cef586111a3981d0a3ff.jpg","/uploads/opencv/20170612110137ee9603f73bfdf1dc6af642ae8d324f90.jpg",""],"order_id":1069,"c_time":1497236497,"status":1,"goods_id":39,"user_name":"黄哥哥","avatar":"/uploads/user/2017060619272.jpg"}
+         * comment_num : 6
+         * collect_user : [{"avatar":"/uploads/img/2016122211012553521024.png","id":132,"name":"云工场7558"},{"avatar":"/uploads/user/2016122882797.jpg","id":87,"name":"Recall.L"},{"avatar":"/uploads/img/2016122211012553521024.png","id":133,"name":"云工场7768"},{"avatar":"/uploads/user/2017011156485.jpg","id":78,"name":"白山黑水"},{"avatar":"/uploads/img/2016122211012553521024.png","id":123,"name":"云工场1427"},{"avatar":"/uploads/user/2017022204883.jpg","id":186,"name":"云工场5558"},{"avatar":"/uploads/img/2016122211012553521024.png","id":189,"name":"云工场5046"},{"avatar":"/uploads/user/2017060619272.jpg","id":75,"name":"黄哥哥"}]
+         * is_collect : -1
          * is_yuyue : 0
          */
 
@@ -107,22 +112,27 @@ public class CustomGoodsBean {
         private String default_spec_ids;
         private int default_mianliao;
         private Object designer;
+        private String default_mianliao_name;
         private int default_price;
+        private int price_id;
+
+        public int getPrice_id() {
+            return price_id;
+        }
+
+        public void setPrice_id(int price_id) {
+            this.price_id = price_id;
+        }
+
         private int is_collect;
         private int is_yuyue;
         private List<String> img_list;
         private List<PriceBean> price;
         private List<DefaultSpecListBean> default_spec_list;
         private List<BanxingListBean> banxing_list;
-        private  int price_type;
-
-        public int getPrice_type() {
-            return price_type;
-        }
-
-        public void setPrice_type(int price_type) {
-            this.price_type = price_type;
-        }
+        private NewCommentBean new_comment;
+        private int comment_num;
+        private List<CollectUserBean> collect_user;
 
         public String getName() {
             return name;
@@ -244,12 +254,38 @@ public class CustomGoodsBean {
             this.designer = designer;
         }
 
+        public String getDefault_mianliao_name() {
+            return default_mianliao_name;
+        }
+
+        public void setDefault_mianliao_name(String default_mianliao_name) {
+            this.default_mianliao_name = default_mianliao_name;
+        }
+
         public int getDefault_price() {
             return default_price;
         }
 
         public void setDefault_price(int default_price) {
             this.default_price = default_price;
+        }
+
+
+
+        public NewCommentBean getNew_comment() {
+            return new_comment;
+        }
+
+        public void setNew_comment(NewCommentBean new_comment) {
+            this.new_comment = new_comment;
+        }
+
+        public int getComment_num() {
+            return comment_num;
+        }
+
+        public void setComment_num(int comment_num) {
+            this.comment_num = comment_num;
         }
 
         public int getIs_collect() {
@@ -298,6 +334,205 @@ public class CustomGoodsBean {
 
         public void setBanxing_list(List<BanxingListBean> banxing_list) {
             this.banxing_list = banxing_list;
+        }
+
+        public List<CollectUserBean> getCollect_user() {
+            return collect_user;
+        }
+
+        public void setCollect_user(List<CollectUserBean> collect_user) {
+            this.collect_user = collect_user;
+        }
+
+        public static class NewCommentBean {
+            /**
+             * id : 9
+             * uid : 75
+             * content : 嗯这个商品的价值在于，独一无二，然后超级超级合身，好评好评好评好评好评。特别特别六六六
+             * img_list : ["/uploads/opencv/2017061211013712c10ebc0c4e7eb56676dd46fa2dc3ef.jpg","/uploads/opencv/2017061211013759b0245ebc61cef586111a3981d0a3ff.jpg","/uploads/opencv/20170612110137ee9603f73bfdf1dc6af642ae8d324f90.jpg",""]
+             * order_id : 1069
+             * c_time : 1497236497
+             * status : 1
+             * goods_id : 39
+             * user_name : 黄哥哥
+             * avatar : /uploads/user/2017060619272.jpg
+             */
+
+            private int id;
+            private int uid;
+            private String content;
+            private int order_id;
+            private int c_time;
+            private int status;
+            private int goods_id;
+            private String user_name;
+            private String avatar;
+            private List<String> img_list;
+            private UserGradeBean user_grade;
+            private String goods_intro;
+
+            public UserGradeBean getUser_grade() {
+                return user_grade;
+            }
+
+            public void setUser_grade(UserGradeBean user_grade) {
+                this.user_grade = user_grade;
+            }
+
+            public String getGoods_intro() {
+                return goods_intro;
+            }
+
+            public void setGoods_intro(String goods_intro) {
+                this.goods_intro = goods_intro;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getUid() {
+                return uid;
+            }
+
+            public void setUid(int uid) {
+                this.uid = uid;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getOrder_id() {
+                return order_id;
+            }
+
+            public void setOrder_id(int order_id) {
+                this.order_id = order_id;
+            }
+
+            public int getC_time() {
+                return c_time;
+            }
+
+            public void setC_time(int c_time) {
+                this.c_time = c_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(int goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public String getUser_name() {
+                return user_name;
+            }
+
+            public void setUser_name(String user_name) {
+                this.user_name = user_name;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public List<String> getImg_list() {
+                return img_list;
+            }
+
+            public void setImg_list(List<String> img_list) {
+                this.img_list = img_list;
+            }
+
+
+            public static class UserGradeBean {
+                /**
+                 * name : V1
+                 * img : /uploads/img/2017051614114953995651.png
+                 * img2 : /uploads/img/2017051614115598575797.png
+                 * id : 1
+                 * min_credit : 0.00
+                 * max_credit : 999.00
+                 */
+
+                private String name;
+                private String img;
+                private String img2;
+                private int id;
+                private String min_credit;
+                private String max_credit;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getImg() {
+                    return img;
+                }
+
+                public void setImg(String img) {
+                    this.img = img;
+                }
+
+                public String getImg2() {
+                    return img2;
+                }
+
+                public void setImg2(String img2) {
+                    this.img2 = img2;
+                }
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getMin_credit() {
+                    return min_credit;
+                }
+
+                public void setMin_credit(String min_credit) {
+                    this.min_credit = min_credit;
+                }
+
+                public String getMax_credit() {
+                    return max_credit;
+                }
+
+                public void setMax_credit(String max_credit) {
+                    this.max_credit = max_credit;
+                }
+            }
         }
 
         public static class PriceBean {
@@ -470,6 +705,42 @@ public class CustomGoodsBean {
 
             private int id;
             private String name;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class CollectUserBean {
+            /**
+             * avatar : /uploads/img/2016122211012553521024.png
+             * id : 132
+             * name : 云工场7558
+             */
+
+            private String avatar;
+            private int id;
+            private String name;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
 
             public int getId() {
                 return id;

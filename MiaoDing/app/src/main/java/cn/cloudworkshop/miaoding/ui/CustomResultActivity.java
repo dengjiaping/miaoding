@@ -287,6 +287,7 @@ public class CustomResultActivity extends BaseActivity {
                 .url(Constant.ADD_CART)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("type", type + "")
+                .addParams("price_id",tailorBean.getPrice_type())
                 .addParams("goods_id", tailorBean.getId())
                 .addParams("goods_type", "1")
                 .addParams("price", tailorBean.getPrice())

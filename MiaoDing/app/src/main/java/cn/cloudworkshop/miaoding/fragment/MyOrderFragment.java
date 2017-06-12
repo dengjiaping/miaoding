@@ -282,6 +282,7 @@ public class MyOrderFragment extends BaseFragment {
                                 Intent intent = new Intent(getActivity(), EvaluateActivity.class);
                                 intent.putExtra("order_id", dataBean.getId() + "");
                                 intent.putExtra("goods_id", dataBean.getList().get(0).getGoods_id() + "");
+                                intent.putExtra("car_id", dataBean.getList().get(0).getId() + "");
                                 intent.putExtra("goods_img", dataBean.getList().get(0).getGoods_thumb());
                                 intent.putExtra("goods_name", dataBean.getList().get(0).getGoods_name());
 

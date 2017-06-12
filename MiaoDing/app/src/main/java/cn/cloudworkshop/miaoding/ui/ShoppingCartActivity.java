@@ -371,6 +371,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setGoods_name(cartDetails.getData().getGoods_name());
                             tailorBean.setPrice(new DecimalFormat("#0.00").format(cartDetails
                                     .getData().getPrice()));
+                            tailorBean.setPrice_type(cartDetails.getData().getPrice_id() + "");
                             tailorBean.setImg_url(cartDetails.getData().getGoods_thumb());
                             tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
                             tailorBean.setSpec_content(cartDetails.getData().getSpec_content());

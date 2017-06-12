@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.WorksDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -79,16 +81,44 @@ WorksDetailActivity extends BaseActivity {
     ImageView imgBack;
     @BindView(R.id.img_share_works)
     ImageView imgShare;
-    @BindView(R.id.scroll_container_works)
-    ScrollViewContainer scrollContainer;
     @BindView(R.id.tv_works_cart)
     TextView tvAddCart;
     @BindView(R.id.tv_works_buy)
     TextView tvBuyWorks;
+    @BindView(R.id.tv_count_collect)
+    TextView tvCollectCount;
+    @BindView(R.id.rv_user_collect)
+    RecyclerView rvCollectUser;
+    @BindView(R.id.tv_count_comment)
+    TextView tvCommentCount;
+    @BindView(R.id.tv_check_evaluate)
+    TextView tvCheckEvaluate;
+    @BindView(R.id.img_user_avatar)
+    CircleImageView imgUser;
+    @BindView(R.id.tv_name_user)
+    TextView tvUserName;
+    @BindView(R.id.tv_comment_time)
+    TextView tvCommentTime;
+    @BindView(R.id.tv_evaluate_content)
+    TextView tvEvaluateContent;
+    @BindView(R.id.rv_evaluate_picture)
+    RecyclerView rvEvaluate;
+    @BindView(R.id.tv_type_goods)
+    TextView tvTypeGoods;
+    @BindView(R.id.scroll_container_works)
+    ScrollViewContainer scrollContainer;
+    @BindView(R.id.img_user_grade)
+    ImageView imgUserGrade;
+    @BindView(R.id.tv_none_collect)
+    TextView tvNoneCollect;
+    @BindView(R.id.ll_none_evaluate)
+    LinearLayout llNoneEvaluate;
+    @BindView(R.id.tv_no_evaluate)
+    TextView tvNoEvaluate;
 
     private String id;
 
-    private WorksDetailBean.DataBean worksBean;
+    private WorksDetailBean worksBean;
 
     private List<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean> colorList = new ArrayList<>();
     private CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean> colorAdapter;
@@ -140,7 +170,7 @@ WorksDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        worksBean = GsonUtils.jsonToBean(response, WorksDetailBean.class).getData();
+                        worksBean = GsonUtils.jsonToBean(response, WorksDetailBean.class);
                         if (worksBean != null) {
                             initView();
                         }
@@ -155,27 +185,92 @@ WorksDetailActivity extends BaseActivity {
     private void initView() {
 
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getThumb())
+                .load(Constant.HOST + worksBean.getData().getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getDesigner().getAvatar())
+                .load(Constant.HOST + worksBean.getData().getDesigner().getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgDesigner);
 
-        if (worksBean.getIs_collect() == 1) {
+        if (worksBean.getData().getIs_collect() == 1) {
             imgAddLike.setImageResource(R.mipmap.icon_add_like);
         } else {
             imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
         }
 
         tvDesignerName.setTypeface(DisplayUtils.setTextType(this));
-        tvDesignerName.setText(worksBean.getDesigner().getName());
-        tvDesignerFeature.setText(worksBean.getDesigner().getTag());
-        tvDesignerInfo.setText(worksBean.getDesigner().getIntroduce());
+        tvDesignerName.setText(worksBean.getData().getDesigner().getName());
+        tvDesignerFeature.setText(worksBean.getData().getDesigner().getTag());
+        tvDesignerInfo.setText(worksBean.getData().getDesigner().getIntroduce());
+
+        //喜爱人数
+        if (worksBean.getData().getCollect_user() != null && worksBean.getData().getCollect_user().size() > 0) {
+            tvCollectCount.setText("喜爱  (" + worksBean.getData().getCollect_user().size() + " 人)");
+            rvCollectUser.setVisibility(View.VISIBLE);
+            rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            List<String> imgList = new ArrayList<>();
+
+            for (int i = 0; i < Math.min(worksBean.getData().getCollect_user().size(), 6); i++) {
+                imgList.add(worksBean.getData().getCollect_user().get(i).getAvatar());
+            }
+            CommonAdapter<String> collectAdapter = new CommonAdapter<String>(this,
+                    R.layout.listitem_user_collect, imgList) {
+                @Override
+                protected void convert(ViewHolder holder, String s, int position) {
+                    Glide.with(WorksDetailActivity.this)
+                            .load(Constant.HOST + s)
+                            .centerCrop()
+                            .into((ImageView) holder.getView(R.id.img_avatar_collect));
+                }
+            };
+            rvCollectUser.setAdapter(collectAdapter);
+        } else {
+            tvCollectCount.setText("喜爱  (0人)");
+            tvNoneCollect.setVisibility(View.VISIBLE);
+        }
+
+        //评价人数
+        if (worksBean.getData().getComment_num() > 0) {
+            tvCommentCount.setText("评价  (" + worksBean.getData().getComment_num() + "人)");
+            Glide.with(getApplicationContext())
+                    .load(Constant.HOST + worksBean.getData().getNew_comment().getAvatar())
+                    .centerCrop()
+                    .into(imgUser);
+            tvUserName.setText(worksBean.getData().getNew_comment().getUser_name());
+            Glide.with(getApplicationContext())
+                    .load(Constant.HOST + worksBean.getData().getNew_comment().getUser_grade().getImg2())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imgUserGrade);
+            tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", worksBean.getData().getNew_comment().getC_time()));
+            tvEvaluateContent.setText(worksBean.getData().getNew_comment().getContent());
+            if (worksBean.getData().getNew_comment().getImg_list() != null && worksBean.getData()
+                    .getNew_comment().getImg_list().size() > 0) {
+                rvEvaluate.setLayoutManager(new GridLayoutManager(WorksDetailActivity.this, 3));
+                CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(WorksDetailActivity
+                        .this, R.layout.listitem_user_comment, worksBean.getData().getNew_comment().getImg_list()) {
+                    @Override
+                    protected void convert(ViewHolder holder, String s, int position) {
+                        Glide.with(WorksDetailActivity.this)
+                                .load(Constant.HOST + s)
+                                .centerCrop()
+                                .into((ImageView) holder.getView(R.id.img_user_comment));
+                    }
+                };
+                rvEvaluate.setAdapter(evaluateAdapter);
+
+            }
+
+        } else {
+            tvCommentCount.setText("评价  (0人)");
+            tvNoEvaluate.setVisibility(View.VISIBLE);
+            llNoneEvaluate.setVisibility(View.GONE);
+        }
+
+        tvTypeGoods.setText(worksBean.getData().getNew_comment().getGoods_intro());
 
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getContent2())
+                .load(Constant.HOST + worksBean.getData().getContent2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgDetails);
 
@@ -194,7 +289,7 @@ WorksDetailActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_goods_like, R.id.img_goods_consult, R.id.img_back_works, R.id.img_share_works,
-            R.id.tv_works_cart, R.id.tv_works_buy, R.id.img_works_designer})
+            R.id.tv_works_cart, R.id.tv_works_buy, R.id.img_works_designer, R.id.tv_check_evaluate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_goods_like:
@@ -213,9 +308,9 @@ WorksDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share_works:
-                ShareUtils.showShare(this, Constant.HOST + worksBean.getThumb(),
-                        worksBean.getName(),
-                        worksBean.getContent(),
+                ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
+                        worksBean.getData().getName(),
+                        worksBean.getData().getContent(),
                         Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id + "&token=" +
                                 SharedPreferencesUtils.getString(this, "token"));
                 break;
@@ -229,8 +324,16 @@ WorksDetailActivity extends BaseActivity {
                 break;
             case R.id.img_works_designer:
                 Intent intent = new Intent(this, DesignerDetailActivity.class);
-                intent.putExtra("id", worksBean.getDesigner().getId() + "");
+                intent.putExtra("id", worksBean.getData().getDesigner().getId() + "");
                 startActivity(intent);
+                break;
+            case R.id.tv_check_evaluate:
+                if (worksBean.getData().getComment_num() > 0) {
+                    Intent intent1 = new Intent(this, AllEvaluationActivity.class);
+                    intent1.putExtra("goods_id", id);
+                    startActivity(intent1);
+                }
+
                 break;
 
         }
@@ -274,25 +377,27 @@ WorksDetailActivity extends BaseActivity {
         tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
 
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getThumb())
+                .load(Constant.HOST + worksBean.getData().getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
         tvPrice.setTypeface(DisplayUtils.setTextType(this));
-        if (worksBean.getSize_list() != null) {
-            tvPrice.setText("¥" + worksBean.getSize_list().get(0).getSize_list().get(0).getPrice());
-            tvStock.setText("库存：" + worksBean.getSize_list().get(0).getSize_list().get(0).getSku_num() + "件");
+        if (worksBean.getData().getSize_list() != null) {
+            tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list()
+                    .get(0).getPrice());
+            tvStock.setText("库存：" + worksBean.getData().getSize_list().get(0).getSize_list()
+                    .get(0).getSku_num() + "件");
             tvCount.setText("1");
             currentSize = 0;
             currentColor = 0;
-            stock = worksBean.getSize_list().get(0).getSize_list().get(0).getSku_num();
+            stock = worksBean.getData().getSize_list().get(0).getSize_list().get(0).getSku_num();
             remainGoodsCount(stock);
-            colorList.addAll(worksBean.getSize_list().get(0).getSize_list());
+            colorList.addAll(worksBean.getData().getSize_list().get(0).getSize_list());
 
             //尺码
             rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
                     = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(WorksDetailActivity.this,
-                    R.layout.listitem_works_size, worksBean.getSize_list()) {
+                    R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
                 @Override
                 protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
                     TextView tvSize = holder.getView(R.id.tv_works_size);
@@ -316,7 +421,7 @@ WorksDetailActivity extends BaseActivity {
                     currentSize = holder.getAdapterPosition();
                     currentColor = 0;
                     colorList.clear();
-                    colorList.addAll(worksBean.getSize_list().get(currentSize).getSize_list());
+                    colorList.addAll(worksBean.getData().getSize_list().get(currentSize).getSize_list());
                     sizeAdapter.notifyDataSetChanged();
 
                     reSelectWorks();
@@ -420,13 +525,13 @@ WorksDetailActivity extends BaseActivity {
     private void reSelectWorks() {
         colorAdapter.notifyDataSetChanged();
         tvPrice.setTypeface(DisplayUtils.setTextType(WorksDetailActivity.this));
-        tvPrice.setText("¥" + worksBean.getSize_list().get(currentSize).getSize_list()
+        tvPrice.setText("¥" + worksBean.getData().getSize_list().get(currentSize).getSize_list()
                 .get(currentColor).getPrice());
-        tvStock.setText("库存：" + worksBean.getSize_list()
+        tvStock.setText("库存：" + worksBean.getData().getSize_list()
                 .get(currentSize).getSize_list().get(currentColor).getSku_num() + "件");
-        stock = worksBean.getSize_list().get(currentSize)
+        stock = worksBean.getData().getSize_list().get(currentSize)
                 .getSize_list().get(currentColor).getSku_num();
-        remainGoodsCount(worksBean.getSize_list().get(currentSize)
+        remainGoodsCount(worksBean.getData().getSize_list().get(currentSize)
                 .getSize_list().get(currentColor).getSku_num());
         count = 1;
         tvCount.setText(String.valueOf(count));
@@ -443,14 +548,14 @@ WorksDetailActivity extends BaseActivity {
                 .addParams("type", index + "")
                 .addParams("goods_id", id)
                 .addParams("goods_type", "2")
-                .addParams("price", worksBean.getSize_list().get(currentSize)
+                .addParams("price", worksBean.getData().getSize_list().get(currentSize)
                         .getSize_list().get(currentColor).getPrice())
-                .addParams("goods_name", worksBean.getName())
-                .addParams("goods_thumb", worksBean.getThumb())
-                .addParams("size_ids", String.valueOf(worksBean.getSize_list().get(currentSize)
-                        .getSize_list().get(currentColor).getId()))
-                .addParams("size_content", "颜色:" + worksBean.getSize_list().get(currentSize)
-                        .getSize_list().get(currentColor).getColor_name() + ";尺码:" + worksBean
+                .addParams("goods_name", worksBean.getData().getName())
+                .addParams("goods_thumb", worksBean.getData().getThumb())
+                .addParams("size_ids", String.valueOf(worksBean.getData().getSize_list()
+                        .get(currentSize).getSize_list().get(currentColor).getId()))
+                .addParams("size_content", "颜色:" + worksBean.getData().getSize_list().get(currentSize)
+                        .getSize_list().get(currentColor).getColor_name() + ";尺码:" + worksBean.getData()
                         .getSize_list().get(currentSize).getSize_name())
 
                 .addParams("num", tvCount.getText().toString().trim())

@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.umeng.analytics.MobclickAgent;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -58,8 +57,7 @@ public class EvaluateActivity extends BaseActivity {
     CircleImageView imgGoods;
     @BindView(R.id.tv_name_goods)
     TextView tvGoodsName;
-    @BindView(R.id.tv_type_goods)
-    TextView tvGoodsType;
+
     @BindView(R.id.img_select_picture)
     ImageView imgSelectPicture;
     @BindView(R.id.rv_goods_picture)
@@ -70,8 +68,11 @@ public class EvaluateActivity extends BaseActivity {
     EditText etEvaluate;
     @BindView(R.id.view_loading)
     AVLoadingIndicatorView loadingView;
+    @BindView(R.id.tv_type_product)
+    TextView tvGoodsType;
 
     private String orderId;
+    private String cartId;
     private String goodsId;
     private String goodsName;
     private String goodsImg;
@@ -122,6 +123,7 @@ public class EvaluateActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         orderId = intent.getStringExtra("order_id");
+        cartId = intent.getStringExtra("cart_id");
         goodsId = intent.getStringExtra("goods_id");
         goodsImg = intent.getStringExtra("goods_img");
         goodsName = intent.getStringExtra("goods_name");
@@ -179,6 +181,7 @@ public class EvaluateActivity extends BaseActivity {
 
             Map<String, String> map = new HashMap<>();
             map.put("order_id", orderId);
+            map.put("car_id", cartId);
             map.put("goods_id", goodsId);
             map.put("token", SharedPreferencesUtils.getString(EvaluateActivity.this, "token"));
             map.put("content", etEvaluate.getText().toString().trim());

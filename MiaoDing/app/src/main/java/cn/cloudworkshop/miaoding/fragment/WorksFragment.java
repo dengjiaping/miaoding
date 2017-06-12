@@ -81,13 +81,15 @@ public class WorksFragment extends BaseFragment {
     private void initView() {
         rvWorks.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
         CommonAdapter<DesignWorksBean.DataBean.ItemBean> adapter = new CommonAdapter<DesignWorksBean
-                .DataBean.ItemBean>(getParentFragment().getActivity(), R.layout.listitem_designer, worksList) {
+                .DataBean.ItemBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
             @Override
             protected void convert(ViewHolder holder, DesignWorksBean.DataBean.ItemBean itemBean, int position) {
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + itemBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_designer));
+                holder.setText(R.id.tv_works_title,itemBean.getGoods_name());
+                holder.setText(R.id.tv_works_time,itemBean.getP_time());
             }
         };
         rvWorks.setAdapter(adapter);

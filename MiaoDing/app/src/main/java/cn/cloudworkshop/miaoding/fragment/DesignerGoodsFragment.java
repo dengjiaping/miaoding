@@ -61,13 +61,15 @@ public class DesignerGoodsFragment extends BaseFragment {
         if (worksList != null && worksList.size() > 0) {
             rvWorks.setLayoutManager(new LinearLayoutManager(getActivity()));
             CommonAdapter<DesignerInfoBean.DataBean.GoodsListBean> adapter = new CommonAdapter
-                    <DesignerInfoBean.DataBean.GoodsListBean>(getActivity(), R.layout.listitem_designer, worksList) {
+                    <DesignerInfoBean.DataBean.GoodsListBean>(getActivity(), R.layout.listitem_works, worksList) {
                 @Override
                 protected void convert(ViewHolder holder, DesignerInfoBean.DataBean.GoodsListBean goodsListBean, int position) {
                     Glide.with(getActivity())
                             .load(Constant.HOST + goodsListBean.getThumb())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into((ImageView) holder.getView(R.id.img_designer));
+                    holder.setText(R.id.tv_works_title, goodsListBean.getName());
+                    holder.setText(R.id.tv_works_time, goodsListBean.getC_time());
                 }
 
             };

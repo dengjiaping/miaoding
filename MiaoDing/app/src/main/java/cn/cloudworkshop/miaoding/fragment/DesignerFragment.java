@@ -3,7 +3,7 @@ package cn.cloudworkshop.miaoding.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,7 +30,6 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.PopDesignerBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
-import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
@@ -41,7 +40,8 @@ import okhttp3.Call;
  */
 public class DesignerFragment extends BaseFragment {
 
-    @BindView(R.id.rv_member_rights)
+
+    @BindView(R.id.rv_works)
     RecyclerView rvDesigner;
     private Unbinder unbinder;
     private List<PopDesignerBean.DataBean> designerList = new ArrayList<>();
@@ -49,7 +49,7 @@ public class DesignerFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.viewpager_item_member, container, false);
+        View view = inflater.inflate(R.layout.fragment_designer, container, false);
         unbinder = ButterKnife.bind(this, view);
         initData();
         return view;
@@ -81,7 +81,7 @@ public class DesignerFragment extends BaseFragment {
     }
 
     private void initView() {
-        rvDesigner.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
+        rvDesigner.setLayoutManager(new GridLayoutManager(getParentFragment().getActivity(),2));
         CommonAdapter<PopDesignerBean.DataBean> adapter = new CommonAdapter<PopDesignerBean.DataBean>
                 (getParentFragment().getActivity(), R.layout.listitem_designer, designerList) {
             @Override
@@ -89,7 +89,9 @@ public class DesignerFragment extends BaseFragment {
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + dataBean.getAvatar())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_designer));
+                        .into((ImageView) holder.getView(R.id.img_avatar_designer));
+                holder.setText(R.id.tv_nickname_designer,dataBean.getName());
+                holder.setText(R.id.tv_designer_tag,dataBean.getTag());
             }
 
         };

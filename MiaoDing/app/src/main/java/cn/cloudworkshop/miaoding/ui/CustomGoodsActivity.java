@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -52,6 +53,7 @@ import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.view.CircleImageView;
 import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
 
@@ -72,8 +74,6 @@ public class CustomGoodsActivity extends BaseActivity {
     TextView tvTailor;
     @BindView(R.id.banner_goods)
     ConvenientBanner bannerGoods;
-    @BindView(R.id.scroll_container)
-    ScrollViewContainer scrollContainer;
     @BindView(R.id.img_add_like)
     ImageView imgAddLike;
     @BindView(R.id.img_tailor_consult)
@@ -86,8 +86,38 @@ public class CustomGoodsActivity extends BaseActivity {
     ImageView imgDetails;
     @BindView(R.id.tv_custom_goods)
     TextView tvCustomGoods;
+    @BindView(R.id.tv_collect_count)
+    TextView tvCollectCount;
+    @BindView(R.id.rv_collect_user)
+    RecyclerView rvCollectUser;
+    @BindView(R.id.tv_comment_count)
+    TextView tvCommentCount;
+    @BindView(R.id.tv_all_evaluate)
+    TextView tvAllEvaluate;
+    @BindView(R.id.img_user_avatar)
+    CircleImageView imgUser;
+    @BindView(R.id.tv_name_user)
+    TextView tvUserName;
+    @BindView(R.id.tv_comment_time)
+    TextView tvCommentTime;
+    @BindView(R.id.tv_evaluate_content)
+    TextView tvEvaluateContent;
+    @BindView(R.id.rv_evaluate_picture)
+    RecyclerView rvEvaluate;
+    @BindView(R.id.tv_type_goods)
+    TextView tvTypeGoods;
+    @BindView(R.id.scroll_container)
+    ScrollViewContainer scrollContainer;
+    @BindView(R.id.img_user_grade)
+    ImageView imgUserGrade;
+    @BindView(R.id.tv_none_love)
+    TextView tvNoneLove;
+    @BindView(R.id.ll_none_evaluate)
+    LinearLayout llNoneEvaluate;
+    @BindView(R.id.tv_none_evaluate)
+    TextView tvNoneEvaluate;
     private String id;
-    private CustomGoodsBean tailorBean;
+    private CustomGoodsBean customBean;
     private long enterTime;
 
 
@@ -127,8 +157,8 @@ public class CustomGoodsActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        tailorBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
-                        if (tailorBean.getData() != null) {
+                        customBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
+                        if (customBean.getData() != null) {
                             initView();
                         }
                     }
@@ -141,9 +171,10 @@ public class CustomGoodsActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        tvGoodsName.setText(tailorBean.getData().getName());
-        tvGoodsContent.setText(tailorBean.getData().getSub_name());
-        if (tailorBean.getData().getIs_collect() == 1) {
+
+        tvGoodsName.setText(customBean.getData().getName());
+        tvGoodsContent.setText(customBean.getData().getSub_name());
+        if (customBean.getData().getIs_collect() == 1) {
             imgAddLike.setImageResource(R.mipmap.icon_add_like);
         } else {
             imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
@@ -155,7 +186,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     public NetworkImageHolderView createHolder() {
                         return new NetworkImageHolderView();
                     }
-                }, tailorBean.getData().getImg_list())
+                }, customBean.getData().getImg_list())
                 //设置两个点图片作为翻页指示器
                 .setPageIndicator(new int[]{R.drawable.dot_black, R.drawable.dot_white})
                 //设置指示器的方向
@@ -165,16 +196,81 @@ public class CustomGoodsActivity extends BaseActivity {
 //            public void onItemClick(int position) {
 //                Intent intent = new Intent(CustomGoodsActivity.this, ImagePreviewActivity.class);
 //                intent.putExtra("currentPos", position);
-//                intent.putStringArrayListExtra("img_list", tailorBean.getImg_list());
+//                intent.putStringArrayListExtra("img_list", customBean.getImg_list());
 //                startActivity(intent);
 //            }
 //        });
 
+        //喜爱人数
+        if (customBean.getData().getCollect_user() != null && customBean.getData().getCollect_user().size() > 0) {
+            tvCollectCount.setText("喜爱  (" + customBean.getData().getCollect_user().size() + " 人)");
+            rvCollectUser.setVisibility(View.VISIBLE);
+            rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            List<String> imgList = new ArrayList<>();
+            for (int i = 0; i < Math.min(customBean.getData().getCollect_user().size(), 6); i++) {
+                imgList.add(customBean.getData().getCollect_user().get(i).getAvatar());
+            }
+            CommonAdapter<String> collectAdapter = new CommonAdapter<String>(this,
+                    R.layout.listitem_user_collect, imgList) {
+                @Override
+                protected void convert(ViewHolder holder, String s, int position) {
+                    Glide.with(CustomGoodsActivity.this)
+                            .load(Constant.HOST + s)
+                            .centerCrop()
+                            .into((ImageView) holder.getView(R.id.img_avatar_collect));
+                }
+            };
+            rvCollectUser.setAdapter(collectAdapter);
+        } else {
+            tvCollectCount.setText("喜爱  (0人)");
+            tvNoneLove.setVisibility(View.VISIBLE);
+        }
 
+        //评价人数
+        if (customBean.getData().getComment_num() > 0) {
+            tvCommentCount.setText("评价  (" + customBean.getData().getComment_num() + "人)");
+            Glide.with(getApplicationContext())
+                    .load(Constant.HOST + customBean.getData().getNew_comment().getAvatar())
+                    .centerCrop()
+                    .into(imgUser);
+            tvUserName.setText(customBean.getData().getNew_comment().getUser_name());
+            Glide.with(getApplicationContext())
+                    .load(Constant.HOST + customBean.getData().getNew_comment().getUser_grade().getImg2())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imgUserGrade);
+            tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", customBean.getData().getNew_comment().getC_time()));
+            tvEvaluateContent.setText(customBean.getData().getNew_comment().getContent());
+            if (customBean.getData().getNew_comment().getImg_list() != null && customBean.getData()
+                    .getNew_comment().getImg_list().size() > 0) {
+                rvEvaluate.setLayoutManager(new GridLayoutManager(CustomGoodsActivity.this, 3));
+                CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(CustomGoodsActivity
+                        .this, R.layout.listitem_user_comment, customBean.getData().getNew_comment().getImg_list()) {
+                    @Override
+                    protected void convert(ViewHolder holder, String s, int position) {
+                        Glide.with(CustomGoodsActivity.this)
+                                .load(Constant.HOST + s)
+                                .centerCrop()
+                                .into((ImageView) holder.getView(R.id.img_user_comment));
+                    }
+                };
+                rvEvaluate.setAdapter(evaluateAdapter);
+
+            }
+
+        } else {
+            tvCommentCount.setText("评价  (0人)");
+            tvNoneEvaluate.setVisibility(View.VISIBLE);
+            llNoneEvaluate.setVisibility(View.GONE);
+        }
+
+        tvTypeGoods.setText(customBean.getData().getNew_comment().getGoods_intro());
+
+        //详情页
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + tailorBean.getData().getContent2())
+                .load(Constant.HOST + customBean.getData().getContent2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgDetails);
+
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
             @Override
@@ -219,7 +315,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
         CommonAdapter<CustomGoodsBean.DataBean.PriceBean> priceAdapter = new CommonAdapter
                 <CustomGoodsBean.DataBean.PriceBean>(CustomGoodsActivity.this,
-                R.layout.listitem_select_price, tailorBean.getData().getPrice()) {
+                R.layout.listitem_select_price, customBean.getData().getPrice()) {
             @Override
             protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.PriceBean priceBean, int position) {
                 TextView tvPrice = holder.getView(R.id.tv_type_item);
@@ -238,13 +334,13 @@ public class CustomGoodsActivity extends BaseActivity {
                 Intent intent = new Intent(CustomGoodsActivity.this, CustomDiyActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
-                bundle.putString("goods_name", tailorBean.getData().getName());
-                bundle.putString("img_url", tailorBean.getData().getThumb());
-                bundle.putString("price", new DecimalFormat("#0.00").format(tailorBean.getData().
+                bundle.putString("goods_name", customBean.getData().getName());
+                bundle.putString("img_url", customBean.getData().getThumb());
+                bundle.putString("price", new DecimalFormat("#0.00").format(customBean.getData().
                         getPrice().get(position).getPrice()));
-                bundle.putString("price_type", tailorBean.getData().getPrice().get(position).getId() + "");
-                bundle.putInt("classify_id", tailorBean.getData().getClassify_id());
-                bundle.putString("log_id", tailorBean.getId());
+                bundle.putString("price_type", customBean.getData().getPrice().get(position).getId() + "");
+                bundle.putInt("classify_id", customBean.getData().getClassify_id());
+                bundle.putString("log_id", customBean.getId());
                 bundle.putLong("goods_time", enterTime);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -261,7 +357,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
 
     @OnClick({R.id.tv_goods_tailor, R.id.img_tailor_back, R.id.img_add_like, R.id.img_tailor_consult,
-            R.id.img_tailor_share, R.id.tv_custom_goods})
+            R.id.img_tailor_share, R.id.tv_custom_goods, R.id.tv_all_evaluate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goods_tailor:
@@ -271,11 +367,11 @@ public class CustomGoodsActivity extends BaseActivity {
                     startActivity(login);
                 } else {
                     selectGoodsPrice();
-//                    if (tailorBean.getIs_yuyue() == 1) {
+//                    if (customBean.getIs_yuyue() == 1) {
 //                        selectGoodsPrice();
 //                    } else {
 //                        Intent intent = new Intent(this, ApplyMeasureActivity.class);
-//                        intent.putExtra("goods_name", tailorBean.getName());
+//                        intent.putExtra("goods_name", customBean.getName());
 //                        startActivityForResult(intent, 1);
 //                    }
                 }
@@ -306,10 +402,18 @@ public class CustomGoodsActivity extends BaseActivity {
                 ContactService.contactService(this);
                 break;
             case R.id.img_tailor_share:
-                ShareUtils.showShare(this, Constant.HOST + tailorBean.getData().getThumb(),
-                        tailorBean.getData().getName(),
-                        tailorBean.getData().getContent(),
+                ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
+                        customBean.getData().getName(),
+                        customBean.getData().getContent(),
                         Constant.CUSTOM_SHARE + "?goods_id=" + id);
+                break;
+            case R.id.tv_all_evaluate:
+                if (customBean.getData().getComment_num() > 0) {
+                    Intent intent = new Intent(this, AllEvaluationActivity.class);
+                    intent.putExtra("goods_id", id);
+                    startActivity(intent);
+                }
+
                 break;
         }
     }
@@ -345,7 +449,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
         CommonAdapter<CustomGoodsBean.DataBean.BanxingListBean> typeAdapter = new CommonAdapter
                 <CustomGoodsBean.DataBean.BanxingListBean>(CustomGoodsActivity.this,
-                R.layout.listitem_select_type, tailorBean.getData().getBanxing_list()) {
+                R.layout.listitem_select_type, customBean.getData().getBanxing_list()) {
             @Override
             protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.BanxingListBean
                     banxingListBean, int position) {
@@ -362,7 +466,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 mPopupWindow.dismiss();
                 Intent intent;
                 Bundle bundle = new Bundle();
-                int classifyId = tailorBean.getData().getClassify_id();
+                int classifyId = customBean.getData().getClassify_id();
                 if (classifyId == 1 || classifyId == 2) {
                     intent = new Intent(CustomGoodsActivity.this, EmbroideryActivity.class);
                     bundle.putInt("classify_id", classifyId);
@@ -373,30 +477,30 @@ public class CustomGoodsActivity extends BaseActivity {
 
                 TailorItemBean tailorItemBean = new TailorItemBean();
                 tailorItemBean.setId(id);
-                tailorItemBean.setGoods_name(tailorBean.getData().getName());
-                tailorItemBean.setPrice(new DecimalFormat("#0.00").format(tailorBean.getData().getDefault_price()));
-                tailorItemBean.setImg_url(tailorBean.getData().getThumb());
-                tailorItemBean.setPrice_type(tailorBean.getData().getPrice_type() + "");
-                tailorItemBean.setLog_id(tailorBean.getId());
+                tailorItemBean.setGoods_name(customBean.getData().getName());
+                tailorItemBean.setPrice(new DecimalFormat("#0.00").format(customBean.getData().getDefault_price()));
+                tailorItemBean.setImg_url(customBean.getData().getThumb());
+                tailorItemBean.setPrice_type(customBean.getData().getPrice_id() + "");
+                tailorItemBean.setLog_id(customBean.getId());
                 tailorItemBean.setGoods_time(enterTime);
                 tailorItemBean.setDingzhi_time(0);
                 //面料
-                tailorItemBean.setFabric_id(tailorBean.getData().getDefault_mianliao() + "");
-                tailorItemBean.setBanxing_id(tailorBean.getData().getBanxing_list().get(position).getId() + "");
+                tailorItemBean.setFabric_id(customBean.getData().getDefault_mianliao() + "");
+                tailorItemBean.setBanxing_id(customBean.getData().getBanxing_list().get(position).getId() + "");
 
                 //部件
                 List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
 
-                for (int i = 0; i < tailorBean.getData().getDefault_spec_list().size(); i++) {
+                for (int i = 0; i < customBean.getData().getDefault_spec_list().size(); i++) {
                     TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
-                    itemBean.setImg(tailorBean.getData().getDefault_spec_list().get(i).getImg_c());
-                    itemBean.setPosition_id(tailorBean.getData().getDefault_spec_list().get(i).getPosition_id());
+                    itemBean.setImg(customBean.getData().getDefault_spec_list().get(i).getImg_c());
+                    itemBean.setPosition_id(customBean.getData().getDefault_spec_list().get(i).getPosition_id());
                     itemList.add(itemBean);
                 }
 
 
-                tailorItemBean.setSpec_ids(tailorBean.getData().getDefault_spec_ids());
-                tailorItemBean.setSpec_content(tailorBean.getData().getDefault_spec_content());
+                tailorItemBean.setSpec_ids(customBean.getData().getDefault_spec_ids());
+                tailorItemBean.setSpec_content(customBean.getData().getDefault_spec_content());
 
                 tailorItemBean.setItemBean(itemList);
                 bundle.putSerializable("tailor", tailorItemBean);
@@ -416,14 +520,14 @@ public class CustomGoodsActivity extends BaseActivity {
      * 商品订制跟踪
      */
     private void customGoodsLog() {
-        if (tailorBean != null) {
+        if (customBean != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
                     .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                    .addParams("id", tailorBean.getId())
+                    .addParams("id", customBean.getId())
                     .addParams("goods_time", (DateUtils.getCurrentTime() - enterTime) + "")
                     .addParams("goods_id", id)
-                    .addParams("goods_name", tailorBean.getData().getName())
+                    .addParams("goods_name", customBean.getData().getName())
                     .addParams("click_dingzhi", "0")
                     .addParams("click_pay", "0")
                     .build()
@@ -493,7 +597,7 @@ public class CustomGoodsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1) {
-            tailorBean.getData().setIs_yuyue(1);
+            customBean.getData().setIs_yuyue(1);
             selectGoodsPrice();
         }
     }

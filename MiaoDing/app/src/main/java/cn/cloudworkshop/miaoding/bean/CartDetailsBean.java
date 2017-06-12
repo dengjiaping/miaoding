@@ -91,6 +91,15 @@ public class CartDetailsBean {
         private String diy_content;
         private String mianliao_id;
         private String banxing_id;
+        private int price_id;
+
+        public int getPrice_id() {
+            return price_id;
+        }
+
+        public void setPrice_id(int price_id) {
+            this.price_id = price_id;
+        }
 
         public String getBanxing_id() {
             return banxing_id;

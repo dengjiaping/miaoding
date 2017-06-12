@@ -13,36 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:orientation="vertical">
-
-            <com.bigkoo.convenientbanner.ConvenientBanner
-                android:id="@+id/banner_goods"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/ll_goods_content"
-                app:canLoop="true">
-
-            </com.bigkoo.convenientbanner.ConvenientBanner>
+            android:fillViewport="true"
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/ll_goods_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:background="@android:color/white"
                 android:orientation="vertical">
+
+                <com.bigkoo.convenientbanner.ConvenientBanner
+                    android:id="@+id/banner_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    app:canLoop="true">
+                </com.bigkoo.convenientbanner.ConvenientBanner>
+
 
                 <TextView
                     android:id="@+id/tv_goods_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
                     android:layout_marginTop="24dp"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -53,25 +50,110 @@
                 <TextView
                     android:id="@+id/tv_goods_introduce"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
                     android:textColor="@color/light_gray_7a"
                     android:textSize="18sp"/>
 
                 <TextView
+                    android:id="@+id/tv_collect_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="15dp"
-                    android:text="上滑继续阅读"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="25dp"
+                    android:text="喜爱人数"
+                    android:textColor="@color/light_gray_3d"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_collect_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="13dp"
+                        android:visibility="gone">
+                    </android.support.v7.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/tv_none_love"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="暂无喜欢"
+                        android:textColor="@color/light_gray_93"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray_e5"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:id="@+id/tv_comment_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="评价"
+                        android:textColor="@color/light_gray_3d"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_all_evaluate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="查看全部 >"
+                        android:textColor="@color/light_gray_3d"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        layout="@layout/listitem_goods_comment"/>
+
+                    <TextView
+                        android:id="@+id/tv_none_evaluate"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="暂无评价"
+                        android:textColor="@color/light_gray_93"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="上滑查看商品详情"
                     android:textColor="@color/light_gray_93"
-                    android:textSize="10sp"/>
+                    android:textSize="12sp"/>
+
             </LinearLayout>
 
-        </RelativeLayout>
+        </ScrollView>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -137,7 +219,7 @@
             android:layout_width="113dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@color/light_gray_3d"
+            android:background="#4C4C4C"
             android:gravity="center"
             android:text="购买同款"
             android:textColor="@android:color/white"

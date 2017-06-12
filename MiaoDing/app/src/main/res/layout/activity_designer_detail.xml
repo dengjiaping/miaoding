@@ -14,6 +14,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
             android:fitsSystemWindows="true">
 
             <com.github.anzewei.design.CollapsingCenterLayout
@@ -32,14 +33,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/icon_test"/>
+                        android:src="@mipmap/icon_test"
+                        android:visibility="visible"/>
 
                     <cn.cloudworkshop.miaoding.view.CircleImageView
                         android:id="@+id/img_designer_icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="49dp"
+                        android:layout_height="49dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="49dp"
                         android:scaleType="centerCrop"
                         android:src="@mipmap/icon_null_works"/>
 
@@ -50,28 +52,58 @@
                         android:layout_below="@id/img_designer_icon"
                         android:layout_centerHorizontal="true"
                         android:text="张三"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"/>
+                        android:layout_marginTop="24dp"
+                        android:textColor="#333333"
+                        android:textSize="18sp"/>
 
-                    <TextView
-                        android:id="@+id/tv_designer_nick"
+                    <LinearLayout
+                        android:id="@+id/ll_designer_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_designer_name"
                         android:layout_centerHorizontal="true"
-                        android:text="wwww"
-                        android:textColor="@android:color/white"
-                        android:textSize="13sp"/>
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_designer_introduce"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@mipmap/icon_designer"/>
+
+                        <TextView
+                            android:id="@+id/tv_designer_nick"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="wwww"
+                            android:textColor="#333333"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_designer_nick"
-                        android:layout_margin="20dp"
-                        android:text="wwwwssddsddssdcdsssssccsdcdsddssddss"
-                        android:textColor="@android:color/white"
-                        android:textSize="13sp"/>
+                        android:orientation="horizontal"
+                        android:layout_below="@id/ll_designer_name"
+                        android:layout_marginTop="36dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Me"
+                            android:textColor="@color/dark_gray_22"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:id="@+id/tv_designer_introduce"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:text="wwwwssddsddssdcdsssssccsdcdsddssddss"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"/>
+                    </LinearLayout>
+
+
 
 
                 </RelativeLayout>
@@ -80,8 +112,9 @@
 
             <com.flyco.tablayout.SlidingTabLayout
                 android:id="@+id/tab_designer"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_width="180dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="44dp"
                 android:background="@android:color/white"
                 app:tl_indicator_color="#414141"
                 app:tl_indicator_height="2.5dp"
@@ -108,18 +141,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="44dp">
 
         <ImageView
             android:id="@+id/img_back_designer"
-            android:layout_width="40dp"
+            android:layout_width="44dp"
             android:layout_height="match_parent"
             android:scaleType="center"
             android:src="@mipmap/icon_back_white"/>
 
         <ImageView
             android:id="@+id/img_designer_share"
-            android:layout_width="40dp"
+            android:layout_width="44dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:scaleType="center"

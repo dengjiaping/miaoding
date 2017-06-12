@@ -87,8 +87,35 @@ public class WorksDetailBean {
         private int is_collect;
         private int is_yuyue;
         private List<String> img_list;
-
         private List<SizeListBeanX> size_list;
+
+        private NewCommentBean new_comment;
+        private int comment_num;
+        private List<CollectUserBean> collect_user;
+
+        public NewCommentBean getNew_comment() {
+            return new_comment;
+        }
+
+        public void setNew_comment(NewCommentBean new_comment) {
+            this.new_comment = new_comment;
+        }
+
+        public int getComment_num() {
+            return comment_num;
+        }
+
+        public void setComment_num(int comment_num) {
+            this.comment_num = comment_num;
+        }
+
+        public List<CollectUserBean> getCollect_user() {
+            return collect_user;
+        }
+
+        public void setCollect_user(List<CollectUserBean> collect_user) {
+            this.collect_user = collect_user;
+        }
 
         public String getName() {
             return name;
@@ -210,6 +237,234 @@ public class WorksDetailBean {
         public void setSize_list(List<SizeListBeanX> size_list) {
             this.size_list = size_list;
         }
+
+        public static class NewCommentBean {
+            /**
+             * id : 9
+             * uid : 75
+             * content : 嗯这个商品的价值在于，独一无二，然后超级超级合身，好评好评好评好评好评。特别特别六六六
+             * img_list : ["/uploads/opencv/2017061211013712c10ebc0c4e7eb56676dd46fa2dc3ef.jpg","/uploads/opencv/2017061211013759b0245ebc61cef586111a3981d0a3ff.jpg","/uploads/opencv/20170612110137ee9603f73bfdf1dc6af642ae8d324f90.jpg",""]
+             * order_id : 1069
+             * c_time : 1497236497
+             * status : 1
+             * goods_id : 39
+             * user_name : 黄哥哥
+             * avatar : /uploads/user/2017060619272.jpg
+             */
+
+            private int id;
+            private int uid;
+            private String content;
+            private int order_id;
+            private int c_time;
+            private int status;
+            private int goods_id;
+            private String user_name;
+            private String avatar;
+            private List<String> img_list;
+            private CustomGoodsBean.DataBean.NewCommentBean.UserGradeBean user_grade;
+            private String goods_intro;
+
+            public CustomGoodsBean.DataBean.NewCommentBean.UserGradeBean getUser_grade() {
+                return user_grade;
+            }
+
+            public void setUser_grade(CustomGoodsBean.DataBean.NewCommentBean.UserGradeBean user_grade) {
+                this.user_grade = user_grade;
+            }
+
+            public String getGoods_intro() {
+                return goods_intro;
+            }
+
+            public void setGoods_intro(String goods_intro) {
+                this.goods_intro = goods_intro;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getUid() {
+                return uid;
+            }
+
+            public void setUid(int uid) {
+                this.uid = uid;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getOrder_id() {
+                return order_id;
+            }
+
+            public void setOrder_id(int order_id) {
+                this.order_id = order_id;
+            }
+
+            public int getC_time() {
+                return c_time;
+            }
+
+            public void setC_time(int c_time) {
+                this.c_time = c_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(int goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public String getUser_name() {
+                return user_name;
+            }
+
+            public void setUser_name(String user_name) {
+                this.user_name = user_name;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public List<String> getImg_list() {
+                return img_list;
+            }
+
+            public void setImg_list(List<String> img_list) {
+                this.img_list = img_list;
+            }
+
+            public static class UserGradeBean {
+                /**
+                 * name : V1
+                 * img : /uploads/img/2017051614114953995651.png
+                 * img2 : /uploads/img/2017051614115598575797.png
+                 * id : 1
+                 * min_credit : 0.00
+                 * max_credit : 999.00
+                 */
+
+                private String name;
+                private String img;
+                private String img2;
+                private int id;
+                private String min_credit;
+                private String max_credit;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getImg() {
+                    return img;
+                }
+
+                public void setImg(String img) {
+                    this.img = img;
+                }
+
+                public String getImg2() {
+                    return img2;
+                }
+
+                public void setImg2(String img2) {
+                    this.img2 = img2;
+                }
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getMin_credit() {
+                    return min_credit;
+                }
+
+                public void setMin_credit(String min_credit) {
+                    this.min_credit = min_credit;
+                }
+
+                public String getMax_credit() {
+                    return max_credit;
+                }
+
+                public void setMax_credit(String max_credit) {
+                    this.max_credit = max_credit;
+                }
+            }
+        }
+
+        public static class CollectUserBean {
+            /**
+             * avatar : /uploads/img/2016122211012553521024.png
+             * id : 132
+             * name : 云工场7558
+             */
+
+            private String avatar;
+            private int id;
+            private String name;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+
 
         public static class DesignerBean {
             /**

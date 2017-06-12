@@ -323,10 +323,10 @@ public class OrderDetailActivity extends BaseActivity {
                 confirmReceive(orderId);
                 break;
             case 4:
-
                 //订单评价
                 Intent intent = new Intent(this, EvaluateActivity.class);
                 intent.putExtra("order_id", orderId);
+                intent.putExtra("car_id", orderBean.getData().getCar_list().get(0).getId() + "");
                 intent.putExtra("goods_id", orderBean.getData().getCar_list().get(0).getGoods_id()+"");
                 intent.putExtra("goods_img", orderBean.getData().getCar_list().get(0).getGoods_thumb());
                 intent.putExtra("goods_name", orderBean.getData().getCar_list().get(0).getGoods_name());
