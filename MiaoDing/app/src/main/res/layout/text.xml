@@ -30,8 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_test"/>
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_designer_works"

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed|snap">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -31,38 +31,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="271dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_test"/>
+                    android:scaleType="centerCrop"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="271dp"
                     android:background="@color/gray_mask"/>
 
-                <TextView
-                    android:id="@+id/tv_designer_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="40dp"
-                    android:layout_marginTop="40dp"
-                    android:gravity="center_horizontal"
-                    android:text="腔调设计师"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/tv_designer_works"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_designer_title"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:lineSpacingExtra="8dp"
-                    android:text="国内顶级设计师\n国内顶级设计师国内设计师\n国内顶级设计师"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp"/>
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
 

@@ -114,16 +114,7 @@ public class CustomGoodsBean {
         private Object designer;
         private String default_mianliao_name;
         private int default_price;
-        private int price_id;
-
-        public int getPrice_id() {
-            return price_id;
-        }
-
-        public void setPrice_id(int price_id) {
-            this.price_id = price_id;
-        }
-
+        private int price_type;
         private int is_collect;
         private int is_yuyue;
         private List<String> img_list;
@@ -133,6 +124,14 @@ public class CustomGoodsBean {
         private NewCommentBean new_comment;
         private int comment_num;
         private List<CollectUserBean> collect_user;
+
+        public int getPrice_type() {
+            return price_type;
+        }
+
+        public void setPrice_type(int price_type) {
+            this.price_type = price_type;
+        }
 
         public String getName() {
             return name;

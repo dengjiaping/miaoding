@@ -7,5 +7,6 @@
         android:id="@+id/img_avatar_collect"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginRight="12dp"/>
+        android:layout_marginRight="12dp"
+        android:background="@drawable/ring_select_bg"/>
 </LinearLayout>

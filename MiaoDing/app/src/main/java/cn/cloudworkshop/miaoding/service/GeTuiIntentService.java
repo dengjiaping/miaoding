@@ -10,6 +10,7 @@ import com.igexin.sdk.message.GTTransmitMessage;
 import cn.cloudworkshop.miaoding.bean.GeTuiBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
+import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MessageDetailActivity;
@@ -80,7 +81,7 @@ public class GeTuiIntentService extends GTIntentService {
                 startActivity(intent5);
                 break;
             case "6":
-                Intent intent6 = new Intent(context, DesignerInfoActivity.class);
+                Intent intent6 = new Intent(context, DesignerDetailActivity.class);
                 intent6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent6.putExtra("id", bean.getId());
                 startActivity(intent6);

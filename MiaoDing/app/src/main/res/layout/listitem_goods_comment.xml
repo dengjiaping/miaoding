@@ -17,7 +17,8 @@
         <cn.cloudworkshop.miaoding.view.CircleImageView
             android:id="@+id/img_user_avatar"
             android:layout_width="45dp"
-            android:layout_height="45dp"/>
+            android:layout_height="45dp"
+            android:background="@drawable/ring_select_bg"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

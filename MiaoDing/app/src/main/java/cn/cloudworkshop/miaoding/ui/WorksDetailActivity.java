@@ -57,8 +57,7 @@ import okhttp3.Call;
  * Email：1993911441@qq.com
  * Describe：作品详情
  */
-public class
-WorksDetailActivity extends BaseActivity {
+public class WorksDetailActivity extends BaseActivity {
     @BindView(R.id.img_goods_like)
     ImageView imgAddLike;
     @BindView(R.id.img_goods_consult)
@@ -115,6 +114,10 @@ WorksDetailActivity extends BaseActivity {
     LinearLayout llNoneEvaluate;
     @BindView(R.id.tv_no_evaluate)
     TextView tvNoEvaluate;
+    @BindView(R.id.ll_designer_info)
+    LinearLayout llDesignerInfo;
+    @BindView(R.id.view_evaluate)
+    View viewEvaluate;
 
     private String id;
 
@@ -146,6 +149,12 @@ WorksDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_works_detail);
         ButterKnife.bind(this);
         getData();
+        initData();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         initData();
     }
 
@@ -206,7 +215,7 @@ WorksDetailActivity extends BaseActivity {
 
         //喜爱人数
         if (worksBean.getData().getCollect_user() != null && worksBean.getData().getCollect_user().size() > 0) {
-            tvCollectCount.setText("喜爱  (" + worksBean.getData().getCollect_user().size() + " 人)");
+            tvCollectCount.setText("喜爱  （" + worksBean.getData().getCollect_user().size() + "人）");
             rvCollectUser.setVisibility(View.VISIBLE);
             rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             List<String> imgList = new ArrayList<>();
@@ -226,13 +235,13 @@ WorksDetailActivity extends BaseActivity {
             };
             rvCollectUser.setAdapter(collectAdapter);
         } else {
-            tvCollectCount.setText("喜爱  (0人)");
+            tvCollectCount.setText("喜爱  （0人）");
             tvNoneCollect.setVisibility(View.VISIBLE);
         }
 
         //评价人数
         if (worksBean.getData().getComment_num() > 0) {
-            tvCommentCount.setText("评价  (" + worksBean.getData().getComment_num() + "人)");
+            tvCommentCount.setText("评价  （" + worksBean.getData().getComment_num() + "）");
             Glide.with(getApplicationContext())
                     .load(Constant.HOST + worksBean.getData().getNew_comment().getAvatar())
                     .centerCrop()
@@ -262,7 +271,7 @@ WorksDetailActivity extends BaseActivity {
             }
 
         } else {
-            tvCommentCount.setText("评价  (0人)");
+            tvCommentCount.setText("评价  （0）");
             tvNoEvaluate.setVisibility(View.VISIBLE);
             llNoneEvaluate.setVisibility(View.GONE);
         }
@@ -289,7 +298,7 @@ WorksDetailActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_goods_like, R.id.img_goods_consult, R.id.img_back_works, R.id.img_share_works,
-            R.id.tv_works_cart, R.id.tv_works_buy, R.id.img_works_designer, R.id.tv_check_evaluate})
+            R.id.tv_works_cart, R.id.tv_works_buy, R.id.ll_designer_info, R.id.tv_check_evaluate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_goods_like:
@@ -322,7 +331,7 @@ WorksDetailActivity extends BaseActivity {
                 index = 1;
                 showWorksType();
                 break;
-            case R.id.img_works_designer:
+            case R.id.ll_designer_info:
                 Intent intent = new Intent(this, DesignerDetailActivity.class);
                 intent.putExtra("id", worksBean.getData().getDesigner().getId() + "");
                 startActivity(intent);

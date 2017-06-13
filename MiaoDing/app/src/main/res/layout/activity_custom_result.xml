@@ -156,7 +156,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:background="@color/light_gray_3d"
+            android:background="#4C4C4C"
             android:gravity="center"
             android:text="加入购物袋"
             android:textColor="@android:color/white"

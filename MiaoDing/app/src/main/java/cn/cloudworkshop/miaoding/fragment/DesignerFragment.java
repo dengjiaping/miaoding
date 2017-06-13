@@ -46,6 +46,8 @@ public class DesignerFragment extends BaseFragment {
     private Unbinder unbinder;
     private List<PopDesignerBean.DataBean> designerList = new ArrayList<>();
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

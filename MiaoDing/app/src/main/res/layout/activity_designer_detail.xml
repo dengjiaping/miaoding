@@ -17,24 +17,24 @@
             android:background="@android:color/white"
             android:fitsSystemWindows="true">
 
-            <com.github.anzewei.design.CollapsingCenterLayout
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_collapseMode="parallax">
 
-                    <ImageView
-                        android:id="@+id/img_designer_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/icon_test"
-                        android:visibility="visible"/>
+                    <!--<ImageView-->
+                        <!--android:id="@+id/img_designer_bg"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="300dp"-->
+                        <!--android:scaleType="centerCrop"-->
+                        <!--android:src="@mipmap/icon_test"-->
+                        <!--android:visibility="visible"/>-->
 
                     <cn.cloudworkshop.miaoding.view.CircleImageView
                         android:id="@+id/img_designer_icon"
@@ -42,8 +42,7 @@
                         android:layout_height="49dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="49dp"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/icon_null_works"/>
+                        android:background="@drawable/ring_select_bg"/>
 
                     <TextView
                         android:id="@+id/tv_designer_name"
@@ -51,7 +50,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/img_designer_icon"
                         android:layout_centerHorizontal="true"
-                        android:text="张三"
                         android:layout_marginTop="24dp"
                         android:textColor="#333333"
                         android:textSize="18sp"/>
@@ -63,51 +61,57 @@
                         android:layout_below="@id/tv_designer_name"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
+                            android:scaleType="center"
                             android:src="@mipmap/icon_designer"/>
 
                         <TextView
                             android:id="@+id/tv_designer_nick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="wwww"
                             android:textColor="#333333"
                             android:textSize="12sp"/>
                     </LinearLayout>
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_designer_content"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:text="Me"
+                        android:textColor="@color/dark_gray_22"
+                        android:textSize="25sp"
+                        android:layout_marginLeft="30dp"
+                        android:textStyle="bold"
                         android:layout_below="@id/ll_designer_name"
-                        android:layout_marginTop="36dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Me"
-                            android:textColor="@color/dark_gray_22"
-                            android:textSize="20sp"/>
-                        <TextView
-                            android:id="@+id/tv_designer_introduce"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:text="wwwwssddsddssdcdsssssccsdcdsddssddss"
-                            android:textColor="@android:color/white"
-                            android:textSize="13sp"/>
-                    </LinearLayout>
+                        android:layout_marginTop="36dp"
+                        android:layout_marginBottom="25dp"/>
+                    <TextView
+                        android:id="@+id/tv_designer_introduce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_alignTop="@id/tv_designer_content"
+                        android:layout_toRightOf="@id/tv_designer_content"
+                        android:layout_marginLeft="13dp"
+                        android:textColor="@color/light_gray_3d"
+                        android:textSize="12sp"/>
 
-
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray_e5"
+                        android:layout_below="@id/tv_designer_introduce"
+                        android:layout_marginTop="25dp"/>
 
                 </RelativeLayout>
-            </com.github.anzewei.design.CollapsingCenterLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
 
             <com.flyco.tablayout.SlidingTabLayout

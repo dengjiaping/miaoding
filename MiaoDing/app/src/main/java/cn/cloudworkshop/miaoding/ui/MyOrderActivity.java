@@ -39,20 +39,18 @@ public class MyOrderActivity extends BaseActivity {
     @BindView(R.id.vp_my_order)
     ViewPager vpMyOrder;
 
-
     //当前页
     int currentPage;
     private List<String> titleList;
     private List<Fragment> fragmentList;
 
-    public static Activity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder);
         ButterKnife.bind(this);
-        instance = this;
+
         getData();
         initData();
     }

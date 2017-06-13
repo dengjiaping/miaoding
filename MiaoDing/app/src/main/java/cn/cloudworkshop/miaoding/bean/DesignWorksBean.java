@@ -12,19 +12,12 @@ public class DesignWorksBean {
 
     /**
      * code : 1
-     * data : {"total":3,"per_page":10,"current_page":1,"data":[{"name":"第一期","p_time":"2016-10-13","img":"/uploads/img/2016101716164056481005","goods_id":"8","uid":0,"thumb":"/uploads/img/2016102612153353975052.jpg","username":null,"avatar":null,"remark":null},{"name":"第二期","p_time":"2016-10-16","img":"/uploads/img/2016101716213951519999","goods_id":"5","uid":0,"thumb":"/uploads/img/2016102612151652485551.jpg","username":null,"avatar":null,"remark":null},{"name":"下期预告","p_time":"2016-10-18","img":"/uploads/img/2016101716240452555549","goods_id":"","uid":null,"thumb":null,"username":null,"avatar":null,"remark":null}]}
+     * list : {"total":1,"per_page":10,"current_page":1,"data":[{"id":79,"name":"小二西服","sub_name":"123","classify_id":1,"thumb":"/uploads/img/2017051609544856491001.jpg","img_list":"/uploads/img/2017051609551349509848.jpg,/uploads/img/2017051609551349551011.jpg,/uploads/img/2017051609551450495457.png","c_time":1494899729,"status":2,"view_num":0,"like_num":0,"price":"1111.00/2222.00/3333.00","sort":1,"content":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","content2":"/uploads/img/2017051617510798545157.jpg","img_z1":null,"img_z2":null,"img_z3":null,"img_z4":null,"img_z5":null,"img_z6":null,"img_f1":null,"img_f2":null,"img_f3":null,"img_f4":null,"img_f5":null,"img_f6":null,"goods_no":"1","recommend_goods_ids":"","type":2,"uid":79,"spec_ids":null,"heat":1,"banxin_ids":null,"mianliao_ids":null,"ziti_ids":null,"yanse_ids":null,"weizhi_ids":null,"default_spec_ids":null,"default_spec_content":null,"default_mianliao":null,"pc_introduce":null,"pc_thumb":null,"tag":"地表最强设计师","username":"青衣","avatar":"/uploads/img/2017060517380610199989.jpg","remark":"","introduce":"dvfsdsdcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}]}
      * msg : 成功
      */
 
     private int code;
-    /**
-     * total : 3
-     * per_page : 10
-     * current_page : 1
-     * data : [{"name":"第一期","p_time":"2016-10-13","img":"/uploads/img/2016101716164056481005","goods_id":"8","uid":0,"thumb":"/uploads/img/2016102612153353975052.jpg","username":null,"avatar":null,"remark":null},{"name":"第二期","p_time":"2016-10-16","img":"/uploads/img/2016101716213951519999","goods_id":"5","uid":0,"thumb":"/uploads/img/2016102612151652485551.jpg","username":null,"avatar":null,"remark":null},{"name":"下期预告","p_time":"2016-10-18","img":"/uploads/img/2016101716240452555549","goods_id":"","uid":null,"thumb":null,"username":null,"avatar":null,"remark":null}]
-     */
-
-    private DataBean data;
+    private ListBean list;
     private String msg;
 
     public int getCode() {
@@ -35,12 +28,12 @@ public class DesignWorksBean {
         this.code = code;
     }
 
-    public DataBean getData() {
-        return data;
+    public ListBean getList() {
+        return list;
     }
 
-    public void setData(DataBean data) {
-        this.data = data;
+    public void setList(ListBean list) {
+        this.list = list;
     }
 
     public String getMsg() {
@@ -51,23 +44,18 @@ public class DesignWorksBean {
         this.msg = msg;
     }
 
-    public static class DataBean {
+    public static class ListBean {
+        /**
+         * total : 1
+         * per_page : 10
+         * current_page : 1
+         * data : [{"id":79,"name":"小二西服","sub_name":"123","classify_id":1,"thumb":"/uploads/img/2017051609544856491001.jpg","img_list":"/uploads/img/2017051609551349509848.jpg,/uploads/img/2017051609551349551011.jpg,/uploads/img/2017051609551450495457.png","c_time":1494899729,"status":2,"view_num":0,"like_num":0,"price":"1111.00/2222.00/3333.00","sort":1,"content":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","content2":"/uploads/img/2017051617510798545157.jpg","img_z1":null,"img_z2":null,"img_z3":null,"img_z4":null,"img_z5":null,"img_z6":null,"img_f1":null,"img_f2":null,"img_f3":null,"img_f4":null,"img_f5":null,"img_f6":null,"goods_no":"1","recommend_goods_ids":"","type":2,"uid":79,"spec_ids":null,"heat":1,"banxin_ids":null,"mianliao_ids":null,"ziti_ids":null,"yanse_ids":null,"weizhi_ids":null,"default_spec_ids":null,"default_spec_content":null,"default_mianliao":null,"pc_introduce":null,"pc_thumb":null,"tag":"地表最强设计师","username":"青衣","avatar":"/uploads/img/2017060517380610199989.jpg","remark":"","introduce":"dvfsdsdcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}]
+         */
+
         private int total;
         private int per_page;
         private int current_page;
-        /**
-         * name : 第一期
-         * p_time : 2016-10-13
-         * img : /uploads/img/2016101716164056481005
-         * goods_id : 8
-         * uid : 0
-         * thumb : /uploads/img/2016102612153353975052.jpg
-         * username : null
-         * avatar : null
-         * remark : null
-         */
-
-        private List<ItemBean> data;
+        private List<DataBean> data;
 
         public int getTotal() {
             return total;
@@ -93,50 +81,95 @@ public class DesignWorksBean {
             this.current_page = current_page;
         }
 
-        public List<ItemBean> getData() {
+        public List<DataBean> getData() {
             return data;
         }
 
-        public void setData(List<ItemBean> data) {
+        public void setData(List<DataBean> data) {
             this.data = data;
         }
 
-        public static class ItemBean {
+        public static class DataBean {
+            /**
+             * id : 79
+             * name : 小二西服
+             * sub_name : 123
+             * classify_id : 1
+             * thumb : /uploads/img/2017051609544856491001.jpg
+             * img_list : /uploads/img/2017051609551349509848.jpg,/uploads/img/2017051609551349551011.jpg,/uploads/img/2017051609551450495457.png
+             * c_time : 1494899729
+             * status : 2
+             * view_num : 0
+             * like_num : 0
+             * price : 1111.00/2222.00/3333.00
+             * sort : 1
+             * content : 杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。
+             * content2 : /uploads/img/2017051617510798545157.jpg
+             * img_z1 : null
+             * img_z2 : null
+             * img_z3 : null
+             * img_z4 : null
+             * img_z5 : null
+             * img_z6 : null
+             * img_f1 : null
+             * img_f2 : null
+             * img_f3 : null
+             * img_f4 : null
+             * img_f5 : null
+             * img_f6 : null
+             * goods_no : 1
+             * recommend_goods_ids :
+             * type : 2
+             * uid : 79
+             * spec_ids : null
+             * heat : 1
+             * banxin_ids : null
+             * mianliao_ids : null
+             * ziti_ids : null
+             * yanse_ids : null
+             * weizhi_ids : null
+             * default_spec_ids : null
+             * default_spec_content : null
+             * default_mianliao : null
+             * pc_introduce : null
+             * pc_thumb : null
+             * tag : 地表最强设计师
+             * username : 青衣
+             * avatar : /uploads/img/2017060517380610199989.jpg
+             * remark :
+             * introduce : dvfsdsdcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+             */
+
+            private int id;
             private String name;
-            private String p_time;
-            private String img;
-            private String goods_id;
-            private String goods_name;
-            private int uid;
+            private String sub_name;
+            private int classify_id;
             private String thumb;
+            private String img_list;
+            private int c_time;
+            private int status;
+            private int view_num;
+            private int like_num;
+            private String price;
+            private int sort;
+            private String content;
+            private String content2;
+            private String goods_no;
+            private int type;
+            private int uid;
+            private int heat;
+            private String tag;
             private String username;
             private String avatar;
             private String remark;
-            private String tag;
             private String introduce;
 
-            public String getTag() {
-                return tag;
+            public int getId() {
+                return id;
             }
 
-            public void setTag(String tag) {
-                this.tag = tag;
-            }
-
-            public String getIntroduce() {
-                return introduce;
-            }
-
-            public void setIntroduce(String introduce) {
-                this.introduce = introduce;
-            }
-
-            public String getGoods_name() {
-                return goods_name;
-            }
-
-            public void setGoods_name(String goods_name) {
-                this.goods_name = goods_name;
+            public void setId(int id) {
+                this.id = id;
             }
 
             public String getName() {
@@ -147,28 +180,116 @@ public class DesignWorksBean {
                 this.name = name;
             }
 
-            public String getP_time() {
-                return p_time;
+            public String getSub_name() {
+                return sub_name;
             }
 
-            public void setP_time(String p_time) {
-                this.p_time = p_time;
+            public void setSub_name(String sub_name) {
+                this.sub_name = sub_name;
             }
 
-            public String getImg() {
-                return img;
+            public int getClassify_id() {
+                return classify_id;
             }
 
-            public void setImg(String img) {
-                this.img = img;
+            public void setClassify_id(int classify_id) {
+                this.classify_id = classify_id;
             }
 
-            public String getGoods_id() {
-                return goods_id;
+            public String getThumb() {
+                return thumb;
             }
 
-            public void setGoods_id(String goods_id) {
-                this.goods_id = goods_id;
+            public void setThumb(String thumb) {
+                this.thumb = thumb;
+            }
+
+            public String getImg_list() {
+                return img_list;
+            }
+
+            public void setImg_list(String img_list) {
+                this.img_list = img_list;
+            }
+
+            public int getC_time() {
+                return c_time;
+            }
+
+            public void setC_time(int c_time) {
+                this.c_time = c_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getView_num() {
+                return view_num;
+            }
+
+            public void setView_num(int view_num) {
+                this.view_num = view_num;
+            }
+
+            public int getLike_num() {
+                return like_num;
+            }
+
+            public void setLike_num(int like_num) {
+                this.like_num = like_num;
+            }
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+
+            public int getSort() {
+                return sort;
+            }
+
+            public void setSort(int sort) {
+                this.sort = sort;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getContent2() {
+                return content2;
+            }
+
+            public void setContent2(String content2) {
+                this.content2 = content2;
+            }
+
+            public String getGoods_no() {
+                return goods_no;
+            }
+
+            public void setGoods_no(String goods_no) {
+                this.goods_no = goods_no;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
             }
 
             public int getUid() {
@@ -179,12 +300,20 @@ public class DesignWorksBean {
                 this.uid = uid;
             }
 
-            public String getThumb() {
-                return thumb;
+            public int getHeat() {
+                return heat;
             }
 
-            public void setThumb(String thumb) {
-                this.thumb = thumb;
+            public void setHeat(int heat) {
+                this.heat = heat;
+            }
+
+            public String getTag() {
+                return tag;
+            }
+
+            public void setTag(String tag) {
+                this.tag = tag;
             }
 
             public String getUsername() {
@@ -209,6 +338,14 @@ public class DesignWorksBean {
 
             public void setRemark(String remark) {
                 this.remark = remark;
+            }
+
+            public String getIntroduce() {
+                return introduce;
+            }
+
+            public void setIntroduce(String introduce) {
+                this.introduce = introduce;
             }
         }
     }

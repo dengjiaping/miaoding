@@ -227,7 +227,7 @@ public class MainActivity extends BaseActivity {
         DownloadManager.Request request = new DownloadManager.Request(
                 Uri.parse(MyApplication.updateUrl));
 
-        request.setTitle("云工场");
+        request.setTitle("妙定");
         request.setDescription("正在下载");
         // 设置下载可见
         request.setVisibleInDownloadsUi(true);

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -26,6 +28,7 @@ import cn.cloudworkshop.miaoding.fragment.DesignerFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerStoryFragment;
 import cn.cloudworkshop.miaoding.fragment.WorksFragment;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -38,8 +41,8 @@ import okhttp3.Call;
  * Describe：
  */
 public class DesignerDetailActivity extends BaseActivity {
-    @BindView(R.id.img_designer_bg)
-    ImageView imgBg;
+//    @BindView(R.id.img_designer_bg)
+//    ImageView imgBg;
     @BindView(R.id.img_designer_icon)
     CircleImageView imgAvatar;
     @BindView(R.id.tv_designer_name)
@@ -99,6 +102,14 @@ public class DesignerDetailActivity extends BaseActivity {
     }
 
     private void initView() {
+
+        Glide.with(getApplicationContext())
+                .load(Constant.HOST+designerBean.getData().getAvatar())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgAvatar);
+        tvName.setText(designerBean.getData().getName());
+        tvNickName.setText(designerBean.getData().getTag());
+        tvIntroduce.setText(designerBean.getData().getIntroduce());
 
         List<String> titleList = new ArrayList<>();
         List<Fragment> fragmentList = new ArrayList<>();

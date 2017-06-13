@@ -536,25 +536,8 @@ public class SetUpActivity extends BaseActivity {
             try {
                 if (data != null) {
                     ImageDisposeUtils.rotatingImageView(Crop.getOutput(data).getPath());
-                    OkHttpUtils.post()
-                            .url(Constant.CHANGE_INFO)
-                            .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                            .addParams("avatar", ImageEncodeUtils.fileToBase64(Crop.getOutput(data).getPath()))
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-
-                                }
-
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    imgCircleIcon.setImageURI(Crop.getOutput(data));
-                                    initData();
-                                    Toast.makeText(SetUpActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
+                    imgCircleIcon.setImageURI(Crop.getOutput(data));
+                    changeInfo("avatar", ImageEncodeUtils.fileToBase64(Crop.getOutput(data).getPath()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

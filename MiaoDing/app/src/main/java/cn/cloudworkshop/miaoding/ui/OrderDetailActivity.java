@@ -31,6 +31,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.OrderDetailsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -80,8 +81,6 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvOrderAfter;
     //订单id
     private String orderId;
-    //评价
-    private int commentId;
     private OrderDetailsBean orderBean;
     //倒计时时间
     private int recLen;
@@ -101,15 +100,7 @@ public class OrderDetailActivity extends BaseActivity {
                     } else {
                         timer.cancel();
                         task.cancel();
-
-                        Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
-                        intent.putExtra("page", 0);
-                        if (MyOrderActivity.instance != null) {
-                            MyOrderActivity.instance.finish();
-                        }
-
                         finish();
-                        startActivity(intent);
                         Toast.makeText(OrderDetailActivity.this, "订单已过期", Toast.LENGTH_SHORT).show();
 
                     }
@@ -139,7 +130,7 @@ public class OrderDetailActivity extends BaseActivity {
      */
     private void initData() {
         OkHttpUtils.get()
-                .url(Constant.ORDER_DETAIL)
+                .url(Constant.NEW_ORDER_DETAIL)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("id", orderId)
                 .build()
@@ -198,9 +189,11 @@ public class OrderDetailActivity extends BaseActivity {
                 tvOrderCancel.setVisibility(View.VISIBLE);
                 tvOrderStatus.setText("已完成");
                 tvOrderCancel.setText("查看物流");
-                if (commentId == 0) {
+                if (orderBean.getData().getOrder_comment().getId() == 0) {
                     tvOrderPayMoney.setVisibility(View.VISIBLE);
                     tvOrderPayMoney.setText("评价");
+                }else {
+                    tvOrderPayMoney.setVisibility(View.GONE);
                 }
                 break;
             case -2:
@@ -259,7 +252,7 @@ public class OrderDetailActivity extends BaseActivity {
                         holder.setText(R.id.tv_goods_content, "定制款");
                         break;
                 }
-                holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00").format(carListBean.getPrice()));
+                holder.setText(R.id.tv_goods_price, "¥" + carListBean.getPrice());
                 holder.setText(R.id.tv_goods_count, "x" + carListBean.getNum());
                 holder.setVisible(R.id.view_cart, true);
             }
@@ -271,8 +264,8 @@ public class OrderDetailActivity extends BaseActivity {
         float totalMoney = 0;
 
         for (int i = 0; i < orderBean.getData().getCar_list().size(); i++) {
-            totalMoney += orderBean.getData().getCar_list().get(i).getPrice() * orderBean.getData()
-                    .getCar_list().get(i).getNum();
+            totalMoney += Float.parseFloat(orderBean.getData().getCar_list().get(i).getPrice())
+                    * orderBean.getData().getCar_list().get(i).getNum();
         }
 
         return totalMoney;
@@ -281,7 +274,6 @@ public class OrderDetailActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         orderId = intent.getStringExtra("id");
-        commentId = intent.getIntExtra("comment_id", 0);
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_order_pay_money, R.id.tv_order_cancel, R.id.tv_order_after})
@@ -326,8 +318,8 @@ public class OrderDetailActivity extends BaseActivity {
                 //订单评价
                 Intent intent = new Intent(this, EvaluateActivity.class);
                 intent.putExtra("order_id", orderId);
-                intent.putExtra("car_id", orderBean.getData().getCar_list().get(0).getId() + "");
-                intent.putExtra("goods_id", orderBean.getData().getCar_list().get(0).getGoods_id()+"");
+                intent.putExtra("cart_id", orderBean.getData().getCar_list().get(0).getId() + "");
+                intent.putExtra("goods_id", orderBean.getData().getCar_list().get(0).getGoods_id() + "");
                 intent.putExtra("goods_img", orderBean.getData().getCar_list().get(0).getGoods_thumb());
                 intent.putExtra("goods_name", orderBean.getData().getCar_list().get(0).getGoods_name());
 
@@ -394,12 +386,7 @@ public class OrderDetailActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
-                                if (MyOrderActivity.instance != null) {
-                                    MyOrderActivity.instance.finish();
-                                }
                                 finish();
-                                startActivity(intent);
                                 Toast.makeText(OrderDetailActivity.this,
                                         "交易完成，祝您购物愉快！", Toast.LENGTH_SHORT).show();
                             }
@@ -444,12 +431,7 @@ public class OrderDetailActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
-                                if (MyOrderActivity.instance != null) {
-                                    MyOrderActivity.instance.finish();
-                                }
                                 finish();
-                                startActivity(intent);
                                 Toast.makeText(OrderDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -492,12 +474,7 @@ public class OrderDetailActivity extends BaseActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(OrderDetailActivity.this, "cancel_order");
-                                Intent intent = new Intent(OrderDetailActivity.this, MyOrderActivity.class);
-                                if (MyOrderActivity.instance != null) {
-                                    MyOrderActivity.instance.finish();
-                                }
                                 finish();
-                                startActivity(intent);
                                 Toast.makeText(OrderDetailActivity.this, "取消成功", Toast.LENGTH_SHORT).show();
                             }
                         });

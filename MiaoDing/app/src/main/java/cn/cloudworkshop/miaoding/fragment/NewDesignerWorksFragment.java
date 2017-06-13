@@ -8,9 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.google.gson.JsonObject;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,9 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
+import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import okhttp3.Call;
 
 /**
  * Author：binge on 2017-06-08 11:25
@@ -31,8 +41,6 @@ import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
 public class NewDesignerWorksFragment extends BaseFragment {
 
 
-    @BindView(R.id.tv_designer_works)
-    TextView tvDesignerWorks;
     @BindView(R.id.tab_designer_works)
     SlidingTabLayout tabDesignerWorks;
     @BindView(R.id.vp_designer_works)
@@ -40,47 +48,55 @@ public class NewDesignerWorksFragment extends BaseFragment {
     @BindView(R.id.img_designer_works)
     ImageView imgDesignerWorks;
 
-    private Unbinder unbinder;
 
-    private List<DesignWorksBean.DataBean.ItemBean> designerList = new ArrayList<>();
+    private Unbinder unbinder;
+    private String imgUrl;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_designer_works_new, container, false);
         unbinder = ButterKnife.bind(this, view);
-//        initData();
-        initView();
+        initData();
+
         return view;
     }
 
-//    /**
-//     * 加载数据
-//     */
-//    private void initData() {
-//
-//
-//        OkHttpUtils.get()
-//                .url(Constant.DESIGNER_WORKS)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        DesignWorksBean designerBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
-//                        if (designerBean.getData().getData() != null) {
-//                            designerList.addAll(designerBean.getData().getData());
-//
-//                        }
-//                    }
-//                });
-//    }
+    /**
+     * 加载数据
+     */
+    private void initData() {
+
+
+        OkHttpUtils.get()
+                .url(Constant.DESIGNER_TITLE)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            imgUrl = data.getString("img");
+                            initView();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
     private void initView() {
+        Glide.with(getActivity())
+                .load(Constant.HOST + imgUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgDesignerWorks);
         List<String> titleList = new ArrayList<>();
         List<Fragment> fragmentList = new ArrayList<>();
 

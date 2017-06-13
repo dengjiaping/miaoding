@@ -153,10 +153,10 @@ public class EmbroideryActivity extends BaseActivity {
                 isAllSelect();
                 if (flowerPosition == position) {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.dark_gray_22));
-                    imgPosition.setBackgroundResource(R.drawable.ring_black);
+                    imgPosition.setBackgroundResource(R.drawable.ring_select_bg);
                 } else {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_7a));
-                    imgPosition.setBackgroundResource(R.drawable.ring_gray);
+                    imgPosition.setBackgroundResource(R.drawable.ring_normal_bg);
                 }
             }
         };

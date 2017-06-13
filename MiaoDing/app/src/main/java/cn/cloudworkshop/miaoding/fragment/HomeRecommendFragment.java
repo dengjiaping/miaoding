@@ -135,7 +135,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                             } else {
 
                                 initView();
-
                             }
                             isLoadMore = false;
                             isRefresh = false;

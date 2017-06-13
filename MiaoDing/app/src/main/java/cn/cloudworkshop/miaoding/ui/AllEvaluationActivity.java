@@ -1,9 +1,11 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.GoodsCommentBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -48,9 +51,7 @@ public class AllEvaluationActivity extends BaseActivity {
     @BindView(R.id.rv_all_evaluate)
     LRecyclerView rvComment;
 
-
     private String goodsId;
-
     private List<GoodsCommentBean.ListBean.DataBean> dataList = new ArrayList<>();
 
     //页数
@@ -117,7 +118,7 @@ public class AllEvaluationActivity extends BaseActivity {
         CommonAdapter<GoodsCommentBean.ListBean.DataBean> adapter = new CommonAdapter<
                 GoodsCommentBean.ListBean.DataBean>(this, R.layout.listitem_goods_comment, dataList) {
             @Override
-            protected void convert(ViewHolder holder, GoodsCommentBean.ListBean.DataBean dataBean, int position) {
+            protected void convert(ViewHolder holder, final GoodsCommentBean.ListBean.DataBean dataBean, int position) {
                 Glide.with(AllEvaluationActivity.this)
                         .load(Constant.HOST + dataBean.getAvatar())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -128,10 +129,10 @@ public class AllEvaluationActivity extends BaseActivity {
                         .load(Constant.HOST + dataBean.getUser_grade().getImg2())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_user_grade));
-                holder.setText(R.id.tv_comment_time, dataBean.getC_time());
+                holder.setText(R.id.tv_comment_time, DateUtils.getDate("yyyy-MM-dd",dataBean.getC_time()));
                 holder.setText(R.id.tv_evaluate_content, dataBean.getContent());
                 holder.setText(R.id.tv_type_goods, dataBean.getGoods_intro());
-                holder.setVisible(R.id.view_evaluate,true);
+                holder.setVisible(R.id.view_evaluate, true);
                 if (dataBean.getImg_list() != null && dataBean.getImg_list().size() > 0) {
                     RecyclerView recyclerView = holder.getView(R.id.rv_evaluate_picture);
 
@@ -139,11 +140,22 @@ public class AllEvaluationActivity extends BaseActivity {
                     CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(AllEvaluationActivity
                             .this, R.layout.listitem_user_comment, dataBean.getImg_list()) {
                         @Override
-                        protected void convert(ViewHolder holder, String s, int position) {
+                        protected void convert(ViewHolder holder, String s, final int position) {
+                            ImageView imageView =  holder.getView(R.id.img_user_comment);
                             Glide.with(AllEvaluationActivity.this)
                                     .load(Constant.HOST + s)
                                     .centerCrop()
-                                    .into((ImageView) holder.getView(R.id.img_user_comment));
+                                    .into(imageView);
+                            imageView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(AllEvaluationActivity.this, ImagePreviewActivity.class);
+                                    intent.putExtra("currentPos", position);
+                                    intent.putStringArrayListExtra("img_list", dataBean.getImg_list());
+                                    startActivity(intent);
+                                }
+                            });
+
                         }
                     };
                     recyclerView.setAdapter(evaluateAdapter);

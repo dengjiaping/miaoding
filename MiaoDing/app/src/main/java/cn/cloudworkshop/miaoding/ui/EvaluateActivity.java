@@ -35,6 +35,7 @@ import cn.cloudworkshop.miaoding.adapter.PhotoAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -138,7 +139,7 @@ public class EvaluateActivity extends BaseActivity {
                 break;
             case R.id.img_select_picture:
                 PhotoPicker.builder()
-                        .setPhotoCount(3)
+                        .setPhotoCount(4)
                         .setShowCamera(true)
                         .setSelected(selectedPhotos)
                         .start(this);
@@ -201,6 +202,7 @@ public class EvaluateActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response, int id) {
+                            loadingView.smoothToHide();
                             Toast.makeText(EvaluateActivity.this, "评价成功！", Toast.LENGTH_SHORT).show();
                             finish();
                         }

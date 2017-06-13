@@ -57,7 +57,7 @@ public class AboutUsActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        tvHeaderTitle.setText("关于云工场");
+        tvHeaderTitle.setText("关于妙定");
         tvVersionName.setText("当前版本：" + getVersionName());
         if (MyApplication.updateUrl != null) {
             tvNewVersion.setVisibility(View.VISIBLE);
@@ -117,7 +117,7 @@ public class AboutUsActivity extends BaseActivity {
 
         DownloadManager.Request request = new DownloadManager.Request(
                 Uri.parse(MyApplication.updateUrl));
-        request.setTitle("云工场");
+        request.setTitle("妙定");
         request.setDescription("正在下载");
         // 设置下载可见
         request.setVisibleInDownloadsUi(true);

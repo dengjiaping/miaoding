@@ -19,7 +19,7 @@ public class DateUtils {
      */
     public static String getDate(String type, int time) {
         SimpleDateFormat sdf = new SimpleDateFormat(type, Locale.CHINA);
-        return sdf.format(new Date(time * 1000));
+        return sdf.format(new Date(time * 1000L));
     }
 
     /**
@@ -28,7 +28,7 @@ public class DateUtils {
      * @return 毫秒
      */
     public static long getMillisecond(String type, String time) {
-        SimpleDateFormat sdf = new SimpleDateFormat(type,Locale.CHINA);
+        SimpleDateFormat sdf = new SimpleDateFormat(type, Locale.CHINA);
         long seconds = 0;
         try {
             seconds = sdf.parse(time).getTime();

@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,16 +100,16 @@ public class GoodsCommentBean {
             private int id;
             private int uid;
 
-            public List<String> getImg_list() {
+            public ArrayList<String> getImg_list() {
                 return img_list;
             }
 
-            public void setImg_list(List<String> img_list) {
+            public void setImg_list(ArrayList<String> img_list) {
                 this.img_list = img_list;
             }
 
             private String content;
-            private List<String> img_list;
+            private ArrayList<String> img_list;
             private int order_id;
             private int status;
             private int goods_id;
@@ -117,7 +118,7 @@ public class GoodsCommentBean {
             private String avatar;
             private UserGradeBean user_grade;
             private String goods_intro;
-            private String c_time;
+            private int c_time;
 
             public int getId() {
                 return id;
@@ -208,11 +209,11 @@ public class GoodsCommentBean {
                 this.goods_intro = goods_intro;
             }
 
-            public String getC_time() {
+            public int getC_time() {
                 return c_time;
             }
 
-            public void setC_time(String c_time) {
+            public void setC_time(int c_time) {
                 this.c_time = c_time;
             }
 

@@ -73,6 +73,15 @@ public class DesignerInfoBean {
         private String content;
         private String tag;
         private String story;
+        private String introduce;
+
+        public String getIntroduce() {
+            return introduce;
+        }
+
+        public void setIntroduce(String introduce) {
+            this.introduce = introduce;
+        }
 
         public String getStory() {
             return story;

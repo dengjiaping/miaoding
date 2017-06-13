@@ -17,7 +17,8 @@ public class Constant {
     public static final String HOMEPAGE_TAB_LIST = HOST + "/index.php/index/index/index_tab_list";
     public static final String GOODS_TITLE = HOST + "/index.php/index/index/goods_classify";
     public static final String GOODS_LIST = HOST + "/index.php/index/index/goods_list";
-    public static final String DESIGNER_WORKS = HOST + "/index.php/index/index/cobbler";
+    public static final String DESIGNER_TITLE= HOST + "/index.php/index/index/cobbler_v5_2";
+    public static final String DESIGNER_WORKS = HOST + "/index.php/index/index/get_chengping_goods_list";
     public static final String GOODS_DETAILS = HOST + "/index.php/index/index/goods_detail";
     public static final String NEW_GOODS_DETAILS = HOST + "/index.php/index/index/new_goods_detail";
     public static final String TAILOR_INFO = HOST + "/index.php/index/index/customize";
@@ -47,6 +48,7 @@ public class Constant {
     public static final String MY_ORDER = HOST + "/index.php/index/index/goods_order";
     public static final String GOODS_ORDER = HOST + "/index.php/index/index/goods_order_v5_2";
     public static final String ORDER_DETAIL = HOST + "/index.php/index/index/order_detail";
+    public static final String NEW_ORDER_DETAIL = HOST + "/index.php/index/index/new_order_detail_v5_2";
     public static final String CANCEL_ORDER = HOST + "/index.php/index/index/cancel_order";
     public static final String DELETE_ORDER = HOST + "/index.php/index/index/delete_order";
     public static final String CONFIRM_RECEIVE = HOST + "/index.php/index/index/confirm_order";

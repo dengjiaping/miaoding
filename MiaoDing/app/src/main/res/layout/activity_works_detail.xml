@@ -35,6 +35,7 @@
                         android:scaleType="centerCrop"/>
 
                     <LinearLayout
+                        android:id="@+id/ll_designer_info"
                         android:layout_width="match_parent"
                         android:layout_height="162dp"
                         android:layout_alignParentBottom="true"
@@ -286,14 +287,14 @@
 
     <ImageView
         android:id="@+id/img_back_works"
-        android:layout_width="40dp"
+        android:layout_width="44dp"
         android:layout_height="70dp"
         android:scaleType="center"
         android:src="@mipmap/icon_back_white"/>
 
     <ImageView
         android:id="@+id/img_share_works"
-        android:layout_width="40dp"
+        android:layout_width="44dp"
         android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:scaleType="center"

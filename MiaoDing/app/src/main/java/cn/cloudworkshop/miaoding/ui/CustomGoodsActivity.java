@@ -139,6 +139,12 @@ public class CustomGoodsActivity extends BaseActivity {
         enterTime = DateUtils.getCurrentTime();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
+
     /**
      * 加载数据
      */
@@ -203,7 +209,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
         //喜爱人数
         if (customBean.getData().getCollect_user() != null && customBean.getData().getCollect_user().size() > 0) {
-            tvCollectCount.setText("喜爱  (" + customBean.getData().getCollect_user().size() + " 人)");
+            tvCollectCount.setText("喜爱  （" + customBean.getData().getCollect_user().size() + "人）");
             rvCollectUser.setVisibility(View.VISIBLE);
             rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             List<String> imgList = new ArrayList<>();
@@ -222,13 +228,13 @@ public class CustomGoodsActivity extends BaseActivity {
             };
             rvCollectUser.setAdapter(collectAdapter);
         } else {
-            tvCollectCount.setText("喜爱  (0人)");
+            tvCollectCount.setText("喜爱  （0人）");
             tvNoneLove.setVisibility(View.VISIBLE);
         }
 
         //评价人数
         if (customBean.getData().getComment_num() > 0) {
-            tvCommentCount.setText("评价  (" + customBean.getData().getComment_num() + "人)");
+            tvCommentCount.setText("评价  （" + customBean.getData().getComment_num() + "）");
             Glide.with(getApplicationContext())
                     .load(Constant.HOST + customBean.getData().getNew_comment().getAvatar())
                     .centerCrop()
@@ -258,7 +264,7 @@ public class CustomGoodsActivity extends BaseActivity {
             }
 
         } else {
-            tvCommentCount.setText("评价  (0人)");
+            tvCommentCount.setText("评价  （0）");
             tvNoneEvaluate.setVisibility(View.VISIBLE);
             llNoneEvaluate.setVisibility(View.GONE);
         }
@@ -480,7 +486,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 tailorItemBean.setGoods_name(customBean.getData().getName());
                 tailorItemBean.setPrice(new DecimalFormat("#0.00").format(customBean.getData().getDefault_price()));
                 tailorItemBean.setImg_url(customBean.getData().getThumb());
-                tailorItemBean.setPrice_type(customBean.getData().getPrice_id() + "");
+                tailorItemBean.setPrice_type(customBean.getData().getPrice_type()+ "");
                 tailorItemBean.setLog_id(customBean.getId());
                 tailorItemBean.setGoods_time(enterTime);
                 tailorItemBean.setDingzhi_time(0);

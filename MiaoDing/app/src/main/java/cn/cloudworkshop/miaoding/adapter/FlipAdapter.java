@@ -20,6 +20,7 @@ import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 
 /**
  * Author：binge on 2017-04-21 10:43
@@ -29,9 +30,9 @@ import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 public class FlipAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private Context context;
-    private List<DesignWorksBean.DataBean.ItemBean> dataList;
+    private List<DesignWorksBean.ListBean.DataBean> dataList;
 
-    public FlipAdapter(Context context, List<DesignWorksBean.DataBean.ItemBean> dataList) {
+    public FlipAdapter(Context context, List<DesignWorksBean.ListBean.DataBean> dataList) {
         this.dataList = dataList;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -65,23 +66,23 @@ public class FlipAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final DesignWorksBean.DataBean.ItemBean itemBean = dataList.get(position);
+        final DesignWorksBean.ListBean.DataBean itemBean = dataList.get(position);
         Glide.with(context)
-                .load(Constant.HOST + itemBean.getImg())
+                .load(Constant.HOST + itemBean.getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.imgWorks);
-        if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+        if (!TextUtils.isEmpty(itemBean.getId() + "")) {
             holder.tvWorks.setText(itemBean.getName());
-            holder.tvDesigner.setText(itemBean.getP_time() + "         " + itemBean.getUsername());
+            holder.tvDesigner.setText(DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()) + "         " + itemBean.getUsername());
         }
 
 
         holder.imgWorks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+                if (!TextUtils.isEmpty(itemBean.getId() + "")) {
                     Intent intent = new Intent(context, WorksDetailActivity.class);
-                    intent.putExtra("id", String.valueOf(itemBean.getGoods_id()));
+                    intent.putExtra("id", String.valueOf(itemBean.getId() + ""));
                     context.startActivity(intent);
                 }
             }
@@ -90,7 +91,7 @@ public class FlipAdapter extends BaseAdapter {
         holder.tvDesigner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(itemBean.getGoods_id())){
+                if (!TextUtils.isEmpty(itemBean.getId() + "")) {
                     Intent intent = new Intent(context, DesignerInfoActivity.class);
                     intent.putExtra("id", itemBean.getUid() + "");
                     context.startActivity(intent);

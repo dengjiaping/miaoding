@@ -150,6 +150,7 @@ public class FeedbackActivity extends BaseActivity {
                         public void onResponse(String response, int id) {
                             //反馈事件监听
                             MobclickAgent.onEvent(FeedbackActivity.this, "feedback");
+                            loadingView.smoothToHide();
                             Toast.makeText(FeedbackActivity.this, "提交成功，感谢您的宝贵意见",
                                     Toast.LENGTH_SHORT).show();
                             finish();

@@ -43,7 +43,7 @@ public class DesignerWorksFragment extends BaseFragment {
     @BindView(R.id.view_header_line)
     View viewHeaderLine;
 
-    private List<DesignWorksBean.DataBean.ItemBean> designerList = new ArrayList<>();
+    private List<DesignWorksBean.ListBean.DataBean> designerList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -74,8 +74,8 @@ public class DesignerWorksFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response, int id) {
                         DesignWorksBean designerBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
-                        if (designerBean.getData().getData() != null) {
-                            designerList.addAll(designerBean.getData().getData());
+                        if (designerBean.getList().getData() != null) {
+                            designerList.addAll(designerBean.getList().getData());
                             initView();
                         }
                     }

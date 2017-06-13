@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.bean;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class OrderDetailsBean {
 
     /**
      * code : 1
-     * data : {"order_no":"YGC2016102613505198985010","c_time":"2016-10-26 13:50:51","p_time":"1970-01-01 08:00:00","s_time":"2016-10-27 15:03:38","q_time":"1970-01-01 08:00:00","name":"121","phone":"1212","province":"浙江省","city":"杭州市","area":"下城区","address":"东新路星城发展大厦","money":"1500.00","car_ids":"32","pay_type":0,"ems_com_id":0,"ems_no":"","status":3,"ems_com_name":null,"ems_com":null,"car_list":[{"goods_name":"成品01","goods_thumb":"/uploads/img/2016101116064957521025a2.jpg","price":"1500.00","num":1}]}
+     * data : {"order_no":"YGC2017061343632","c_time":"2017-06-13 17:42:21","p_time":"1970-01-01 08:00:00","s_time":"1970-01-01 08:00:00","q_time":"1970-01-01 08:00:00","name":"ffggg","phone":"13966666666","province":"北京市","city":"北京市","area":"朝阳区","address":"ghhhhj","money":"399.00","car_ids":"2907","pay_type":0,"ems_com_id":0,"ems_no":null,"status":4,"ticket_money":"0.00","ems_com_name":null,"ems_com":null,"car_list":[{"id":2907,"goods_id":49,"goods_name":"小二西服","goods_thumb":"/uploads/img/2017051609544856491001.jpg","price":"399.00","num":1,"goods_type":2,"size_content":"颜色:黑;尺码:X"}],"last_time":225,"order_comment":{"id":23,"uid":264,"content":"刚好斤斤计较","img_list":"/uploads/comment/20170613174413e406e407e25a6a381d5c802ae3c2b98b.jpg,/uploads/comment/20170613174413c52b32e25096783a78e36ef092f976f4.jpg,/uploads/comment/20170613174413957fe3ed5d58773c9937eb080e1c1afd.jpg,","order_id":1092,"c_time":"2017-06-13 17:44","status":1,"goods_id":49,"car_id":2907}}
      * msg : 成功
      */
 
@@ -47,26 +46,29 @@ public class OrderDetailsBean {
 
     public static class DataBean {
         /**
-         * order_no : YGC2016102613505198985010
-         * c_time : 2016-10-26 13:50:51
+         * order_no : YGC2017061343632
+         * c_time : 2017-06-13 17:42:21
          * p_time : 1970-01-01 08:00:00
-         * s_time : 2016-10-27 15:03:38
+         * s_time : 1970-01-01 08:00:00
          * q_time : 1970-01-01 08:00:00
-         * name : 121
-         * phone : 1212
-         * province : 浙江省
-         * city : 杭州市
-         * area : 下城区
-         * address : 东新路星城发展大厦
-         * money : 1500.00
-         * car_ids : 32
+         * name : ffggg
+         * phone : 13966666666
+         * province : 北京市
+         * city : 北京市
+         * area : 朝阳区
+         * address : ghhhhj
+         * money : 399.00
+         * car_ids : 2907
          * pay_type : 0
          * ems_com_id : 0
-         * ems_no :
-         * status : 3
+         * ems_no : null
+         * status : 4
+         * ticket_money : 0.00
          * ems_com_name : null
          * ems_com : null
-         * car_list : [{"goods_name":"成品01","goods_thumb":"/uploads/img/2016101116064957521025a2.jpg","price":"1500.00","num":1}]
+         * car_list : [{"id":2907,"goods_id":49,"goods_name":"小二西服","goods_thumb":"/uploads/img/2017051609544856491001.jpg","price":"399.00","num":1,"goods_type":2,"size_content":"颜色:黑;尺码:X"}]
+         * last_time : 225
+         * order_comment : {"id":23,"uid":264,"content":"刚好斤斤计较","img_list":"/uploads/comment/20170613174413e406e407e25a6a381d5c802ae3c2b98b.jpg,/uploads/comment/20170613174413c52b32e25096783a78e36ef092f976f4.jpg,/uploads/comment/20170613174413957fe3ed5d58773c9937eb080e1c1afd.jpg,","order_id":1092,"c_time":"2017-06-13 17:44","status":1,"goods_id":49,"car_id":2907}
          */
 
         private String order_no;
@@ -86,27 +88,11 @@ public class OrderDetailsBean {
         private int ems_com_id;
         private String ems_no;
         private int status;
+        private String ticket_money;
         private String ems_com_name;
         private String ems_com;
         private int last_time;
-        private String ticket_money;
-
-        public String getTicket_money() {
-            return ticket_money;
-        }
-
-        public void setTicket_money(String ticket_money) {
-            this.ticket_money = ticket_money;
-        }
-
-        public int getLast_time() {
-            return last_time;
-        }
-
-        public void setLast_time(int last_time) {
-            this.last_time = last_time;
-        }
-
+        private OrderCommentBean order_comment;
         private List<CarListBean> car_list;
 
         public String getOrder_no() {
@@ -127,22 +113,6 @@ public class OrderDetailsBean {
 
         public String getP_time() {
             return p_time;
-        }
-
-        public String getEms_com_name() {
-            return ems_com_name;
-        }
-
-        public void setEms_com_name(String ems_com_name) {
-            this.ems_com_name = ems_com_name;
-        }
-
-        public String getEms_com() {
-            return ems_com;
-        }
-
-        public void setEms_com(String ems_com) {
-            this.ems_com = ems_com;
         }
 
         public void setP_time(String p_time) {
@@ -261,6 +231,45 @@ public class OrderDetailsBean {
             this.status = status;
         }
 
+        public String getTicket_money() {
+            return ticket_money;
+        }
+
+        public void setTicket_money(String ticket_money) {
+            this.ticket_money = ticket_money;
+        }
+
+        public String getEms_com_name() {
+            return ems_com_name;
+        }
+
+        public void setEms_com_name(String ems_com_name) {
+            this.ems_com_name = ems_com_name;
+        }
+
+        public String getEms_com() {
+            return ems_com;
+        }
+
+        public void setEms_com(String ems_com) {
+            this.ems_com = ems_com;
+        }
+
+        public int getLast_time() {
+            return last_time;
+        }
+
+        public void setLast_time(int last_time) {
+            this.last_time = last_time;
+        }
+
+        public OrderCommentBean getOrder_comment() {
+            return order_comment;
+        }
+
+        public void setOrder_comment(OrderCommentBean order_comment) {
+            this.order_comment = order_comment;
+        }
 
         public List<CarListBean> getCar_list() {
             return car_list;
@@ -270,30 +279,28 @@ public class OrderDetailsBean {
             this.car_list = car_list;
         }
 
-        public static class CarListBean implements Serializable{
+        public static class OrderCommentBean {
             /**
-             * goods_name : 成品01
-             * goods_thumb : /uploads/img/2016101116064957521025a2.jpg
-             * price : 1500.00
-             * num : 1
+             * id : 23
+             * uid : 264
+             * content : 刚好斤斤计较
+             * img_list : /uploads/comment/20170613174413e406e407e25a6a381d5c802ae3c2b98b.jpg,/uploads/comment/20170613174413c52b32e25096783a78e36ef092f976f4.jpg,/uploads/comment/20170613174413957fe3ed5d58773c9937eb080e1c1afd.jpg,
+             * order_id : 1092
+             * c_time : 2017-06-13 17:44
+             * status : 1
+             * goods_id : 49
+             * car_id : 2907
              */
 
-            private String goods_name;
-            private String goods_thumb;
-            private double price;
-            private int num;
-            private String size_content;
-            private int goods_type;
             private int id;
+            private int uid;
+            private String content;
+            private String img_list;
+            private int order_id;
+            private String c_time;
+            private int status;
             private int goods_id;
-
-            public int getGoods_id() {
-                return goods_id;
-            }
-
-            public void setGoods_id(int goods_id) {
-                this.goods_id = goods_id;
-            }
+            private int car_id;
 
             public int getId() {
                 return id;
@@ -303,20 +310,106 @@ public class OrderDetailsBean {
                 this.id = id;
             }
 
-            public int getGoods_type() {
-                return goods_type;
+            public int getUid() {
+                return uid;
             }
 
-            public void setGoods_type(int goods_type) {
-                this.goods_type = goods_type;
+            public void setUid(int uid) {
+                this.uid = uid;
             }
 
-            public String getSize_content() {
-                return size_content;
+            public String getContent() {
+                return content;
             }
 
-            public void setSize_content(String size_content) {
-                this.size_content = size_content;
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getImg_list() {
+                return img_list;
+            }
+
+            public void setImg_list(String img_list) {
+                this.img_list = img_list;
+            }
+
+            public int getOrder_id() {
+                return order_id;
+            }
+
+            public void setOrder_id(int order_id) {
+                this.order_id = order_id;
+            }
+
+            public String getC_time() {
+                return c_time;
+            }
+
+            public void setC_time(String c_time) {
+                this.c_time = c_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(int goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public int getCar_id() {
+                return car_id;
+            }
+
+            public void setCar_id(int car_id) {
+                this.car_id = car_id;
+            }
+        }
+
+        public static class CarListBean {
+            /**
+             * id : 2907
+             * goods_id : 49
+             * goods_name : 小二西服
+             * goods_thumb : /uploads/img/2017051609544856491001.jpg
+             * price : 399.00
+             * num : 1
+             * goods_type : 2
+             * size_content : 颜色:黑;尺码:X
+             */
+
+            private int id;
+            private int goods_id;
+            private String goods_name;
+            private String goods_thumb;
+            private String price;
+            private int num;
+            private int goods_type;
+            private String size_content;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(int goods_id) {
+                this.goods_id = goods_id;
             }
 
             public String getGoods_name() {
@@ -335,11 +428,11 @@ public class OrderDetailsBean {
                 this.goods_thumb = goods_thumb;
             }
 
-            public double getPrice() {
+            public String getPrice() {
                 return price;
             }
 
-            public void setPrice(double price) {
+            public void setPrice(String price) {
                 this.price = price;
             }
 
@@ -349,6 +442,22 @@ public class OrderDetailsBean {
 
             public void setNum(int num) {
                 this.num = num;
+            }
+
+            public int getGoods_type() {
+                return goods_type;
+            }
+
+            public void setGoods_type(int goods_type) {
+                this.goods_type = goods_type;
+            }
+
+            public String getSize_content() {
+                return size_content;
+            }
+
+            public void setSize_content(String size_content) {
+                this.size_content = size_content;
             }
         }
     }

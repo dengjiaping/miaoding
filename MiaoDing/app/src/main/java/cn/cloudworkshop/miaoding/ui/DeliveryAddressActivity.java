@@ -65,11 +65,13 @@ public class DeliveryAddressActivity extends BaseActivity {
     private String addressId;
     //页面
     private int page = 1;
+    //刷新
+    private boolean isRefresh;
     //加载更多
     private boolean isLoadMore;
     private List<ReceiveAddressBean.DataBean> dataList = new ArrayList<>();
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
-    private boolean isRefresh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -199,7 +199,7 @@ public class ApplyJoinActivity extends BaseActivity {
                             setResult(1);
                             //监听申请入驻事件
                             MobclickAgent.onEvent(ApplyJoinActivity.this, "apply_join");
-
+                            loadingView.smoothToHide();
                             Intent intent = new Intent(ApplyJoinActivity.this, AppointmentActivity.class);
                             intent.putExtra("content", "apply_join");
                             finish();

@@ -37,12 +37,13 @@ import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
  * Describe：
  */
 public class DesignerGoodsFragment extends BaseFragment {
+
+
     @BindView(R.id.rv_member_rights)
     RecyclerView rvWorks;
-    @BindView(R.id.img_no_works)
-    ImageView imgNoWorks;
-    @BindView(R.id.nest_scroll)
-    NestedScrollView mNestScroll;
+    @BindView(R.id.sv_no_works)
+    NestedScrollView svNoWorks;
+
     private Unbinder unbinder;
 
     private List<DesignerInfoBean.DataBean.GoodsListBean> worksList;
@@ -90,7 +91,7 @@ public class DesignerGoodsFragment extends BaseFragment {
                 }
             });
         } else {
-            mNestScroll.setVisibility(View.VISIBLE);
+            svNoWorks.setVisibility(View.VISIBLE);
         }
 
     }
