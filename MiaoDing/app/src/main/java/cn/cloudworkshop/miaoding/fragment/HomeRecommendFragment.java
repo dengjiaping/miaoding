@@ -47,7 +47,6 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -123,7 +122,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                                             itemList.get(i).get(j).getP_time(),
                                             itemList.get(i).get(j).getImg_list(),
                                             itemList.get(i).get(j).getTitle(),
-                                            itemList.get(i).get(j).getName()+" · "+
                                             itemList.get(i).get(j).getTag_name(),
                                             itemList.get(i).get(j).getSub_title(),
                                             itemList.get(i).get(j).getId()));
@@ -141,7 +139,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                             isRefresh = false;
 
                         } else {
-                            RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
+                            RecyclerViewStateUtils.setFooterViewState(getActivity(),
                                     mRecyclerView, 0, LoadingFooter.State.TheEnd, null);
                         }
                     }
@@ -154,10 +152,10 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
      * 加载视图
      */
     protected void initView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         HomeRecommendFragment.MyAdapter myAdapter = new MyAdapter();
         SectionedRVAdapter sectionedRecyclerViewAdapter = new SectionedRVAdapter
-                (getParentFragment().getActivity(), R.layout.listitem_homepage_title, R.id.tv_list_title, myAdapter, this);
+                (getActivity(), R.layout.listitem_homepage_title, R.id.tv_list_title, myAdapter, this);
         sectionedRecyclerViewAdapter.setSections(dataList);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
@@ -178,7 +176,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
+                RecyclerViewStateUtils.setFooterViewState(getActivity(),
                         mRecyclerView, 0, LoadingFooter.State.Loading, null);
                 isLoadMore = true;
                 page++;
@@ -192,7 +190,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
      * 加载头部
      */
     private View initHeader() {
-        View view = LayoutInflater.from(getParentFragment().getActivity()).inflate
+        View view = LayoutInflater.from(getActivity()).inflate
                 (R.layout.homepage_recommend_header, null);
         view.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -244,8 +242,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
                     homepageLog("banner");
                     //banner点击事件统计
-                    MobclickAgent.onEvent(getParentFragment().getActivity(), "banner");
-                    Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                    MobclickAgent.onEvent(getActivity(), "banner");
+                    Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
                     intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
                     intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                     intent.putExtra("content", "banner");
@@ -257,52 +255,52 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         }
 
 
-        if (homepageBean.getDesigner_list() != null) {
-            final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_recommend_designer);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParentFragment().getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            final CommonAdapter<NewHomepageBean.DesignerListBean> adapter = new CommonAdapter
-                    <NewHomepageBean.DesignerListBean>(getParentFragment().getActivity(),
-                    R.layout.listitem_recommend_designer, homepageBean.getDesigner_list()) {
-
-
-                @Override
-                protected void convert(ViewHolder holder, NewHomepageBean.DesignerListBean designerListBean
-                        , int position) {
-                    //recyclerView横向,分为三个item
-                    CardView cardView = holder.getView(R.id.cv_recommend_designer);
-                    ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
-                    int widthPixels = DisplayUtils.getMetrics(getParentFragment().getActivity()).widthPixels;
-                    layoutParams.width = (int) ((widthPixels - DisplayUtils.dp2px(getParentFragment().getActivity(),18))/3);
-                    cardView.setLayoutParams(layoutParams);
-
-                    SimpleDraweeView imageView = holder.getView(R.id.img_recommend_designer);
-                    TextView tvName = holder.getView(R.id.tv_name_designer);
-                    tvName.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
-                    tvName.setText(designerListBean.getName());
-                    holder.setText(R.id.tv_info_designer, designerListBean.getTag());
-                    imageView.setImageURI(Constant.HOST + designerListBean.getAvatar());
-                }
-            };
-            recyclerView.setAdapter(adapter);
-            adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailActivity.class);
-                    intent.putExtra("id", homepageBean.getDesigner_list().get(position).getId() + "");
-                    startActivity(intent);
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    return false;
-                }
-            });
-        } else {
-            ImageView imgTitle = (ImageView) view.findViewById(R.id.img_designer_title);
-            imgTitle.setVisibility(View.GONE);
-        }
+//        if (homepageBean.getDesigner_list() != null) {
+//            final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_recommend_designer);
+//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
+//                    LinearLayoutManager.HORIZONTAL, false);
+//            recyclerView.setLayoutManager(linearLayoutManager);
+//            final CommonAdapter<NewHomepageBean.DesignerListBean> adapter = new CommonAdapter
+//                    <NewHomepageBean.DesignerListBean>(getActivity(),
+//                    R.layout.listitem_recommend_designer, homepageBean.getDesigner_list()) {
+//
+//
+//                @Override
+//                protected void convert(ViewHolder holder, NewHomepageBean.DesignerListBean designerListBean
+//                        , int position) {
+//                    //recyclerView横向,分为三个item
+//                    CardView cardView = holder.getView(R.id.cv_recommend_designer);
+//                    ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
+//                    int widthPixels = DisplayUtils.getMetrics(getActivity()).widthPixels;
+//                    layoutParams.width = (int) ((widthPixels - DisplayUtils.dp2px(getActivity(),18))/3);
+//                    cardView.setLayoutParams(layoutParams);
+//
+//                    SimpleDraweeView imageView = holder.getView(R.id.img_recommend_designer);
+//                    TextView tvName = holder.getView(R.id.tv_name_designer);
+//                    tvName.setTypeface(DisplayUtils.setTextType(getActivity()));
+//                    tvName.setText(designerListBean.getName());
+//                    holder.setText(R.id.tv_info_designer, designerListBean.getTag());
+//                    imageView.setImageURI(Constant.HOST + designerListBean.getAvatar());
+//                }
+//            };
+//            recyclerView.setAdapter(adapter);
+//            adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                    Intent intent = new Intent(getActivity(), DesignerInfoActivity.class);
+//                    intent.putExtra("id", homepageBean.getDesigner_list().get(position).getId() + "");
+//                    startActivity(intent);
+//                }
+//
+//                @Override
+//                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                    return false;
+//                }
+//            });
+//        } else {
+//            ImageView imgTitle = (ImageView) view.findViewById(R.id.img_designer_title);
+//            imgTitle.setVisibility(View.GONE);
+//        }
 
 
         return view;
@@ -318,15 +316,15 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     private static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image;
-        public TextView tvTitle;
-        public TextView tvContent;
+//        public TextView tvTitle;
+//        public TextView tvContent;
 
 
         MyViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.img_home_item);
-            tvTitle = (TextView) itemView.findViewById(R.id.tv_recommend_title);
-            tvContent = (TextView) itemView.findViewById(R.id.tv_recommend_content);
+//            tvTitle = (TextView) itemView.findViewById(R.id.tv_recommend_title);
+//            tvContent = (TextView) itemView.findViewById(R.id.tv_recommend_content);
         }
     }
 
@@ -351,8 +349,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
         @Override
         public void onBindViewHolder(final HomeRecommendFragment.MyViewHolder holder, final int position) {
-            holder.tvTitle.setText(dataList.get(position).title);
-            holder.tvContent.setText(dataList.get(position).content);
+//            holder.tvTitle.setText(dataList.get(position).title);
+//            holder.tvContent.setText(dataList.get(position).content);
             Glide.with(getActivity())
                     .load(dataList.get(position).img)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)

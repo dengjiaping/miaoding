@@ -261,7 +261,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
             case R.id.img_code:
                 judgePermission();
                 if (isGrant) {
-                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                    Intent intent = new Intent(getActivity(), ScanCodeActivity.class);
                     startActivity(intent);
                 }
                 break;

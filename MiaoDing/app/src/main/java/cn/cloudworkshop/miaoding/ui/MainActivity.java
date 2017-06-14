@@ -282,9 +282,9 @@ public class MainActivity extends BaseActivity {
     public void initView() {
 
         instance = this;
-        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(HomeRecommendFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(DesignerWorksFragment.newInstance());
+        fragmentList.add(NewDesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);
