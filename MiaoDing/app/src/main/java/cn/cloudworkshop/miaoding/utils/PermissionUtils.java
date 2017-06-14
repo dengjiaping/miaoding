@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import cn.cloudworkshop.miaoding.R;
 
 import static android.R.attr.targetSdkVersion;
+import static android.R.attr.theme;
 
 
 /**
@@ -62,8 +63,10 @@ public class PermissionUtils {
         dialog.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 根据实际情况编写相应代码。
-                startAppSettings();
+                // 启动应用的设置
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+                mContext.startActivity(intent);
             }
         });
         //为“取消”按钮注册监听事件
@@ -79,10 +82,4 @@ public class PermissionUtils {
 
     }
 
-    // 启动应用的设置
-    private void startAppSettings() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + mContext.getPackageName()));
-        mContext.startActivity(intent);
-    }
 }

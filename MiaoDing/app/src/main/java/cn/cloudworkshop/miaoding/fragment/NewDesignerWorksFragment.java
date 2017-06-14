@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.google.gson.JsonObject;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -24,13 +24,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
@@ -47,7 +46,8 @@ public class NewDesignerWorksFragment extends BaseFragment {
     ViewPager vpDesignerWorks;
     @BindView(R.id.img_designer_works)
     ImageView imgDesignerWorks;
-
+    @BindView(R.id.app_bar_works)
+    AppBarLayout appBar;
 
     private Unbinder unbinder;
     private String imgUrl;
@@ -109,6 +109,8 @@ public class NewDesignerWorksFragment extends BaseFragment {
                 fragmentList, titleList);
         vpDesignerWorks.setOffscreenPageLimit(titleList.size());
         vpDesignerWorks.setAdapter(adapter);
+
+
         tabDesignerWorks.setViewPager(vpDesignerWorks);
         tabDesignerWorks.setCurrentTab(0);
 
@@ -127,4 +129,5 @@ public class NewDesignerWorksFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 }

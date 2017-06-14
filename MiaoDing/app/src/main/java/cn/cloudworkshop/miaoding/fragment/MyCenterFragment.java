@@ -144,7 +144,6 @@ public class MyCenterFragment extends BaseFragment {
                             name = jsonObject1.getString("name");
                             imgUrl = jsonObject1.getString("avatar");
                             isOrdered = jsonObject1.getInt("is_yuyue");
-
                             msgCount = jsonObject1.getInt("unread_message_num");
                             JSONObject jsonObject2 = jsonObject1.getJSONObject("user_grade");
                             icoGrade = jsonObject2.getString("img");

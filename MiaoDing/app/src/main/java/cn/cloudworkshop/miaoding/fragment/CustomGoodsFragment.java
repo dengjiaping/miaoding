@@ -58,7 +58,6 @@ import okhttp3.Call;
  * Describe：定制
  */
 public class CustomGoodsFragment extends BaseFragment {
-
     @BindView(R.id.tv_goods_title)
     TextView tvGoodsTitle;
     @BindView(R.id.curl_page)

@@ -123,6 +123,16 @@ public class CustomGoodsBean {
         private List<BanxingListBean> banxing_list;
         private NewCommentBean new_comment;
         private int comment_num;
+
+        public int getCollect_num() {
+            return collect_num;
+        }
+
+        public void setCollect_num(int collect_num) {
+            this.collect_num = collect_num;
+        }
+
+        private int collect_num;
         private List<CollectUserBean> collect_user;
 
         public int getPrice_type() {

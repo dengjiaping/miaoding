@@ -135,54 +135,47 @@
                         android:visibility="gone"/>
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line_gray_e5"/>
-
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/ll_null_evaluate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginRight="22dp"
-                    android:layout_marginTop="15dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_count_comment"
-                        android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray_e5"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="评价"
-                        android:textColor="@color/light_gray_3d"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:layout_marginTop="15dp">
 
-                    <TextView
-                        android:id="@+id/tv_check_evaluate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="查看全部 >"
-                        android:textColor="@color/light_gray_3d"
-                        android:textSize="14sp"/>
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tv_count_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="评价"
+                            android:textColor="@color/light_gray_3d"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_check_evaluate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="查看全部 >"
+                            android:textColor="@color/light_gray_3d"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
 
                     <include
                         layout="@layout/listitem_goods_comment"/>
 
-                    <TextView
-                        android:id="@+id/tv_no_evaluate"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="暂无评价"
-                        android:textColor="@color/light_gray_93"
-                        android:textSize="14sp"
-                        android:visibility="gone"/>
-                </RelativeLayout>
+                </LinearLayout>
 
 
                 <TextView
@@ -211,6 +204,20 @@
 
                 <ImageView
                     android:id="@+id/img_works_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"/>
+
+                <ImageView
+                    android:id="@+id/img_works_details1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"/>
+
+                <ImageView
+                    android:id="@+id/img_works_details2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"

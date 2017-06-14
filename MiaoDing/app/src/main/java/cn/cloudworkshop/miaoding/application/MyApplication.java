@@ -39,7 +39,7 @@ public class MyApplication extends Application {
     public static long exitTime;
     public static long exitTime1;
     //登录背景
-    public static String loginBg;
+//    public static String loginBg;
     //客服电话
     public static String serverPhone;
     //用户协议

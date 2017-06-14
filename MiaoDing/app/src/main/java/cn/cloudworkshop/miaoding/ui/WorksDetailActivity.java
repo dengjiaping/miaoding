@@ -2,7 +2,10 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +25,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -32,6 +37,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +53,7 @@ import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -110,14 +118,17 @@ public class WorksDetailActivity extends BaseActivity {
     ImageView imgUserGrade;
     @BindView(R.id.tv_none_collect)
     TextView tvNoneCollect;
-    @BindView(R.id.ll_none_evaluate)
-    LinearLayout llNoneEvaluate;
-    @BindView(R.id.tv_no_evaluate)
-    TextView tvNoEvaluate;
+
     @BindView(R.id.ll_designer_info)
     LinearLayout llDesignerInfo;
     @BindView(R.id.view_evaluate)
     View viewEvaluate;
+    @BindView(R.id.img_works_details1)
+    ImageView imgDetails1;
+    @BindView(R.id.img_works_details2)
+    ImageView imgDetails2;
+    @BindView(R.id.ll_null_evaluate)
+    LinearLayout llNullEvaluate;
 
     private String id;
 
@@ -214,21 +225,19 @@ public class WorksDetailActivity extends BaseActivity {
         tvDesignerInfo.setText(worksBean.getData().getDesigner().getIntroduce());
 
         //喜爱人数
-        if (worksBean.getData().getCollect_user() != null && worksBean.getData().getCollect_user().size() > 0) {
-            tvCollectCount.setText("喜爱  （" + worksBean.getData().getCollect_user().size() + "人）");
+        if (worksBean.getData().getCollect_num() > 0) {
+            tvCollectCount.setText("喜爱  （" + worksBean.getData().getCollect_num() + "人）");
             rvCollectUser.setVisibility(View.VISIBLE);
             rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            List<String> imgList = new ArrayList<>();
 
-            for (int i = 0; i < Math.min(worksBean.getData().getCollect_user().size(), 6); i++) {
-                imgList.add(worksBean.getData().getCollect_user().get(i).getAvatar());
-            }
-            CommonAdapter<String> collectAdapter = new CommonAdapter<String>(this,
-                    R.layout.listitem_user_collect, imgList) {
+            CommonAdapter<WorksDetailBean.DataBean.CollectUserBean> collectAdapter = new CommonAdapter
+                    <WorksDetailBean.DataBean.CollectUserBean>(this, R.layout.listitem_user_collect,
+                    worksBean.getData().getCollect_user()) {
                 @Override
-                protected void convert(ViewHolder holder, String s, int position) {
+                protected void convert(ViewHolder holder, WorksDetailBean.DataBean.CollectUserBean
+                        collectUserBean, int position) {
                     Glide.with(WorksDetailActivity.this)
-                            .load(Constant.HOST + s)
+                            .load(Constant.HOST + collectUserBean.getAvatar())
                             .centerCrop()
                             .into((ImageView) holder.getView(R.id.img_avatar_collect));
                 }
@@ -271,17 +280,47 @@ public class WorksDetailActivity extends BaseActivity {
             }
 
         } else {
-            tvCommentCount.setText("评价  （0）");
-            tvNoEvaluate.setVisibility(View.VISIBLE);
-            llNoneEvaluate.setVisibility(View.GONE);
+//            tvCommentCount.setText("评价  （0）");
+            llNullEvaluate.setVisibility(View.GONE);
         }
 
         tvTypeGoods.setText(worksBean.getData().getNew_comment().getGoods_intro());
 
+
+        //详情页图片尺寸超过手机支持最大尺寸
+        //分割图片显示
         Glide.with(getApplicationContext())
                 .load(Constant.HOST + worksBean.getData().getContent2())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgDetails);
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(resource);
+                        try {
+                            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
+                            int width = decoder.getWidth();
+                            int height = decoder.getHeight();
+                            BitmapFactory.Options opts = new BitmapFactory.Options();
+                            Rect rect = new Rect();
+
+                            //平分三份
+                            rect.set(0, 0, width, height / 3);
+                            Bitmap bm = decoder.decodeRegion(rect, opts);
+                            imgDetails.setImageBitmap(bm);
+
+                            rect.set(0, height / 3, width, height / 3 * 2);
+                            Bitmap bm1 = decoder.decodeRegion(rect, opts);
+                            imgDetails1.setImageBitmap(bm1);
+
+                            rect.set(0, height / 3 * 2, width, height);
+                            Bitmap bm2 = decoder.decodeRegion(rect, opts);
+                            imgDetails2.setImageBitmap(bm2);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {

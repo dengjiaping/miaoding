@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -57,16 +58,22 @@ public class JazzyPagerAdapter extends PagerAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.viewpager_item_custom, null);
         ImageView imgWorks = (ImageView) view.findViewById(R.id.img_custom_goods);
+        TextView tvTitle = (TextView) view.findViewById(R.id.tv_customs_title);
+        TextView tvContent = (TextView) view.findViewById(R.id.tv_customs_content);
+
+
+        tvTitle.setText(dataList.get(position).getName());
+        tvContent.setText(dataList.get(position).getSub_name());
 
         Glide.with(context)
                 .load(Constant.HOST + dataList.get(position).getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
 
-        imgWorks.setOnClickListener(new View.OnClickListener() {
+
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(context, CustomGoodsActivity.class);
                 intent.putExtra("id", String.valueOf(dataList.get(position).getId()));
                 context.startActivity(intent);

@@ -63,7 +63,7 @@ public class AppointmentActivity extends BaseActivity {
             case "appoint_measure":
                 tvHeaderTitle.setText("预约详情");
                 tvAppointResult.setTextSize(15);
-                tvHeaderNext.setText("量体协议");
+//                tvHeaderNext.setText("量体协议");
                 OkHttpUtils.get()
                         .url(Constant.APPOINTMENT_STATUS)
                         .addParams("token", SharedPreferencesUtils.getString(this, "token"))
@@ -144,9 +144,9 @@ public class AppointmentActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_header_next:
-                Intent intent = new Intent(this, UserAgreementActivity.class);
-                intent.putExtra("content", "measure");
-                startActivity(intent);
+//                Intent intent = new Intent(this, UserAgreementActivity.class);
+//                intent.putExtra("content", "measure");
+//                startActivity(intent);
                 break;
             case R.id.tv_go_back:
                 if (type.equals("pay")) {

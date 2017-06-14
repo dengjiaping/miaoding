@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -41,8 +43,19 @@ public class ImageEncodeUtils {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
-        byte[] bytes=bos.toByteArray();
+        byte[] bytes = bos.toByteArray();
         bitmap.recycle();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+
+    /**
+     * @param bm
+     * @return 将Bitmap转换成InputStream
+     */
+    public static InputStream bitmap2InputStream(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 }

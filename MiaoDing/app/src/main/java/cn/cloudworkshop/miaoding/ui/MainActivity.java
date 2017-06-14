@@ -184,10 +184,10 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
-                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
+//                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                         MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                         MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
-                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
+//                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
                         if (appIndexBean.getData().getVersion().getAndroid() != null &&
                                 Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
                                         .getVersion()) > getVersionCode()) {
@@ -282,9 +282,9 @@ public class MainActivity extends BaseActivity {
     public void initView() {
 
         instance = this;
-        fragmentList.add(HomeRecommendFragment.newInstance());
+        fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(NewDesignerWorksFragment.newInstance());
+        fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);

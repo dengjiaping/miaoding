@@ -2,6 +2,9 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +26,8 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -33,6 +38,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +56,7 @@ import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -112,10 +120,12 @@ public class CustomGoodsActivity extends BaseActivity {
     ImageView imgUserGrade;
     @BindView(R.id.tv_none_love)
     TextView tvNoneLove;
-    @BindView(R.id.ll_none_evaluate)
-    LinearLayout llNoneEvaluate;
-    @BindView(R.id.tv_none_evaluate)
-    TextView tvNoneEvaluate;
+    @BindView(R.id.img_tailor_details1)
+    ImageView imgDetails1;
+    @BindView(R.id.img_tailor_details2)
+    ImageView imgDetails2;
+    @BindView(R.id.ll_no_evaluate)
+    LinearLayout llNoEvaluate;
     private String id;
     private CustomGoodsBean customBean;
     private long enterTime;
@@ -208,23 +218,23 @@ public class CustomGoodsActivity extends BaseActivity {
 //        });
 
         //喜爱人数
-        if (customBean.getData().getCollect_user() != null && customBean.getData().getCollect_user().size() > 0) {
-            tvCollectCount.setText("喜爱  （" + customBean.getData().getCollect_user().size() + "人）");
+        if (customBean.getData().getCollect_num() > 0) {
+            tvCollectCount.setText("喜爱  （" + customBean.getData().getCollect_num() + "人）");
             rvCollectUser.setVisibility(View.VISIBLE);
             rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            List<String> imgList = new ArrayList<>();
-            for (int i = 0; i < Math.min(customBean.getData().getCollect_user().size(), 6); i++) {
-                imgList.add(customBean.getData().getCollect_user().get(i).getAvatar());
-            }
-            CommonAdapter<String> collectAdapter = new CommonAdapter<String>(this,
-                    R.layout.listitem_user_collect, imgList) {
+
+            CommonAdapter<CustomGoodsBean.DataBean.CollectUserBean> collectAdapter = new CommonAdapter
+                    <CustomGoodsBean.DataBean.CollectUserBean>(this, R.layout.listitem_user_collect,
+                    customBean.getData().getCollect_user()) {
                 @Override
-                protected void convert(ViewHolder holder, String s, int position) {
+                protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.CollectUserBean
+                        collectUserBean, int position) {
                     Glide.with(CustomGoodsActivity.this)
-                            .load(Constant.HOST + s)
+                            .load(Constant.HOST + collectUserBean.getAvatar())
                             .centerCrop()
                             .into((ImageView) holder.getView(R.id.img_avatar_collect));
                 }
+
             };
             rvCollectUser.setAdapter(collectAdapter);
         } else {
@@ -260,22 +270,50 @@ public class CustomGoodsActivity extends BaseActivity {
                     }
                 };
                 rvEvaluate.setAdapter(evaluateAdapter);
-
             }
 
         } else {
-            tvCommentCount.setText("评价  （0）");
-            tvNoneEvaluate.setVisibility(View.VISIBLE);
-            llNoneEvaluate.setVisibility(View.GONE);
+//            tvCommentCount.setText("评价  （0）");
+            llNoEvaluate.setVisibility(View.GONE);
         }
 
         tvTypeGoods.setText(customBean.getData().getNew_comment().getGoods_intro());
 
-        //详情页
+
+        //详情页图片尺寸超过手机支持最大尺寸
+        //分割图片显示
         Glide.with(getApplicationContext())
                 .load(Constant.HOST + customBean.getData().getContent2())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgDetails);
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(resource);
+                        try {
+                            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
+                            int width = decoder.getWidth();
+                            int height = decoder.getHeight();
+                            BitmapFactory.Options opts = new BitmapFactory.Options();
+                            Rect rect = new Rect();
+
+
+                            rect.set(0, 0, width, height / 3);
+                            Bitmap bm = decoder.decodeRegion(rect, opts);
+                            imgDetails.setImageBitmap(bm);
+
+                            rect.set(0, height / 3, width, height / 3 * 2);
+                            Bitmap bm1 = decoder.decodeRegion(rect, opts);
+                            imgDetails1.setImageBitmap(bm1);
+
+                            rect.set(0, height / 3 * 2, width, height);
+                            Bitmap bm2 = decoder.decodeRegion(rect, opts);
+                            imgDetails2.setImageBitmap(bm2);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
@@ -486,7 +524,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 tailorItemBean.setGoods_name(customBean.getData().getName());
                 tailorItemBean.setPrice(new DecimalFormat("#0.00").format(customBean.getData().getDefault_price()));
                 tailorItemBean.setImg_url(customBean.getData().getThumb());
-                tailorItemBean.setPrice_type(customBean.getData().getPrice_type()+ "");
+                tailorItemBean.setPrice_type(customBean.getData().getPrice_type() + "");
                 tailorItemBean.setLog_id(customBean.getId());
                 tailorItemBean.setGoods_time(enterTime);
                 tailorItemBean.setDingzhi_time(0);
