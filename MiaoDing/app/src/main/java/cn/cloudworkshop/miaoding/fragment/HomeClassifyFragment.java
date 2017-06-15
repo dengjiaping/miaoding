@@ -127,12 +127,14 @@ public class HomeClassifyFragment extends BaseFragment {
                 .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_homepage, itemList) {
             @Override
             protected void convert(ViewHolder holder, HomepageTabBean.DataBeanX.DataBean dataBean, int position) {
+                holder.setVisible(R.id.view_homepage1, false);
+                holder.setVisible(R.id.view_homepage2, true);
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_home_item));
-//                holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
-//                holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
+                holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
+                holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
             }
 
         };
@@ -167,7 +169,7 @@ public class HomeClassifyFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                homepageLog( itemList.get(position).getTags_name());
+                homepageLog(itemList.get(position).getTags_name());
                 Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
                 intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" +
                         itemList.get(position).getId());

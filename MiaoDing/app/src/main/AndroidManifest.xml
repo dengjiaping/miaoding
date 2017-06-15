@@ -206,7 +206,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".ui.AllEvaluationActivity"/>
         <activity android:name=".ui.ScanCodeActivity"/>
-        <activity android:name="com.zbar.lib.CaptureActivity"/>
 
 
         <service android:name="com.amap.api.location.APSService"/>

@@ -64,17 +64,17 @@ public class CustomGoodsBean {
          * like_num : 0
          * price : [{"id":2,"price":799,"introduce":"白银"},{"id":3,"price":999,"introduce":"黄金"},{"id":4,"price":1888,"introduce":"钻石"}]
          * content : 选择你的衬衫
-         选择你的生活态度
-         是将就一份不适合
-         还是去定制一份专属?
-         你会如何选择?
-
-         自带经纬度编织扎染效果的面料，赋予衬衫简约中
-         的繁复感，清新怡人的色调，适合年轻时尚男士穿
-         着，柔软亲肤面料，穿着更舒适，文艺风圆领设计，
-         更时尚。
-
-         面料成份:100%亚麻。
+         * 选择你的生活态度
+         * 是将就一份不适合
+         * 还是去定制一份专属?
+         * 你会如何选择?
+         * <p>
+         * 自带经纬度编织扎染效果的面料，赋予衬衫简约中
+         * 的繁复感，清新怡人的色调，适合年轻时尚男士穿
+         * 着，柔软亲肤面料，穿着更舒适，文艺风圆领设计，
+         * 更时尚。
+         * <p>
+         * 面料成份:100%亚麻。
          * content2 : /uploads/img/2017052508053310049102.jpg
          * type : 1
          * heat : 4047
@@ -123,6 +123,15 @@ public class CustomGoodsBean {
         private List<BanxingListBean> banxing_list;
         private NewCommentBean new_comment;
         private int comment_num;
+        private String default_img;
+
+        public String getDefault_img() {
+            return default_img;
+        }
+
+        public void setDefault_img(String default_img) {
+            this.default_img = default_img;
+        }
 
         public int getCollect_num() {
             return collect_num;
@@ -278,7 +287,6 @@ public class CustomGoodsBean {
         public void setDefault_price(int default_price) {
             this.default_price = default_price;
         }
-
 
 
         public NewCommentBean getNew_comment() {

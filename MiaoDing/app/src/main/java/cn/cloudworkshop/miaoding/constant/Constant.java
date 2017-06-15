@@ -6,8 +6,8 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-    public static final String HOST = "http://139.196.113.61";
-//    public static final String HOST = "http://www.cloudworkshop.cn";
+//    public static final String HOST = "http://139.196.113.61";
+    public static final String HOST = "http://www.cloudworkshop.cn";
 //public static final String HOST = "http://192.168.1.156";
     public static final String APP_ID = "wx07c2173e7686741e";
     public static final String HOMEPAGE_BANNER = HOST + "/index.php/index/index/get_img";

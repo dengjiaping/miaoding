@@ -92,6 +92,15 @@ public class CartDetailsBean {
         private String mianliao_id;
         private String banxing_id;
         private int price_id;
+        private String default_img;
+
+        public String getDefault_img() {
+            return default_img;
+        }
+
+        public void setDefault_img(String default_img) {
+            this.default_img = default_img;
+        }
 
         public int getPrice_id() {
             return price_id;

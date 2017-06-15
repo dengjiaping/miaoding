@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +28,6 @@ import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
-import com.zbar.lib.CaptureActivity;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -48,7 +46,6 @@ import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.ScanCodeActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.JazzyViewPager;
 import okhttp3.Call;
@@ -70,7 +67,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
     @BindView(R.id.img_code)
     ImageView imgCode;
     private Unbinder unbinder;
-
 
     private int page = 1;
     private GoodsListBean listBean;
@@ -306,7 +302,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             isRequireCheck = false;
             isGrant = true;
-            Intent intent = new Intent(getActivity(), CaptureActivity.class);
+            Intent intent = new Intent(getActivity(), ScanCodeActivity.class);
             startActivity(intent);
 
         } else {

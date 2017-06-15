@@ -377,17 +377,22 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
 
 
-                            List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
-                            for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
-                                TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
-                                itemBean.setImg(cartDetails.getData().getImg_list().get(i).getImg_c());
-                                itemBean.setPosition_id(cartDetails.getData().getImg_list().get(i)
-                                        .getPosition_id());
-                                itemList.add(itemBean);
+                            if (cartDetails.getData().getImg_list() != null && cartDetails.getData().getImg_list().size() > 0) {
+                                List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+                                for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
+                                    TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+                                    itemBean.setImg(cartDetails.getData().getImg_list().get(i).getImg_c());
+                                    itemBean.setPosition_id(cartDetails.getData().getImg_list().get(i)
+                                            .getPosition_id());
+                                    itemList.add(itemBean);
+                                }
+                                //图片
+                                tailorBean.setItemBean(itemList);
+                            } else {
+                                tailorBean.setDefault_img(cartDetails.getData().getDefault_img());
                             }
 
-                            //图片
-                            tailorBean.setItemBean(itemList);
+
                             //面料
                             tailorBean.setFabric_id(cartDetails.getData().getMianliao_id());
                             //版型

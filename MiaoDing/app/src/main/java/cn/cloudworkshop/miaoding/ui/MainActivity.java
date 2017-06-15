@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -11,11 +10,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.widget.RadioGroup;
 
@@ -37,8 +33,8 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
-import cn.cloudworkshop.miaoding.fragment.HomeRecommendFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
+import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
@@ -46,7 +42,6 @@ import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -282,9 +277,9 @@ public class MainActivity extends BaseActivity {
     public void initView() {
 
         instance = this;
-        fragmentList.add(HomeRecommendFragment.newInstance());
+        fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(NewDesignerWorksFragment.newInstance());
+        fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new FragmentTabUtils(getSupportFragmentManager(),
                 fragmentList, R.id.main_fragment_container, mRgs);

@@ -21,6 +21,15 @@ public class TailorItemBean implements Serializable {
     private long dingzhi_time;
     private List<ItemBean> itemBean;
     private String banxing_id;
+    private String default_img;
+
+    public String getDefault_img() {
+        return default_img;
+    }
+
+    public void setDefault_img(String default_img) {
+        this.default_img = default_img;
+    }
 
     public String getBanxing_id() {
         return banxing_id;

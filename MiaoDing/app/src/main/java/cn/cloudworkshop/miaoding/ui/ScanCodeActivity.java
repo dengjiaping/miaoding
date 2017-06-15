@@ -1,30 +1,42 @@
 package cn.cloudworkshop.miaoding.ui;
 
-
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+
+import com.yanzhenjie.zbar.camera.CameraPreview;
+import com.yanzhenjie.zbar.camera.ScanCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zbar.ZBarView;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 
 /**
- * Author：binge on 2017-06-14 16:42
+ * Author：binge on 2017-06-15 08:48
  * Email：1993911441@qq.com
  * Describe：扫描二维码
  */
-public class ScanCodeActivity extends BaseActivity implements ZBarView.Delegate {
-    @BindView(R.id.zbar_view)
-    ZBarView zbarView;
+public class ScanCodeActivity extends BaseActivity {
+    @BindView(R.id.capture_preview)
+    CameraPreview capturePreview;
+    @BindView(R.id.capture_crop_view)
+    RelativeLayout captureCropView;
+    @BindView(R.id.capture_scan_line)
+    ImageView captureScanLine;
     @BindView(R.id.img_scan_back)
     ImageView imgScanBack;
+
+
+    private ValueAnimator mScanAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,68 +47,111 @@ public class ScanCodeActivity extends BaseActivity implements ZBarView.Delegate 
     }
 
     private void initView() {
-        zbarView.setDelegate(this);
+        capturePreview.setScanCallback(new ScanCallback() {
+            @Override
+            public void onScanResult(String content) {
+                if (content != null) {
+                    vibrator();
+                    String[] split = content.split("\\?");
+                    if (split.length > 1 && split[1] != null) {
+                        String[] split1 = split[1].split("&");
+                        if (split1[0] != null && split1[1] != null) {
+                            String goods_id = split1[0].split("=")[1];
+                            String goods_type = split1[1].split("=")[1];
+                            if (goods_id != null && goods_type != null) {
+                                switch (goods_type) {
+                                    case "1":
+                                        toGoodsDetail(CustomGoodsActivity.class, goods_id);
+                                        break;
+                                    case "2":
+                                        toGoodsDetail(WorksDetailActivity.class, goods_id);
+                                        break;
+                                }
+
+                            }
+                        }
+                    }
+
+                } else {
+                    capturePreview.start();
+                }
+            }
+
+
+        });
+    }
+
+    /**
+     * @param cls
+     * @param goodsId
+     * 跳转商品性情
+     */
+    private void toGoodsDetail(Class<? extends Activity> cls, String goodsId) {
+        Intent intent = new Intent(ScanCodeActivity.this, cls);
+        intent.putExtra("id", goodsId);
+        finish();
+        startActivity(intent);
+    }
+
+
+    /**
+     * 振动
+     */
+    private void vibrator() {
+        Vibrator vib = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        vib.vibrate(100);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mScanAnimator != null) {
+            if (capturePreview.start()) {
+                mScanAnimator.start();
+            }
+        }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        zbarView.startCamera();
-        zbarView.showScanRect();
-        zbarView.startSpot();
+    public void onPause() {
+        // Must be called here, otherwise the camera should not be released properly.
+        stopScan();
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
-        zbarView.stopCamera();
         super.onStop();
+        mScanAnimator.cancel();
+        capturePreview.stop();
     }
+
+    /**
+     * Stop scan.
+     */
+    private void stopScan() {
+        mScanAnimator.cancel();
+        capturePreview.stop();
+    }
+
 
     @Override
-    protected void onDestroy() {
-        zbarView.onDestroy();
-        super.onDestroy();
-    }
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (mScanAnimator == null) {
+            int height = captureCropView.getMeasuredHeight() - 25;
+            mScanAnimator = ObjectAnimator.ofFloat(captureScanLine, "translationY", 0F, height).setDuration(3000);
+            mScanAnimator.setInterpolator(new LinearInterpolator());
+            mScanAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            mScanAnimator.setRepeatMode(ValueAnimator.REVERSE);
 
-    private void vibrate() {
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(200);
-    }
-
-    @Override
-    public void onScanQRCodeSuccess(String result) {
-        vibrate();
-        if (result != null) {
-            String[] split = result.split("\\?");
-            if (split[1] != null) {
-                String[] split1 = split[1].split("&");
-                if (split1[0] != null && split1[1] != null) {
-                    String goods_id = split1[0].split("=")[1];
-                    String goods_type = split1[1].split("=")[1];
-                    if (goods_id != null && goods_type != null) {
-                        Intent intent = null;
-                        if (goods_type.equals("1")) {
-                            intent = new Intent(this, CustomGoodsActivity.class);
-                        } else if (goods_type.equals("2")) {
-                            intent = new Intent(this, WorksDetailActivity.class);
-                        }
-
-                        intent.putExtra("id", goods_id);
-                        finish();
-                        startActivity(intent);
-                    }
-                }
+            if (capturePreview.start()) {
+                mScanAnimator.start();
             }
-
         }
-
-        zbarView.startSpot();
     }
 
-    @Override
-    public void onScanQRCodeOpenCameraError() {
-
-    }
 
     @OnClick(R.id.img_scan_back)
     public void onViewClicked() {

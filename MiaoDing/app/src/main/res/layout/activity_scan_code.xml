@@ -1,25 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <cn.bingoogolapple.qrcode.zbar.ZBarView
-        android:id="@+id/zbar_view"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:qrcv_animTime="1000"
-        app:qrcv_borderColor="@android:color/white"
-        app:qrcv_borderSize="1dp"
-        app:qrcv_cornerColor="@android:color/holo_green_dark"
-        app:qrcv_cornerLength="20dp"
-        app:qrcv_cornerSize="3dp"
-        app:qrcv_isShowDefaultScanLineDrawable="true"
-        app:qrcv_maskColor="#33FFFFFF"
-        app:qrcv_qrCodeTipText="请将二维码放置在识别框中"
-        app:qrcv_rectWidth="200dp"
-        app:qrcv_scanLineColor="@android:color/holo_green_dark"
-        app:qrcv_topOffset="150dp"/>
+        android:layout_height="match_parent">
+
+        <com.yanzhenjie.zbar.camera.CameraPreview
+            android:id="@+id/capture_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <RelativeLayout
+            android:id="@+id/capture_crop_view"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/qr_scan_frame"/>
+
+            <ImageView
+                android:id="@+id/capture_scan_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/qr_scan_line"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/capture_mask_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_crop_view"
+            android:layout_alignParentTop="true"
+            android:background="@mipmap/qr_scan_shadow"/>
+
+        <ImageView
+            android:id="@+id/capture_mask_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/capture_crop_view"
+            android:background="@mipmap/qr_scan_shadow"/>
+
+        <ImageView
+            android:id="@+id/capture_mask_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_mask_bottom"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_toLeftOf="@id/capture_crop_view"
+            android:layout_toStartOf="@id/capture_crop_view"
+            android:background="@mipmap/qr_scan_shadow"/>
+
+        <ImageView
+            android:id="@+id/capture_mask_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_mask_bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_toEndOf="@id/capture_crop_view"
+            android:layout_toRightOf="@id/capture_crop_view"
+            android:background="@mipmap/qr_scan_shadow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/capture_crop_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="请将二维码放置识别框中"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/img_scan_back"
@@ -27,5 +88,6 @@
         android:layout_height="50dp"
         android:scaleType="center"
         android:src="@mipmap/icon_back_white"/>
+
 
 </RelativeLayout>

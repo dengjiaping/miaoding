@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
@@ -9,9 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8.0dip"
-        android:layout_marginTop="15.0dip"
-        android:gravity="center"
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="15dp"
         android:textColor="@color/light_gray_3d"
-        android:textSize="15.0sp"/>
+        android:textSize="14.5sp"/>
 </LinearLayout>

@@ -31,26 +31,32 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:button="@null"
                     android:gravity="center"
                     android:text="正面"
                     android:textColor="@color/rgs_text_color_selector"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:button="@null"
                     android:gravity="center"
                     android:text="背面"
                     android:textColor="@color/rgs_text_color_selector"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:button="@null"
                     android:gravity="center"
                     android:text="里子"
@@ -76,13 +82,20 @@
                     android:layout_height="match_parent"
                     android:visibility="gone">
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/rl_tailor_inside"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone">
                 </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/img_default_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tv_tailor_name"
