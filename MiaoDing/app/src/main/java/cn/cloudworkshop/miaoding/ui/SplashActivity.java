@@ -17,7 +17,7 @@ import cn.cloudworkshop.miaoding.utils.TitleBarUtils;
  * Describe：启动页
  */
 public class SplashActivity extends BaseActivity {
-//    @BindView(R.id.video_view)
+    //    @BindView(R.id.video_view)
 //    VideoView videoView;
 //    @BindView(R.id.tv_next)
 //    TextView tvNext;
@@ -41,7 +41,6 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
             }
         }, 2500);
-
 
 
 //        //首次进入，播放视频
@@ -81,4 +80,10 @@ public class SplashActivity extends BaseActivity {
 //        finish();
 //        startActivity(intent);
 //    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

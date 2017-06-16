@@ -130,7 +130,7 @@ public class CouponActivity extends BaseActivity {
                 break;
             case R.id.img_header_share:
                 if (couponRule != null) {
-                    Intent intent = new Intent(this, CouponRuleActivity.class);
+                    Intent intent = new Intent(this, UserRuleActivity.class);
                     intent.putExtra("title", "使用规则");
                     intent.putExtra("img_url", couponRule);
                     startActivity(intent);

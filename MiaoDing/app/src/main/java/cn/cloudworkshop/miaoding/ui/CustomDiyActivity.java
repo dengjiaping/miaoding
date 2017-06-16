@@ -420,9 +420,9 @@ public class CustomDiyActivity extends BaseActivity {
                 for (int j = 0; j < tailorBean.getData().getBanxin().get(currentType)
                         .getPeijian().get(i).getSpec_list().size(); j++) {
 
-                    if (tailorBean.getData().getMianliao().get(currentFabric).getId() ==
-                            tailorBean.getData().getBanxin().get(currentType).getPeijian().get(i)
-                                    .getSpec_list().get(j).getMianliao_id()) {
+                    if (tailorBean.getData().getMianliao().get(currentFabric).getId() == tailorBean
+                            .getData().getBanxin().get(currentType).getPeijian().get(i)
+                            .getSpec_list().get(j).getMianliao_id()) {
                         currentItem = j;
                         //选择正反面
                         int positionId = tailorBean.getData().getBanxin().get(currentType)

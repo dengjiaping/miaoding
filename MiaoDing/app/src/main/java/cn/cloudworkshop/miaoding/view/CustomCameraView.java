@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 
 
 /**
@@ -469,6 +470,7 @@ public class CustomCameraView extends FrameLayout implements SurfaceHolder.Callb
                         bos = new BufferedOutputStream(new FileOutputStream(file));
                         newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);//将图片压缩到流中
                         onTakeFinish.takeFinish(newBitmap);
+                        MemoryCleanUtils.bmpRecycle(bm);
 
                     } catch (Exception e) {
                         e.printStackTrace();

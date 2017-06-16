@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
@@ -235,13 +237,24 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                     homepageLog("banner");
                     //banner点击事件统计
                     MobclickAgent.onEvent(getActivity(), "banner");
-                    Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
-                    intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
-                    intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
-                    intent.putExtra("content", "banner");
-                    intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
-                    intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
-                    startActivity(intent);
+                    switch (homepageBean.getLunbo().get(position).getBanner_type()) {
+                        //咨询页webview
+                        case 1:
+                            Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
+                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
+                            intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
+                            intent.putExtra("content", "banner");
+                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
+                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
+                            startActivity(intent);
+                            break;
+                        //设计师申请入驻
+                        case 2:
+
+                            startActivity(new Intent(getActivity(), JoinUsActivity.class));
+
+                            break;
+                    }
                 }
             });
         }
@@ -310,7 +323,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
         public ImageView image;
 //        public TextView tvTitle;
 //        public TextView tvContent;
-
 
         MyViewHolder(View itemView) {
             super(itemView);

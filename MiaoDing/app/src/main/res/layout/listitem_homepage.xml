@@ -24,7 +24,7 @@
             android:background="@android:color/white">
 
             <ImageView
-                android:id="@+id/img_home_item"
+                android:id="@+id/img_homepage_item"
                 android:layout_width="fill_parent"
                 android:layout_height="170.0dip"
                 android:scaleType="centerCrop"/>
@@ -33,7 +33,7 @@
                 android:id="@+id/tv_recommend_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/img_home_item"
+                android:layout_below="@id/img_homepage_item"
                 android:ellipsize="end"
                 android:paddingLeft="16.0dip"
                 android:paddingRight="16.0dip"

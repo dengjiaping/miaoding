@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,12 +55,19 @@ public class JoinUsActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
+
     /**
      * 加载数据
      */
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.JOIN_US)
+                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("type", "3")
                 .addParams("phone", SharedPreferencesUtils.getString(this, "phone"))
                 .build()
@@ -72,7 +80,7 @@ public class JoinUsActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         joinUsBean = GsonUtils.jsonToBean(response, JoinUsBean.class);
-                        if (joinUsBean.getData() != null ) {
+                        if (joinUsBean.getData() != null) {
                             initView();
                         }
 
@@ -82,7 +90,7 @@ public class JoinUsActivity extends BaseActivity {
 
     private void initView() {
         isApply = joinUsBean.getData().getIs_apply();
-        if (joinUsBean.getData().getImg_list() != null && joinUsBean.getData().getImg_list().size() > 0){
+        if (joinUsBean.getData().getImg_list() != null && joinUsBean.getData().getImg_list().size() > 0) {
             Glide.with(this)
                     .load(Constant.HOST + joinUsBean.getData().getImg_list().get(0).getImg())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -97,24 +105,22 @@ public class JoinUsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_apply_join:
-                if (joinUsBean.getData() != null) {
-                    if (isApply == 0) {
-                        startActivityForResult(new Intent(this, ApplyJoinActivity.class), 1);
-                    } else {
-                        Toast.makeText(this, "您已经提交申请，请耐心等待", Toast.LENGTH_SHORT).show();
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                    if (joinUsBean.getData() != null) {
+                        if (isApply == 0) {
+                            startActivity(new Intent(this, ApplyJoinActivity.class));
+                        } else {
+                            Toast.makeText(this, "您已经提交申请，请耐心等待", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
+
                 break;
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == 1) {
-            isApply = -1;
-        }
-    }
 }
 
 

@@ -69,6 +69,16 @@
     native <methods>;
 }
 
+-keepclassmembers class * {
+    native <methods>;
+}
+
+
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
 #保持 Parcelable 不被混淆
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -87,6 +97,10 @@
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, jav.lang.String);
 }
+
+
+-keep class com.yanzhenjie.zbar**{*;}
+-keep class com.yanzhenjie.zbar.camera**{*;}
 #----------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
 #---------------------------------实体类---------------------------------

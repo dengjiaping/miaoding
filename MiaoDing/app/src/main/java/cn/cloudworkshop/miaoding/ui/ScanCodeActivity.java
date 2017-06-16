@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.yanzhenjie.zbar.camera.CameraPreview;
 import com.yanzhenjie.zbar.camera.ScanCallback;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 
 /**
  * Author：binge on 2017-06-15 08:48
@@ -55,7 +57,7 @@ public class ScanCodeActivity extends BaseActivity {
                     String[] split = content.split("\\?");
                     if (split.length > 1 && split[1] != null) {
                         String[] split1 = split[1].split("&");
-                        if (split1[0] != null && split1[1] != null) {
+                        if (split1.length > 1 && split1[0] != null && split1[1] != null) {
                             String goods_id = split1[0].split("=")[1];
                             String goods_type = split1[1].split("=")[1];
                             if (goods_id != null && goods_type != null) {
@@ -66,14 +68,33 @@ public class ScanCodeActivity extends BaseActivity {
                                     case "2":
                                         toGoodsDetail(WorksDetailActivity.class, goods_id);
                                         break;
+                                    default:
+                                        Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
+                                                Toast.LENGTH_SHORT).show();
+                                        finish();
+                                        break;
                                 }
 
+                            } else {
+                                Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
                             }
+                        } else {
+                            Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
                         }
+                    } else {
+                        Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
+                                Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                 } else {
-                    capturePreview.start();
+                    Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
@@ -83,8 +104,7 @@ public class ScanCodeActivity extends BaseActivity {
 
     /**
      * @param cls
-     * @param goodsId
-     * 跳转商品性情
+     * @param goodsId 跳转商品详情
      */
     private void toGoodsDetail(Class<? extends Activity> cls, String goodsId) {
         Intent intent = new Intent(ScanCodeActivity.this, cls);

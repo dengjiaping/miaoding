@@ -71,15 +71,15 @@ public class JazzyPagerAdapter extends PagerAdapter {
                 .into(imgWorks);
 
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CustomGoodsActivity.class);
-                intent.putExtra("id", String.valueOf(dataList.get(position).getId()));
-                context.startActivity(intent);
-
-            }
-        });
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context, CustomGoodsActivity.class);
+//                intent.putExtra("id", String.valueOf(dataList.get(position).getId()));
+//                context.startActivity(intent);
+//
+//            }
+//        });
         container.addView(view);
         jazzyViewPager.setObjectForPosition(view, position);
         return view;

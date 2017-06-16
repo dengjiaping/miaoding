@@ -169,22 +169,27 @@ public class FeedbackActivity extends BaseActivity {
             loadingView.smoothToShow();
             tvSubmit.setEnabled(false);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (selectedPhotos.size() != 0) {
-                        imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
-                        handler.sendEmptyMessage(1);
-                    } else {
-                        handler.sendEmptyMessage(2);
-                    }
-                }
-            }).start();
+            new Thread(myRunnable).start();
         } else {
             Toast.makeText(this, "请写下您的宝贵意见", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+    /**
+     * 开启线程处理图片
+     */
+    Runnable myRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (selectedPhotos.size() != 0) {
+                imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
+                handler.sendEmptyMessage(1);
+            } else {
+                handler.sendEmptyMessage(2);
+            }
+        }
+    };
 
 
     /**
@@ -303,4 +308,12 @@ public class FeedbackActivity extends BaseActivity {
     }
 
 
+    /**
+     * 关闭线程
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(myRunnable);
+    }
 }

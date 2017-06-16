@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -93,10 +94,13 @@ public class MemberRuleActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(MemberRuleActivity.this, CouponRuleActivity.class);
-                intent.putExtra("title", dataList.get(position).getName());
-                intent.putExtra("img_url", dataList.get(position).getImg_list().get(0));
-                startActivity(intent);
+                if (TextUtils.isEmpty(dataList.get(position).getImg_list().get(0))) {
+                    Intent intent = new Intent(MemberRuleActivity.this, UserRuleActivity.class);
+                    intent.putExtra("title", dataList.get(position).getName());
+                    intent.putExtra("img_url", dataList.get(position).getImg_list().get(0));
+                    startActivity(intent);
+                }
+
             }
 
             @Override

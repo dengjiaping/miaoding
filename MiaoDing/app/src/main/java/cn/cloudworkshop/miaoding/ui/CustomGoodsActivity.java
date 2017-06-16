@@ -33,6 +33,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -58,6 +59,7 @@ import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -129,6 +131,9 @@ public class CustomGoodsActivity extends BaseActivity {
     private String id;
     private CustomGoodsBean customBean;
     private long enterTime;
+    private Bitmap bm0;
+    private Bitmap bm1;
+    private Bitmap bm2;
 
 
     @Override
@@ -207,15 +212,6 @@ public class CustomGoodsActivity extends BaseActivity {
                 .setPageIndicator(new int[]{R.drawable.dot_black, R.drawable.dot_white})
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-//        bannerGoods.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                Intent intent = new Intent(CustomGoodsActivity.this, ImagePreviewActivity.class);
-//                intent.putExtra("currentPos", position);
-//                intent.putStringArrayListExtra("img_list", customBean.getImg_list());
-//                startActivity(intent);
-//            }
-//        });
 
         //喜爱人数
         if (customBean.getData().getCollect_num() > 0) {
@@ -273,7 +269,6 @@ public class CustomGoodsActivity extends BaseActivity {
             }
 
         } else {
-//            tvCommentCount.setText("评价  （0）");
             llNoEvaluate.setVisibility(View.GONE);
         }
 
@@ -282,13 +277,19 @@ public class CustomGoodsActivity extends BaseActivity {
 
         //详情页图片尺寸超过手机支持最大尺寸
         //分割图片显示
-        Glide.with(getApplicationContext())
-                .load(Constant.HOST + customBean.getData().getContent2())
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
+
+        OkHttpUtils.get()
+                .url(Constant.HOST + customBean.getData().getContent2())
+                .build()
+                .execute(new BitmapCallback() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(resource);
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap response, int id) {
+                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
                         try {
                             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
                             int width = decoder.getWidth();
@@ -298,20 +299,21 @@ public class CustomGoodsActivity extends BaseActivity {
 
 
                             rect.set(0, 0, width, height / 3);
-                            Bitmap bm = decoder.decodeRegion(rect, opts);
-                            imgDetails.setImageBitmap(bm);
+                            bm0 = decoder.decodeRegion(rect, opts);
+                            imgDetails.setImageBitmap(bm0);
 
                             rect.set(0, height / 3, width, height / 3 * 2);
-                            Bitmap bm1 = decoder.decodeRegion(rect, opts);
+                            bm1 = decoder.decodeRegion(rect, opts);
                             imgDetails1.setImageBitmap(bm1);
 
                             rect.set(0, height / 3 * 2, width, height);
-                            Bitmap bm2 = decoder.decodeRegion(rect, opts);
+                            bm2 = decoder.decodeRegion(rect, opts);
                             imgDetails2.setImageBitmap(bm2);
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 });
 
@@ -533,27 +535,28 @@ public class CustomGoodsActivity extends BaseActivity {
                 tailorItemBean.setBanxing_id(customBean.getData().getBanxing_list().get(position).getId() + "");
 
 
-                if (customBean.getData().getDefault_spec_list() != null && customBean.getData().getDefault_spec_list().size() > 0) {
-                    //部件
-                    List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
-
-                    for (int i = 0; i < customBean.getData().getDefault_spec_list().size(); i++) {
-                        TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
-                        itemBean.setImg(customBean.getData().getDefault_spec_list().get(i).getImg_c());
-                        itemBean.setPosition_id(customBean.getData().getDefault_spec_list().get(i).getPosition_id());
-                        itemList.add(itemBean);
-                    }
-
-                    tailorItemBean.setItemBean(itemList);
-                } else {
-                    tailorItemBean.setDefault_img(customBean.getData().getDefault_img());
-                }
-
+//                if (customBean.getData().getDefault_spec_list() != null && customBean.getData().getDefault_spec_list().size() > 0) {
+//                    //部件
+//                    List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+//
+//                    for (int i = 0; i < customBean.getData().getDefault_spec_list().size(); i++) {
+//                        TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+//                        itemBean.setImg(customBean.getData().getDefault_spec_list().get(i).getImg_c());
+//                        itemBean.setPosition_id(customBean.getData().getDefault_spec_list().get(i).getPosition_id());
+//                        itemList.add(itemBean);
+//                    }
+//
+//                    tailorItemBean.setItemBean(itemList);
+//                } else {
+//                    tailorItemBean.setDefault_img(customBean.getData().getDefault_img());
+//                }
+                tailorItemBean.setDefault_img(customBean.getData().getDefault_img());
 
                 tailorItemBean.setSpec_ids(customBean.getData().getDefault_spec_ids());
-                tailorItemBean.setSpec_content(customBean.getData().getDefault_spec_content());
 
-
+                String spec_content = customBean.getData().getDefault_spec_content() + ";版型:" +
+                        customBean.getData().getBanxing_list().get(position).getName() + ";";
+                tailorItemBean.setSpec_content(spec_content);
                 bundle.putSerializable("tailor", tailorItemBean);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -663,4 +666,11 @@ public class CustomGoodsActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MemoryCleanUtils.bmpRecycle(bm0);
+        MemoryCleanUtils.bmpRecycle(bm1);
+        MemoryCleanUtils.bmpRecycle(bm2);
+    }
 }

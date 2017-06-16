@@ -15,11 +15,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -44,8 +47,10 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.ScanCodeActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.JazzyViewPager;
 import okhttp3.Call;
@@ -155,6 +160,48 @@ public class NewCustomGoodsFragment extends BaseFragment {
         vpCustomGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
         JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(), getActivity(), vpCustomGoods);
         vpCustomGoods.setAdapter(adapter);
+
+        //手指左右滑动不超过48px,上下滑动不超过250px
+        vpCustomGoods.setOnTouchListener(new View.OnTouchListener() {
+            int touchFlag = 0;
+            float x = 0, y = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchFlag = 0;
+                        x = event.getX();
+                        y = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ViewConfiguration configuration = ViewConfiguration.get(getActivity());
+                        int mTouchSlop = configuration.getScaledPagingTouchSlop();
+
+                        float xDiff = Math.abs(event.getX() - x);
+                        float yDiff = Math.abs(event.getY() - y);
+
+                        if (xDiff < mTouchSlop && yDiff < 250)
+                            touchFlag = 0;
+                        else
+                            touchFlag = -1;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        if (touchFlag == 0) {
+                            Intent intent = new Intent(getActivity(), CustomGoodsActivity.class);
+                            intent.putExtra("id", String.valueOf(listBean.getData().getData()
+                                    .get(vpCustomGoods.getCurrentItem()).getId()));
+                            startActivity(intent);
+                        }
+                        break;
+
+
+                }
+                return false;
+            }
+        });
 
         vpCustomGoods.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

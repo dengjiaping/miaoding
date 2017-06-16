@@ -139,7 +139,7 @@ public class EvaluateActivity extends BaseActivity {
                 break;
             case R.id.img_select_picture:
                 PhotoPicker.builder()
-                        .setPhotoCount(4)
+                        .setPhotoCount(5)
                         .setShowCamera(true)
                         .setSelected(selectedPhotos)
                         .start(this);
@@ -158,21 +158,26 @@ public class EvaluateActivity extends BaseActivity {
             loadingView.smoothToShow();
             tvSubmit.setEnabled(false);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (selectedPhotos.size() != 0) {
-                        imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
-                        handler.sendEmptyMessage(1);
-                    } else {
-                        handler.sendEmptyMessage(2);
-                    }
-                }
-            }).start();
+            new Thread(myRunnable).start();
         } else {
             Toast.makeText(this, "请填写评论", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * 开启线程处理图片
+     */
+    Runnable myRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (selectedPhotos.size() != 0) {
+                imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
+                handler.sendEmptyMessage(1);
+            } else {
+                handler.sendEmptyMessage(2);
+            }
+        }
+    };
 
 
     Handler handler = new Handler() {
@@ -249,5 +254,11 @@ public class EvaluateActivity extends BaseActivity {
             }
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(myRunnable);
     }
 }

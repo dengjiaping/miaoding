@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -377,7 +378,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
 
 
-                            if (cartDetails.getData().getImg_list() != null && cartDetails.getData().getImg_list().size() > 0) {
+                            if (TextUtils.isEmpty(cartDetails.getData().getDefault_img())) {
                                 List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
                                 for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
                                     TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();

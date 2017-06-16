@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -91,7 +89,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        msgToken = SharedPreferencesUtils.getString(this, "msgToken");
+        msgToken = SharedPreferencesUtils.getString(this, "msg_token");
         ButterKnife.bind(this);
         loginLog();
         initView();
@@ -222,7 +220,7 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_user_agreement:
                 if (MyApplication.userAgreement != null) {
-                    Intent intent = new Intent(this, CouponRuleActivity.class);
+                    Intent intent = new Intent(this, UserRuleActivity.class);
                     intent.putExtra("title", "用户协议");
                     intent.putExtra("img_url", MyApplication.userAgreement);
                     startActivity(intent);
@@ -306,7 +304,7 @@ public class LoginActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            SharedPreferencesUtils.saveString(LoginActivity.this, "icon",
+                            SharedPreferencesUtils.saveString(LoginActivity.this, "avatar",
                                     jsonObject1.getString("avatar"));
                             SharedPreferencesUtils.saveString(LoginActivity.this, "phone",
                                     jsonObject1.getString("phone"));
@@ -325,27 +323,29 @@ public class LoginActivity extends BaseActivity {
         if (PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim())) {
             sendPhoneNumber();
             tvVerificationCode.setClickable(false);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (; i > 0; i--) {
-                        handler.sendEmptyMessage(-9);
-                        if (i <= 0) {
-                            break;
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    handler.sendEmptyMessage(-8);
-                }
-            }).start();
+            new Thread(myRunnable).start();
         } else {
             Toast.makeText(this, "手机号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
         }
     }
+
+    Runnable myRunnable = new Runnable() {
+        @Override
+        public void run() {
+            for (; i > 0; i--) {
+                handler.sendEmptyMessage(-9);
+                if (i <= 0) {
+                    break;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            handler.sendEmptyMessage(-8);
+        }
+    };
 
 
     /**
@@ -375,7 +375,7 @@ public class LoginActivity extends BaseActivity {
                                         Toast.LENGTH_SHORT).show();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 msgToken = jsonObject1.getString("token");
-                                SharedPreferencesUtils.saveString(LoginActivity.this, "msgToken", msgToken);
+                                SharedPreferencesUtils.saveString(LoginActivity.this, "msg_token", msgToken);
                             }
 
                         } catch (JSONException e) {
@@ -388,8 +388,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            String cancel = getIntent().getStringExtra("log_in");
-            if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
+            String loginTag = getIntent().getStringExtra("log_in");
+            if (!TextUtils.isEmpty(loginTag) && loginTag.equals("center")) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 if (MainActivity.instance != null) {
@@ -400,10 +400,15 @@ public class LoginActivity extends BaseActivity {
             } else {
                 finish();
             }
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(myRunnable);
+    }
 }

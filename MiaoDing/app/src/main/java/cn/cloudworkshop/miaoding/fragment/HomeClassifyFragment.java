@@ -132,7 +132,7 @@ public class HomeClassifyFragment extends BaseFragment {
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_home_item));
+                        .into((ImageView) holder.getView(R.id.img_homepage_item));
                 holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
                 holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
             }

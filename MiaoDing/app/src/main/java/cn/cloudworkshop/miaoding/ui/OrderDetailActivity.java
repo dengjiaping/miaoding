@@ -117,6 +117,7 @@ public class OrderDetailActivity extends BaseActivity {
         tvHeaderTitle.setText("订单详情");
         getData();
         initData();
+
     }
 
     @Override
@@ -274,6 +275,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         orderId = intent.getStringExtra("id");
+
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_order_pay_money, R.id.tv_order_cancel, R.id.tv_order_after})
@@ -502,4 +504,8 @@ public class OrderDetailActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

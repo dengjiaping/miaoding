@@ -24,7 +24,7 @@ public class ImageEncodeUtils {
     public static String enCodeFile(List<String> fileList) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < fileList.size(); i++) {
-            String s = ImageEncodeUtils.fileToBase64(fileList.get(i));
+            String s = fileToBase64(fileList.get(i));
             if (i < fileList.size() - 1) {
                 sb.append(s).append(",");
             } else {

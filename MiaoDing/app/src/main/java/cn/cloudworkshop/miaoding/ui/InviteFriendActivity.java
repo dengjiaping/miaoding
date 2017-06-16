@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -90,7 +91,7 @@ public class InviteFriendActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        tvInviteContent.setText("您可获订单实付金额的"+inviteBean.getData().getRate()+"作为奖励");
+        tvInviteContent.setText("您可获订单实付金额的" + inviteBean.getData().getRate() + "作为奖励");
         tvInviteCount.setText("您已邀请好友 " + inviteBean.getData().getInvite_num() + " 人");
         tvInviteReward.setText("您已获得奖励RMB " + new DecimalFormat("#0.00")
                 .format(Float.parseFloat(inviteBean.getData().getMoney())) + " 元");
@@ -109,16 +110,19 @@ public class InviteFriendActivity extends BaseActivity {
             case R.id.img_header_share:
                 if (inviteBean != null) {
                     ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils.getString(this
-                            , "icon"), "邀请有礼", "", Constant.INVITE_SHARE + "?id=" + inviteBean
-                            .getData().getUp_uid());
+                            , "avatar"), "邀请有礼", "TA得优惠，你得奖励", Constant.INVITE_SHARE +
+                            "?id=" + inviteBean.getData().getUp_uid());
                     MobclickAgent.onEvent(InviteFriendActivity.this, "invite_friend");
                 }
                 break;
             case R.id.tv_activity_rule:
-                Intent intent = new Intent(this, CouponRuleActivity.class);
-                intent.putExtra("title","活动规则");
-                intent.putExtra("img_url",inviteBean.getImg());
-                startActivity(intent);
+                if (inviteBean != null && !TextUtils.isEmpty(inviteBean.getImg())) {
+                    Intent intent = new Intent(this, UserRuleActivity.class);
+                    intent.putExtra("title", "活动规则");
+                    intent.putExtra("img_url", inviteBean.getImg());
+                    startActivity(intent);
+                }
+
                 break;
 
         }

@@ -82,8 +82,6 @@ public class SetUpActivity extends BaseActivity {
     TextView tvSetName;
     @BindView(R.id.tv_set_sex)
     TextView tvSetSex;
-    @BindView(R.id.tv_set_age)
-    TextView tvSetAge;
     @BindView(R.id.img_set_sex)
     ImageView imgSetSex;
     @BindView(R.id.img_circle_icon)
@@ -93,8 +91,6 @@ public class SetUpActivity extends BaseActivity {
     @BindView(R.id.ll_user_name)
     LinearLayout llUserName;
     @BindView(R.id.ll_user_sex)
-    LinearLayout llUserAge;
-    @BindView(R.id.ll_user_age)
     LinearLayout llUserSex;
     @BindView(R.id.ll_measure_data)
     LinearLayout llMeasureData;
@@ -115,15 +111,13 @@ public class SetUpActivity extends BaseActivity {
     private String userName;
     //用户性别
     private int userSex;
-    //用户年龄
-    private int userAge;
+
     //用户生日
     private String userBirthday;
     //会员中心跳转,设置生日
     private boolean setBirthday;
 
     private ArrayList<String> selectedPhotos = new ArrayList<>();
-
 
 
     @Override
@@ -166,7 +160,6 @@ public class SetUpActivity extends BaseActivity {
                     Integer.parseInt(userBirthday.split("-")[0])) + "");
         }
 
-        tvSetAge.setText(userAge + "");
         if (setBirthday) {
             changeBirthday();
         }
@@ -214,7 +207,6 @@ public class SetUpActivity extends BaseActivity {
                             SharedPreferencesUtils.saveString(SetUpActivity.this, "icon", userIcon);
                             userName = jsonObject1.getString("name");
                             userSex = jsonObject1.getInt("sex");
-                            userAge = jsonObject1.getInt("age");
                             userBirthday = jsonObject1.getString("birthday");
                             initView();
                         } catch (JSONException e) {
@@ -278,7 +270,7 @@ public class SetUpActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_header_back, R.id.ll_deliver_address, R.id.tv_log_out, R.id.ll_user_icon,
-            R.id.ll_user_name, R.id.ll_user_sex, R.id.ll_user_age, R.id.ll_measure_data,
+            R.id.ll_user_name, R.id.ll_user_sex, R.id.ll_measure_data,
             R.id.ll_user_birthday, R.id.ll_clean_data, R.id.ll_about_us, R.id.ll_feed_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -308,9 +300,6 @@ public class SetUpActivity extends BaseActivity {
             case R.id.ll_user_sex:
                 changeSex();
                 break;
-            case R.id.ll_user_age:
-                changeAge();
-                break;
             case R.id.ll_measure_data:
                 startActivity(new Intent(SetUpActivity.this, MeasureUserActivity.class));
                 break;
@@ -329,46 +318,26 @@ public class SetUpActivity extends BaseActivity {
      */
     private void changeBirthday() {
         DatePicker picker = new DatePicker(this);
-        picker.setRange(1900, Calendar.getInstance().get(Calendar.YEAR));
         picker.setOffset(2);
-        picker.setSelectedItem(1980, 1, 1);
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        picker.setRangeStart(1900, 1, 1);
+        picker.setRangeEnd(year, month, day);
         if (userBirthday != null && !userBirthday.equals("null")) {
             String[] split = userBirthday.split("-");
             picker.setSelectedItem(Integer.parseInt(split[0]), Integer.parseInt(split[1]),
                     Integer.parseInt(split[2]));
+        } else {
+            picker.setSelectedItem(1980, 1, 1);
         }
 
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
-                if (DateUtils.getMillisecond("yyyyMMdd", year + month + day) < System.currentTimeMillis()) {
-                    changeInfo("birthday", year + "-" + month + "-" + day);
-                } else {
-                    Toast.makeText(SetUpActivity.this, "请选择正确的出生日期", Toast.LENGTH_SHORT).show();
-                }
+                changeInfo("birthday", year + "-" + month + "-" + day);
             }
-        });
-        picker.show();
-    }
-
-    /**
-     * 修改年龄
-     */
-    private void changeAge() {
-        NumberPicker picker = new NumberPicker(this);
-        picker.setOffset(2);//偏移量
-        picker.setRange(10, 100);//数字范围
-        picker.setTextSize(15);
-        picker.setLineColor(Color.GRAY);
-        picker.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22), Color.GRAY);
-        picker.setSelectedItem(25);
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(int position, String option) {
-                tvSetAge.setText(option);
-                changeInfo("age", option);
-            }
-
         });
         picker.show();
     }
@@ -432,7 +401,7 @@ public class SetUpActivity extends BaseActivity {
     private void changeSex() {
         OptionPicker picker = new OptionPicker(this, new String[]{"保密", "男", "女"});
         picker.setTextSize(15);
-        picker.setLineColor(Color.GRAY);
+        picker.setDividerColor(Color.GRAY);
         picker.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22), Color.GRAY);
         picker.setSelectedItem(tvSetSex.getText().toString().trim());
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {

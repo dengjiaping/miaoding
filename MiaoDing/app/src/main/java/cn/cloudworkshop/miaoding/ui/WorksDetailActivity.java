@@ -32,6 +32,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -54,6 +55,7 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -153,6 +155,9 @@ public class WorksDetailActivity extends BaseActivity {
     private TextView tvStock;
     private TextView tvCount;
     private TextView tvBuy;
+    private Bitmap bm0;
+    private Bitmap bm1;
+    private Bitmap bm2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,7 +285,6 @@ public class WorksDetailActivity extends BaseActivity {
             }
 
         } else {
-//            tvCommentCount.setText("评价  （0）");
             llNullEvaluate.setVisibility(View.GONE);
         }
 
@@ -289,13 +293,19 @@ public class WorksDetailActivity extends BaseActivity {
 
         //详情页图片尺寸超过手机支持最大尺寸
         //分割图片显示
-        Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getData().getContent2())
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
+
+        OkHttpUtils.get()
+                .url(Constant.HOST + worksBean.getData().getContent2())
+                .build()
+                .execute(new BitmapCallback() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(resource);
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap response, int id) {
+                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
                         try {
                             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
                             int width = decoder.getWidth();
@@ -305,15 +315,15 @@ public class WorksDetailActivity extends BaseActivity {
 
                             //平分三份
                             rect.set(0, 0, width, height / 3);
-                            Bitmap bm = decoder.decodeRegion(rect, opts);
-                            imgDetails.setImageBitmap(bm);
+                            bm0 = decoder.decodeRegion(rect, opts);
+                            imgDetails.setImageBitmap(bm0);
 
                             rect.set(0, height / 3, width, height / 3 * 2);
-                            Bitmap bm1 = decoder.decodeRegion(rect, opts);
+                            bm1 = decoder.decodeRegion(rect, opts);
                             imgDetails1.setImageBitmap(bm1);
 
                             rect.set(0, height / 3 * 2, width, height);
-                            Bitmap bm2 = decoder.decodeRegion(rect, opts);
+                            bm2 = decoder.decodeRegion(rect, opts);
                             imgDetails2.setImageBitmap(bm2);
 
                         } catch (IOException e) {
@@ -321,7 +331,6 @@ public class WorksDetailActivity extends BaseActivity {
                         }
                     }
                 });
-
 
         scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
             @Override
@@ -708,4 +717,11 @@ public class WorksDetailActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MemoryCleanUtils.bmpRecycle(bm0);
+        MemoryCleanUtils.bmpRecycle(bm1);
+        MemoryCleanUtils.bmpRecycle(bm2);
+    }
 }

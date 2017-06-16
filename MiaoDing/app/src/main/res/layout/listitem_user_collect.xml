@@ -8,5 +8,5 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginRight="12dp"
-        android:background="@drawable/ring_select_bg"/>
+        android:background="@drawable/ring_normal_bg"/>
 </LinearLayout>

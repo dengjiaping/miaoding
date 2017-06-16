@@ -116,7 +116,7 @@ public class MyApplication extends Application {
         options.savePowerConfig = new SavePowerConfig();
         UICustomization uiCustomization = new UICustomization();
         uiCustomization.leftAvatar = "";
-        uiCustomization.rightAvatar = Constant.HOST + SharedPreferencesUtils.getString(this, "icon");
+        uiCustomization.rightAvatar = Constant.HOST + SharedPreferencesUtils.getString(this, "avatar");
         options.uiCustomization = uiCustomization;
         return options;
     }

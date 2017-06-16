@@ -449,6 +449,25 @@ public class NewHomepageBean {
         private String link;
         private String title;
         private String share_link;
+        private int type;
+        private int banner_type;
+
+        public int getBanner_type() {
+            return banner_type;
+        }
+
+        public void setBanner_type(int banner_type) {
+            this.banner_type = banner_type;
+        }
+
+        public int getType() {
+            return type;
+
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
 
         public String getImg() {
             return img;

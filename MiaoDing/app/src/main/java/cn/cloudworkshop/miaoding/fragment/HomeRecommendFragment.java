@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
+import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -155,7 +158,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
         HomeRecommendFragment.MyAdapter myAdapter = new HomeRecommendFragment.MyAdapter();
         SectionedRVAdapter sectionedRecyclerViewAdapter = new SectionedRVAdapter
-                (getParentFragment().getActivity(), R.layout.listitem_homepage_title, R.id.tv_list_title, myAdapter, this);
+                (getParentFragment().getActivity(), R.layout.listitem_homepage_title, R.id.tv_info_title, myAdapter, this);
         sectionedRecyclerViewAdapter.setSections(dataList);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
@@ -243,13 +246,23 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     homepageLog("banner");
                     //banner点击事件统计
                     MobclickAgent.onEvent(getParentFragment().getActivity(), "banner");
-                    Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
-                    intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
-                    intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
-                    intent.putExtra("content", "banner");
-                    intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
-                    intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
-                    startActivity(intent);
+                    switch (homepageBean.getLunbo().get(position).getBanner_type()) {
+                        //咨询页webview
+                        case 1:
+                            Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
+                            intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
+                            intent.putExtra("content", "banner");
+                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
+                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
+                            startActivity(intent);
+                            break;
+                        //设计师申请入驻
+                        case 2:
+                            startActivity(new Intent(getParentFragment().getActivity(), JoinUsActivity.class));
+                            break;
+                    }
+
                 }
             });
         }
@@ -260,7 +273,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParentFragment().getActivity(),
                     LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);
-            final CommonAdapter<NewHomepageBean.DesignerListBean> adapter = new CommonAdapter<NewHomepageBean.DesignerListBean>(getParentFragment().getActivity(),
+            final CommonAdapter<NewHomepageBean.DesignerListBean> adapter = new CommonAdapter
+                    <NewHomepageBean.DesignerListBean>(getParentFragment().getActivity(),
                     R.layout.listitem_recommend_designer, homepageBean.getDesigner_list()) {
 
 
@@ -286,9 +300,11 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailActivity.class);
-                    intent.putExtra("id", homepageBean.getDesigner_list().get(position).getId() + "");
-                    startActivity(intent);
+                    if (!homepageBean.getDesigner_list().get(position).getName().equals("虚位以待")) {
+                        Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailActivity.class);
+                        intent.putExtra("id", homepageBean.getDesigner_list().get(position).getId() + "");
+                        startActivity(intent);
+                    }
                 }
 
                 @Override
@@ -321,7 +337,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
         MyViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.img_home_item);
+            image = (ImageView) itemView.findViewById(R.id.img_homepage_item);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_recommend_title);
             tvContent = (TextView) itemView.findViewById(R.id.tv_recommend_content);
         }

@@ -191,7 +191,7 @@
         <activity android:name=".ui.MeasureDataActivity"/>
         <activity android:name=".ui.MeasureUserActivity"/>
         <activity android:name=".ui.ImagePreviewActivity"/>
-        <activity android:name=".ui.CouponRuleActivity"/>
+        <activity android:name=".ui.UserRuleActivity"/>
         <activity android:name=".ui.UserAgreementActivity"/>
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
