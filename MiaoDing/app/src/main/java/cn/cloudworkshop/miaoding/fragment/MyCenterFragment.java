@@ -26,12 +26,11 @@ import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.AboutUsActivity;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
 import cn.cloudworkshop.miaoding.ui.CollectionActivity;
 import cn.cloudworkshop.miaoding.ui.CouponActivity;
+import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
 import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
-import cn.cloudworkshop.miaoding.ui.InviteFriendActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.ApplyMeasureActivity;
@@ -186,6 +185,7 @@ public class MyCenterFragment extends BaseFragment {
         } else {
             badgeView.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -262,8 +262,8 @@ public class MyCenterFragment extends BaseFragment {
                 startActivity(setUp);
                 break;
             case R.id.tv_mycenter_invite:
-                Intent invite = new Intent(getActivity(), InviteFriendActivity.class);
-                startActivity(invite);
+                inviteFriends();
+
                 break;
             case R.id.tv_mycenter_coupon:
                 startActivity(new Intent(getActivity(), CouponActivity.class));
@@ -277,12 +277,48 @@ public class MyCenterFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 邀请好友
+     */
+    private void inviteFriends() {
+        OkHttpUtils.get()
+                .url(Constant.INVITE_FRIEND)
+                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            String uid = data.getString("up_uid");
+                            if (uid != null) {
+                                Intent intent = new Intent(getActivity(), DressingResultActivity.class);
+                                intent.putExtra("title", "邀请有礼");
+                                intent.putExtra("share_title", "邀请有礼");
+                                intent.putExtra("share_content", "TA得优惠，你得奖励");
+                                intent.putExtra("url", Constant.CLOTH_TEST_RESULT + "?id=" + uid);
+                                intent.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 }

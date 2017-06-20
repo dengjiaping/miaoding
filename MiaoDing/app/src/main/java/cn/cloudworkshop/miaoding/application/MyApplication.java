@@ -50,6 +50,8 @@ public class MyApplication extends Application {
     public static String orderId;
     //首页时间
     public static long homeEnterTime;
+    //是否检测更新
+    public static boolean isCheckUpdate = true;
 
     public static MyApplication getInstance() {
         return application;

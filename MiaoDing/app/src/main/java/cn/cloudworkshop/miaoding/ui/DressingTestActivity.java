@@ -86,7 +86,7 @@ public class DressingTestActivity extends BaseActivity {
             @Override
             public void onSelectionChange(int selectedPosition) {
                 int value = selectedPosition + 60;
-                if (value > 120){
+                if (value > 120) {
                     value -= 120;
                 }
                 tvUserWeight.setText(String.valueOf(value));
@@ -141,7 +141,7 @@ public class DressingTestActivity extends BaseActivity {
     private void submitData() {
         OkHttpUtils.get()
                 .url(Constant.CLOTH_TEST)
-                .addParams("token", SharedPreferencesUtils.getString(this,"token"))
+                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("age", tvUserAge.getText().toString().trim())
                 .addParams("height", tvUserHeight.getText().toString().trim())
                 .addParams("weight", tvUserWeight.getText().toString().trim())
@@ -157,12 +157,17 @@ public class DressingTestActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         try {
                             //穿衣测试事件监听
-                            MobclickAgent.onEvent(DressingTestActivity.this,"dressing_test");
+                            MobclickAgent.onEvent(DressingTestActivity.this, "dressing_test");
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                             String rid = jsonObject1.getString("id");
+
                             Intent intent = new Intent(DressingTestActivity.this, DressingResultActivity.class);
-                            intent.putExtra("rid", rid);
+                            intent.putExtra("title", "测试结果");
+                            intent.putExtra("share_title","穿衣测试");
+                            intent.putExtra("share_content", "");
+                            intent.putExtra("url", Constant.CLOTH_TEST_RESULT + "?id=" + rid);
+                            intent.putExtra("share_url", Constant.DRESSING_TEST_SHARE + "?id=" + rid);
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();

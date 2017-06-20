@@ -17,8 +17,9 @@ public class Constant {
     public static final String HOMEPAGE_TAB_LIST = HOST + "/index.php/index/index/index_tab_list";
     public static final String GOODS_TITLE = HOST + "/index.php/index/index/goods_classify";
     public static final String GOODS_LIST = HOST + "/index.php/index/index/goods_list";
+    public static final String DESIGNER_WORKS= HOST + "/index.php/index/index/cobbler";
     public static final String DESIGNER_TITLE= HOST + "/index.php/index/index/cobbler_v5_2";
-    public static final String DESIGNER_WORKS = HOST + "/index.php/index/index/get_chengping_goods_list";
+    public static final String NEW_DESIGNER_WORKS = HOST + "/index.php/index/index/get_chengping_goods_list";
     public static final String GOODS_DETAILS = HOST + "/index.php/index/index/goods_detail";
     public static final String NEW_GOODS_DETAILS = HOST + "/index.php/index/index/new_goods_detail";
     public static final String TAILOR_INFO = HOST + "/index.php/index/index/customize";
@@ -84,7 +85,7 @@ public class Constant {
     public static final String MEMBER_GROWTH = HOST + "/index.php/index/user/user_credit_record";
     public static final String UPGRADE_GIFT = HOST + "/index.php/index/user/user_upgrade_gift";
     public static final String BIRTHDAY_GIFT = HOST + "/index.php/index/user/get_birthday_gift";
-    public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img";
+    public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img_v5_3";
     public static final String DESIGNER_LIST = HOST + "/index.php/index/index/get_designer_list";
     public static final String DESIGNER_DETAILS = HOST + "/index.php/index/index/user_intro";
     public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";

@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -23,7 +25,9 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +46,7 @@ import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -76,12 +81,45 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
+        Map<String, File> map = new HashMap<>();
+        File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CloudWorkshop/camera0.jpg");
+        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CloudWorkshop/camera1.jpg");
+        map.put("img1", file1);
+        map.put("img2", file2);
+        OkHttpUtils.post()
+                .url("http://192.168.1.156/index.php/web/cc/accept_img")
+                .files("img_list", map)
+                .addParams("token",SharedPreferencesUtils.getString(this,"token"))
+                .addParams("scale", "1,2,3,4")
+                .addParams("y_position", "1,2,3,4")
+                .addParams("phone", "13333333333")
+                .addParams("height", "170")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        LogUtils.log(response + "");
+                    }
+                });
+
 //        checkWritePermission();
         initView();
         checkUpdate();
         isLogin();
         submitClientId();
         setCurrentPage();
+
+
+
+
 
     }
 
@@ -166,52 +204,59 @@ public class MainActivity extends BaseActivity {
      * 检测更新
      */
     private void checkUpdate() {
+        if (MyApplication.isCheckUpdate) {
+            OkHttpUtils.get()
+                    .url(Constant.APP_INDEX)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
 
-        OkHttpUtils.get()
-                .url(Constant.APP_INDEX)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
-//                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
-                        MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
-                        MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
-//                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
-                        if (appIndexBean.getData().getVersion().getAndroid() != null &&
-                                Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
-                                        .getVersion()) > getVersionCode()) {
-                            MyApplication.updateUrl = appIndexBean.getData().getDownload_url();
-                            MyApplication.updateContent = appIndexBean.getData().getVersion().getAndroid()
-                                    .getRemark();
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
-                                    R.style.AlertDialog);
-                            dialog.setTitle("检测到新版本，请更新");
-                            dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
-                            //为“确定”按钮注册监听事件
-                            dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    downloadFile();
-                                }
-                            });
-                            //为“取消”按钮注册监听事件
-                            dialog.setNegativeButton("下次再说", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.create();
-                            dialog.show();
                         }
-                    }
-                });
+
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+                        @Override
+                        public void onResponse(String response, int id) {
+                            appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
+//                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
+                            MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
+                            MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
+//                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
+                            if (appIndexBean.getData().getVersion().getAndroid() != null &&
+                                    Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
+                                            .getVersion()) > getVersionCode()) {
+                                MyApplication.updateUrl = appIndexBean.getData().getDownload_url();
+                                MyApplication.updateContent = appIndexBean.getData().getVersion()
+                                        .getAndroid().getRemark();
+                                //取消检测更新
+                                MyApplication.isCheckUpdate = false;
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
+                                        R.style.AlertDialog);
+                                dialog.setTitle("检测到新版本，请更新");
+                                dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
+                                //为“确定”按钮注册监听事件
+                                dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        downloadFile();
+                                    }
+                                });
+                                //为“取消”按钮注册监听事件
+                                dialog.setNegativeButton("下次再说", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        MyApplication.isCheckUpdate = false;
+                                        dialog.dismiss();
+                                    }
+                                });
+                                dialog.create();
+                                dialog.show();
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     /**
@@ -219,16 +264,14 @@ public class MainActivity extends BaseActivity {
      */
     private void downloadFile() {
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(
-                Uri.parse(MyApplication.updateUrl));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(MyApplication.updateUrl));
 
         request.setTitle("妙定");
         request.setDescription("正在下载");
         // 设置下载可见
         request.setVisibleInDownloadsUi(true);
         //下载完成后通知栏可见
-        request.setNotificationVisibility(
-                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         //当前网络状态
         ConnectivityManager mConnectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -241,7 +284,7 @@ public class MainActivity extends BaseActivity {
         }
         // 设置下载位置
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                "CloudWorkshop/yungongchang.apk");
+                "CloudWorkshop/miaoding.apk");
         request.setDestinationUri(Uri.fromFile(file));
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
@@ -275,6 +318,7 @@ public class MainActivity extends BaseActivity {
      * 加载Fragment
      */
     public void initView() {
+
 
         instance = this;
         fragmentList.add(HomepageFragment.newInstance());

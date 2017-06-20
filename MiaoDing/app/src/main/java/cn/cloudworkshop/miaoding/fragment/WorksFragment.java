@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
+import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -50,7 +50,7 @@ public class WorksFragment extends BaseFragment {
     @BindView(R.id.rv_designer_goods)
     LRecyclerView rvWorks;
     Unbinder unbinder;
-    private List<DesignWorksBean.ListBean.DataBean> worksList = new ArrayList<>();
+    private List<NewDesignWorksBean.ListBean.DataBean> worksList = new ArrayList<>();
 
     //页面
     private int page = 1;
@@ -76,7 +76,7 @@ public class WorksFragment extends BaseFragment {
     private void initData() {
 
         OkHttpUtils.get()
-                .url(Constant.DESIGNER_WORKS)
+                .url(Constant.NEW_DESIGNER_WORKS)
                 .addParams("page", page + "")
                 .build()
                 .execute(new StringCallback() {
@@ -87,7 +87,7 @@ public class WorksFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        DesignWorksBean worksBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
+                        NewDesignWorksBean worksBean = GsonUtils.jsonToBean(response, NewDesignWorksBean.class);
                         if (worksBean.getList().getData() != null && worksBean.getList().getData().size() > 0) {
                             if (isRefresh) {
                                 worksList.clear();
@@ -111,10 +111,10 @@ public class WorksFragment extends BaseFragment {
 
     private void initView() {
         rvWorks.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
-        CommonAdapter<DesignWorksBean.ListBean.DataBean> adapter = new CommonAdapter<DesignWorksBean
+        CommonAdapter<NewDesignWorksBean.ListBean.DataBean> adapter = new CommonAdapter<NewDesignWorksBean
                 .ListBean.DataBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
             @Override
-            protected void convert(ViewHolder holder, DesignWorksBean.ListBean.DataBean itemBean, int position) {
+            protected void convert(ViewHolder holder, NewDesignWorksBean.ListBean.DataBean itemBean, int position) {
                 Glide.with(getParentFragment().getActivity())
                         .load(Constant.HOST + itemBean.getThumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

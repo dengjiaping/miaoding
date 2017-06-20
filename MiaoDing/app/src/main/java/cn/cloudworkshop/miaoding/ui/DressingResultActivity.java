@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,7 +34,11 @@ public class DressingResultActivity extends BaseActivity {
     @BindView(R.id.img_header_share)
     ImageView imgHeaderShare;
 
-    private String id;
+    private String title;
+    private String shareTitle;
+    private String shareContent;
+    private String url;
+    private String shareUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,7 @@ public class DressingResultActivity extends BaseActivity {
      * 加载webview
      */
     private void initView() {
-        tvHeaderTitle.setText("测试结果");
+        tvHeaderTitle.setText(title);
         imgHeaderShare.setVisibility(View.VISIBLE);
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
@@ -63,12 +68,17 @@ public class DressingResultActivity extends BaseActivity {
                 return true;
             }
         });
-        webView.loadUrl(Constant.CLOTH_TEST_RESULT + "?id=" + id);
+        webView.loadUrl(url);
     }
 
 
     private void getData() {
-        id = getIntent().getStringExtra("rid");
+        Intent intent = getIntent();
+        title = intent.getStringExtra("title");
+        shareTitle = intent.getStringExtra("share_title");
+        shareContent = intent.getStringExtra("share_content");
+        url = intent.getStringExtra("url");
+        shareUrl = intent.getStringExtra("share_url");
     }
 
 
@@ -84,7 +94,7 @@ public class DressingResultActivity extends BaseActivity {
                 break;
             case R.id.img_header_share:
                 ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils.getString(this,
-                        "icon"), "穿衣测试", "", Constant.DRESSING_TEST_SHARE + "?id=" + id);
+                        "icon"), shareTitle, shareContent, shareUrl);
                 break;
         }
     }

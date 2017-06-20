@@ -21,7 +21,7 @@ import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.HomeClassifyBean;
+import cn.cloudworkshop.miaoding.bean.HomepageTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
@@ -38,7 +38,7 @@ public class HomepageFragment extends BaseFragment {
     ViewPager viewPager;
     private Unbinder unbinder;
 
-    private HomeClassifyBean tabBean;
+    private HomepageTabBean tabBean;
 
     @Nullable
     @Override
@@ -54,7 +54,7 @@ public class HomepageFragment extends BaseFragment {
      * 加载tab
      */
     private void initData() {
-        OkHttpUtils.post()
+        OkHttpUtils.get()
                 .url(Constant.HOMEPAGE_TAB)
                 .build()
                 .execute(new StringCallback() {
@@ -65,7 +65,7 @@ public class HomepageFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        tabBean = GsonUtils.jsonToBean(response,HomeClassifyBean.class);
+                        tabBean = GsonUtils.jsonToBean(response,HomepageTabBean.class);
                         if (tabBean.getData() != null){
                             initView();
                         }

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.bean.HomepageTabBean;
+import cn.cloudworkshop.miaoding.bean.HomeClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 
 /**
@@ -23,12 +23,12 @@ import cn.cloudworkshop.miaoding.constant.Constant;
  */
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
-    private List<HomepageTabBean.DataBeanX.DataBean> list;
+    private List<HomeClassifyBean.DataBeanX.DataBean> list;
     private Context context;
     private LayoutInflater inflater;
 
 
-    public MyRecyclerViewAdapter(Context context, List<HomepageTabBean.DataBeanX.DataBean> list) {
+    public MyRecyclerViewAdapter(Context context, List<HomeClassifyBean.DataBeanX.DataBean> list) {
         this.list = list;
         this.context = context;
         inflater = LayoutInflater.from(context);

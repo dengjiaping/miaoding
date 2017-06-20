@@ -138,7 +138,6 @@ public class MyOrderFragment extends BaseFragment {
                             if (isRefresh || isLoadMore) {
                                 rvGoods.refreshComplete();
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
-
                             } else {
                                 initView();
                             }

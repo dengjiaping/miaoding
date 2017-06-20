@@ -29,7 +29,6 @@ public class GsonUtils {
         if (gson == null) {
 //            gson = new Gson();
             gson = new GsonBuilder().serializeNulls().create();
-//            gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
         }
     }
 
@@ -117,40 +116,5 @@ public class GsonUtils {
     }
 
 
-    /**
-     * @param <T> Gson解析null替换为空字符串
-     */
-    private static class NullStringToEmptyAdapterFactory<T> implements TypeAdapterFactory {
-        @SuppressWarnings("unchecked")
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType != String.class) {
-                return null;
-            }
-            return (TypeAdapter<T>) new StringNullAdapter();
-        }
-    }
 
-
-    private static class StringNullAdapter extends TypeAdapter<String> {
-        @Override
-        public String read(JsonReader reader) throws IOException {
-            // TODO Auto-generated method stub
-            if (reader.peek() == JsonToken.NULL) {
-                reader.nextNull();
-                return "";
-            }
-            return reader.nextString();
-        }
-
-        @Override
-        public void write(JsonWriter writer, String value) throws IOException {
-            // TODO Auto-generated method stub
-            if (value == null) {
-                writer.nullValue();
-                return;
-            }
-            writer.value(value);
-        }
-    }
 }

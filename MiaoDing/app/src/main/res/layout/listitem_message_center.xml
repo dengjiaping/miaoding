@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/img_message_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="24dp"
+        android:layout_height="25dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="12dp"
-        android:layout_marginRight="9dp"
+        android:layout_marginRight="8dp"
         android:scaleType="centerCrop"/>
     <TextView
         android:id="@+id/tv_message_title"

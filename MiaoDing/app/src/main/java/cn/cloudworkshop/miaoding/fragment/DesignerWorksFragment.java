@@ -20,11 +20,11 @@ import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.FlipAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.DesignWorksBean;
+import cn.cloudworkshop.miaoding.bean.DesignerWorksBean;
+import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.flipview.FlipView;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -43,7 +43,7 @@ public class DesignerWorksFragment extends BaseFragment {
     @BindView(R.id.view_header_line)
     View viewHeaderLine;
 
-    private List<DesignWorksBean.ListBean.DataBean> designerList = new ArrayList<>();
+    private List<DesignerWorksBean.DataBeanX.DataBean> designerList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -73,9 +73,9 @@ public class DesignerWorksFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        DesignWorksBean designerBean = GsonUtils.jsonToBean(response, DesignWorksBean.class);
-                        if (designerBean.getList().getData() != null) {
-                            designerList.addAll(designerBean.getList().getData());
+                        DesignerWorksBean designerBean = GsonUtils.jsonToBean(response, DesignerWorksBean.class);
+                        if (designerBean.getData().getData() != null) {
+                            designerList.addAll(designerBean.getData().getData());
                             initView();
                         }
                     }

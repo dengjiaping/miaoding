@@ -33,7 +33,7 @@ import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.HomepageTabBean;
+import cn.cloudworkshop.miaoding.bean.HomeClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -51,7 +51,7 @@ public class HomeClassifyFragment extends BaseFragment {
     @BindView(R.id.rv_recommend)
     LRecyclerView rvRecommend;
     private Unbinder unbinder;
-    private List<HomepageTabBean.DataBeanX.DataBean> itemList = new ArrayList<>();
+    private List<HomeClassifyBean.DataBeanX.DataBean> itemList = new ArrayList<>();
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
     //当前页
     private int page = 1;
@@ -94,12 +94,12 @@ public class HomeClassifyFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        HomepageTabBean homepageTabBean = GsonUtils.jsonToBean(response, HomepageTabBean.class);
-                        if (homepageTabBean.getData() != null && homepageTabBean.getData().getData().size() > 0) {
+                        HomeClassifyBean classifyBean = GsonUtils.jsonToBean(response, HomeClassifyBean.class);
+                        if (classifyBean.getData() != null && classifyBean.getData().getData().size() > 0) {
                             if (isRefresh) {
                                 itemList.clear();
                             }
-                            itemList.addAll(homepageTabBean.getData().getData());
+                            itemList.addAll(classifyBean.getData().getData());
                             if (isLoadMore || isRefresh) {
                                 rvRecommend.refreshComplete();
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
@@ -123,10 +123,10 @@ public class HomeClassifyFragment extends BaseFragment {
      */
     private void initView() {
         rvRecommend.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
-        CommonAdapter<HomepageTabBean.DataBeanX.DataBean> adapter = new CommonAdapter<HomepageTabBean
+        CommonAdapter<HomeClassifyBean.DataBeanX.DataBean> adapter = new CommonAdapter<HomeClassifyBean
                 .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_homepage, itemList) {
             @Override
-            protected void convert(ViewHolder holder, HomepageTabBean.DataBeanX.DataBean dataBean, int position) {
+            protected void convert(ViewHolder holder, HomeClassifyBean.DataBeanX.DataBean dataBean, int position) {
                 holder.setVisible(R.id.view_homepage1, false);
                 holder.setVisible(R.id.view_homepage2, true);
                 Glide.with(getParentFragment().getActivity())

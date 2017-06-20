@@ -112,11 +112,8 @@ public class AboutUsActivity extends BaseActivity {
      * 下载文件
      */
     private void downloadFile() {
-        DownloadManager manager = (DownloadManager)
-                getSystemService(Context.DOWNLOAD_SERVICE);
-
-        DownloadManager.Request request = new DownloadManager.Request(
-                Uri.parse(MyApplication.updateUrl));
+        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(MyApplication.updateUrl));
         request.setTitle("妙定");
         request.setDescription("正在下载");
         // 设置下载可见
@@ -135,7 +132,7 @@ public class AboutUsActivity extends BaseActivity {
         }
         // 设置下载位置
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                "CloudWorkshop/yungongchang.apk");
+                "CloudWorkshop/miaoding.apk");
         request.setDestinationUri(Uri.fromFile(file));
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));

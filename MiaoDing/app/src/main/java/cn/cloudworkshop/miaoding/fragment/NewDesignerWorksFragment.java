@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -24,7 +25,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
@@ -48,6 +48,7 @@ public class NewDesignerWorksFragment extends BaseFragment {
     ImageView imgDesignerWorks;
     @BindView(R.id.app_bar_works)
     AppBarLayout appBar;
+
 
     private Unbinder unbinder;
     private String imgUrl;
@@ -109,7 +110,6 @@ public class NewDesignerWorksFragment extends BaseFragment {
                 fragmentList, titleList);
         vpDesignerWorks.setOffscreenPageLimit(titleList.size());
         vpDesignerWorks.setAdapter(adapter);
-
 
         tabDesignerWorks.setViewPager(vpDesignerWorks);
         tabDesignerWorks.setCurrentTab(0);

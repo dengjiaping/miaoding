@@ -124,7 +124,6 @@ public class InviteFriendActivity extends BaseActivity {
                 }
 
                 break;
-
         }
     }
 
