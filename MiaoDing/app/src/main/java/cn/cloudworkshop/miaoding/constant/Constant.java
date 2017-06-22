@@ -91,6 +91,7 @@ public class Constant {
     public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";
     public static final String EVALUATE = HOST + "/index.php/index/index/save_order_comment";
     public static final String EVALUATE_LIST = HOST + "/index.php/index/index/get_goods_comment_list";
+    public static final String APP_ICON = HOST + "/index.php/index/index/get_app_icon_list";
 
     public static final String HOMEPAGE_LOG = HOST + "/index.php/index/index/save_index_log";
     public static final String GOODS_LOG = HOST + "/index.php/index/index/save_goods_log";

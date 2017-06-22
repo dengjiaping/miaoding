@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/text_black_bg"
+            android:background="@drawable/text_white_2dp"
             android:hint="请输入邀请码、兑换码"
             android:singleLine="true"
             android:maxLength="20"
@@ -43,8 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_exchange_coupon"
-
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -53,7 +53,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_coupon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:overScrollMode="never">
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 

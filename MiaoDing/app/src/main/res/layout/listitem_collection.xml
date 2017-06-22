@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
-    android:background="@drawable/btn_white_bg"
+    android:background="@drawable/btn_white_1dp"
     android:orientation="vertical">
 
     <ImageView

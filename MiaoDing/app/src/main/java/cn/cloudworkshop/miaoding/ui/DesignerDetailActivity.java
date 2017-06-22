@@ -38,7 +38,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-06-08 15:26
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：设计师详情
  */
 public class DesignerDetailActivity extends BaseActivity {
 //    @BindView(R.id.img_designer_bg)

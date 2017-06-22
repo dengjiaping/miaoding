@@ -1,35 +1,22 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -45,82 +32,78 @@ import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
-import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
+
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
+import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
-import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * Author：binge on 2017-06-21 10:35
- * Email：1993911441@qq.com
- * Describe：
+ * Author：Libin on 2016/8/31 10:50
+ * Email：1993
+ * Describe:主界面
  */
-public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
-    @BindView(R.id.tab_main)
-    TabLayout tabMain;
-
+public class OldMainActivity extends BaseActivity {
+    @BindView(R.id.rgs_main)
+    RadioGroup mRgs;
     private List<Fragment> fragmentList = new ArrayList<>();
-    NewFragmentTabUtils fragmentUtils;
+    FragmentTabUtils fragmentUtils;
     private AppIndexBean appIndexBean;
     private DownloadService service;
-    public static MainActivity instance;
+    public static OldMainActivity instance;
 
-    String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private AppIconBean iconBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        setContentView(R.layout.activity_main_old);
         ButterKnife.bind(this);
 
+//        Map<String, File> map = new HashMap<>();
+//        File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CloudWorkshop/camera0.jpg");
+//        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CloudWorkshop/camera1.jpg");
+//        map.put("img1", file1);
+//        map.put("img2", file2);
+//        OkHttpUtils.post()
+//                .url("http://192.168.1.156/index.php/web/cc/accept_img")
+//                .files("img_list", map)
+//                .addParams("token",SharedPreferencesUtils.getString(this,"token"))
+//                .addParams("scale", "1,2,3,4")
+//                .addParams("y_position", "1,2,3,4")
+//                .addParams("phone", "13333333333")
+//                .addParams("height", "170")
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//
+//                        LogUtils.log(response + "");
+//                    }
+//                });
 
-        writeToStorage();
-        initIcon();
+
         checkUpdate();
         isLogin();
         submitClientId();
+        setCurrentPage();
+
     }
 
 
-    /**
-     * 加载app icon
-     */
-    private void initIcon() {
-        OkHttpUtils.get()
-                .url(Constant.APP_ICON)
-                .addParams("type", "2")
-                .addParams("is_android", "1")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        iconBean = GsonUtils.jsonToBean(response, AppIconBean.class);
-                        if (iconBean.getData() != null && iconBean.getData().size() > 0) {
-
-                            initView();
-                            setCurrentPage();
-                        }
-                    }
-                });
-    }
 
 
     /**
@@ -129,6 +112,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void submitClientId() {
         String clientId = SharedPreferencesUtils.getString(this, "client_id");
         if (clientId != null) {
+
             OkHttpUtils.get()
                     .url(Constant.CLIENT_ID)
                     .addParams("type", "1")
@@ -161,7 +145,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            SharedPreferencesUtils.deleteString(MainActivity.this, "token");
+                            SharedPreferencesUtils.deleteString(OldMainActivity.this, "token");
                         }
 
                         @Override
@@ -171,7 +155,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     if (code == 10001) {
-                                        SharedPreferencesUtils.deleteString(MainActivity.this, "token");
+                                        SharedPreferencesUtils.deleteString(OldMainActivity.this, "token");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -200,7 +184,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         @Override
                         public void onResponse(String response, int id) {
                             appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
-                            MyApplication.loginBg = appIndexBean.getData().getLogin_img();
+//                        MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                             MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
 //                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
@@ -212,7 +196,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                         .getAndroid().getRemark();
                                 //取消检测更新
                                 MyApplication.isCheckUpdate = false;
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(OldMainActivity.this,
                                         R.style.AlertDialog);
                                 dialog.setTitle("检测到新版本，请更新");
                                 dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
@@ -233,6 +217,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 });
                                 dialog.create();
                                 dialog.show();
+
                             }
                         }
                     });
@@ -304,101 +289,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
-        fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
-                R.id.frame_container, tabMain, iconBean.getData());
-
-    }
-
-    /**
-     * 首次进入，推荐注册
-     */
-    private void isFirstIn() {
-        //默认首次
-        boolean isFirst = SharedPreferencesUtils.getBoolean(this, "first_in", true);
-        if (isFirst && TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
-            OkHttpUtils.get()
-                    .url(Constant.GUIDE_IMG)
-                    .addParams("id", "5")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            GuideBean guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
-                            if (guideBean.getData().getImg_urls() != null && guideBean.getData()
-                                    .getImg_urls().size() > 0) {
-
-                                SharedPreferencesUtils.saveBoolean(MainActivity.this, "first_in", false);
-                                View popupView = getLayoutInflater().inflate(R.layout.ppw_register, null);
-                                final PopupWindow mPopupWindow = new PopupWindow(popupView,
-                                        ViewGroup.LayoutParams.MATCH_PARENT,
-                                        ViewGroup.LayoutParams.MATCH_PARENT);
-                                mPopupWindow.setTouchable(true);
-                                mPopupWindow.setFocusable(true);
-                                mPopupWindow.setOutsideTouchable(true);
-                                mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-                                mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-
-                                View viewRegister = popupView.findViewById(R.id.view_register);
-                                View viewCancel = popupView.findViewById(R.id.view_cancel);
-                                ImageView imgRegister = (ImageView) popupView.findViewById(R.id.img_register);
-
-                                Glide.with(MainActivity.this)
-                                        .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
-                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                        .into(imgRegister);
-                                viewRegister.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mPopupWindow.dismiss();
-                                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                    }
-                                });
-                                viewCancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mPopupWindow.dismiss();
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-        }
-    }
+        fragmentUtils = new FragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
+                R.id.main_fragment_container, mRgs);
 
 
-    /**
-     * 读写权限
-     */
-    @AfterPermissionGranted(111)
-    private void writeToStorage() {
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "本应用需要使用存储权限，请选择确定", 111, perms);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-
-    }
-
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new PermissionUtils(this).showPermissionDialog("读写内存");
-        }
     }
 
 
@@ -410,12 +304,5 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         super.onDestroy();
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            isFirstIn();
-        }
 
-    }
 }

@@ -36,7 +36,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="正面"
-                    android:textColor="@color/rgs_text_color_selector"
+                    android:textColor="@color/rgs_tab_textcolor"
                     android:textSize="15sp"/>
 
                 <RadioButton
@@ -47,7 +47,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="背面"
-                    android:textColor="@color/rgs_text_color_selector"
+                    android:textColor="@color/rgs_tab_textcolor"
                     android:textSize="16sp"
                     android:visibility="gone"/>
 
@@ -59,7 +59,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="里子"
-                    android:textColor="@color/rgs_text_color_selector"
+                    android:textColor="@color/rgs_tab_textcolor"
                     android:textSize="16sp"
                     android:visibility="gone"/>
             </RadioGroup>
@@ -119,7 +119,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_tailor_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 

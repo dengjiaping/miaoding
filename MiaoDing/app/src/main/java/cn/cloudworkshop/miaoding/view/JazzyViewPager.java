@@ -156,7 +156,7 @@ public class JazzyViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        return mEnabled ? super.onInterceptTouchEvent(arg0) : false;
+        return mEnabled && super.onInterceptTouchEvent(arg0);
     }
 
     private State mState;

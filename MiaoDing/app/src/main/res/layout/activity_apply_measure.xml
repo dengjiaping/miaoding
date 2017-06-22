@@ -36,7 +36,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="114dp"
-        android:background="@drawable/text_white_bg"
+        android:background="@drawable/text_white_4dp"
         android:orientation="horizontal">
 
 

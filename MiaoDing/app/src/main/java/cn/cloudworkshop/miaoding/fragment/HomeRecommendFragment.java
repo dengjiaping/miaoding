@@ -317,7 +317,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             imgTitle.setVisibility(View.GONE);
         }
 
-
         return view;
     }
 

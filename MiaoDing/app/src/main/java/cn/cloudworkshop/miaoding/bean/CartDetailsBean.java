@@ -93,6 +93,15 @@ public class CartDetailsBean {
         private String banxing_id;
         private int price_id;
         private String default_img;
+        private int is_scan;
+
+        public int getIs_scan() {
+            return is_scan;
+        }
+
+        public void setIs_scan(int is_scan) {
+            this.is_scan = is_scan;
+        }
 
         public String getDefault_img() {
             return default_img;

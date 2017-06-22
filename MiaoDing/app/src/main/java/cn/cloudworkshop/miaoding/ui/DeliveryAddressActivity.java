@@ -59,7 +59,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     LinearLayout llNoAddress;
     @BindView(R.id.tv_add_address)
     TextView tvAddAddress;
-    //1：编辑地址 2:选择地址
+    //edit：编辑地址 select:选择地址
     private String type;
     //地址id
     private String addressId;
@@ -83,7 +83,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("content");
+        type = getIntent().getStringExtra("type");
     }
 
     @Override
@@ -99,10 +99,10 @@ public class DeliveryAddressActivity extends BaseActivity {
      */
     private void initData() {
         switch (type) {
-            case "1":
+            case "edit":
                 tvHeaderTitle.setText("收货地址");
                 break;
-            case "2":
+            case "select":
                 tvHeaderTitle.setText("选择地址");
                 addressId = getIntent().getStringExtra("address_id");
                 break;
@@ -215,17 +215,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                 });
 
 
-//                holder.getView(R.id.ll_set_address).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("content", "alert");
-//                        bundle.putSerializable("alert", dataBean);
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-//                    }
-//                });
             }
         };
 
@@ -261,28 +250,18 @@ public class DeliveryAddressActivity extends BaseActivity {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                switch (type) {
-                    case "1":
-//                        Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("content", "alert");
-//                        bundle.putSerializable("alert", dataList.get(position));
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-                        break;
-                    case "2":
-                        Intent intent1 = new Intent();
-                        intent1.putExtra("address_id", dataList.get(position).getId() + "");
-                        intent1.putExtra("province", dataList.get(position).getProvince());
-                        intent1.putExtra("city", dataList.get(position).getCity());
-                        intent1.putExtra("area", dataList.get(position).getArea());
-                        intent1.putExtra("address", dataList.get(position).getAddress());
-                        intent1.putExtra("name", dataList.get(position).getName());
-                        intent1.putExtra("phone", dataList.get(position).getPhone());
-                        intent1.putExtra("is_default", dataList.get(position).getIs_default());
-                        setResult(1, intent1);
-                        finish();
-                        break;
+                if(type.equals("select")){
+                    Intent intent = new Intent();
+                    intent.putExtra("address_id", dataList.get(position).getId() + "");
+                    intent.putExtra("province", dataList.get(position).getProvince());
+                    intent.putExtra("city", dataList.get(position).getCity());
+                    intent.putExtra("area", dataList.get(position).getArea());
+                    intent.putExtra("address", dataList.get(position).getAddress());
+                    intent.putExtra("name", dataList.get(position).getName());
+                    intent.putExtra("phone", dataList.get(position).getPhone());
+                    intent.putExtra("is_default", dataList.get(position).getIs_default());
+                    setResult(1, intent);
+                    finish();
                 }
             }
 
@@ -392,7 +371,7 @@ public class DeliveryAddressActivity extends BaseActivity {
 
     private void isSelectAddress() {
         //地址被清空返回2,已选地址被删除返回3
-        if (type.equals("2")) {
+        if (type.equals("select")) {
             if (dataList.size() > 0) {
                 if (addressId == null) {
                     setResult(3);

@@ -203,7 +203,7 @@ public class WheelMenu extends ImageView {
          *
          * @param selectedPosition the new position selected.
          */
-        public void onSelectionChange(int selectedPosition);
+        void onSelectionChange(int selectedPosition);
     }
 
     //listener for touch events on the wheel

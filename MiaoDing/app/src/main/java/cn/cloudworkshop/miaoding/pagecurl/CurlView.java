@@ -885,7 +885,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
         /**
          * Return number of pages available.
          */
-        public int getPageCount();
+        int getPageCount();
 
         /**
          * Called once new bitmaps/textures are needed. Width and height are in
@@ -896,9 +896,9 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
          * <br/>
          * Index is a number between 0 and getBitmapCount() - 1.
          */
-        public void updatePage(CurlPage page, int width, int height, int index);
+        void updatePage(CurlPage page, int width, int height, int index);
 
-        public void updateViewMode(int viewMode);
+        void updateViewMode(int viewMode);
     }
 
     /**
@@ -917,7 +917,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
         /**
          * Called once CurlView size changes.
          */
-        public void onSizeChanged(int width, int height);
+        void onSizeChanged(int width, int height);
     }
 
     public interface OnPageChangeListener {

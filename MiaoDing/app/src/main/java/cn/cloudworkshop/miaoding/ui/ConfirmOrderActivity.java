@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -430,14 +429,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                             break;
                         case 1:
                             Intent intent1 = new Intent(ConfirmOrderActivity.this, DeliveryAddressActivity.class);
-                            intent1.putExtra("content", "2");
+                            intent1.putExtra("type", "select");
                             startActivityForResult(intent1, 3);
                             break;
                     }
 
                 } else {
                     Intent intent = new Intent(ConfirmOrderActivity.this, DeliveryAddressActivity.class);
-                    intent.putExtra("content", "2");
+                    intent.putExtra("type", "select");
                     intent.putExtra("address_id", addressId);
                     startActivityForResult(intent, 3);
                 }
@@ -505,8 +504,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
                                     Toast.makeText(ConfirmOrderActivity.this, "下单成功",
                                             Toast.LENGTH_SHORT).show();
-                                    if (CustomDiyActivity.instance != null) {
-                                        CustomDiyActivity.instance.finish();
+                                    if (CustomizeActivity.instance != null) {
+                                        CustomizeActivity.instance.finish();
                                     }
                                     if (EmbroideryActivity.instance != null) {
                                         EmbroideryActivity.instance.finish();

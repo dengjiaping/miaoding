@@ -16,13 +16,15 @@ import cn.cloudworkshop.miaoding.utils.TitleBarUtils;
  * Email：1993911441@qq.com
  * Describe：启动页
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity{
     //    @BindView(R.id.video_view)
 //    VideoView videoView;
 //    @BindView(R.id.tv_next)
 //    TextView tvNext;
     @BindView(R.id.img_splash)
     ImageView imgSplash;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class SplashActivity extends BaseActivity {
 //            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //                @Override
 //                public void onCompletion(MediaPlayer mediaPlayer) {
-//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, OldMainActivity.class);
 //                    finish();
 //                    startActivity(intent);
 //                }
@@ -66,7 +68,7 @@ public class SplashActivity extends BaseActivity {
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
-//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, OldMainActivity.class);
 //                    finish();
 //                    startActivity(intent);
 //                }
@@ -76,10 +78,11 @@ public class SplashActivity extends BaseActivity {
 
 //    @OnClick(R.id.tv_next)
 //    public void onClick() {
-//        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//        Intent intent = new Intent(SplashActivity.this, OldMainActivity.class);
 //        finish();
 //        startActivity(intent);
 //    }
+
 
 
     @Override

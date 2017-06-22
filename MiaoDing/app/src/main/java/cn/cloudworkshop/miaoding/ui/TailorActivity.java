@@ -551,8 +551,8 @@ public class TailorActivity extends BaseActivity {
             radioButton.setPadding(10, 10, 10, 10);
             radioButton.setEms(1);
             radioButton.setGravity(Gravity.CENTER);
-            radioButton.setBackgroundResource(R.drawable.tailor_text_color);
-            radioButton.setTextColor(ContextCompat.getColor(this,R.color.text_selector_color));
+            radioButton.setBackgroundResource(R.drawable.rgs_customize_color);
+            radioButton.setTextColor(ContextCompat.getColor(this,R.color.rgs_customize_position));
 
             rgsRecommendType.addView(radioButton);
         }

@@ -12,6 +12,7 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/rv_all_evaluate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
 </LinearLayout>

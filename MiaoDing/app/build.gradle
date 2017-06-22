@@ -9,7 +9,7 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 25
+        versionCode 26
         versionName "1.5.2"
         multiDexEnabled true
 
@@ -109,7 +109,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.yanzhenjie.zbar:zbar:1.0.0'
     compile 'com.yanzhenjie.zbar:camera:1.0.0'
+    compile project(':wheelpicker')
+    compile 'pub.devrel:easypermissions:0.4.2'
     compile project(':appbarbehavior')
-    compile project(':androidpicker')
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

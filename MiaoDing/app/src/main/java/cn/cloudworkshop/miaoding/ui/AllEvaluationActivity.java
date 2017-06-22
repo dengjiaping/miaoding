@@ -41,7 +41,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-06-12 12:24
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：全部评价
  */
 public class AllEvaluationActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
@@ -129,7 +129,7 @@ public class AllEvaluationActivity extends BaseActivity {
                         .load(Constant.HOST + dataBean.getUser_grade().getImg2())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_user_grade));
-                holder.setText(R.id.tv_comment_time, DateUtils.getDate("yyyy-MM-dd",dataBean.getC_time()));
+                holder.setText(R.id.tv_comment_time, DateUtils.getDate("yyyy-MM-dd", dataBean.getC_time()));
                 holder.setText(R.id.tv_evaluate_content, dataBean.getContent());
                 holder.setText(R.id.tv_type_goods, dataBean.getGoods_intro());
                 holder.setVisible(R.id.view_evaluate, true);
@@ -141,7 +141,7 @@ public class AllEvaluationActivity extends BaseActivity {
                             .this, R.layout.listitem_user_comment, dataBean.getImg_list()) {
                         @Override
                         protected void convert(ViewHolder holder, String s, final int position) {
-                            ImageView imageView =  holder.getView(R.id.img_user_comment);
+                            ImageView imageView = holder.getView(R.id.img_user_comment);
                             Glide.with(AllEvaluationActivity.this)
                                     .load(Constant.HOST + s)
                                     .centerCrop()

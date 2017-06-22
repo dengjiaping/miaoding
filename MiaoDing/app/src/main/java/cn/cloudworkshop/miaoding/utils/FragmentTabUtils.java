@@ -1,15 +1,19 @@
 package cn.cloudworkshop.miaoding.utils;
 
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
 import java.util.List;
 
+import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 
 /**
@@ -21,6 +25,7 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
     private FragmentManager fragmentManager; // Fragment所属的Activity
     private int fragmentContentId; // Activity中当前fragment的区域的id
     private int currentTab; // 当前Tab页面索引
+    private Context mContext;
 
 
     /**
@@ -29,8 +34,9 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
      * @param fragmentContentId
      * @param rgs
      */
-    public FragmentTabUtils(FragmentManager fragmentManager, List<Fragment> fragmentList,
+    public FragmentTabUtils(Context context,FragmentManager fragmentManager, List<Fragment> fragmentList,
                             int fragmentContentId, RadioGroup rgs) {
+        this.mContext = context;
         this.fragmentList = fragmentList;
         this.rgs = rgs;
         this.fragmentManager = fragmentManager;
@@ -44,13 +50,16 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         for (int i = 0; i < rgs.getChildCount(); i++) {
+            RadioButton rBtn = ((RadioButton) rgs.getChildAt(i));
             if (i == 0) {
                 MyApplication.homeEnterTime = DateUtils.getCurrentTime();
             }
-            if (rgs.getChildAt(i).getId() == checkedId) {
+
+            if (rBtn.getId() == checkedId) {
                 initFragment(i);
             }
         }
+
     }
 
     /**

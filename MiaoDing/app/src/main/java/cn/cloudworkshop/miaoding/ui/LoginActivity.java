@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -50,8 +52,8 @@ public class LoginActivity extends BaseActivity {
     TextView tvVerificationCode;
     @BindView(R.id.et_user_password)
     EditText etUserPassword;
-//    @BindView(R.id.img_login_bg)
-//    ImageView imgLoginBg;
+    @BindView(R.id.img_login_bg)
+    ImageView imgLoginBg;
     @BindView(R.id.tv_user_agreement)
     TextView tvUserAgreement;
     @BindView(R.id.img_login)
@@ -130,10 +132,10 @@ public class LoginActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-//        Glide.with(getApplicationContext())
-//                .load(Constant.HOST + MyApplication.loginBg)
-//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .into(imgLoginBg);
+        Glide.with(getApplicationContext())
+                .load(Constant.HOST + MyApplication.loginBg)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgLoginBg);
 
         imgLogin.setEnabled(false);
         etUserName.addTextChangedListener(new TextWatcher() {

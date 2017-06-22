@@ -42,7 +42,7 @@ public class UserAgreementActivity extends BaseActivity {
         switch (type){
             case "measure":
                 tvHeaderTitle.setText("量体协议");
-                tvAgreement.setText(MyApplication.measureAgreement);
+//                tvAgreement.setText(MyApplication.measureAgreement);
                 break;
         }
 

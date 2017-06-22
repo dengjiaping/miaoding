@@ -26,8 +26,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -42,8 +40,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -377,7 +373,7 @@ public class CustomGoodsActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 mPopupWindow.dismiss();
-                Intent intent = new Intent(CustomGoodsActivity.this, CustomDiyActivity.class);
+                Intent intent = new Intent(CustomGoodsActivity.this, CustomizeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());
@@ -530,6 +526,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 tailorItemBean.setLog_id(customBean.getId());
                 tailorItemBean.setGoods_time(enterTime);
                 tailorItemBean.setDingzhi_time(0);
+                tailorItemBean.setIs_scan(1);
                 //面料
                 tailorItemBean.setFabric_id(customBean.getData().getDefault_mianliao() + "");
                 tailorItemBean.setBanxing_id(customBean.getData().getBanxing_list().get(position).getId() + "");

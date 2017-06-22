@@ -122,7 +122,6 @@ public class InviteFriendActivity extends BaseActivity {
                     intent.putExtra("img_url", inviteBean.getImg());
                     startActivity(intent);
                 }
-
                 break;
         }
     }

@@ -118,7 +118,7 @@ public class AppointmentActivity extends BaseActivity {
                 imgPayResult.setImageResource(R.mipmap.icon_appoint_success);
                 tvCheckOrder.setVisibility(View.VISIBLE);
                 tvGoBack.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
-                tvGoBack.setBackgroundResource(R.drawable.text_black_bg);
+                tvGoBack.setBackgroundResource(R.drawable.text_white_2dp);
                 break;
             case "pay_fail":
                 tvHeaderTitle.setText("支付失败");
@@ -126,7 +126,7 @@ public class AppointmentActivity extends BaseActivity {
                 tvCheckOrder.setVisibility(View.VISIBLE);
                 imgPayResult.setImageResource(R.mipmap.icon_appoint_fail);
                 tvGoBack.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
-                tvGoBack.setBackgroundResource(R.drawable.text_black_bg);
+                tvGoBack.setBackgroundResource(R.drawable.text_white_2dp);
                 break;
             default:
                 break;

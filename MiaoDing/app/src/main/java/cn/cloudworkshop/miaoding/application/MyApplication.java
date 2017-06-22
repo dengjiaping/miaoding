@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.application;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -23,6 +24,7 @@ import cn.cloudworkshop.miaoding.utils.FrescoImageLoader;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Author：Libin on 2016/7/7 17:41
@@ -39,13 +41,13 @@ public class MyApplication extends Application {
     public static long exitTime;
     public static long exitTime1;
     //登录背景
-//    public static String loginBg;
+    public static String loginBg;
     //客服电话
     public static String serverPhone;
     //用户协议
     public static String userAgreement;
     //量体协议
-    public static String measureAgreement;
+//    public static String measureAgreement;
     //订单号
     public static String orderId;
     //首页时间
@@ -63,10 +65,12 @@ public class MyApplication extends Application {
         application = this;
 
         Fresco.initialize(application);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cache(new Cache(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                        "CloudWorkshop/Cache"), 1024 * 1024 * 100))
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            builder.cache(new Cache(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                    "CloudWorkshop/Cache"), 1024 * 1024 * 100));
+        }
+        OkHttpClient okHttpClient = builder.connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 //其他配置
                 .build();

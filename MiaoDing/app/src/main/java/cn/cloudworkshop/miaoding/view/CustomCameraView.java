@@ -13,7 +13,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.Size;;
+import android.hardware.Camera.Size;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -173,11 +173,7 @@ public class CustomCameraView extends FrameLayout implements SurfaceHolder.Callb
     }
 
     private boolean checkCameraHardware() {
-        if (context != null && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            return true;
-        } else {
-            return false;
-        }
+        return context != null && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
     private Camera getCameraInstance() {

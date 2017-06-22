@@ -118,132 +118,135 @@ public class CustomResultActivity extends BaseActivity {
     private void initView() {
 
         //部件图展示
-        if (TextUtils.isEmpty(tailorBean.getDefault_img())) {
-            for (int i = 0; i < tailorBean.getItemBean().size(); i++) {
-                ImageView img = new ImageView(this);
-                Glide.with(getApplicationContext())
-                        .load(Constant.HOST + tailorBean.getItemBean().get(i).getImg())
-                        .fitCenter()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(img);
-                switch (tailorBean.getItemBean().get(i).getPosition_id()) {
-                    case 1:
-                        rlTailorPositive.addView(img);
-                        break;
-                    case 2:
-                        rgsTailorPosition.getChildAt(1).setVisibility(View.VISIBLE);
-                        rlTailorBack.addView(img);
-                        break;
-                    case 3:
-                        rgsTailorPosition.getChildAt(2).setVisibility(View.VISIBLE);
-                        rlTailorInside.addView(img);
-                        break;
+
+        switch (tailorBean.getIs_scan()){
+            case 0:
+                for (int i = 0; i < tailorBean.getItemBean().size(); i++) {
+                    ImageView img = new ImageView(this);
+                    Glide.with(getApplicationContext())
+                            .load(Constant.HOST + tailorBean.getItemBean().get(i).getImg())
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into(img);
+                    switch (tailorBean.getItemBean().get(i).getPosition_id()) {
+                        case 1:
+                            rlTailorPositive.addView(img);
+                            break;
+                        case 2:
+                            rgsTailorPosition.getChildAt(1).setVisibility(View.VISIBLE);
+                            rlTailorBack.addView(img);
+                            break;
+                        case 3:
+                            rgsTailorPosition.getChildAt(2).setVisibility(View.VISIBLE);
+                            rlTailorInside.addView(img);
+                            break;
+                    }
+
                 }
 
-            }
+                //正反面选择
+                ((RadioButton) rgsTailorPosition.getChildAt(0)).setChecked(true);
+                rgsTailorPosition.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
-            //正反面选择
-            ((RadioButton) rgsTailorPosition.getChildAt(0)).setChecked(true);
-            rgsTailorPosition.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-                    for (int m = 0; m < rgsTailorPosition.getChildCount(); m++) {
-                        RadioButton rBtn = (RadioButton) radioGroup.getChildAt(m);
-                        if (rBtn.getId() == i) {
-                            switch (m) {
-                                case 0:
-                                    rlTailorPositive.setVisibility(View.VISIBLE);
-                                    rlTailorBack.setVisibility(View.GONE);
-                                    rlTailorInside.setVisibility(View.GONE);
-                                    break;
-                                case 1:
-                                    rlTailorBack.setVisibility(View.VISIBLE);
-                                    rlTailorPositive.setVisibility(View.GONE);
-                                    rlTailorInside.setVisibility(View.GONE);
-                                    break;
-                                case 2:
-                                    rlTailorInside.setVisibility(View.VISIBLE);
-                                    rlTailorPositive.setVisibility(View.GONE);
-                                    rlTailorBack.setVisibility(View.GONE);
-                                    break;
+                        for (int m = 0; m < rgsTailorPosition.getChildCount(); m++) {
+                            RadioButton rBtn = (RadioButton) radioGroup.getChildAt(m);
+                            if (rBtn.getId() == i) {
+                                switch (m) {
+                                    case 0:
+                                        rlTailorPositive.setVisibility(View.VISIBLE);
+                                        rlTailorBack.setVisibility(View.GONE);
+                                        rlTailorInside.setVisibility(View.GONE);
+                                        break;
+                                    case 1:
+                                        rlTailorBack.setVisibility(View.VISIBLE);
+                                        rlTailorPositive.setVisibility(View.GONE);
+                                        rlTailorInside.setVisibility(View.GONE);
+                                        break;
+                                    case 2:
+                                        rlTailorInside.setVisibility(View.VISIBLE);
+                                        rlTailorPositive.setVisibility(View.GONE);
+                                        rlTailorBack.setVisibility(View.GONE);
+                                        break;
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
 
-            rlTailorPositive.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            x1 = motionEvent.getRawX();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            x2 = motionEvent.getRawX();
-                        case MotionEvent.ACTION_UP:
-                            if (x1 < x2) {
-                                if (rgsTailorPosition.getChildAt(1).getVisibility() == View.VISIBLE) {
+                rlTailorPositive.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        switch (motionEvent.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                x1 = motionEvent.getRawX();
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                x2 = motionEvent.getRawX();
+                            case MotionEvent.ACTION_UP:
+                                if (x1 < x2) {
+                                    if (rgsTailorPosition.getChildAt(1).getVisibility() == View.VISIBLE) {
+                                        ((RadioButton) rgsTailorPosition.getChildAt(1)).setChecked(true);
+                                    }
+                                }
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+                rlTailorBack.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        switch (motionEvent.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                x1 = motionEvent.getX();
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                x2 = motionEvent.getX();
+                            case MotionEvent.ACTION_UP:
+                                if (x1 > x2) {
+                                    ((RadioButton) rgsTailorPosition.getChildAt(0)).setChecked(true);
+                                } else if (x1 < x2) {
+                                    if (rgsTailorPosition.getChildAt(2).getVisibility() == View.VISIBLE) {
+                                        ((RadioButton) rgsTailorPosition.getChildAt(2)).setChecked(true);
+                                    }
+                                }
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+                rlTailorInside.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        switch (motionEvent.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                x1 = motionEvent.getX();
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                x2 = motionEvent.getX();
+                            case MotionEvent.ACTION_UP:
+                                if (x1 > x2) {
                                     ((RadioButton) rgsTailorPosition.getChildAt(1)).setChecked(true);
                                 }
-                            }
-                            break;
+                                break;
+                        }
+                        return true;
                     }
-                    return true;
-                }
-            });
-
-            rlTailorBack.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            x1 = motionEvent.getX();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            x2 = motionEvent.getX();
-                        case MotionEvent.ACTION_UP:
-                            if (x1 > x2) {
-                                ((RadioButton) rgsTailorPosition.getChildAt(0)).setChecked(true);
-                            } else if (x1 < x2) {
-                                if (rgsTailorPosition.getChildAt(2).getVisibility() == View.VISIBLE) {
-                                    ((RadioButton) rgsTailorPosition.getChildAt(2)).setChecked(true);
-                                }
-                            }
-                            break;
-                    }
-                    return true;
-                }
-            });
-
-            rlTailorInside.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            x1 = motionEvent.getX();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            x2 = motionEvent.getX();
-                        case MotionEvent.ACTION_UP:
-                            if (x1 > x2) {
-                                ((RadioButton) rgsTailorPosition.getChildAt(1)).setChecked(true);
-                            }
-                            break;
-                    }
-                    return true;
-                }
-            });
-
-        } else {
-            rgsTailorPosition.setVisibility(View.GONE);
-            rlTailorPosition.setVisibility(View.GONE);
-            imgDefaultItem.setVisibility(View.VISIBLE);
-            Glide.with(getApplicationContext())
-                    .load(Constant.HOST + tailorBean.getDefault_img())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imgDefaultItem);
+                });
+                break;
+            case 1:
+                rgsTailorPosition.setVisibility(View.GONE);
+                rlTailorPosition.setVisibility(View.GONE);
+                imgDefaultItem.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext())
+                        .load(Constant.HOST + tailorBean.getDefault_img())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(imgDefaultItem);
+                break;
         }
 
 
@@ -323,6 +326,7 @@ public class CustomResultActivity extends BaseActivity {
                 .addParams("spec_content", tailorBean.getSpec_content())
                 .addParams("mianliao_id", tailorBean.getFabric_id())
                 .addParams("banxing_id", tailorBean.getBanxing_id())
+                .addParams("is_scan", tailorBean.getIs_scan() + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override

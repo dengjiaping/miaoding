@@ -33,13 +33,13 @@ import android.widget.Scroller;
 public class FlipView extends FrameLayout {
 
 	public interface OnFlipListener {
-		public void onFlippedToPage(FlipView v, int position, long id);
+		void onFlippedToPage(FlipView v, int position, long id);
 	}
 
 	public interface OnOverFlipListener {
-		public void onOverFlip(FlipView v, OverFlipMode mode,
-                               boolean overFlippingPrevious, float overFlipDistance,
-                               float flipDistancePerPage);
+		void onOverFlip(FlipView v, OverFlipMode mode,
+                        boolean overFlippingPrevious, float overFlipDistance,
+                        float flipDistancePerPage);
 	}
 
 	/**
@@ -347,7 +347,7 @@ public class FlipView extends FrameLayout {
 
 		mFlipDistance = flipDistance;
 
-		final int currentPageIndex = (int) Math.round(mFlipDistance
+		final int currentPageIndex = Math.round(mFlipDistance
 				/ FLIP_DISTANCE_PER_PAGE);
 
 		if (mCurrentPageIndex != currentPageIndex) {
@@ -528,13 +528,9 @@ public class FlipView extends FrameLayout {
 
 		final int action = ev.getAction();
 
-		if (action == MotionEvent.ACTION_UP
-				|| action == MotionEvent.ACTION_CANCEL
-				|| action == MotionEvent.ACTION_OUTSIDE) {
-			mLastTouchAllowed = false;
-		} else {
-			mLastTouchAllowed = true;
-		}
+        mLastTouchAllowed = !(action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE);
 
 		trackVelocity(ev);
 

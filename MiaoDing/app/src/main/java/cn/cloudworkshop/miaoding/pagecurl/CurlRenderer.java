@@ -252,18 +252,18 @@ class CurlRenderer implements GLSurfaceView.Renderer {
 		 * Called from onDrawFrame called before rendering is started. This is
 		 * intended to be used for animation purposes.
 		 */
-		public void onDrawFrame();
+        void onDrawFrame();
 
 		/**
 		 * Called once page size is changed. Width and height tell the page size
 		 * in pixels making it possible to update textures accordingly.
 		 */
-		public void onPageSizeChanged(int width, int height);
+        void onPageSizeChanged(int width, int height);
 
 		/**
 		 * Called from onSurfaceCreated to enable texture re-initialization etc
 		 * what needs to be done when this happens.
 		 */
-		public void onSurfaceCreated();
+        void onSurfaceCreated();
 	}
 }

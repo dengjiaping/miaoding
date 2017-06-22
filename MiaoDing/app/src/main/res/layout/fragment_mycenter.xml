@@ -8,14 +8,17 @@
     <RelativeLayout
         android:id="@+id/rl_mycenter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="-80dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/icon_mycenter_bg"
-            android:layout_marginBottom="-80dp"/>
+            android:src="@mipmap/icon_mycenter_bg"/>
 
         <RelativeLayout
             android:id="@+id/rl_set_center"
@@ -77,8 +80,8 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_user_icon"
-                android:layout_toRightOf="@id/tv_center_name"
                 android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/tv_center_name"
                 android:scaleType="fitCenter"/>
         </RelativeLayout>
 
@@ -87,12 +90,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_user_center"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="3dp"
             app:cardElevation="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
@@ -101,219 +104,17 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_center"
                     android:layout_width="match_parent"
-                    android:layout_height="103dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_order"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_order"
-                            android:text="我的订单"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_cart"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_bag"
-                            android:text="购物袋"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_coupon"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_coupon"
-                            android:text="优惠券"/>
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="103dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_collection"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_collection"
-                            android:text="我的收藏"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_measure"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_measure"
-                            android:text="预约量体"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_test"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_test"
-                            android:text="穿衣测试"/>
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="103dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_designer"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_join"
-                            android:text="设计师入驻"/>
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_consult"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_consult"
-                            android:text="私人顾问"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="0.5dp"
-                            android:scaleType="fitCenter"
-                            android:src="@mipmap/icon_mycenter_surprise"/>
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_invite"
-                            style="@style/TableLayoutStyle"
-                            android:drawableTop="@mipmap/icon_mycenter_invite"
-                            android:text="邀请好友"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/TableItemLayout"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/tv_mycenter_cloth"
-                            style="@style/TableLayoutStyle"
-                            android:text="衣物志"/>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never">
+                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 
-
         </android.support.v7.widget.CardView>
 
-
     </RelativeLayout>
-
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/rl_login_page"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:visibility="gone">-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:src="@mipmap/icon_login_bg"/>-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="25dp"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:src="@mipmap/icon_login_text"/>-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/img_login"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="400dp"-->
-            <!--android:src="@mipmap/icon_login"/>-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/img_login"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:visibility="gone">-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/tv_about_me"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:text="关于我们"-->
-                <!--android:textColor="@android:color/darker_gray"-->
-                <!--android:textSize="15sp"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/tv_tailor_guide"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:text=" / 定制指南"-->
-                <!--android:textColor="@android:color/darker_gray"-->
-                <!--android:textSize="15sp"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/tv_seek_designer"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:text=" / 寻找设计师"-->
-                <!--android:textColor="@android:color/darker_gray"-->
-                <!--android:textSize="15sp"/>-->
-
-        <!--</LinearLayout>-->
-    <!--</RelativeLayout>-->
 
 </RelativeLayout>

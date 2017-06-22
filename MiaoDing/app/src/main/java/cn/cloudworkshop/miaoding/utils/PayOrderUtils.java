@@ -45,9 +45,9 @@ import cn.cloudworkshop.miaoding.bean.WeChatPayBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
 import cn.cloudworkshop.miaoding.ui.CustomResultActivity;
+import cn.cloudworkshop.miaoding.ui.CustomizeActivity;
 import cn.cloudworkshop.miaoding.ui.EmbroideryActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
-import cn.cloudworkshop.miaoding.ui.CustomDiyActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import okhttp3.Call;
 
@@ -137,8 +137,8 @@ public class PayOrderUtils {
             @Override
             public void onDismiss() {
                 DisplayUtils.setBackgroundAlpha(context, false);
-                if (CustomDiyActivity.instance != null) {
-                    CustomDiyActivity.instance.finish();
+                if (CustomizeActivity.instance != null) {
+                    CustomizeActivity.instance.finish();
                 }
                 if (EmbroideryActivity.instance != null) {
                     EmbroideryActivity.instance.finish();

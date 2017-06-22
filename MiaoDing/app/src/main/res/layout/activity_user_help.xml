@@ -135,7 +135,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:background="@drawable/btn_white_bg"
+        android:background="@drawable/btn_white_1dp"
         android:gravity="center"
         android:text="意见反馈"
         android:textColor="@color/dark_gray_22"

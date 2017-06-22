@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -376,23 +375,25 @@ public class ShoppingCartActivity extends BaseActivity {
                             tailorBean.setImg_url(cartDetails.getData().getGoods_thumb());
                             tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
                             tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
-
-
-                            if (TextUtils.isEmpty(cartDetails.getData().getDefault_img())) {
-                                List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
-                                for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
-                                    TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
-                                    itemBean.setImg(cartDetails.getData().getImg_list().get(i).getImg_c());
-                                    itemBean.setPosition_id(cartDetails.getData().getImg_list().get(i)
-                                            .getPosition_id());
-                                    itemList.add(itemBean);
-                                }
-                                //图片
-                                tailorBean.setItemBean(itemList);
-                            } else {
-                                tailorBean.setDefault_img(cartDetails.getData().getDefault_img());
+                            tailorBean.setIs_scan(cartDetails.getData().getIs_scan());
+                            //0：个性定制 1：定制同款
+                            switch (cartDetails.getData().getIs_scan()) {
+                                case 0:
+                                    List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+                                    for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
+                                        TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+                                        itemBean.setImg(cartDetails.getData().getImg_list().get(i).getImg_c());
+                                        itemBean.setPosition_id(cartDetails.getData().getImg_list().get(i)
+                                                .getPosition_id());
+                                        itemList.add(itemBean);
+                                    }
+                                    //图片
+                                    tailorBean.setItemBean(itemList);
+                                    break;
+                                case 1:
+                                    tailorBean.setDefault_img(cartDetails.getData().getDefault_img());
+                                    break;
                             }
-
 
                             //面料
                             tailorBean.setFabric_id(cartDetails.getData().getMianliao_id());

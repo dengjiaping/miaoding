@@ -243,11 +243,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     private boolean isOnTop() {
-        if (pullRefreshEnabled && mRefreshHeader.getParent() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return pullRefreshEnabled && mRefreshHeader.getParent() != null;
 
     }
 

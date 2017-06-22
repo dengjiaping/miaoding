@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,10 +9,8 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Display;
@@ -47,16 +44,13 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DataManagerUtils;
-import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import cn.qqtheme.framework.picker.DatePicker;
-import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
@@ -279,7 +273,7 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.ll_deliver_address:
                 Intent intent = new Intent(SetUpActivity.this, DeliveryAddressActivity.class);
-                intent.putExtra("content", "1");
+                intent.putExtra("type", "edit");
                 startActivity(intent);
                 break;
             case R.id.tv_log_out:

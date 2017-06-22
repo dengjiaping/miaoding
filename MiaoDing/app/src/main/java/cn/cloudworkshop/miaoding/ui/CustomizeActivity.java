@@ -50,9 +50,9 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-04-25 10:52
  * Email：1993911441@qq.com
- * Describe：定制界面
+ * Describe：个性定制界面
  */
-public class CustomDiyActivity extends BaseActivity {
+public class CustomizeActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
@@ -122,7 +122,7 @@ public class CustomDiyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_diy);
+        setContentView(R.layout.activity_customize);
         ButterKnife.bind(this);
         instance = this;
         getData();
@@ -165,7 +165,6 @@ public class CustomDiyActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         tailorBean = GsonUtils.jsonToBean(response, NewTailorBean.class);
-
                         if (tailorBean.getData() != null) {
                             initView();
                         }
@@ -351,12 +350,12 @@ public class CustomDiyActivity extends BaseActivity {
             tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
             tvClothType.setBackgroundResource(R.drawable.ring_gray);
             final CommonAdapter<NewTailorBean.DataBean.MianliaoBean> fabricAdapter = new
-                    CommonAdapter<NewTailorBean.DataBean.MianliaoBean>(CustomDiyActivity.this, R.layout.listitem_custom_parts,
+                    CommonAdapter<NewTailorBean.DataBean.MianliaoBean>(CustomizeActivity.this, R.layout.listitem_custom_parts,
                             tailorBean.getData().getMianliao()) {
                         @Override
                         protected void convert(ViewHolder holder, NewTailorBean.DataBean.MianliaoBean
                                 mianliaoBean, int position) {
-                            Glide.with(CustomDiyActivity.this)
+                            Glide.with(CustomizeActivity.this)
                                     .load(Constant.HOST + mianliaoBean.getImg_a())
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -389,7 +388,7 @@ public class CustomDiyActivity extends BaseActivity {
                 @Override
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
-                    Glide.with(CustomDiyActivity.this)
+                    Glide.with(CustomizeActivity.this)
                             .load(Constant.HOST + tailorBean.getData().getMianliao().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
@@ -430,7 +429,7 @@ public class CustomDiyActivity extends BaseActivity {
                         switch (positionId) {
                             case 1:
                                 ImageView imgPositive = (ImageView) rlClothPositive.getChildAt(i);
-                                Glide.with(CustomDiyActivity.this)
+                                Glide.with(CustomizeActivity.this)
                                         .load(Constant.HOST + tailorBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
@@ -440,7 +439,7 @@ public class CustomDiyActivity extends BaseActivity {
                                 break;
                             case 2:
                                 ImageView imgBack = (ImageView) rlClothBack.getChildAt(i);
-                                Glide.with(CustomDiyActivity.this)
+                                Glide.with(CustomizeActivity.this)
                                         .load(Constant.HOST + tailorBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
@@ -450,7 +449,7 @@ public class CustomDiyActivity extends BaseActivity {
                                 break;
                             case 3:
                                 ImageView imgInSide = (ImageView) rlClothInside.getChildAt(i);
-                                Glide.with(CustomDiyActivity.this)
+                                Glide.with(CustomizeActivity.this)
                                         .load(Constant.HOST + tailorBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
@@ -501,12 +500,12 @@ public class CustomDiyActivity extends BaseActivity {
             tvClothFabric.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
             tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
             final CommonAdapter<NewTailorBean.DataBean.BanxinBean> typeAdapter = new
-                    CommonAdapter<NewTailorBean.DataBean.BanxinBean>(CustomDiyActivity.this,
+                    CommonAdapter<NewTailorBean.DataBean.BanxinBean>(CustomizeActivity.this,
                             R.layout.listitem_custom_parts, tailorBean.getData().getBanxin()) {
                         @Override
                         protected void convert(ViewHolder holder, NewTailorBean.DataBean.BanxinBean
                                 banxinBean, int position) {
-                            Glide.with(CustomDiyActivity.this)
+                            Glide.with(CustomizeActivity.this)
                                     .load(Constant.HOST + banxinBean.getImg_a())
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -537,7 +536,7 @@ public class CustomDiyActivity extends BaseActivity {
                 @Override
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
-                    Glide.with(CustomDiyActivity.this)
+                    Glide.with(CustomizeActivity.this)
                             .load(Constant.HOST + tailorBean.getData().getBanxin().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
@@ -565,13 +564,13 @@ public class CustomDiyActivity extends BaseActivity {
         imgResetTailor.setVisibility(View.VISIBLE);
         CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean> partsAdapter = new
                 CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean>
-                        (CustomDiyActivity.this, R.layout.listitem_custom_parts, tailorBean.getData()
+                        (CustomizeActivity.this, R.layout.listitem_custom_parts, tailorBean.getData()
                                 .getBanxin().get(currentType).getPeijian()) {
                     @Override
                     protected void convert(ViewHolder holder, NewTailorBean.DataBean.BanxinBean
                             .PeijianBean peijianBean, int position) {
 
-                        Glide.with(CustomDiyActivity.this)
+                        Glide.with(CustomizeActivity.this)
                                 .load(Constant.HOST + peijianBean.getSpec_list().get(itemArray
                                         .get(position)).getImg_a())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -607,9 +606,9 @@ public class CustomDiyActivity extends BaseActivity {
                 llSelectType.setVisibility(View.VISIBLE);
                 rvSelectType.setVisibility(View.INVISIBLE);
                 rvSelectItem.setVisibility(View.INVISIBLE);
-                tvClothFabric.setTextColor(ContextCompat.getColor(CustomDiyActivity.this, R.color.dark_gray_22));
+                tvClothFabric.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
                 tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
-                tvClothType.setTextColor(ContextCompat.getColor(CustomDiyActivity.this, R.color.dark_gray_22));
+                tvClothType.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
                 tvClothType.setBackgroundResource(R.drawable.ring_gray);
             }
         });
@@ -657,12 +656,12 @@ public class CustomDiyActivity extends BaseActivity {
         }
         final CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean.SpecListBean>
                 itemAdapter = new CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean
-                .SpecListBean>(CustomDiyActivity.this, R.layout.listitem_custom_parts, itemList) {
+                .SpecListBean>(CustomizeActivity.this, R.layout.listitem_custom_parts, itemList) {
             @Override
             protected void convert(ViewHolder holder, NewTailorBean.DataBean
                     .BanxinBean.PeijianBean.SpecListBean specListBean, int position) {
 
-                Glide.with(CustomDiyActivity.this)
+                Glide.with(CustomizeActivity.this)
                         .load(Constant.HOST + specListBean.getImg_a())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -677,7 +676,7 @@ public class CustomDiyActivity extends BaseActivity {
 
             }
         };
-        rvSelectItem.setLayoutManager(new LinearLayoutManager(CustomDiyActivity.this,
+        rvSelectItem.setLayoutManager(new LinearLayoutManager(CustomizeActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
         rvSelectItem.setAdapter(itemAdapter);
 
@@ -694,7 +693,7 @@ public class CustomDiyActivity extends BaseActivity {
                         .itemView.findViewById(R.id.img_tailor_item);
 
 
-                Glide.with(CustomDiyActivity.this)
+                Glide.with(CustomizeActivity.this)
                         .load(Constant.HOST + itemList.get(position).getImg_a())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgItem);
@@ -712,7 +711,7 @@ public class CustomDiyActivity extends BaseActivity {
                 switch (positionId) {
                     case 1:
                         ImageView positiveImg = (ImageView) rlClothPositive.getChildAt(currentParts);
-                        Glide.with(CustomDiyActivity.this)
+                        Glide.with(CustomizeActivity.this)
                                 .load(Constant.HOST + itemList.get(position).getImg_c())
                                 .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -720,7 +719,7 @@ public class CustomDiyActivity extends BaseActivity {
                         break;
                     case 2:
                         ImageView backImg = (ImageView) rlClothBack.getChildAt(currentParts);
-                        Glide.with(CustomDiyActivity.this)
+                        Glide.with(CustomizeActivity.this)
                                 .load(Constant.HOST + itemList.get(position).getImg_c())
                                 .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -728,7 +727,7 @@ public class CustomDiyActivity extends BaseActivity {
                         break;
                     case 3:
                         ImageView inSideImg = (ImageView) rlClothInside.getChildAt(currentParts);
-                        Glide.with(CustomDiyActivity.this)
+                        Glide.with(CustomizeActivity.this)
                                 .load(Constant.HOST + itemList.get(position).getImg_c())
                                 .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -753,7 +752,7 @@ public class CustomDiyActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
-                Glide.with(CustomDiyActivity.this)
+                Glide.with(CustomizeActivity.this)
                         .load(Constant.HOST + itemList.get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .fitCenter()
@@ -792,6 +791,7 @@ public class CustomDiyActivity extends BaseActivity {
         tailorItemBean.setLog_id(logId);
         tailorItemBean.setGoods_time(goodsTime);
         tailorItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
+        tailorItemBean.setIs_scan(0);
         //面料
         tailorItemBean.setFabric_id(tailorBean.getData().getMianliao().get(currentFabric).getId() + "");
         tailorItemBean.setBanxing_id(tailorBean.getData().getBanxin().get(currentType).getId() + "");

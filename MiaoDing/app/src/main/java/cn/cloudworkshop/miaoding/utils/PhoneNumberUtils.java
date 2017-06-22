@@ -10,11 +10,8 @@ import android.text.TextUtils;
 
 public class PhoneNumberUtils {
     public static boolean judgePhoneNumber(String phoneNumber) {
-        if (isMatchLength(phoneNumber, 11)
-                && isMobileNO(phoneNumber)) {
-            return true;
-        }
-        return false;
+        return isMatchLength(phoneNumber, 11)
+                && isMobileNO(phoneNumber);
     }
 
 
@@ -29,7 +26,7 @@ public class PhoneNumberUtils {
         if (str.isEmpty()) {
             return false;
         } else {
-            return str.getBytes().length == length ? true : false;
+            return str.getBytes().length == length;
         }
     }
 
