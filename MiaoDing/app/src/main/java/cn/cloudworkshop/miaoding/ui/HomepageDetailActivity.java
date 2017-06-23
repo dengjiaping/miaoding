@@ -169,7 +169,7 @@ public class HomepageDetailActivity extends BaseActivity {
                 .url(Constant.HOMEPAGE_LOG)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("time", time + "")
-                .addParams("p_module_name", content)
+                .addParams("p_module_name", "首页详情")
                 .addParams("module_name", "首页")
                 .build()
                 .execute(new StringCallback() {

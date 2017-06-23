@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
     private List<Fragment> fragmentList = new ArrayList<>();
     NewFragmentTabUtils fragmentUtils;
-    private AppIndexBean appIndexBean;
+
     private DownloadService service;
     public static MainActivity instance;
 
@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
                         @Override
                         public void onResponse(String response, int id) {
-                            appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
+                            final AppIndexBean appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
                             MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                             MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        downloadFile();
+                                        downloadFile(appIndexBean.getData().getDownload_url());
                                     }
                                 });
                                 //为“取消”按钮注册监听事件
@@ -243,9 +243,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     /**
      * 下载文件
      */
-    private void downloadFile() {
+    private void downloadFile(String url) {
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(MyApplication.updateUrl));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
         request.setTitle("妙定");
         request.setDescription("正在下载");
@@ -267,6 +267,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
                 "CloudWorkshop/miaoding.apk");
         request.setDestinationUri(Uri.fromFile(file));
+
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         manager.enqueue(request);

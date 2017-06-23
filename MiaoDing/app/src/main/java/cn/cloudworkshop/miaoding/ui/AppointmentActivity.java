@@ -63,7 +63,7 @@ public class AppointmentActivity extends BaseActivity {
             case "appoint_measure":
                 tvHeaderTitle.setText("预约详情");
                 tvAppointResult.setTextSize(15);
-//                tvHeaderNext.setText("量体协议");
+
                 OkHttpUtils.get()
                         .url(Constant.APPOINTMENT_STATUS)
                         .addParams("token", SharedPreferencesUtils.getString(this, "token"))

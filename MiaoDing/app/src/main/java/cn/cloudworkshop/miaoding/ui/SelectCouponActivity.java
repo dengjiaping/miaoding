@@ -32,6 +32,7 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.SelectCouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
@@ -89,7 +90,7 @@ public class SelectCouponActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.NEW_SELECT_COUPON)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("car_ids",cartIds)
+                .addParams("car_ids", cartIds)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -148,7 +149,7 @@ public class SelectCouponActivity extends BaseActivity {
         MyLinearLayoutManager linearLayoutManager1 = new MyLinearLayoutManager(this);
         linearLayoutManager1.setScrollEnabled(false);
         rvAvailable.setLayoutManager(linearLayoutManager1);
-        CommonAdapter<SelectCouponBean.DataBean.UsableBean> usableAdapter = new CommonAdapter
+        final CommonAdapter<SelectCouponBean.DataBean.UsableBean> usableAdapter = new CommonAdapter
                 <SelectCouponBean.DataBean.UsableBean>(this, R.layout.listitem_coupon, usableList) {
             @Override
             protected void convert(ViewHolder holder, SelectCouponBean.DataBean.UsableBean usableBean,
