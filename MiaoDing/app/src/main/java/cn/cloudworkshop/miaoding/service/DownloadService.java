@@ -31,19 +31,21 @@ public class DownloadService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
             Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Uri contentUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 contentUri = FileProvider.getUriForFile(context, "cn.cloudworkshop.miaoding.fileprovider", file);
 
-                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent,  PackageManager.MATCH_DEFAULT_ONLY);
+                List<ResolveInfo> resInfoList = context.getPackageManager()
+                        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
-                    context.grantUriPermission(packageName, contentUri,  Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.grantUriPermission(packageName, contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
             } else {
                 contentUri = Uri.fromFile(file);
-                install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             install.setDataAndType(contentUri, "application/vnd.android.package-archive");
             context.startActivity(install);

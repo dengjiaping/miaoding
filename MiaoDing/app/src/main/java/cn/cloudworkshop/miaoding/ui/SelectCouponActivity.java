@@ -111,7 +111,7 @@ public class SelectCouponActivity extends BaseActivity {
                             disableList.addAll(couponBean.getData().getDisable());
                             tvDisableCoupon.setVisibility(View.VISIBLE);
                         }
-                        couponNum = usableList.size() + disableList.size();
+                        couponNum = usableList.size();
                         initView();
                     }
                 });

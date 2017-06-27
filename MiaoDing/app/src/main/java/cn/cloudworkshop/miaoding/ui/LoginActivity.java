@@ -205,9 +205,7 @@ public class LoginActivity extends BaseActivity {
                 String cancel = getIntent().getStringExtra("log_in");
                 if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    if (MainActivity.instance != null) {
-                        MainActivity.instance.finish();
-                    }
+                    intent.putExtra("page",0);
                     finish();
                     startActivity(intent);
                 } else {
@@ -393,10 +391,7 @@ public class LoginActivity extends BaseActivity {
             String loginTag = getIntent().getStringExtra("log_in");
             if (!TextUtils.isEmpty(loginTag) && loginTag.equals("center")) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                if (MainActivity.instance != null) {
-                    MainActivity.instance.finish();
-                }
+                intent.putExtra("page",0);
                 finish();
                 startActivity(intent);
             } else {

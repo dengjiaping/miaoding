@@ -152,14 +152,13 @@ public class PayOrderUtils {
                 }
 
                 if (!isConfirmBuy) {
-
                     Toast.makeText(context, "取消支付", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, MyOrderActivity.class);
+                    Intent intent = new Intent(context,
+                            MyOrderActivity.class);
                     intent.putExtra("page", 1);
                     ((Activity) context).finish();
                     context.startActivity(intent);
                 }
-
             }
         });
 

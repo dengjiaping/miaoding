@@ -260,7 +260,7 @@ public class CollectionActivity extends BaseActivity {
                 break;
             case R.id.tv_my_collection:
                 Intent intent = new Intent(CollectionActivity.this, MainActivity.class);
-                intent.putExtra("fragid", 1);
+                intent.putExtra("page", 1);
                 finish();
                 startActivity(intent);
                 break;

@@ -80,6 +80,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.MainActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".ui.OldMainActivity"/>
         <activity android:name=".ui.TailorActivity"/>
         <activity android:name=".ui.CustomResultActivity"/>
@@ -206,7 +208,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".ui.AllEvaluationActivity"/>
         <activity android:name=".ui.ScanCodeActivity"/>
-        <activity android:name=".ui.MainActivity"/>
+
 
 
         <service android:name="com.amap.api.location.APSService"/>

@@ -1,12 +1,14 @@
 package cn.cloudworkshop.miaoding.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.LoginActivity;
 
 /**
  * Author：binge on 2017-06-21 10:45
@@ -111,7 +114,6 @@ public class NewFragmentTabUtils implements TabLayout.OnTabSelectedListener {
                 .load(Constant.HOST + iconList.get(tab.getPosition()).getSelect_img())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgTab);
-
     }
 
     @Override

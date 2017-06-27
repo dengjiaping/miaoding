@@ -530,23 +530,6 @@ public class CustomGoodsActivity extends BaseActivity {
                 //面料
                 tailorItemBean.setFabric_id(customBean.getData().getDefault_mianliao() + "");
                 tailorItemBean.setBanxing_id(customBean.getData().getBanxing_list().get(position).getId() + "");
-
-
-//                if (customBean.getData().getDefault_spec_list() != null && customBean.getData().getDefault_spec_list().size() > 0) {
-//                    //部件
-//                    List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
-//
-//                    for (int i = 0; i < customBean.getData().getDefault_spec_list().size(); i++) {
-//                        TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
-//                        itemBean.setImg(customBean.getData().getDefault_spec_list().get(i).getImg_c());
-//                        itemBean.setPosition_id(customBean.getData().getDefault_spec_list().get(i).getPosition_id());
-//                        itemList.add(itemBean);
-//                    }
-//
-//                    tailorItemBean.setItemBean(itemList);
-//                } else {
-//                    tailorItemBean.setDefault_img(customBean.getData().getDefault_img());
-//                }
                 tailorItemBean.setDefault_img(customBean.getData().getDefault_img());
 
                 tailorItemBean.setSpec_ids(customBean.getData().getDefault_spec_ids());

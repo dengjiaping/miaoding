@@ -46,8 +46,6 @@ public class ShareRuleActivity extends BaseActivity {
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setAppCacheEnabled(true);
-        ws.setAppCachePath(Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "CloudWorkshop/WebCache");
         ws.setAllowFileAccess(true);
         ws.setBuiltInZoomControls(false);
         ws.setSupportZoom(false);

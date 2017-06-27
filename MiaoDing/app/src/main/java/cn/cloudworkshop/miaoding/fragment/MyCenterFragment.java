@@ -92,17 +92,39 @@ public class MyCenterFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_mycenter, container, false);
         unbinder = ButterKnife.bind(this, view);
         badgeView = new BadgeView(getActivity());
+        return view;
+    }
+
+    /**
+     * 刷新页面
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
         if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.putExtra("log_in", "center");
-            intent.putExtra("page_name", "我的");
-            startActivity(intent);
+            rlCenter.setVisibility(View.GONE);
         } else {
             rlCenter.setVisibility(View.VISIBLE);
             initData();
         }
-        return view;
     }
+
+    /**
+     * @param hidden Fragment显示隐藏监听
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.putExtra("log_in", "center");
+                intent.putExtra("page_name", "我的");
+                startActivity(intent);
+            }
+        }
+    }
+
 
     /**
      * 加载数据
@@ -228,28 +250,6 @@ public class MyCenterFragment extends BaseFragment {
 
     }
 
-    /**
-     * 刷新页面
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
-            rlCenter.setVisibility(View.GONE);
-        } else {
-            rlCenter.setVisibility(View.VISIBLE);
-            initData();
-        }
-    }
-
-
-    public static MyCenterFragment newInstance() {
-        Bundle args = new Bundle();
-        MyCenterFragment fragment = new MyCenterFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
     @OnClick({R.id.rl_msg_center, R.id.rl_set_center, R.id.rl_user_center})
     public void onClick(View view) {
@@ -304,6 +304,13 @@ public class MyCenterFragment extends BaseFragment {
                     }
                 });
 
+    }
+
+    public static MyCenterFragment newInstance() {
+        Bundle args = new Bundle();
+        MyCenterFragment fragment = new MyCenterFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 

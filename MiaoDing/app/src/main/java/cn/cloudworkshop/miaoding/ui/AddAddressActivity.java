@@ -60,8 +60,6 @@ public class AddAddressActivity extends BaseActivity {
     EditText etDetailedAddress;
     @BindView(R.id.tv_confirm_address)
     TextView tvConfirmAddress;
-    @BindView(R.id.tv_header_next)
-    TextView tvHeaderNext;
     @BindView(R.id.ll_receive_address)
     LinearLayout llSelectAddress;
     @BindView(R.id.tv_receive_address)
@@ -104,12 +102,9 @@ public class AddAddressActivity extends BaseActivity {
         switch (type) {
             case "add":
                 tvHeaderTitle.setText("新增地址");
-                tvHeaderNext.setVisibility(View.GONE);
                 break;
             case "alert":
                 tvHeaderTitle.setText("编辑地址");
-                tvHeaderNext.setVisibility(View.VISIBLE);
-                tvHeaderNext.setText("删除地址");
                 dataBean = (ReceiveAddressBean.DataBean) getIntent().getExtras().getSerializable("alert");
 
                 etAddName.setText(dataBean.getName());
@@ -143,7 +138,7 @@ public class AddAddressActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_header_back, R.id.ll_receive_address, R.id.tv_confirm_address, R.id.tv_header_next})
+    @OnClick({R.id.img_header_back, R.id.ll_receive_address, R.id.tv_confirm_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -155,65 +150,10 @@ public class AddAddressActivity extends BaseActivity {
             case R.id.tv_confirm_address:
                 addAddress();
                 break;
-            case R.id.tv_header_next:
-                deleteAddress();
-                break;
         }
     }
 
-    /**
-     * 删除地址
-     */
-    private void deleteAddress() {
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
-        dialog.setTitle("删除地址");
-        dialog.setMessage("您确定要删除该地址吗？");
-        //为“确定”按钮注册监听事件
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OkHttpUtils.post()
-                        .url(Constant.DELETE_ADDRESS)
-                        .addParams("token", SharedPreferencesUtils.getString(AddAddressActivity.this, "token"))
-                        .addParams("id", String.valueOf(dataBean.getId()))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    int code = jsonObject.getInt("code");
-                                    if (code == 1) {
-                                        Toast.makeText(AddAddressActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-                        });
-            }
-        });
-        //为“取消”按钮注册监听事件
-        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // 根据实际情况编写相应代码。
-                dialog.dismiss();
-            }
-        });
-        dialog.create();
-        dialog.show();
-
-    }
 
     /**
      * 选择地址
@@ -245,9 +185,10 @@ public class AddAddressActivity extends BaseActivity {
     }
 
     /**
-     * 添加地址
+     * 添加地址、编辑地址
      */
     private void addAddress() {
+
         if (TextUtils.isEmpty(etAddName.getText().toString().trim()) ||
                 TextUtils.isEmpty(etAddNumber.getText().toString().trim()) ||
                 TextUtils.isEmpty(tvSelectAddress.getText().toString().trim()) ||
@@ -257,17 +198,16 @@ public class AddAddressActivity extends BaseActivity {
             if (PhoneNumberUtils.judgePhoneNumber(etAddNumber.getText().toString().trim())) {
                 Map<String, String> map = new HashMap<>();
                 map.put("token", SharedPreferencesUtils.getString(this, "token"));
-                map.put("address", etDetailedAddress.getText().toString().trim());
                 map.put("name", etAddName.getText().toString().trim());
                 map.put("phone", etAddNumber.getText().toString().trim());
                 map.put("is_default", index + "");
-                if (type.equals("alert")) {
-                    map.put("id", dataBean.getId() + "");
-                }
                 map.put("province", provinceAddress);
                 map.put("city", cityAddress);
                 map.put("area", countAddress);
-
+                map.put("address", etDetailedAddress.getText().toString().trim());
+                if (type.equals("alert")) {
+                    map.put("id", dataBean.getId() + "");
+                }
 
                 OkHttpUtils.post()
                         .url(Constant.ADD_ADDRESS)

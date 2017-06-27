@@ -277,7 +277,6 @@ public class ConfirmOrderActivity extends BaseActivity {
      */
     private void initAddress() {
         if (addressId == null) {
-
             tvNoAddress.setVisibility(View.VISIBLE);
             if (nullAddress) {
                 tvNoAddress.setText("请创建收货地址");
@@ -301,6 +300,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             tvProvinceAddress.setText(provinceAddress + cityAddress + areaAddress + detailAddress);
         }
     }
+
 
     /**
      * 是否选择优惠券

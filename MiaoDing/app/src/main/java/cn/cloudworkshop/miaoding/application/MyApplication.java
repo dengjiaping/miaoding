@@ -32,14 +32,10 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Describe：application全局对象
  */
 public class MyApplication extends Application {
-    private static MyApplication application;
-    private static Stack<Activity> activityStack;
     //更新链接
     public static String updateUrl;
     //更新内容
     public static String updateContent;
-    public static long exitTime;
-    public static long exitTime1;
     //登录背景
     public static String loginBg;
     //客服电话
@@ -55,20 +51,17 @@ public class MyApplication extends Application {
     //是否检测更新
     public static boolean isCheckUpdate = true;
 
-    public static MyApplication getInstance() {
-        return application;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        application = this;
 
-        Fresco.initialize(application);
+        Fresco.initialize(this);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            builder.cache(new Cache(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                    "CloudWorkshop/Cache"), 1024 * 1024 * 100));
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + File.separator + "CloudWorkshop", "Cache");
+            builder.cache(new Cache(file, 1024 * 1024 * 100));
         }
         OkHttpClient okHttpClient = builder.connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -76,42 +69,36 @@ public class MyApplication extends Application {
                 .build();
         OkHttpUtils.initClient(okHttpClient);
 
-        Unicorn.init(this, "e98a79aca99f25ebf9bacbc8c334b76b", options(), new FrescoImageLoader(application));
+        Unicorn.init(this, "e98a79aca99f25ebf9bacbc8c334b76b", options(), new FrescoImageLoader(this));
 
     }
 
 
-    /**
-     * add Activity 添加Activity到栈
-     */
-    public void addActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<>();
-        }
-        activityStack.add(activity);
-    }
-
-    /**
-     * 退出应用程序
-     */
-    public void appExit() {
-        try {
-            finishAllActivity();
-        } catch (Exception ignored) {
-        }
-    }
-
-    /**
-     * 结束所有Activity
-     */
-    public void finishAllActivity() {
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
-            if (null != activityStack.get(i)) {
-                activityStack.get(i).finish();
-            }
-        }
-        activityStack.clear();
-    }
+//    /**
+//     * add Activity 添加Activity到栈
+//     */
+//    public void addActivity(Activity activity) {
+//        if (activityStack == null) {
+//            activityStack = new Stack<>();
+//        }
+//        activityStack.add(activity);
+//    }
+//
+//    /**
+//     * 退出应用程序
+//     */
+//    public void appExit() {
+//        try {
+//            for (int i = 0, size = activityStack.size(); i < size; i++) {
+//                if (null != activityStack.get(i)) {
+//                    activityStack.get(i).finish();
+//                }
+//            }
+//            activityStack.clear();
+//        } catch (Exception ignored) {
+//        }
+//    }
+//
 
     /**
      * @return 七鱼配置

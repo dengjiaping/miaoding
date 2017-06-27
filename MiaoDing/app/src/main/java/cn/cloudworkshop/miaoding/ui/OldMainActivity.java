@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -249,8 +250,11 @@ public class OldMainActivity extends BaseActivity {
             }
         }
         // 设置下载位置
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                "CloudWorkshop/miaoding.apk");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "CloudWorkshop", "miaoding.apk");
+        if (file.exists()){
+            file.delete();
+        }
         request.setDestinationUri(Uri.fromFile(file));
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));

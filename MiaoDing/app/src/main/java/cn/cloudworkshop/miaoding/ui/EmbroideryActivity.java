@@ -107,9 +107,9 @@ public class EmbroideryActivity extends BaseActivity {
      */
     private void initData() {
         OkHttpUtils.get()
-                .url(Constant.EMBROIDERY_TAILOR)
+                .url(Constant.EMBROIDERY_CUSTOMIZE)
                 .addParams("goods_id", tailorBean.getId())
-                .addParams("phone_type", String.valueOf("6"))
+                .addParams("phone_type", "6")
                 .addParams("price_type", tailorBean.getPrice_type())
                 .addParams("classify_id", classifyId + "")
                 .build()

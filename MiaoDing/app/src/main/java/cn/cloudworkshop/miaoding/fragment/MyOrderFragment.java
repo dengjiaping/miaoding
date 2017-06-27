@@ -1,6 +1,8 @@
 package cn.cloudworkshop.miaoding.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,13 +83,13 @@ public class MyOrderFragment extends BaseFragment {
     //加载更多
     private boolean isLoadMore;
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
+    private OnStateChangeListener onStateChangeListener;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.viewpager_item_goods, container, false);
         unbinder = ButterKnife.bind(this, view);
-
         getData();
         initData();
         return view;
@@ -97,6 +99,24 @@ public class MyOrderFragment extends BaseFragment {
         Bundle bundle = getArguments();
         orderStatus = bundle.getInt("order");
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            onStateChangeListener = (OnStateChangeListener) context;
+        } catch (Exception e) {
+            throw new ClassCastException(context.toString() + "must implement OnButton2ClickListener");
+        }
+    }
+
+    //    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden) {
+//            initData();
+//        }
+//    }
 
 
     /**
@@ -379,12 +399,9 @@ public class MyOrderFragment extends BaseFragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(getActivity(), "trade_success");
-                                Intent intent = new Intent(getActivity(), MyOrderActivity.class);
-                                intent.putExtra("page", orderStatus);
-                                getActivity().finish();
-                                getActivity().startActivity(intent);
                                 Toast.makeText(getActivity(), "交易完成，祝您购物愉快！",
                                         Toast.LENGTH_SHORT).show();
+                                onStateChangeListener.onStateChange(0);
                             }
                         });
             }
@@ -485,11 +502,8 @@ public class MyOrderFragment extends BaseFragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(getActivity(), "cancel_order");
-                                Intent intent = new Intent(getActivity(), MyOrderActivity.class);
-                                intent.putExtra("page", orderStatus);
-                                getActivity().finish();
-                                getActivity().startActivity(intent);
                                 Toast.makeText(getActivity(), "取消成功", Toast.LENGTH_SHORT).show();
+                                onStateChangeListener.onStateChange(0);
                             }
                         });
             }
@@ -524,9 +538,16 @@ public class MyOrderFragment extends BaseFragment {
     @OnClick(R.id.tv_my_order)
     public void onClick() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("fragid", 1);
-        MainActivity.instance.finish();
+        intent.putExtra("page", 1);
         getActivity().finish();
         startActivity(intent);
+    }
+
+
+    /**
+     * 订单状态监听
+     */
+    public interface OnStateChangeListener {
+        void onStateChange(int page);
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import cn.cloudworkshop.miaoding.fragment.MyOrderFragment;
  * Email：1993911441@qq.com
  * Describe：我的订单
  */
-public class MyOrderActivity extends BaseActivity {
+public class MyOrderActivity extends BaseActivity implements MyOrderFragment.OnStateChangeListener {
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
@@ -43,6 +44,7 @@ public class MyOrderActivity extends BaseActivity {
     int currentPage;
     private List<String> titleList;
     private List<Fragment> fragmentList;
+    private GoodsFragmentAdapter adapter;
 
 
     @Override
@@ -55,15 +57,17 @@ public class MyOrderActivity extends BaseActivity {
         initData();
     }
 
-    private void getData() {
-        currentPage = getIntent().getIntExtra("page", 0);
-    }
-
     @Override
     protected void onRestart() {
         super.onRestart();
         initData();
     }
+
+
+    private void getData() {
+        currentPage = getIntent().getIntExtra("page", 0);
+    }
+
 
     /**
      * 加载数据
@@ -92,19 +96,35 @@ public class MyOrderActivity extends BaseActivity {
         } else {
             tabMyOrder.setTabSpaceEqual(false);
         }
-        GoodsFragmentAdapter adapter = new GoodsFragmentAdapter(getSupportFragmentManager(),
+        adapter = new GoodsFragmentAdapter(getSupportFragmentManager(),
                 fragmentList, titleList);
         vpMyOrder.setOffscreenPageLimit(titleList.size());
         vpMyOrder.setAdapter(adapter);
         tabMyOrder.setViewPager(vpMyOrder);
-        tabMyOrder.setCurrentTab(0);
-        if (currentPage > 0) {
-            vpMyOrder.setCurrentItem(currentPage);
-        }
+        tabMyOrder.setCurrentTab(currentPage);
+        tabMyOrder.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                currentPage = position;
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+
     }
+
 
     @OnClick(R.id.img_header_back)
     public void onClick() {
         finish();
+    }
+
+    @Override
+    public void onStateChange(int page) {
+        currentPage = page;
+        initData();
     }
 }

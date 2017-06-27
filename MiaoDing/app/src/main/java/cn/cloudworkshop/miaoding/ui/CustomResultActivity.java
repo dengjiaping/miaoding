@@ -299,7 +299,6 @@ public class CustomResultActivity extends BaseActivity {
             case R.id.tv_add_bag:
                 type = 2;
                 addToCart();
-
                 break;
             case R.id.img_header_share:
                 startActivity(new Intent(this, ShoppingCartActivity.class));
@@ -364,10 +363,7 @@ public class CustomResultActivity extends BaseActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
-
     }
-
 }

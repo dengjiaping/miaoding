@@ -136,8 +136,11 @@ public class AboutUsActivity extends BaseActivity {
             }
         }
         // 设置下载位置
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                "CloudWorkshop/miaoding.apk");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "CloudWorkshop", "miaoding.apk");
+        if (file.exists()){
+            file.delete();
+        }
         request.setDestinationUri(Uri.fromFile(file));
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));

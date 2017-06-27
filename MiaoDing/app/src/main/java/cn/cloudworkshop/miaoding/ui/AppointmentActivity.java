@@ -20,6 +20,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -149,12 +150,9 @@ public class AppointmentActivity extends BaseActivity {
 //                startActivity(intent);
                 break;
             case R.id.tv_go_back:
-                if (type.equals("pay")) {
+                if (type.equals("pay_success") || type.equals("pay_fail")) {
                     Intent intent2 = new Intent(this, MainActivity.class);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    if (MainActivity.instance != null) {
-                        MainActivity.instance.finish();
-                    }
+                    intent2.putExtra("page",0);
                     finish();
                     startActivity(intent2);
                 } else {

@@ -23,23 +23,21 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
@@ -55,6 +53,7 @@ import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -65,17 +64,19 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * Author：binge on 2017-06-21 10:35
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：首页
  */
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     @BindView(R.id.tab_main)
     TabLayout tabMain;
 
+    //fragment
     private List<Fragment> fragmentList = new ArrayList<>();
-    NewFragmentTabUtils fragmentUtils;
-
+    private NewFragmentTabUtils fragmentUtils;
+    //下载服务
     private DownloadService service;
-    public static MainActivity instance;
+    //退出应用
+    private long exitTime = 0;
 
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private AppIconBean iconBean;
@@ -85,7 +86,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
 
         writeToStorage();
         initIcon();
@@ -114,9 +114,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     public void onResponse(String response, int id) {
                         iconBean = GsonUtils.jsonToBean(response, AppIconBean.class);
                         if (iconBean.getData() != null && iconBean.getData().size() > 0) {
-
                             initView();
-                            setCurrentPage();
+//                            setCurrentPage();
                         }
                     }
                 });
@@ -263,9 +262,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE);
             }
         }
+
         // 设置下载位置
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                "CloudWorkshop/miaoding.apk");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "CloudWorkshop", "miaoding.apk");
+        if (file.exists()) {
+            file.delete();
+        }
         request.setDestinationUri(Uri.fromFile(file));
 
         service = new DownloadService(file);
@@ -293,14 +296,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 设置当前页面
      */
     private void setCurrentPage() {
-        fragmentUtils.setCurrentFragment(getIntent().getIntExtra("fragid", 0));
+        fragmentUtils.setCurrentFragment(getIntent().getIntExtra("page", 0));
     }
 
     /**
      * 加载Fragment
      */
     public void initView() {
-        instance = this;
         fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
@@ -417,6 +419,28 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (hasFocus) {
             isFirstIn();
         }
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        int currentPage = intent.getIntExtra("page", 0);
+        fragmentUtils.setCurrentFragment(currentPage);
     }
 }

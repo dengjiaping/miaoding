@@ -180,7 +180,7 @@ public class MyCouponFragment extends BaseFragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (currentPos == 1) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("fragid", 1);
+                    intent.putExtra("page", 1);
                     getActivity().finish();
                     startActivity(intent);
                 }

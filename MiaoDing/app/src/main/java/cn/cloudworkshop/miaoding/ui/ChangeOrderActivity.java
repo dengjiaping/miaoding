@@ -102,7 +102,6 @@ public class ChangeOrderActivity extends BaseActivity {
     private PhotoAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
 
-
     private String orderId;
     private OrderDetailsBean entity;
     //是否选中

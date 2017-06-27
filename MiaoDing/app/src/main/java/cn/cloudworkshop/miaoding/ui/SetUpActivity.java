@@ -198,7 +198,7 @@ public class SetUpActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                             userIcon = jsonObject1.getString("avatar");
-                            SharedPreferencesUtils.saveString(SetUpActivity.this, "icon", userIcon);
+                            SharedPreferencesUtils.saveString(SetUpActivity.this, "avatar", userIcon);
                             userName = jsonObject1.getString("name");
                             userSex = jsonObject1.getInt("sex");
                             userBirthday = jsonObject1.getString("birthday");
@@ -236,16 +236,12 @@ public class SetUpActivity extends BaseActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "token");
-                                SharedPreferencesUtils.deleteString(SetUpActivity.this, "icon");
+                                SharedPreferencesUtils.deleteString(SetUpActivity.this, "avatar");
                                 SharedPreferencesUtils.deleteString(SetUpActivity.this, "phone");
                                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                if (MainActivity.instance != null) {
-                                    MainActivity.instance.finish();
-                                }
+                                intent.putExtra("page", 0);
                                 finish();
                                 startActivity(intent);
-
                             }
                         });
             }
@@ -259,7 +255,6 @@ public class SetUpActivity extends BaseActivity {
         });
         dialog.create();
         dialog.show();
-
 
     }
 
@@ -491,7 +486,7 @@ public class SetUpActivity extends BaseActivity {
                 selectedPhotos.addAll(photos);
                 if (selectedPhotos.size() != 0) {
                     Uri destination = Uri.fromFile(new File(Environment.getExternalStorageDirectory()
-                            .getAbsolutePath(), "CloudWorkshop/icon.png"));
+                            .getAbsolutePath() + File.separator + "CloudWorkshop", "avatar.png"));
                     Crop.of(Uri.fromFile(new File(selectedPhotos.get(0))), destination).asSquare().start(this);
                 }
             }

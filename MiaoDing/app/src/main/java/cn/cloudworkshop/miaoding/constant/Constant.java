@@ -35,7 +35,7 @@ public class Constant {
     public static final String MY_ADDRESS = HOST + "/index.php/index/index/my_address";
     public static final String DELETE_ADDRESS = HOST + "/index.php/index/index/delete_address";
     public static final String DEFAULT_ADDRESS = HOST + "/index.php/index/index/set_default_address";
-    public static final String EMBROIDERY_TAILOR = HOST + "/index.php/index/index/new_goods_gxh";
+    public static final String EMBROIDERY_CUSTOMIZE = HOST + "/index.php/index/index/new_goods_gxh";
     public static final String JOIN_US = HOST + "/index.php/index/index/get_img";
     public static final String APPLY_JOIN = HOST + "/index.php/index/index/apply_in";
     public static final String USER_INFO = HOST + "/index.php/index/index/user_info";

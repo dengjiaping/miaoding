@@ -314,7 +314,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                 OkHttpUtils.post()
                         .url(Constant.DELETE_ADDRESS)
                         .addParams("token", SharedPreferencesUtils.getString(DeliveryAddressActivity.this, "token"))
-                        .addParams("id", String.valueOf(id))
+                        .addParams("id", id+"")
                         .build()
                         .execute(new StringCallback() {
                             @Override

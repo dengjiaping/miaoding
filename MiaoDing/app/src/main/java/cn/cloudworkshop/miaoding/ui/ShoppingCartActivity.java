@@ -321,12 +321,14 @@ public class ShoppingCartActivity extends BaseActivity {
                 if (tvHeaderNext.getText().toString().equals("编辑")) {
                     switch (dataList.get(position).getGoods_type()) {
                         case 1:
-                            cartToTailorInfo(position);
+                            cartToCustomResult(position);
                             break;
                         case 2:
                             Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
                             intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
                             startActivity(intent);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -346,7 +348,7 @@ public class ShoppingCartActivity extends BaseActivity {
     /**
      * 购物车跳转定制详情
      */
-    private void cartToTailorInfo(int position) {
+    private void cartToCustomResult(int position) {
         OkHttpUtils.get()
                 .url(Constant.CART_TO_TAILOR)
                 .addParams("token", SharedPreferencesUtils.getString(ShoppingCartActivity.this, "token"))
@@ -544,7 +546,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 break;
             case R.id.tv_my_bag:
                 Intent intent = new Intent(ShoppingCartActivity.this, MainActivity.class);
-                intent.putExtra("fragid", 1);
+                intent.putExtra("page", 1);
                 finish();
                 startActivity(intent);
                 break;

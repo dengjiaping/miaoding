@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApplication.getInstance().addActivity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //个推
         PushManager.getInstance().initialize(this.getApplicationContext(), GeTuiService.class);
@@ -42,28 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if ((System.currentTimeMillis() - MyApplication.exitTime1) < 800) {
-                MyApplication.getInstance().appExit();
-            }
-
-            if ((System.currentTimeMillis() - MyApplication.exitTime) > 2000) {
-                MyApplication.exitTime = System.currentTimeMillis();
-                finish();
-            } else {
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                MyApplication.exitTime1 = System.currentTimeMillis();
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     /**
      * @return 字体大小固定
+     *
      */
     @Override
     public Resources getResources() {
