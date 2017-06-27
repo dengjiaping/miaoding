@@ -251,16 +251,7 @@ public class DeliveryAddressActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 if(type.equals("select")){
-                    Intent intent = new Intent();
-                    intent.putExtra("address_id", dataList.get(position).getId() + "");
-                    intent.putExtra("province", dataList.get(position).getProvince());
-                    intent.putExtra("city", dataList.get(position).getCity());
-                    intent.putExtra("area", dataList.get(position).getArea());
-                    intent.putExtra("address", dataList.get(position).getAddress());
-                    intent.putExtra("name", dataList.get(position).getName());
-                    intent.putExtra("phone", dataList.get(position).getPhone());
-                    intent.putExtra("is_default", dataList.get(position).getIs_default());
-                    setResult(1, intent);
+                    selectedAddress(position,1);
                     finish();
                 }
             }
@@ -272,6 +263,23 @@ public class DeliveryAddressActivity extends BaseActivity {
         });
 
 
+    }
+
+
+    /**
+     * 已选择地址
+     */
+    private void selectedAddress(int position,int resultCode) {
+        Intent intent = new Intent();
+        intent.putExtra("address_id", dataList.get(position).getId() + "");
+        intent.putExtra("province", dataList.get(position).getProvince());
+        intent.putExtra("city", dataList.get(position).getCity());
+        intent.putExtra("area", dataList.get(position).getArea());
+        intent.putExtra("address", dataList.get(position).getAddress());
+        intent.putExtra("name", dataList.get(position).getName());
+        intent.putExtra("phone", dataList.get(position).getPhone());
+        intent.putExtra("is_default", dataList.get(position).getIs_default());
+        setResult(resultCode, intent);
     }
 
     /**
@@ -379,6 +387,10 @@ public class DeliveryAddressActivity extends BaseActivity {
                     List<String> idList = new ArrayList<>();
                     for (int i = 0; i < dataList.size(); i++) {
                         idList.add(dataList.get(i).getId() + "");
+                        if (addressId.equals(String.valueOf(dataList.get(i).getId()))){
+                            selectedAddress(i,4);
+                            break;
+                        }
                     }
                     if (!idList.contains(addressId)) {
                         setResult(3);

@@ -139,6 +139,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     private String logId;
     private long goodsTime;
     private long dingzhiTime;
+    //修改购物车数量，可用优惠券变化
+    private boolean canCouponSelect;
 
 
     @Override
@@ -169,10 +171,24 @@ public class ConfirmOrderActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        confirmOrderBean = GsonUtils.jsonToBean(response, ConfirmOrderBean.class);
-                        if (confirmOrderBean.getData() != null) {
-                            initView();
+                        if (canCouponSelect) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                couponNum = data.getInt("ticket_num");
+                                LogUtils.log(couponNum + "");
+                                initCoupon();
+                                canCouponSelect = false;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            confirmOrderBean = GsonUtils.jsonToBean(response, ConfirmOrderBean.class);
+                            if (confirmOrderBean.getData() != null) {
+                                initView();
+                            }
                         }
+
                     }
                 });
     }
@@ -349,11 +365,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                             if (code == 1) {
                                 confirmOrderBean.getData().getCar_list().get(position).setNum(currentCount);
                                 adapter.notifyDataSetChanged();
-                                if (couponId != null && !TextUtils.isEmpty(goodsIds)) {
+                                if (couponId != null) {
                                     if (!isCouponAvailable()) {
                                         couponId = null;
                                     }
                                     initCoupon();
+                                } else {
+                                    canCouponSelect = true;
+                                    initData();
                                 }
                                 getTotalPrice();
                             } else {
@@ -564,12 +583,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                         couponMinMoney = data.getStringExtra("coupon_min_money");
                         goodsIds = data.getStringExtra("goods_ids");
 
-                        if (!TextUtils.isEmpty(goodsIds)) {
-                            if (!isCouponAvailable()) {
-                                couponId = null;
-                            }
-                            initCoupon();
+                        if (!isCouponAvailable()) {
+                            couponId = null;
                         }
+                        initCoupon();
+
                         break;
                 }
                 break;
@@ -597,6 +615,10 @@ public class ConfirmOrderActivity extends BaseActivity {
                         addressId = null;
                         nullAddress = false;
                         initAddress();
+                        break;
+                    //收货地址被修改
+                    case 4:
+                        getAddress(data);
                         break;
                 }
                 break;
