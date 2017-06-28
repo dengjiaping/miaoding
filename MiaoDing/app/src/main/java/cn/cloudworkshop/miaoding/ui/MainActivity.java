@@ -245,7 +245,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void downloadFile(String url) {
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-
         request.setTitle("妙定");
         request.setDescription("正在下载");
         // 设置下载可见

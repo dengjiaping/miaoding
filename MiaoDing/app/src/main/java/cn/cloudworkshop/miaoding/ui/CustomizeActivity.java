@@ -151,7 +151,7 @@ public class CustomizeActivity extends BaseActivity {
 
         OkHttpUtils
                 .get()
-                .url(Constant.NEW_TAILOR)
+                .url(Constant.NEW_CUSTOMIZE)
                 .addParams("goods_id", id)
                 .addParams("phone_type", String.valueOf("6"))
                 .addParams("price_type", priceType)

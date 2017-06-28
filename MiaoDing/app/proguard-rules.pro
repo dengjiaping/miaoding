@@ -420,8 +420,6 @@ public void xxxxxx(**);
 
 -keep class sun.misc.Unsafe { *; }
 
--keep class com.google.gson.examples.android.model.** { *; }
-
 -keepclassmembers class * extends com.sea_monster.dao.AbstractDao {
  public static java.lang.String TABLENAME;
 }
@@ -438,9 +436,6 @@ public void xxxxxx(**);
 -keep class com.a.a.**  {*;}
 
 
-#SuperID
-#由*郭宇翔*贡献混淆代码
-#作者Github地址：https://github.com/yourtion
 -keep class **.R$* {*;}
 -keep class com.isnc.facesdk.aty.**{*;}
 -keep class com.isnc.facesdk.**{*;}

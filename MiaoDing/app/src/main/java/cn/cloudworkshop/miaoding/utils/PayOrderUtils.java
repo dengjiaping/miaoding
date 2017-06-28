@@ -232,39 +232,32 @@ public class PayOrderUtils {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            int code = jsonObject.getInt("code");
-                            String msg = jsonObject.getString("msg");
-                            if (code == 1) {
-                                WeChatPayBean weChatPay = GsonUtils.jsonToBean(response, WeChatPayBean.class);
-                                if (!api.isWXAppInstalled()) {
-                                    Toast.makeText(context, "没有安装微信", Toast.LENGTH_SHORT).show();
-                                }
-                                if (!api.isWXAppSupportAPI()) {
-                                    Toast.makeText(context, "当前版本不支持支付功能", Toast.LENGTH_SHORT).show();
-                                }
-                                PayReq req = new PayReq();
-                                req.appId = Constant.APP_ID;
-                                req.partnerId = weChatPay.getData().getPartnerid();
-                                req.prepayId = weChatPay.getData().getPrepayid();
-                                req.nonceStr = weChatPay.getData().getNoncestr();
-                                req.timeStamp = weChatPay.getData().getTimestamp() + "";
-                                req.packageValue = "Sign=WXPay";
-                                req.sign = weChatPay.getData().getSign();
-                                api.sendReq(req);
-                                ((Activity) context).finish();
-                            } else {
-                                Intent intent = new Intent(context, MyOrderActivity.class);
-                                intent.putExtra("page", 0);
-                                ((Activity) context).finish();
-                                context.startActivity(intent);
-                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                        WeChatPayBean weChatPay = GsonUtils.jsonToBean(response, WeChatPayBean.class);
+                        if (weChatPay.getCode() == 1) {
+                            if (!api.isWXAppInstalled()) {
+                                Toast.makeText(context, "没有安装微信", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            if (!api.isWXAppSupportAPI()) {
+                                Toast.makeText(context, "当前版本不支持支付功能", Toast.LENGTH_SHORT).show();
+                            }
+                            PayReq req = new PayReq();
+                            req.appId = Constant.APP_ID;
+                            req.partnerId = weChatPay.getData().getPartnerid();
+                            req.prepayId = weChatPay.getData().getPrepayid();
+                            req.nonceStr = weChatPay.getData().getNoncestr();
+                            req.timeStamp = weChatPay.getData().getTimestamp() + "";
+                            req.packageValue = "Sign=WXPay";
+                            req.sign = weChatPay.getData().getSign();
+                            api.sendReq(req);
+                            ((Activity) context).finish();
+                        } else {
+                            Intent intent = new Intent(context, MyOrderActivity.class);
+                            intent.putExtra("page", 0);
+                            ((Activity) context).finish();
+                            context.startActivity(intent);
+                            Toast.makeText(context, weChatPay.getMsg(), Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
     }

@@ -53,6 +53,7 @@ import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -110,13 +111,6 @@ public class MyOrderFragment extends BaseFragment {
         }
     }
 
-    //    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        if (!hidden) {
-//            initData();
-//        }
-//    }
 
 
     /**
@@ -141,6 +135,7 @@ public class MyOrderFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
+                        LogUtils.log(e.toString());
                     }
 
                     @Override

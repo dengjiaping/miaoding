@@ -140,7 +140,7 @@ public class DressingTestActivity extends BaseActivity {
      */
     private void submitData() {
         OkHttpUtils.get()
-                .url(Constant.CLOTH_TEST)
+                .url(Constant.DRESSING_TEST)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
                 .addParams("age", tvUserAge.getText().toString().trim())
                 .addParams("height", tvUserHeight.getText().toString().trim())
