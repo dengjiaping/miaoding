@@ -176,7 +176,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 JSONObject jsonObject = new JSONObject(response);
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 couponNum = data.getInt("ticket_num");
-                                LogUtils.log(couponNum + "");
                                 initCoupon();
                                 canCouponSelect = false;
                             } catch (JSONException e) {
@@ -188,7 +187,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 initView();
                             }
                         }
-
                     }
                 });
     }
@@ -523,8 +521,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     map.put("id", cartIds);
                                     //下单事件监听
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
-                                    Toast.makeText(ConfirmOrderActivity.this, "下单成功",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ConfirmOrderActivity.this, msg, Toast.LENGTH_SHORT).show();
                                     if (CustomizeActivity.instance != null) {
                                         CustomizeActivity.instance.finish();
                                     }

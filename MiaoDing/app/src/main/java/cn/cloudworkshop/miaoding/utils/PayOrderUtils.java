@@ -289,8 +289,8 @@ public class PayOrderUtils {
                                 Runnable payRunnable = new Runnable() {
                                     @Override
                                     public void run() {
-                                        PayTask alipay = new PayTask((Activity) context);
-                                        Map<String, String> result = alipay.payV2(orderInfo, true);
+                                        PayTask aliPay = new PayTask((Activity) context);
+                                        Map<String, String> result = aliPay.payV2(orderInfo, true);
                                         Message msg = new Message();
                                         msg.what = SDK_PAY_FLAG;
                                         msg.obj = result;

@@ -44,7 +44,7 @@ public class AppointmentActivity extends BaseActivity {
     TextView tvCheckOrder;
     @BindView(R.id.img_pay_result)
     ImageView imgPayResult;
-    //intent 传值
+    
     private String type;
 
     @Override
