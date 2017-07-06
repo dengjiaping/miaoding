@@ -35,6 +35,7 @@ import cn.cloudworkshop.miaoding.utils.AddressPickTask;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.qqtheme.framework.entity.City;
 import cn.qqtheme.framework.entity.County;
 import cn.qqtheme.framework.entity.Province;
@@ -193,7 +194,8 @@ public class AddAddressActivity extends BaseActivity {
                 TextUtils.isEmpty(etAddNumber.getText().toString().trim()) ||
                 TextUtils.isEmpty(tvSelectAddress.getText().toString().trim()) ||
                 TextUtils.isEmpty(etDetailedAddress.getText().toString().trim())) {
-            Toast.makeText(this, "请完善个人信息", Toast.LENGTH_SHORT).show();
+
+            ToastUtils.showToast(this, "请完善个人信息");
         } else {
             if (PhoneNumberUtils.judgePhoneNumber(etAddNumber.getText().toString().trim())) {
                 Map<String, String> map = new HashMap<>();
@@ -228,8 +230,7 @@ public class AddAddressActivity extends BaseActivity {
                                     if (code == 1) {
                                         switch (type) {
                                             case "add":
-                                                Toast.makeText(AddAddressActivity.this, "添加成功",
-                                                        Toast.LENGTH_SHORT).show();
+                                                ToastUtils.showToast(AddAddressActivity.this, "添加成功");
                                                 Intent intent = new Intent();
                                                 intent.putExtra("address_id", addressId);
                                                 intent.putExtra("province", provinceAddress);
@@ -243,8 +244,7 @@ public class AddAddressActivity extends BaseActivity {
                                                 finish();
                                                 break;
                                             case "alert":
-                                                Toast.makeText(AddAddressActivity.this, "修改成功",
-                                                        Toast.LENGTH_SHORT).show();
+                                                ToastUtils.showToast(AddAddressActivity.this, "修改成功");
                                                 finish();
                                                 break;
                                         }
@@ -256,7 +256,7 @@ public class AddAddressActivity extends BaseActivity {
                             }
                         });
             } else {
-                Toast.makeText(this, "请输入11位手机号码", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "请输入11位手机号码");
             }
         }
     }

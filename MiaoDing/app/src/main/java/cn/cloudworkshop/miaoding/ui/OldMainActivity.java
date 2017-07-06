@@ -59,6 +59,7 @@ public class OldMainActivity extends BaseActivity {
     private AppIndexBean appIndexBean;
     private DownloadService service;
     public static OldMainActivity instance;
+    private boolean isCheckUpdate = true;
 
 
     @Override
@@ -171,7 +172,7 @@ public class OldMainActivity extends BaseActivity {
      * 检测更新
      */
     private void checkUpdate() {
-        if (MyApplication.isCheckUpdate) {
+        if (isCheckUpdate) {
             OkHttpUtils.get()
                     .url(Constant.APP_INDEX)
                     .build()
@@ -196,7 +197,7 @@ public class OldMainActivity extends BaseActivity {
                                 MyApplication.updateContent = appIndexBean.getData().getVersion()
                                         .getAndroid().getRemark();
                                 //取消检测更新
-                                MyApplication.isCheckUpdate = false;
+                                isCheckUpdate = false;
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(OldMainActivity.this,
                                         R.style.AlertDialog);
                                 dialog.setTitle("检测到新版本，请更新");
@@ -212,7 +213,6 @@ public class OldMainActivity extends BaseActivity {
                                 dialog.setNegativeButton("下次再说", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        MyApplication.isCheckUpdate = false;
                                         dialog.dismiss();
                                     }
                                 });

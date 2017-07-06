@@ -43,13 +43,11 @@ public class MyApplication extends Application {
     //用户协议
     public static String userAgreement;
     //量体协议
-//    public static String measureAgreement;
-    //订单号
+    //public static String measureAgreement;
+    //订单id
     public static String orderId;
     //首页时间
     public static long homeEnterTime;
-    //是否检测更新
-    public static boolean isCheckUpdate = true;
 
 
     @Override
@@ -60,7 +58,7 @@ public class MyApplication extends Application {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + File.separator + "CloudWorkshop", "Cache");
+                    + File.separator + "CloudWorkshop/Cache");
             builder.cache(new Cache(file, 1024 * 1024 * 100));
         }
         OkHttpClient okHttpClient = builder.connectTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -74,31 +72,6 @@ public class MyApplication extends Application {
     }
 
 
-//    /**
-//     * add Activity 添加Activity到栈
-//     */
-//    public void addActivity(Activity activity) {
-//        if (activityStack == null) {
-//            activityStack = new Stack<>();
-//        }
-//        activityStack.add(activity);
-//    }
-//
-//    /**
-//     * 退出应用程序
-//     */
-//    public void appExit() {
-//        try {
-//            for (int i = 0, size = activityStack.size(); i < size; i++) {
-//                if (null != activityStack.get(i)) {
-//                    activityStack.get(i).finish();
-//                }
-//            }
-//            activityStack.clear();
-//        } catch (Exception ignored) {
-//        }
-//    }
-//
 
     /**
      * @return 七鱼配置

@@ -37,6 +37,7 @@ import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -85,29 +86,8 @@ public class OrderDetailActivity extends BaseActivity {
     //倒计时时间
     private int recLen;
     Timer timer = new Timer();
-    //定时器
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recLen--;
-                    if (recLen > 0) {
-                        tvPayTime.setTextColor(ContextCompat.getColor(OrderDetailActivity.this, R.color.dark_red));
-                        tvPayTime.setText("请在 " + recLen / 60 + "分" + recLen % 60 + "秒 内完成支付，超时订单将自动取消");
-                    } else {
-                        timer.cancel();
-                        task.cancel();
-                        finish();
-                        Toast.makeText(OrderDetailActivity.this, "订单已过期", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            });
-        }
-    };
+    private MyTimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +139,11 @@ public class OrderDetailActivity extends BaseActivity {
         recLen = orderBean.getData().getLast_time() + 1;
         switch (orderBean.getData().getStatus()) {
             case 1:
-                timer.schedule(task, 1000, 1000);
+                if (task == null){
+                    task = new MyTimerTask();
+                    timer.schedule(task, 1000, 1000);
+                }
+
                 tvPayTime.setTextColor(ContextCompat.getColor(this, R.color.dark_red));
                 tvOrderStatus.setText("待付款");
                 tvOrderCancel.setText("取消订单");
@@ -193,7 +177,7 @@ public class OrderDetailActivity extends BaseActivity {
                 if (orderBean.getData().getOrder_comment().getId() == 0) {
                     tvOrderPayMoney.setVisibility(View.VISIBLE);
                     tvOrderPayMoney.setText("评价");
-                }else {
+                } else {
                     tvOrderPayMoney.setVisibility(View.GONE);
                 }
                 break;
@@ -282,8 +266,10 @@ public class OrderDetailActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
-                timer.cancel();
-                task.cancel();
+                if (timer != null && task != null) {
+                    timer.cancel();
+                    task.cancel();
+                }
                 finish();
                 break;
             case R.id.tv_order_pay_money:
@@ -295,6 +281,31 @@ public class OrderDetailActivity extends BaseActivity {
             case R.id.tv_order_after:
                 afterSale();
                 break;
+        }
+    }
+
+    //定时器
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    recLen--;
+                    if (recLen > 0) {
+                        tvPayTime.setTextColor(ContextCompat.getColor(OrderDetailActivity.this, R.color.dark_red));
+                        tvPayTime.setText("请在 " + recLen / 60 + "分" + recLen % 60 + "秒 内完成支付，超时订单将自动取消");
+                    } else {
+                        if (timer != null && task != null) {
+                            timer.cancel();
+                            task.cancel();
+                        }
+                        finish();
+                        ToastUtils.showToast(OrderDetailActivity.this, "订单已过期");
+                    }
+                }
+            });
         }
     }
 
@@ -345,7 +356,7 @@ public class OrderDetailActivity extends BaseActivity {
                 cancelOrder();
                 break;
             case 2:
-                Toast.makeText(this, "已提醒商家发货，请耐心等待", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "已提醒商家发货，请耐心等待");
                 break;
             case 3:
             case 4:
@@ -389,8 +400,7 @@ public class OrderDetailActivity extends BaseActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 finish();
-                                Toast.makeText(OrderDetailActivity.this,
-                                        "交易完成，祝您购物愉快！", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(OrderDetailActivity.this, "交易完成，祝您购物愉快！");
                             }
                         });
             }
@@ -434,7 +444,7 @@ public class OrderDetailActivity extends BaseActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 finish();
-                                Toast.makeText(OrderDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(OrderDetailActivity.this, "删除成功");
                             }
                         });
             }
@@ -477,7 +487,7 @@ public class OrderDetailActivity extends BaseActivity {
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(OrderDetailActivity.this, "cancel_order");
                                 finish();
-                                Toast.makeText(OrderDetailActivity.this, "取消成功", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(OrderDetailActivity.this, "取消成功");
                             }
                         });
             }
@@ -496,16 +506,15 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            timer.cancel();
-            task.cancel();
+            if (timer != null && task != null) {
+                timer.cancel();
+                task.cancel();
+            }
+
             finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 }

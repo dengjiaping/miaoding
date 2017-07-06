@@ -41,9 +41,11 @@ import cn.cloudworkshop.miaoding.bean.RecommendGoodsBean;
 import cn.cloudworkshop.miaoding.bean.ShoppingCartBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -83,8 +85,7 @@ public class ShoppingCartActivity extends BaseActivity {
     private List<ShoppingCartBean.DataBean> dataList;
 
     //编辑状态
-    private boolean flag;
-    public static ShoppingCartActivity instance;
+    private boolean isEdited;
     private RecommendGoodsBean recommendBean;
 
     @Override
@@ -92,7 +93,8 @@ public class ShoppingCartActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
         ButterKnife.bind(this);
-        instance = this;
+
+        ActivityManagerUtils.getInstance().addActivity(this);
         tvHeaderTitle.setText("购物袋");
         tvHeaderNext.setText("编辑");
 
@@ -241,10 +243,10 @@ public class ShoppingCartActivity extends BaseActivity {
 
                 holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00").format(dataBean.getPrice()));
                 holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum() + "");
-                holder.setVisible(R.id.ll_cart_edit, flag);
-                holder.setVisible(R.id.tv_goods_content, !flag);
-                holder.setVisible(R.id.tv_goods_price, !flag);
-                holder.setVisible(R.id.tv_goods_count, !flag);
+                holder.setVisible(R.id.ll_cart_edit, isEdited);
+                holder.setVisible(R.id.tv_goods_content, !isEdited);
+                holder.setVisible(R.id.tv_goods_price, !isEdited);
+                holder.setVisible(R.id.tv_goods_count, !isEdited);
                 holder.setText(R.id.tv_cart_count, dataList.get(position).getNum() + "");
                 final CheckBox checkBox = holder.getView(R.id.checkbox_goods_select);
                 checkBox.setOnCheckedChangeListener(null);
@@ -442,7 +444,7 @@ public class ShoppingCartActivity extends BaseActivity {
                                 getTotalPrice();
                                 getTotalCount();
                             } else {
-                                Toast.makeText(ShoppingCartActivity.this, "库存不足", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(ShoppingCartActivity.this, "库存不足");
                             }
 
                         } catch (JSONException e) {
@@ -504,7 +506,7 @@ public class ShoppingCartActivity extends BaseActivity {
                                     getTotalCount();
                                     getTotalPrice();
                                 }
-                                Toast.makeText(ShoppingCartActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(ShoppingCartActivity.this, "删除成功");
                             }
                         });
             }
@@ -533,13 +535,13 @@ public class ShoppingCartActivity extends BaseActivity {
                     if (getTotalCount() != 0) {
                         deleteGoods(getSelected());
                     } else {
-                        Toast.makeText(this, "请选择商品", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(this, "请选择商品");
                     }
                 } else {
                     if (getTotalCount() != 0) {
                         buyGoods();
                     } else {
-                        Toast.makeText(this, "请选择商品", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(this, "请选择商品");
                     }
                 }
 
@@ -552,12 +554,12 @@ public class ShoppingCartActivity extends BaseActivity {
                 break;
             case R.id.tv_header_next:
                 if (tvHeaderNext.getText().toString().equals("编辑")) {
-                    flag = true;
+                    isEdited = true;
                     adapter.notifyDataSetChanged();
                     tvHeaderNext.setText("确定");
                     tvGoodsBuy.setText("删除");
                 } else if (tvHeaderNext.getText().toString().equals("确定")) {
-                    flag = false;
+                    isEdited = false;
                     adapter.notifyDataSetChanged();
                     tvHeaderNext.setText("编辑");
                     getTotalCount();
@@ -596,21 +598,28 @@ public class ShoppingCartActivity extends BaseActivity {
 
 
     /**
-     * 已选择商品Id
+     * 已选择商品ids
      */
     private String getCartIds() {
-        StringBuilder sb = new StringBuilder();
+
+        List<Integer> idList = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).getIs_select()) {
-                if (i == dataList.size() - 1) {
-                    sb.append(dataList.get(i).getId());
-                } else {
-                    sb.append(dataList.get(i).getId()).append(",");
-                }
+                idList.add(dataList.get(i).getId());
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < idList.size(); i++) {
+            if (i == idList.size() - 1) {
+                sb.append(idList.get(i));
+            } else {
+                sb.append(idList.get(i)).append(",");
             }
         }
         return sb.toString();
     }
+
 
 
     /**

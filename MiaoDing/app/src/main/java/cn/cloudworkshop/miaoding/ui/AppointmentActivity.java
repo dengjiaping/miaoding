@@ -135,7 +135,7 @@ public class AppointmentActivity extends BaseActivity {
     }
 
     private void getData() {
-        type = getIntent().getStringExtra("content");
+        type = getIntent().getStringExtra("type");
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.tv_go_back, R.id.tv_check_order})

@@ -1,18 +1,21 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.app.Activity;
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,9 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +39,10 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.TailorInfoBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -77,11 +80,12 @@ public class CustomResultActivity extends BaseActivity {
     ImageView imgDefaultItem;
     @BindView(R.id.rl_tailor_position)
     RelativeLayout rlTailorPosition;
+    @BindView(R.id.rl_custom_result)
+    RelativeLayout rlCustomResult;
 
     //1:直接购买 2：加入购物袋
     private int type = 0;
     private String cartId;
-    public static Activity instance;
 
     private float x1 = 0;
     private float x2 = 0;
@@ -94,8 +98,9 @@ public class CustomResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_result);
         ButterKnife.bind(this);
-        instance = this;
-        tvHeaderTitle.setText("订制详情");
+
+        ActivityManagerUtils.getInstance().addActivity(this);
+        tvHeaderTitle.setText("定制详情");
         imgShoppingBag.setVisibility(View.VISIBLE);
         imgShoppingBag.setImageResource(R.mipmap.icon_shopping_bag);
         getData();
@@ -119,7 +124,7 @@ public class CustomResultActivity extends BaseActivity {
 
         //部件图展示
 
-        switch (tailorBean.getIs_scan()){
+        switch (tailorBean.getIs_scan()) {
             case 0:
                 for (int i = 0; i < tailorBean.getItemBean().size(); i++) {
                     ImageView img = new ImageView(this);
@@ -273,16 +278,12 @@ public class CustomResultActivity extends BaseActivity {
                     R.layout.listitem_custom_result, itemList) {
                 @Override
                 protected void convert(ViewHolder holder, TailorInfoBean tailorInfoBean, int position) {
-                    holder.setText(R.id.tv_tailor_type, tailorInfoBean.getType() + "：");
+                    holder.setText(R.id.tv_tailor_type, tailorInfoBean.getType());
                     holder.setText(R.id.tv_tailor_item, tailorInfoBean.getName());
                 }
-
-
             };
             rvTailorName.setAdapter(adapter);
         }
-
-
     }
 
 
@@ -342,8 +343,8 @@ public class CustomResultActivity extends BaseActivity {
                             if (cartId != null) {
                                 MobclickAgent.onEvent(CustomResultActivity.this, "add_cart");
                                 if (type == 2) {
-                                    Toast.makeText(CustomResultActivity.this, "加入购物袋成功",
-                                            Toast.LENGTH_SHORT).show();
+//                                    ToastUtils.showToast(CustomResultActivity.this, "加入购物袋成功");
+                                    aadCartAnim();
                                 } else if (type == 1) {
                                     Intent intent = new Intent(CustomResultActivity.this,
                                             ConfirmOrderActivity.class);
@@ -365,5 +366,102 @@ public class CustomResultActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    /**
+     * 加入购物车动画效果，经过一个抛物线（贝塞尔曲线），移动到购物车里
+     */
+    private void aadCartAnim() {
+        //1、添加执行动画效果的图片
+        final ImageView imgGoods = new ImageView(this);
+        Glide.with(this)
+                .load(Constant.HOST + tailorBean.getImg_url())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgGoods);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80, 80);
+        rlCustomResult.addView(imgGoods, params);
+
+        //2、动画开始/结束点的坐标
+        //贝塞尔曲线中间过程的点的坐标
+        final float[] mCurrentPosition = new float[2];
+
+        //父布局的起始点坐标
+//        int[] parentLocation = new int[2];
+//        rlCustomResult.getLocationInWindow(parentLocation);
+
+        //商品图片的坐标
+        int startLoc[] = new int[2];
+        tvAddBag.getLocationInWindow(startLoc);
+
+        //购物车图片的坐标
+        int endLoc[] = new int[2];
+        imgShoppingBag.getLocationInWindow(endLoc);
+
+        //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
+        float startX = startLoc[0]+ tvAddBag.getWidth() / 3;
+        float startY = startLoc[1];
+
+        //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的一半
+        float toX = endLoc[0]+ imgShoppingBag.getWidth() / 4;
+        float toY = endLoc[1]+ imgShoppingBag.getHeight() / 2;
+
+        //3、计算中间动画的插值坐标（贝塞尔曲线）
+        //开始绘制贝塞尔曲线
+        Path path = new Path();
+        //移动到起始点（贝塞尔曲线的起点）
+        path.moveTo(startX, startY);
+        //使用二阶萨贝尔曲线
+        path.quadTo(startX, toY, toX, toY);
+        //mPathMeasure用来计算贝塞尔曲线的曲线长度和贝塞尔曲线中间插值的坐标
+        final PathMeasure mPathMeasure = new PathMeasure(path, false);
+
+        //属性动画实现（从0到贝塞尔曲线的长度之间进行插值计算，获取中间过程的距离值）
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, mPathMeasure.getLength());
+        valueAnimator.setDuration(1000);
+        // 匀速线性插值器
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // 当插值计算进行时，获取中间的每个值，
+                // 这里这个值是中间过程中的曲线长度（下面根据这个值来得出中间点的坐标值）
+                float value = (Float) animation.getAnimatedValue();
+                // 获取当前点坐标mCurrentPosition
+                mPathMeasure.getPosTan(value, mCurrentPosition, null);
+                // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
+                imgGoods.setTranslationX(mCurrentPosition[0]);
+                imgGoods.setTranslationY(mCurrentPosition[1]);
+
+            }
+        });
+        //五、开始执行动画
+        valueAnimator.start();
+
+        //六、动画结束后的处理
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            //当动画结束后：
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // 把移动的图片从父布局里移除
+                rlCustomResult.removeView(imgGoods);
+            }
+
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
     }
 }

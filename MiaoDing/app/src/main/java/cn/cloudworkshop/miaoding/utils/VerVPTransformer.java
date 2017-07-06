@@ -7,6 +7,8 @@ import android.view.View;
  * Author：Libin on 2016/8/30 17:43
  * Email：1993911441@qq.com
  * Describe：VerticalViewPager滑动动画
+ *
+ * 
  */
 public class VerVPTransformer implements ViewPager.PageTransformer{
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/rl_custom_result"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
@@ -102,18 +103,24 @@
 
             <TextView
                 android:id="@+id/tv_tailor_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
                 android:textColor="@color/dark_gray_22"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray_e5"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginTop="15dp">
 
                 <android.support.v7.widget.RecyclerView
@@ -127,15 +134,14 @@
         </LinearLayout>
     </ScrollView>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_above="@+id/ll_order"
+        android:layout_above="@+id/ll_add_cart"
         android:background="@color/app_bg"/>
 
     <LinearLayout
-        android:id="@+id/ll_order"
+        android:id="@+id/ll_add_cart"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
@@ -152,11 +158,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:gravity="center"
                 android:text="小计："
                 android:textColor="@color/dark_gray_22"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_tailor_price"
@@ -164,8 +169,9 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
                 android:gravity="center"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="16sp"/>
+                android:textColor="@color/light_gray_3d"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
 
@@ -178,7 +184,7 @@
             android:gravity="center"
             android:text="加入购物袋"
             android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_buy_now"
@@ -189,7 +195,7 @@
             android:gravity="center"
             android:text="立即购买"
             android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
 </RelativeLayout>

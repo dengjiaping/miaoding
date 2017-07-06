@@ -39,6 +39,7 @@ import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
@@ -160,7 +161,7 @@ public class EvaluateActivity extends BaseActivity {
 
             new Thread(myRunnable).start();
         } else {
-            Toast.makeText(this, "请填写评论", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "请填写评论");
         }
     }
 
@@ -208,7 +209,7 @@ public class EvaluateActivity extends BaseActivity {
                         @Override
                         public void onResponse(String response, int id) {
                             loadingView.smoothToHide();
-                            Toast.makeText(EvaluateActivity.this, "评价成功！", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(EvaluateActivity.this, "评价成功！");
                             finish();
                         }
                     });

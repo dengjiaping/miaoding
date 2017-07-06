@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
  * Author：binge on 2017-06-15 08:48
@@ -69,31 +70,26 @@ public class ScanCodeActivity extends BaseActivity {
                                         toGoodsDetail(WorksDetailActivity.class, goods_id);
                                         break;
                                     default:
-                                        Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
-                                                Toast.LENGTH_SHORT).show();
+                                        ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                                         finish();
                                         break;
                                 }
 
                             } else {
-                                Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                                 finish();
                             }
                         } else {
-                            Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
-                                    Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                             finish();
                         }
                     } else {
-                        Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
-                                Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                         finish();
                     }
 
                 } else {
-                    Toast.makeText(ScanCodeActivity.this, "仅支持本平台商品",
-                            Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                     finish();
                 }
             }

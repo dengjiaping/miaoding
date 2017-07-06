@@ -41,6 +41,7 @@ import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -241,7 +242,7 @@ public class MyCouponFragment extends BaseFragment {
                             if (code == 1) {
                                 initData();
                             }
-                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(getActivity(), msg);
                             etInputCode.setText("");
 
                         } catch (JSONException e) {

@@ -49,6 +49,7 @@ import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.OptionPicker;
@@ -366,7 +367,7 @@ public class SetUpActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (TextUtils.isEmpty(etName.getText().toString().trim())) {
-                    Toast.makeText(SetUpActivity.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(SetUpActivity.this, "昵称不能为空");
                 } else {
                     changeInfo("name", etName.getText().toString().trim());
                     mPopupWindow.dismiss();
@@ -426,7 +427,7 @@ public class SetUpActivity extends BaseActivity {
                             finish();
                         }
                         initData();
-                        Toast.makeText(SetUpActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(SetUpActivity.this, "修改成功");
 
                     }
                 });
@@ -455,7 +456,7 @@ public class SetUpActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // 根据实际情况编写相应代码。
                 DataManagerUtils.cleanApplicationCache(SetUpActivity.this);
-                Toast.makeText(SetUpActivity.this, "清除成功", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(SetUpActivity.this, "清除成功");
             }
         });
         //为“取消”按钮注册监听事件

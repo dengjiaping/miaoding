@@ -94,7 +94,7 @@ public class DressingResultActivity extends BaseActivity {
                 break;
             case R.id.img_header_share:
                 ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils.getString(this,
-                        "icon"), shareTitle, shareContent, shareUrl);
+                        "avatar"), shareTitle, shareContent, shareUrl);
                 break;
         }
     }

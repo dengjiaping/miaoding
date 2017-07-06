@@ -36,8 +36,10 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.EmbroideryBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.CharacterUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -76,7 +78,6 @@ public class EmbroideryActivity extends BaseActivity {
     //商品分类
     private int classifyId;
 
-    public static Activity instance;
     private TailorItemBean tailorBean;
 
 
@@ -85,7 +86,8 @@ public class EmbroideryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_embroidery);
         ButterKnife.bind(this);
-        instance = this;
+
+        ActivityManagerUtils.getInstance().addActivity(this);
         tvHeaderTitle.setText("个性绣花");
         tvHeaderNext.setVisibility(View.VISIBLE);
         tvHeaderNext.setText("跳过");
@@ -203,8 +205,8 @@ public class EmbroideryActivity extends BaseActivity {
         colorAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Toast.makeText(EmbroideryActivity.this, embroideryBean.getData().getColor().get(position)
-                        .getName(), Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(EmbroideryActivity.this, embroideryBean.getData().getColor()
+                        .get(position).getName());
                 flowerColor = holder.getAdapterPosition();
                 colorAdapter.notifyDataSetChanged();
             }

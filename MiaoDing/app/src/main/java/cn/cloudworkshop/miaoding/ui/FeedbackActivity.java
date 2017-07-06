@@ -41,6 +41,7 @@ import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import okhttp3.Call;
@@ -151,8 +152,7 @@ public class FeedbackActivity extends BaseActivity {
                             //反馈事件监听
                             MobclickAgent.onEvent(FeedbackActivity.this, "feedback");
                             loadingView.smoothToHide();
-                            Toast.makeText(FeedbackActivity.this, "提交成功，感谢您的宝贵意见",
-                                    Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(FeedbackActivity.this, "提交成功，感谢您的宝贵意见");
                             finish();
                         }
                     });
@@ -171,7 +171,7 @@ public class FeedbackActivity extends BaseActivity {
 
             new Thread(myRunnable).start();
         } else {
-            Toast.makeText(this, "请写下您的宝贵意见", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "请写下您的宝贵意见");
         }
 
     }

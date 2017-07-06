@@ -28,6 +28,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.service.DownloadService;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Cache;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -108,7 +109,7 @@ public class AboutUsActivity extends BaseActivity {
             dialog.create();
             dialog.show();
         } else {
-            Toast.makeText(this, "已是最新版本！", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "已是最新版本！");
         }
 
     }

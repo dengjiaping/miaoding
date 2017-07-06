@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,12 +35,14 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -60,8 +61,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     TextView tvUserPhone;
     @BindView(R.id.tv_user_address)
     TextView tvProvinceAddress;
-    @BindView(R.id.tv_goods_total_price)
-    TextView tvGoodsTotalPrice;
+    @BindView(R.id.tv_need_pay)
+    TextView tvNeedPay;
     @BindView(R.id.tv_confirm_order)
     TextView tvConfirmOrder;
     @BindView(R.id.rv_confirm_order)
@@ -374,8 +375,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 }
                                 getTotalPrice();
                             } else {
-                                Toast.makeText(ConfirmOrderActivity.this, "库存不足",
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(ConfirmOrderActivity.this, "库存不足");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -390,6 +390,7 @@ public class ConfirmOrderActivity extends BaseActivity {
      */
     private boolean isCouponAvailable() {
         float maxPrice = 0.00f;
+        int count = 0;
         //该商品是否包含在优惠券中
         String[] split = goodsIds.split(",");
         for (int i = 0; i < confirmOrderBean.getData().getCar_list().size(); i++) {
@@ -397,15 +398,17 @@ public class ConfirmOrderActivity extends BaseActivity {
                     .getGoods_id() + "")) {
                 float price = Float.parseFloat(confirmOrderBean.getData().getCar_list().get(i).getPrice());
                 int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
-                maxPrice = price * num > maxPrice ? price * num : maxPrice;
+//                maxPrice = price * num > maxPrice ? price * num : maxPrice;
+                maxPrice += price * num;
+                count++;
             }
         }
         //单种商品最高总价格
         if (maxPrice >= Float.parseFloat(couponMinMoney)) {
-            if (maxPrice > Float.parseFloat(couponMoney)) {
+            if (Float.parseFloat(couponMoney) <= (maxPrice - 0.01 * count)) {
                 discountMoney = Float.parseFloat(couponMoney);
             } else {
-                discountMoney = (float) (maxPrice - 0.01);
+                discountMoney = (float) (maxPrice - 0.01 * count);
             }
             return true;
         } else {
@@ -429,7 +432,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             totalPrice -= discountMoney;
         }
 
-        tvGoodsTotalPrice.setText("¥" + new DecimalFormat("#0.00").format(totalPrice));
+        tvNeedPay.setText("¥" + new DecimalFormat("#0.00").format(totalPrice));
         return new DecimalFormat("#0.00").format(totalPrice);
     }
 
@@ -461,7 +464,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm_order:
                 if (addressId == null) {
-                    Toast.makeText(this, "请选择地址", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(this, "请选择地址");
                 } else {
                     confirmOrder();
                 }
@@ -470,6 +473,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 Intent intent = new Intent(this, SelectCouponActivity.class);
                 intent.putExtra("cart_ids", cartIds);
                 startActivityForResult(intent, 1);
+
                 break;
         }
     }
@@ -496,6 +500,8 @@ public class ConfirmOrderActivity extends BaseActivity {
             map.put("log_id", logId);
         }
 
+        map.put("method","1");
+
         OkHttpUtils.post()
                 .url(Constant.CONFIRM_BUY)
                 .params(map)
@@ -509,7 +515,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-
                             JSONObject jsonObject = new JSONObject(response);
                             int code = jsonObject.getInt("code");
                             String msg = jsonObject.getString("msg");
@@ -521,20 +526,12 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     map.put("id", cartIds);
                                     //下单事件监听
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
-                                    Toast.makeText(ConfirmOrderActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                    if (CustomizeActivity.instance != null) {
-                                        CustomizeActivity.instance.finish();
-                                    }
-                                    if (EmbroideryActivity.instance != null) {
-                                        EmbroideryActivity.instance.finish();
-                                    }
+                                    ToastUtils.showToast(ConfirmOrderActivity.this, msg);
 
-                                    if (CustomResultActivity.instance != null) {
-                                        CustomResultActivity.instance.finish();
-                                    }
-                                    if (ShoppingCartActivity.instance != null) {
-                                        ShoppingCartActivity.instance.finish();
-                                    }
+                                    ActivityManagerUtils.getInstance().finishActivityClass(CustomizeActivity.class);
+                                    ActivityManagerUtils.getInstance().finishActivityClass(EmbroideryActivity.class);
+                                    ActivityManagerUtils.getInstance().finishActivityClass(CustomResultActivity.class);
+                                    ActivityManagerUtils.getInstance().finishActivityClass(ShoppingCartActivity.class);
 
                                     payOrderUtil = new PayOrderUtils(ConfirmOrderActivity.this,
                                             getTotalPrice(), orderId);
@@ -542,7 +539,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 
                                 }
                             } else {
-                                Toast.makeText(ConfirmOrderActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(ConfirmOrderActivity.this, msg);
                             }
 
                         } catch (JSONException e) {

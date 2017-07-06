@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -59,14 +61,12 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_login)
     ImageView imgLogin;
 
-
     //验证码token
     private String msgToken;
     //登录返回token
     private String loginToken;
     //重发验证码时间
     private int i = 30;
-
     //是否输入手机号
     private boolean isPhone;
     //是否输入验证码
@@ -233,9 +233,10 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void confirmLogin() {
+//        String manufacturer = Build.MODEL;
         if (!PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim()) ||
                 TextUtils.isEmpty(etUserPassword.getText().toString().trim())) {
-            Toast.makeText(this, "手机号或验证码有误，请重新输入", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "手机号或验证码有误，请重新输入");
         } else {
             if (!TextUtils.isEmpty(msgToken)) {
                 Map<String, String> map = new HashMap<>();
@@ -272,8 +273,7 @@ public class LoginActivity extends BaseActivity {
                                         MobclickAgent.onEvent(LoginActivity.this, "log_in");
                                         finish();
                                     }
-                                    Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),
-                                            Toast.LENGTH_SHORT).show();
+                                    ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -325,7 +325,7 @@ public class LoginActivity extends BaseActivity {
             tvVerificationCode.setClickable(false);
             new Thread(myRunnable).start();
         } else {
-            Toast.makeText(this, "手机号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "手机号输入有误，请重新输入");
         }
     }
 
@@ -371,8 +371,7 @@ public class LoginActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             int code = jsonObject.getInt("code");
                             if (code == 1) {
-                                Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 msgToken = jsonObject1.getString("token");
                                 SharedPreferencesUtils.saveString(LoginActivity.this, "msg_token", msgToken);

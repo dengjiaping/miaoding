@@ -49,6 +49,7 @@ import cn.cloudworkshop.miaoding.utils.CubePageTransformer;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -383,7 +384,7 @@ public class MemberCenterActivity extends BaseActivity {
         if (Arrays.asList(split).contains(dataList.get(currentTab).get(currentGift).getId() + "")) {
             submitData(url);
         } else {
-            Toast.makeText(this, "您的会员等级未达到领取要求", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "您的会员等级未达到领取要求");
             mPopupWindow.dismiss();
         }
     }
@@ -408,7 +409,7 @@ public class MemberCenterActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String msg = jsonObject.getString("msg");
-                            Toast.makeText(MemberCenterActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(MemberCenterActivity.this, msg);
                             mPopupWindow.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -2,10 +2,12 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,6 +27,8 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 public class DesignerStoryFragment extends BaseFragment {
     @BindView(R.id.img_designer_story)
     ImageView imgDesignerStory;
+    @BindView(R.id.tv_no_story)
+    TextView tvNoStory;
     private Unbinder unbinder;
 
     private String imgStory;
@@ -40,10 +44,14 @@ public class DesignerStoryFragment extends BaseFragment {
     }
 
     private void initView() {
-        Glide.with(getActivity())
-                .load(Constant.HOST + imgStory)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgDesignerStory);
+        if (!TextUtils.isEmpty(imgStory)) {
+            Glide.with(getActivity())
+                    .load(Constant.HOST + imgStory)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imgDesignerStory);
+        } else {
+            tvNoStory.setVisibility(View.VISIBLE);
+        }
 
     }
 

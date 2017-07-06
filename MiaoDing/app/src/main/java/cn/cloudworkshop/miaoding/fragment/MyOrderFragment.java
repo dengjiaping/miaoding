@@ -56,6 +56,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -257,8 +258,7 @@ public class MyOrderFragment extends BaseFragment {
                                 cancelOrder(dataBean.getId());
                                 break;
                             case 2:
-                                Toast.makeText(getActivity(), "已提醒商家发货，请耐心等待",
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(getActivity(), "已提醒商家发货，请耐心等待");
                                 break;
                             case 3:
                             case 4:
@@ -394,8 +394,7 @@ public class MyOrderFragment extends BaseFragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(getActivity(), "trade_success");
-                                Toast.makeText(getActivity(), "交易完成，祝您购物愉快！",
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(getActivity(), "交易完成，祝您购物愉快！");
                                 onStateChangeListener.onStateChange(0);
                             }
                         });
@@ -449,7 +448,7 @@ public class MyOrderFragment extends BaseFragment {
                                         if (dataList.size() == 0 && orderStatus == 0) {
                                             llNullOrder.setVisibility(View.VISIBLE);
                                         }
-                                        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                                        ToastUtils.showToast(getActivity(), "删除成功");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -497,7 +496,7 @@ public class MyOrderFragment extends BaseFragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 MobclickAgent.onEvent(getActivity(), "cancel_order");
-                                Toast.makeText(getActivity(), "取消成功", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(getActivity(), "取消成功");
                                 onStateChangeListener.onStateChange(0);
                             }
                         });

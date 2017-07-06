@@ -42,6 +42,7 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SerializableMap;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -446,8 +447,7 @@ public class TailorActivity extends BaseActivity {
                                     imgTailorIcon.setVisibility(View.VISIBLE);
                                     animation.start();
                                     rvTailorButton.setVisibility(View.GONE);
-                                    Toast.makeText(TailorActivity.this, "您选择了法式袖，请挑选扣子",
-                                            Toast.LENGTH_SHORT).show();
+                                    ToastUtils.showToast(TailorActivity.this, "您选择了法式袖，请挑选扣子");
                                 } else {
                                     imgTailorIcon.setVisibility(View.GONE);
                                     animation.stop();
@@ -473,8 +473,7 @@ public class TailorActivity extends BaseActivity {
                                 break;
                         }
 
-                        Toast.makeText(TailorActivity.this, nameList.get(index).get(position),
-                                Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(TailorActivity.this, nameList.get(index).get(position));
 
                         if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
                             imgLargeMaterial.setVisibility(View.GONE);
@@ -665,7 +664,7 @@ public class TailorActivity extends BaseActivity {
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(backImg);
                     if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("法式")) {
-                        Toast.makeText(this, "您选择了法式袖，请挑选扣子", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(this, "您选择了法式袖，请挑选扣子");
                         imgTailorIcon.setVisibility(View.VISIBLE);
                         rvTailorButton.setVisibility(View.GONE);
                         animation.start();
@@ -952,8 +951,8 @@ public class TailorActivity extends BaseActivity {
                     imgLargeMaterial.setVisibility(View.GONE);
                 }
 
-                Toast.makeText(TailorActivity.this, dataBean.getSpec_list().get(index).getList()
-                        .get(itemIndex).getChild_list().get(position).getName(), Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(TailorActivity.this, dataBean.getSpec_list().get(index).getList()
+                        .get(itemIndex).getChild_list().get(position).getName());
                 buttonName = dataBean.getSpec_list().get(index).getList().get(itemIndex)
                         .getChild_list().get(position).getName();
 

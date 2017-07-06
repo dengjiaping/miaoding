@@ -272,7 +272,7 @@
                     android:textSize="16sp"/>
 
                 <TextView
-                    android:id="@+id/tv_goods_total_price"
+                    android:id="@+id/tv_need_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"

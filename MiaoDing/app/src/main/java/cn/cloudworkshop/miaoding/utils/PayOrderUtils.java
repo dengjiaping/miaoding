@@ -90,21 +90,21 @@ public class PayOrderUtils {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        Toast.makeText(context, "支付成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(context, "支付成功");
                         MobclickAgent.onEvent(context, "pay");
 
                         Intent intent = new Intent(context, AppointmentActivity.class);
-                        intent.putExtra("content", "pay_success");
-                        intent.putExtra("order_id", orderId);
+                        intent.putExtra("type", "pay_success");
+                        intent.putExtra("order_id", orderId.split(",")[0]);
 
                         ((Activity) context).finish();
                         context.startActivity(intent);
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        Toast.makeText(context, "支付失败", Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(context, "支付失败");
                         Intent intent = new Intent(context, AppointmentActivity.class);
-                        intent.putExtra("content", "pay_fail");
-                        intent.putExtra("order_id", orderId);
+                        intent.putExtra("type", "pay_fail");
+                        intent.putExtra("order_id", orderId.split(",")[0]);
                         ((Activity) context).finish();
                         context.startActivity(intent);
                     }
@@ -137,22 +137,14 @@ public class PayOrderUtils {
             @Override
             public void onDismiss() {
                 DisplayUtils.setBackgroundAlpha(context, false);
-                if (CustomizeActivity.instance != null) {
-                    CustomizeActivity.instance.finish();
-                }
-                if (EmbroideryActivity.instance != null) {
-                    EmbroideryActivity.instance.finish();
-                }
 
-                if (CustomResultActivity.instance != null) {
-                    CustomResultActivity.instance.finish();
-                }
-                if (ShoppingCartActivity.instance != null) {
-                    ShoppingCartActivity.instance.finish();
-                }
+                ActivityManagerUtils.getInstance().finishActivityClass(CustomizeActivity.class);
+                ActivityManagerUtils.getInstance().finishActivityClass(EmbroideryActivity.class);
+                ActivityManagerUtils.getInstance().finishActivityClass(CustomResultActivity.class);
+                ActivityManagerUtils.getInstance().finishActivityClass(ShoppingCartActivity.class);
 
                 if (!isConfirmBuy) {
-                    Toast.makeText(context, "取消支付", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(context, "取消支付");
                     Intent intent = new Intent(context,
                             MyOrderActivity.class);
                     intent.putExtra("page", 1);
@@ -235,10 +227,10 @@ public class PayOrderUtils {
                         WeChatPayBean weChatPay = GsonUtils.jsonToBean(response, WeChatPayBean.class);
                         if (weChatPay.getCode() == 1) {
                             if (!api.isWXAppInstalled()) {
-                                Toast.makeText(context, "没有安装微信", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(context, "没有安装微信");
                             }
                             if (!api.isWXAppSupportAPI()) {
-                                Toast.makeText(context, "当前版本不支持支付功能", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(context, "当前版本不支持支付功能");
                             }
                             PayReq req = new PayReq();
                             req.appId = Constant.APP_ID;
@@ -255,7 +247,7 @@ public class PayOrderUtils {
                             intent.putExtra("page", 0);
                             ((Activity) context).finish();
                             context.startActivity(intent);
-                            Toast.makeText(context, weChatPay.getMsg(), Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(context, weChatPay.getMsg());
                         }
 
                     }

@@ -58,6 +58,7 @@ import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
@@ -516,8 +517,7 @@ public class WorksDetailActivity extends BaseActivity {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     currentColor = holder.getAdapterPosition();
-                    Toast.makeText(WorksDetailActivity.this, colorList.get(position).getColor_name(),
-                            Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(WorksDetailActivity.this, colorList.get(position).getColor_name());
                     reSelectWorks();
                 }
 
@@ -646,8 +646,7 @@ public class WorksDetailActivity extends BaseActivity {
                                 startActivity(intent);
 
                             } else if (index == 2) {
-                                Toast.makeText(WorksDetailActivity.this, "加入购物袋成功",
-                                        Toast.LENGTH_SHORT).show();
+                                ToastUtils.showToast(WorksDetailActivity.this, "加入购物袋成功");
                                 mPopupWindow.dismiss();
                             }
                         }
@@ -698,13 +697,11 @@ public class WorksDetailActivity extends BaseActivity {
                                 case "成功":
                                     MobclickAgent.onEvent(WorksDetailActivity.this, "collection");
                                     imgAddLike.setImageResource(R.mipmap.icon_add_like);
-                                    Toast.makeText(WorksDetailActivity.this,
-                                            "收藏成功", Toast.LENGTH_SHORT).show();
+                                    ToastUtils.showToast(WorksDetailActivity.this, "收藏成功");
                                     break;
                                 case "取消成功":
                                     imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
-                                    Toast.makeText(WorksDetailActivity.this,
-                                            "已取消收藏", Toast.LENGTH_SHORT).show();
+                                    ToastUtils.showToast(WorksDetailActivity.this, "已取消收藏");
 
                                     break;
 

@@ -243,7 +243,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                             Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
                             intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
-                            intent.putExtra("content", "banner");
+                            intent.putExtra("content", "");
                             intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
                             intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
                             startActivity(intent);
@@ -368,7 +368,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                     Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
                     intent.putExtra("url", dataList.get(position).link);
                     intent.putExtra("title", dataList.get(position).title);
-                    intent.putExtra("content", dataList.get(position).type);
+                    intent.putExtra("content", "");
                     intent.putExtra("img_url", dataList.get(position).img);
                     intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
                             dataList.get(position).id);

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginBottom="8dp"
+              android:layout_marginBottom="15dp"
               android:layout_marginLeft="15dp"
               android:orientation="horizontal">
 
@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textColor="@color/dark_gray_22"
-        android:textSize="15sp"/>
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginRight="12dp"/>
 
     <TextView
         android:id="@+id/tv_tailor_item"
@@ -20,6 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textColor="@color/light_gray_3d"
-        android:textSize="15sp"/>
+        android:textSize="13sp"/>
 
 </LinearLayout>

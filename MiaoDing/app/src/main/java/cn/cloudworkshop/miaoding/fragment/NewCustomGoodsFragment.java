@@ -52,6 +52,7 @@ import cn.cloudworkshop.miaoding.ui.ScanCodeActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.JazzyViewPager;
 import okhttp3.Call;
 
@@ -212,10 +213,10 @@ public class NewCustomGoodsFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == listBean.getData().getData().size() - 1) {
-                    Toast.makeText(getActivity(), "已经是最后一页了", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(getActivity(), "已经是最后一页了");
                 }
                 if (position == 0) {
-                    Toast.makeText(getActivity(), "已经是第一页了", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(getActivity(), "已经是第一页了");
                 }
             }
 

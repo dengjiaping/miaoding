@@ -22,6 +22,7 @@ import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -110,7 +111,7 @@ public class JoinUsActivity extends BaseActivity {
                         if (isApply == 0) {
                             startActivity(new Intent(this, ApplyJoinActivity.class));
                         } else {
-                            Toast.makeText(this, "您已经提交申请，请耐心等待", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(this, "您已经提交申请，请耐心等待");
                         }
                     }
                 } else {

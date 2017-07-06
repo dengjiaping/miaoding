@@ -23,6 +23,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.Ruler;
 import cn.cloudworkshop.miaoding.view.WheelMenu;
 import cn.qqtheme.framework.picker.NumberPicker;
@@ -104,7 +105,7 @@ public class DressingTestActivity extends BaseActivity {
             case R.id.tv_header_next:
                 if (TextUtils.isEmpty(tvUserHeight.getText().toString().trim())
                         || TextUtils.isEmpty(tvUserWeight.getText().toString().trim())) {
-                    Toast.makeText(DressingTestActivity.this, "请完善身高体重", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(DressingTestActivity.this, "请完善身高体重");
                 } else {
                     selectAge();
                 }

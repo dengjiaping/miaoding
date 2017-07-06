@@ -10,6 +10,8 @@ package cn.cloudworkshop.miaoding.wxapi;
 
 import android.content.Intent;
 import android.widget.Toast;
+
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
 import cn.sharesdk.wechat.utils.WechatHandlerActivity;
@@ -45,7 +47,7 @@ public class WXEntryActivity extends WechatHandlerActivity {
 		if (msg != null && msg.mediaObject != null
 				&& (msg.mediaObject instanceof WXAppExtendObject)) {
 			WXAppExtendObject obj = (WXAppExtendObject) msg.mediaObject;
-			Toast.makeText(this, obj.extInfo, Toast.LENGTH_SHORT).show();
+			ToastUtils.showToast(this, obj.extInfo);
 		}
 	}
 

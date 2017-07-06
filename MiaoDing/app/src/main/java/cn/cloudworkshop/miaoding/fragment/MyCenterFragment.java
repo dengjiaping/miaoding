@@ -48,6 +48,7 @@ import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.BadgeView;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -139,6 +140,7 @@ public class MyCenterFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
+//                        LogUtils.log(e.toString());
                     }
 
                     @Override
@@ -218,7 +220,7 @@ public class MyCenterFragment extends BaseFragment {
                     case 4:
                         if (userInfoBean.getData().getIs_yuyue() == 1) {
                             Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-                            intent.putExtra("content", "appoint_measure");
+                            intent.putExtra("type", "appoint_measure");
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(getActivity(), ApplyMeasureActivity.class);

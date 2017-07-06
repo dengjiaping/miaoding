@@ -29,15 +29,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
@@ -57,6 +61,7 @@ import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -77,6 +82,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private DownloadService service;
     //退出应用
     private long exitTime = 0;
+    //是否检测更新
+    private boolean isCheckUpdate = true;
 
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private AppIconBean iconBean;
@@ -185,7 +192,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 检测更新
      */
     private void checkUpdate() {
-        if (MyApplication.isCheckUpdate) {
+        if (isCheckUpdate) {
             OkHttpUtils.get()
                     .url(Constant.APP_INDEX)
                     .build()
@@ -210,7 +217,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 MyApplication.updateContent = appIndexBean.getData().getVersion()
                                         .getAndroid().getRemark();
                                 //取消检测更新
-                                MyApplication.isCheckUpdate = false;
+                                isCheckUpdate = false;
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
                                         R.style.AlertDialog);
                                 dialog.setTitle("检测到新版本，请更新");
@@ -226,7 +233,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 dialog.setNegativeButton("下次再说", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        MyApplication.isCheckUpdate = false;
                                         dialog.dismiss();
                                     }
                                 });
@@ -424,7 +430,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(getApplicationContext(), "再按一次退出程序");
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();

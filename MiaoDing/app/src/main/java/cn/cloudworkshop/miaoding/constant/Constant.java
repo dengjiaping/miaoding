@@ -42,7 +42,7 @@ public class Constant {
     public static final String USER_INFO = HOST + INDEX + "user_info";
     public static final String ADD_CART = HOST + INDEX + "add_car";
     public static final String CONFIRM_ORDER = HOST + INDEX + "buy";
-    public static final String CONFIRM_BUY = HOST + INDEX + "add_order";
+    public static final String CONFIRM_BUY = HOST + INDEX + "add_order_v4";
     public static final String CHANGE_INFO = HOST + INDEX + "change_user_info";
     public static final String SHOPPING_CART = HOST + INDEX + "my_car";
     public static final String CART_COUNT = HOST + INDEX + "change_car_num";
@@ -62,9 +62,9 @@ public class Constant {
     public static final String QUESTION_LIST = HOST + INDEX + "help_list";
     public static final String QUESTION_DETAIL = HOST + INDEX + "help_detail";
     public static final String APP_INDEX = HOST + "/index.php/index/sys/index";
-    public static final String ALI_PAY = HOST + INDEX + "mk_pay_order";
+    public static final String ALI_PAY = HOST + INDEX + "mk_pay_order_v4";
     public static final String LOGISTICS_TRACK = HOST + INDEX + "kdcx";
-    public static final String WE_CHAT_PAY = HOST + "/index.php/index/wxpay/mk_pay_order";
+    public static final String WE_CHAT_PAY = HOST + "/index.php/index/wxpay/mk_pay_order_v4";
     public static final String INVITE_FRIEND = HOST + INDEX + "invite";
     public static final String MY_COUPON = HOST + "/index.php/index/ticket/my_ticket";
     public static final String EXCHANGE_COUPON = HOST + "/index.php/index/ticket/exchange_ticket";

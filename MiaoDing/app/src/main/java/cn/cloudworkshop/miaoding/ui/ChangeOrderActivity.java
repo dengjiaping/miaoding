@@ -1,13 +1,10 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -51,6 +48,7 @@ import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import okhttp3.Call;
@@ -334,7 +332,7 @@ public class ChangeOrderActivity extends BaseActivity {
                 || TextUtils.isEmpty(etInputName.getText().toString().trim())
                 || !PhoneNumberUtils.judgePhoneNumber(etInputTel.getText().toString().trim())
                 || selectedPhotos.size() == 0) {
-            Toast.makeText(this, "请按要求填写所有信息", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "请按要求填写所有信息");
         } else {
             loadingView.smoothToShow();
             tvNextStep.setEnabled(false);
@@ -384,7 +382,7 @@ public class ChangeOrderActivity extends BaseActivity {
             llSelectGoods.setVisibility(View.GONE);
             svChangeOrder.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(this, "请选择商品", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "请选择商品");
         }
     }
 

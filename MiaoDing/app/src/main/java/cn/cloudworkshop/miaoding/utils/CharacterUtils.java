@@ -18,7 +18,7 @@ public class CharacterUtils {
         if (charaString.matches("^[a-zA-Z]*")){
             return true;
         }else {
-            Toast.makeText(activity, "请输入英文", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(activity, "请输入英文");
             return false;
         }
     }
@@ -35,7 +35,7 @@ public class CharacterUtils {
         {
             if(!isChinese(cTemp[i]))
             {
-                Toast.makeText(activity, "请输入中文", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(activity, "请输入中文");
                 res=false;
                 break;
             }

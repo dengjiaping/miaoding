@@ -37,6 +37,7 @@ import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import okhttp3.Call;
@@ -123,7 +124,7 @@ public class ApplyJoinActivity extends BaseActivity {
                             MobclickAgent.onEvent(ApplyJoinActivity.this, "apply_join");
                             loadingView.smoothToHide();
                             Intent intent = new Intent(ApplyJoinActivity.this, AppointmentActivity.class);
-                            intent.putExtra("content", "apply_join");
+                            intent.putExtra("type", "apply_join");
                             finish();
                             startActivity(intent);
                         }
@@ -209,7 +210,7 @@ public class ApplyJoinActivity extends BaseActivity {
                 || !PhoneNumberUtils.judgePhoneNumber(etApplyPhone.getText().toString().trim())
                 || selectedPhotos1.size() == 0
                 || selectedPhotos2.size() == 0) {
-            Toast.makeText(this, "请按要求填写个人信息", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, "请按要求填写个人信息");
         } else {
             loadingView.smoothToShow();
             tvSubmitApply.setEnabled(false);

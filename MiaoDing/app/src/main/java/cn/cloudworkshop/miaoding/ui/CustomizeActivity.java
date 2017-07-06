@@ -39,6 +39,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.NewTailorBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -114,8 +115,6 @@ public class CustomizeActivity extends BaseActivity {
     //选择部件
     private SparseIntArray itemArray = new SparseIntArray();
 
-    public static Activity instance;
-
     private long enterTime;
 
 
@@ -124,7 +123,7 @@ public class CustomizeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customize);
         ButterKnife.bind(this);
-        instance = this;
+        ActivityManagerUtils.getInstance().addActivity(this);
         getData();
         initData();
 

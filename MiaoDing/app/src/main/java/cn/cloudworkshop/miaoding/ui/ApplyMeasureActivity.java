@@ -60,6 +60,7 @@ import cn.cloudworkshop.miaoding.bean.LocationBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -318,7 +319,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                 String address = etCurrentAddress.getText().toString().trim();
                 //2.判断用户是否输入为空
                 if (TextUtils.isEmpty(address)) {
-                    Toast.makeText(this, "请输入查询条件", Toast.LENGTH_LONG).show();
+                    ToastUtils.showToast(this, "请输入查询条件");
                 } else {
                     //3.不为空进行搜索
                     search(address);
@@ -326,7 +327,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                 break;
             case R.id.tv_submit_appointment:
                 if (TextUtils.isEmpty(etCurrentAddress.getText().toString().trim())) {
-                    Toast.makeText(this, "请输入地址", Toast.LENGTH_LONG).show();
+                    ToastUtils.showToast(this, "请输入地址");
                     ActivityCompat.requestPermissions(this, permissionStr, 1);
                 } else {
                     showPopupWindow();
@@ -370,7 +371,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                         }
                         tvSubmit.setEnabled(true);
                         Intent intent = new Intent(ApplyMeasureActivity.this, AppointmentActivity.class);
-                        intent.putExtra("content", "appoint_measure");
+                        intent.putExtra("type", "appoint_measure");
                         finish();
                         startActivity(intent);
 

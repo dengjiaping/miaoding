@@ -18,6 +18,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -59,18 +60,18 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     errCode = "支付取消";
                     break;
             }
-            Toast.makeText(this, errCode, Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, errCode);
             if (resp.errCode == 0) {
                 MobclickAgent.onEvent(this, "pay");
                 Intent intent = new Intent(this, AppointmentActivity.class);
-                intent.putExtra("content", "pay_success");
-                intent.putExtra("order_id", MyApplication.orderId);
+                intent.putExtra("type", "pay_success");
+                intent.putExtra("order_id", MyApplication.orderId.split(",")[0]);
                 finish();
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, AppointmentActivity.class);
-                intent.putExtra("content", "pay_fail");
-                intent.putExtra("order_id", MyApplication.orderId);
+                intent.putExtra("type", "pay_fail");
+                intent.putExtra("order_id", MyApplication.orderId.split(",")[0]);
                 finish();
                 startActivity(intent);
             }

@@ -116,7 +116,7 @@
             android:drawableLeft="@mipmap/icon_default_address"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:text="设为默认地址"
+            android:text="默认"
             android:textColor="@color/light_gray_85"
             android:textSize="10sp"/>
 

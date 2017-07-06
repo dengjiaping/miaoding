@@ -185,7 +185,7 @@
                 <TextView
                     android:layout_width="90dp"
                     android:layout_height="wrap_content"
-                    android:text="优  惠  券："
+                    android:text="优        惠："
                     android:textColor="@color/dark_gray_22"
                     android:textSize="14sp"/>
 

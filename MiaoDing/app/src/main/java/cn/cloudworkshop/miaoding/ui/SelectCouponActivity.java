@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -28,16 +27,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.SelectCouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -67,7 +65,7 @@ public class SelectCouponActivity extends BaseActivity {
     //优惠券数量
     private int couponNum;
     private List<SelectCouponBean.DataBean.UsableBean> usableList = new ArrayList<>();
-    private List<SelectCouponBean.DataBean.DisableBean> disableList = new ArrayList<>();
+    private List<SelectCouponBean.DataBean.DisableBean> uselessList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +106,7 @@ public class SelectCouponActivity extends BaseActivity {
 
                         if (couponBean.getData().getDisable() != null && couponBean.getData()
                                 .getDisable().size() > 0) {
-                            disableList.addAll(couponBean.getData().getDisable());
+                            uselessList.addAll(couponBean.getData().getDisable());
                             tvDisableCoupon.setVisibility(View.VISIBLE);
                         }
                         couponNum = usableList.size();
@@ -160,12 +158,9 @@ public class SelectCouponActivity extends BaseActivity {
                 tvMoney.setText("¥" + (int) Float.parseFloat(usableBean.getMoney()));
                 holder.setText(R.id.tv_coupon_range, usableBean.getTitle());
                 holder.setText(R.id.tv_coupon_discount, usableBean.getSub_title());
-                StringBuilder sb = new StringBuilder();
-                sb.append("有效期：")
-                        .append(DateUtils.getDate("yyyy-MM-dd", usableBean.getS_time()))
-                        .append(" 至 ")
-                        .append(DateUtils.getDate("yyyy-MM-dd", usableBean.getE_time()));
-                holder.setText(R.id.tv_coupon_term, sb.toString());
+                String term = "有效期：" + DateUtils.getDate("yyyy-MM-dd", usableBean.getS_time())
+                        + " 至 " + DateUtils.getDate("yyyy-MM-dd", usableBean.getE_time());
+                holder.setText(R.id.tv_coupon_term, term);
 
             }
 
@@ -200,8 +195,8 @@ public class SelectCouponActivity extends BaseActivity {
         MyLinearLayoutManager linearLayoutManager2 = new MyLinearLayoutManager(this);
         linearLayoutManager2.setScrollEnabled(false);
         rvUnavailable.setLayoutManager(linearLayoutManager2);
-        CommonAdapter<SelectCouponBean.DataBean.DisableBean> disableAdapter = new CommonAdapter
-                <SelectCouponBean.DataBean.DisableBean>(this, R.layout.listitem_coupon, disableList) {
+        CommonAdapter<SelectCouponBean.DataBean.DisableBean> uselessAdapter = new CommonAdapter
+                <SelectCouponBean.DataBean.DisableBean>(this, R.layout.listitem_coupon, uselessList) {
             @Override
             protected void convert(ViewHolder holder,
                                    SelectCouponBean.DataBean.DisableBean disableBean, int position) {
@@ -211,17 +206,14 @@ public class SelectCouponActivity extends BaseActivity {
                 tvMoney.setText("¥" + (int) Float.parseFloat(disableBean.getMoney()));
                 holder.setText(R.id.tv_coupon_range, disableBean.getTitle());
                 holder.setText(R.id.tv_coupon_discount, disableBean.getSub_title());
-                StringBuilder sb = new StringBuilder();
-                sb.append("有效期：")
-                        .append(DateUtils.getDate("yyyy-MM-dd", disableBean.getS_time()))
-                        .append(" 至 ")
-                        .append(DateUtils.getDate("yyyy-MM-dd", disableBean.getE_time()));
-                holder.setText(R.id.tv_coupon_term, sb.toString());
+                String term = "有效期：" + DateUtils.getDate("yyyy-MM-dd", disableBean.getS_time())
+                        + " 至 " + DateUtils.getDate("yyyy-MM-dd", disableBean.getE_time());
+                holder.setText(R.id.tv_coupon_term, term);
 
             }
         };
 
-        rvUnavailable.setAdapter(disableAdapter);
+        rvUnavailable.setAdapter(uselessAdapter);
 
     }
 
@@ -272,10 +264,10 @@ public class SelectCouponActivity extends BaseActivity {
                             String msg = jsonObject.getString("msg");
                             if (code == 1) {
                                 usableList.clear();
-                                disableList.clear();
+                                uselessList.clear();
                                 initData();
                             }
-                            Toast.makeText(SelectCouponActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            ToastUtils.showToast(SelectCouponActivity.this, msg);
                             etCouponCode.setText("");
 
                         } catch (JSONException e) {
