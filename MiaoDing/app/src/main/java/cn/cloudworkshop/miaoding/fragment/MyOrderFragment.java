@@ -136,7 +136,6 @@ public class MyOrderFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
-                        LogUtils.log(e.toString());
                     }
 
                     @Override
@@ -148,7 +147,7 @@ public class MyOrderFragment extends BaseFragment {
                             }
                             dataList.addAll(orderInfoBean.getData().getData());
                             if (isRefresh || isLoadMore) {
-                                rvGoods.refreshComplete();
+                                rvGoods.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -159,7 +158,7 @@ public class MyOrderFragment extends BaseFragment {
                             rvGoods.setVisibility(View.VISIBLE);
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getActivity(),
-                                    rvGoods, 0, LoadingFooter.State.TheEnd, null);
+                                    rvGoods, 0, LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 rvGoods.setVisibility(View.GONE);
                                 llNullOrder.setVisibility(View.VISIBLE);
@@ -358,10 +357,6 @@ public class MyOrderFragment extends BaseFragment {
                 startActivity(intent);
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
 
 

@@ -24,6 +24,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
+import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -123,7 +124,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                             }
 
                             if (isLoadMore || isRefresh) {
-                                mRecyclerView.refreshComplete();
+                                mRecyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
 
@@ -134,7 +135,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getActivity(),
-                                    mRecyclerView, 0, LoadingFooter.State.TheEnd, null);
+                                    mRecyclerView, 0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });
@@ -419,8 +420,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
                     @Override
                     public void onResponse(String response, int id) {
-
-                        LogUtils.log("homepage");
                     }
                 });
 

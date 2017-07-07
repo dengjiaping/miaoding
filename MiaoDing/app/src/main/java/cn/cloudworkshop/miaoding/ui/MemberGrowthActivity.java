@@ -100,7 +100,7 @@ public class MemberGrowthActivity extends BaseActivity {
                             }
                             dataList.addAll(bean.getData());
                             if (isLoadMore || isRefresh) {
-                                rvMemberGrow.refreshComplete();
+                                rvMemberGrow.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -109,7 +109,7 @@ public class MemberGrowthActivity extends BaseActivity {
                             isRefresh = false;
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(MemberGrowthActivity.this,
-                                    rvMemberGrow, 0, LoadingFooter.State.TheEnd, null);
+                                    rvMemberGrow, 0, LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 tvNullGrowth.setVisibility(View.VISIBLE);
                             }

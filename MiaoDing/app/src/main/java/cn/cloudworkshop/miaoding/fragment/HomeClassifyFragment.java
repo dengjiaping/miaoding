@@ -101,7 +101,7 @@ public class HomeClassifyFragment extends BaseFragment {
                             }
                             itemList.addAll(classifyBean.getData().getData());
                             if (isLoadMore || isRefresh) {
-                                rvRecommend.refreshComplete();
+                                rvRecommend.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -111,7 +111,7 @@ public class HomeClassifyFragment extends BaseFragment {
 
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
-                                    rvRecommend, 0, LoadingFooter.State.TheEnd, null);
+                                    rvRecommend, 0, LoadingFooter.State.Normal, null);
                         }
                     }
                 });
@@ -181,10 +181,6 @@ public class HomeClassifyFragment extends BaseFragment {
                 startActivity(intent);
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
 
 
@@ -225,7 +221,6 @@ public class HomeClassifyFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.log("homepage");
                     }
                 });
 

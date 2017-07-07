@@ -129,7 +129,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                             }
                             dataList.addAll(address.getData());
                             if (isRefresh || isLoadMore) {
-                                recyclerView.refreshComplete();
+                                recyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
 
                             } else {
@@ -141,7 +141,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                             recyclerView.setVisibility(View.VISIBLE);
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(DeliveryAddressActivity.this,
-                                    recyclerView, 0, LoadingFooter.State.TheEnd, null);
+                                    recyclerView, 0, LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 recyclerView.setVisibility(View.GONE);
                                 llNoAddress.setVisibility(View.VISIBLE);
@@ -256,10 +256,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                 }
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
 
 

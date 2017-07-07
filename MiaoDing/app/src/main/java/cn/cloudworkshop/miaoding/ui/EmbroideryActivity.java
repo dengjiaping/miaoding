@@ -39,6 +39,7 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.CharacterUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -310,10 +311,10 @@ public class EmbroideryActivity extends BaseActivity {
 
     }
 
-    private InputFilter filter=new InputFilter() {
+    private InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            if (source.equals(" ") || source.toString().contentEquals("\n")) return "";
             else return null;
         }
     };
@@ -325,12 +326,12 @@ public class EmbroideryActivity extends BaseActivity {
     private void judgeInputWords() {
         if (etEmbroideryContent.getText().toString().trim().length() > 0) {
             //1：英文
-            if (embroideryBean.getData().getFont().get(flowerFont).getIs_english() == 1){
+            if (embroideryBean.getData().getFont().get(flowerFont).getIs_english() == 1) {
                 if (!CharacterUtils.inputEnglish(EmbroideryActivity.this,
                         etEmbroideryContent.getText().toString().trim())) {
                     etEmbroideryContent.setText(null);
                 }
-            }else {
+            } else {
                 if (!CharacterUtils.inputChinese(EmbroideryActivity.this,
                         etEmbroideryContent.getText().toString().trim())) {
                     etEmbroideryContent.setText(null);
@@ -381,35 +382,27 @@ public class EmbroideryActivity extends BaseActivity {
     }
 
 
-
-
     /**
      * 确认购买
-     * @param isEmbroidery    是否绣花
+     *
+     * @param isEmbroidery 是否绣花
      */
     private void confirmTailor(boolean isEmbroidery) {
-        TailorItemBean tailorBean1 = (TailorItemBean) getIntent().getExtras().getSerializable("tailor");
+
 
         Intent intent = new Intent(this, CustomResultActivity.class);
         Bundle bundle = new Bundle();
-        if (isEmbroidery){
+        if (isEmbroidery) {
             //个性绣花
-            StringBuilder sb = new StringBuilder();
-            sb.append(tailorBean.getSpec_content())
-                    .append("绣花位置:")
-                    .append(embroideryBean.getData().getPosition().get(flowerPosition).getName())
-                    .append(";绣花颜色:")
-                    .append(embroideryBean.getData().getColor().get(flowerColor).getName())
-                    .append(";绣花字体:")
-                    .append(embroideryBean.getData().getFont().get(flowerFont).getName())
-                    .append(";绣花内容:")
-                    .append( etEmbroideryContent.getText().toString())
-                    .append(";");
-            tailorBean1.setSpec_content(sb.toString());
+            String sb = "位置:" + embroideryBean.getData().getPosition().get(flowerPosition).getName()
+                    + ";颜色:" + embroideryBean.getData().getColor().get(flowerColor).getName()
+                    + ";字体:" + embroideryBean.getData().getFont().get(flowerFont).getName()
+                    + ";文字:" + etEmbroideryContent.getText().toString() + ";";
+            tailorBean.setDiy_contet(sb);
 
         }
 
-        bundle.putSerializable("tailor", tailorBean1);
+        bundle.putSerializable("tailor", tailorBean);
 
         intent.putExtras(bundle);
         startActivity(intent);

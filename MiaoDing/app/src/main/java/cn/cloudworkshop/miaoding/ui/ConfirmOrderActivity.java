@@ -659,7 +659,6 @@ public class ConfirmOrderActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response, int id) {
-                            LogUtils.log("goods:" + response);
                         }
                     });
         }

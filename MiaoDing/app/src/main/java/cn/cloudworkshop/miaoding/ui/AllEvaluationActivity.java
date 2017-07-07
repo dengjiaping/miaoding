@@ -98,7 +98,7 @@ public class AllEvaluationActivity extends BaseActivity {
                             }
                             dataList.addAll(commentBean.getList().getData());
                             if (isLoadMore || isRefresh) {
-                                rvComment.refreshComplete();
+                                rvComment.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -107,7 +107,7 @@ public class AllEvaluationActivity extends BaseActivity {
                             isLoadMore = false;
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(AllEvaluationActivity.this,
-                                    rvComment, 0, LoadingFooter.State.TheEnd, null);
+                                    rvComment, 0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });

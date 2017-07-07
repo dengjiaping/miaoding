@@ -29,7 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +42,7 @@ import cn.cloudworkshop.miaoding.bean.TailorInfoBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -112,7 +115,6 @@ public class CustomResultActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         tailorBean = (TailorItemBean) bundle.getSerializable("tailor");
-
         initView();
     }
 
@@ -123,7 +125,6 @@ public class CustomResultActivity extends BaseActivity {
     private void initView() {
 
         //部件图展示
-
         switch (tailorBean.getIs_scan()) {
             case 0:
                 for (int i = 0; i < tailorBean.getItemBean().size(); i++) {
@@ -259,10 +260,15 @@ public class CustomResultActivity extends BaseActivity {
         tvTailorPrice.setText("¥" + tailorBean.getPrice());
         rvTailorName.setFocusable(false);
 
-        List<TailorInfoBean> itemList = new ArrayList<>();
 
         if (!TextUtils.isEmpty(tailorBean.getSpec_content())) {
-            String[] typeStr = tailorBean.getSpec_content().split(";");
+            String customStr = tailorBean.getSpec_content();
+            if (!TextUtils.isEmpty(tailorBean.getDiy_contet())) {
+                customStr += tailorBean.getDiy_contet();
+            }
+
+            List<TailorInfoBean> itemList = new ArrayList<>();
+            String[] typeStr = customStr.split(";");
             for (int i = 0; i < typeStr.length; i++) {
                 String[] nameStr = typeStr[i].split(":");
                 TailorInfoBean tailorInfoBean = new TailorInfoBean();
@@ -270,6 +276,7 @@ public class CustomResultActivity extends BaseActivity {
                 tailorInfoBean.setName(nameStr[1]);
                 itemList.add(tailorInfoBean);
             }
+
 
             MyLinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(this);
             linearLayoutManager.setScrollEnabled(false);
@@ -312,21 +319,27 @@ public class CustomResultActivity extends BaseActivity {
      * 加入购物车
      */
     private void addToCart() {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", SharedPreferencesUtils.getString(this, "token"));
+        map.put("type", type + "");
+        map.put("price_id", tailorBean.getPrice_type());
+        map.put("goods_id", tailorBean.getId());
+        map.put("goods_type", "1");
+        map.put("price", tailorBean.getPrice());
+        map.put("goods_name", tailorBean.getGoods_name());
+        map.put("goods_thumb", tailorBean.getImg_url());
+        map.put("spec_ids", tailorBean.getSpec_ids());
+        map.put("spec_content", tailorBean.getSpec_content());
+        map.put("mianliao_id", tailorBean.getFabric_id());
+        map.put("banxing_id", tailorBean.getBanxing_id());
+        map.put("is_scan", tailorBean.getIs_scan() + "");
+        if (!TextUtils.isEmpty(tailorBean.getDiy_contet())) {
+            map.put("diy_content", tailorBean.getDiy_contet());
+        }
+
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
-                .addParams("type", type + "")
-                .addParams("price_id", tailorBean.getPrice_type())
-                .addParams("goods_id", tailorBean.getId())
-                .addParams("goods_type", "1")
-                .addParams("price", tailorBean.getPrice())
-                .addParams("goods_name", tailorBean.getGoods_name())
-                .addParams("goods_thumb", tailorBean.getImg_url())
-                .addParams("spec_ids", tailorBean.getSpec_ids())
-                .addParams("spec_content", tailorBean.getSpec_content())
-                .addParams("mianliao_id", tailorBean.getFabric_id())
-                .addParams("banxing_id", tailorBean.getBanxing_id())
-                .addParams("is_scan", tailorBean.getIs_scan() + "")
+                .params(map)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -343,7 +356,7 @@ public class CustomResultActivity extends BaseActivity {
                             if (cartId != null) {
                                 MobclickAgent.onEvent(CustomResultActivity.this, "add_cart");
                                 if (type == 2) {
-//                                    ToastUtils.showToast(CustomResultActivity.this, "加入购物袋成功");
+                                    ToastUtils.showToast(CustomResultActivity.this, "加入购物袋成功");
                                     aadCartAnim();
                                 } else if (type == 1) {
                                     Intent intent = new Intent(CustomResultActivity.this,
@@ -386,8 +399,8 @@ public class CustomResultActivity extends BaseActivity {
         final float[] mCurrentPosition = new float[2];
 
         //父布局的起始点坐标
-//        int[] parentLocation = new int[2];
-//        rlCustomResult.getLocationInWindow(parentLocation);
+        int[] parentLocation = new int[2];
+        rlCustomResult.getLocationInWindow(parentLocation);
 
         //商品图片的坐标
         int startLoc[] = new int[2];
@@ -398,12 +411,12 @@ public class CustomResultActivity extends BaseActivity {
         imgShoppingBag.getLocationInWindow(endLoc);
 
         //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
-        float startX = startLoc[0]+ tvAddBag.getWidth() / 3;
-        float startY = startLoc[1];
+        float startX = startLoc[0] - parentLocation[0]+ tvAddBag.getWidth() / 3;
+        float startY = startLoc[1]- parentLocation[1];
 
         //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的一半
-        float toX = endLoc[0]+ imgShoppingBag.getWidth() / 4;
-        float toY = endLoc[1]+ imgShoppingBag.getHeight() / 2;
+        float toX = endLoc[0] - parentLocation[0]+ imgShoppingBag.getWidth() / 4;
+        float toY = endLoc[1] - parentLocation[1]+ imgShoppingBag.getHeight() / 2;
 
         //3、计算中间动画的插值坐标（贝塞尔曲线）
         //开始绘制贝塞尔曲线

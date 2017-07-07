@@ -112,7 +112,7 @@ public class CollectionActivity extends BaseActivity {
                             }
                             itemList.addAll(collection.getData());
                             if (isLoadMore || isRefresh) {
-                                rvMyCollection.refreshComplete();
+                                rvMyCollection.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -124,7 +124,7 @@ public class CollectionActivity extends BaseActivity {
 
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(CollectionActivity.this,
-                                    rvMyCollection, 0, LoadingFooter.State.TheEnd, null);
+                                    rvMyCollection, 0, LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 rvMyCollection.setVisibility(View.GONE);
                                 llNullCollection.setVisibility(View.VISIBLE);
@@ -196,10 +196,6 @@ public class CollectionActivity extends BaseActivity {
                 startActivity(intent);
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-                cancelCollection(itemList.get(position).getId());
-            }
         });
 
 

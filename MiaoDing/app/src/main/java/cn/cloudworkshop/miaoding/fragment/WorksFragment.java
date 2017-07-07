@@ -94,7 +94,7 @@ public class WorksFragment extends BaseFragment {
                             }
                             worksList.addAll(worksBean.getList().getData());
                             if (isRefresh || isLoadMore) {
-                                rvWorks.refreshComplete();
+                                rvWorks.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -103,7 +103,7 @@ public class WorksFragment extends BaseFragment {
                             isLoadMore = false;
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
-                                    rvWorks, 0, LoadingFooter.State.TheEnd, null);
+                                    rvWorks, 0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });
@@ -139,10 +139,6 @@ public class WorksFragment extends BaseFragment {
                 }
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
 
         //刷新

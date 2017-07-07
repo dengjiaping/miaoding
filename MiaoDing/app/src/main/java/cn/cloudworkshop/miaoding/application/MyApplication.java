@@ -72,7 +72,6 @@ public class MyApplication extends Application {
     }
 
 
-
     /**
      * @return 七鱼配置
      */

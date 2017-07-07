@@ -21,6 +21,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -132,7 +133,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                             }
 
                             if (isLoadMore || isRefresh) {
-                                mRecyclerView.refreshComplete();
+                                mRecyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
 
@@ -143,7 +144,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
-                                    mRecyclerView, 0, LoadingFooter.State.TheEnd, null);
+                                    mRecyclerView, 0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });
@@ -162,10 +163,57 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         sectionedRecyclerViewAdapter.setSections(dataList);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
-        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
+
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
+//        mRecyclerView.setRefreshHeader(new IRefreshHeader() {
+//            @Override
+//            public void onReset() {
+//
+//            }
+//
+//            @Override
+//            public void onPrepare() {
+//
+//            }
+//
+//            @Override
+//            public void onRefreshing() {
+//
+//            }
+//
+//            @Override
+//            public void onMove(float offSet, float sumOffSet) {
+//
+//            }
+//
+//            @Override
+//            public boolean onRelease() {
+//                return false;
+//            }
+//
+//            @Override
+//            public void refreshComplete() {
+//
+//            }
+//
+//            @Override
+//            public View getHeaderView() {
+//                return null;
+//            }
+//
+//            @Override
+//            public int getVisibleHeight() {
+//                return 0;
+//            }
+//        });
+
+        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
         mLRecyclerViewAdapter.addHeaderView(initHeader());
+
+
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -429,8 +477,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
                     @Override
                     public void onResponse(String response, int id) {
-
-                        LogUtils.log("homepage");
                     }
                 });
 

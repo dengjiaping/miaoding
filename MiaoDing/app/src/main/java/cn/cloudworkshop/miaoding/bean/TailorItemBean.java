@@ -16,6 +16,7 @@ public class TailorItemBean implements Serializable {
     private String price_type;
     private String spec_ids;
     private String spec_content;
+    private String diy_contet;
     private String log_id;
     private long goods_time;
     private long dingzhi_time;
@@ -23,6 +24,14 @@ public class TailorItemBean implements Serializable {
     private String banxing_id;
     private String default_img;
     private int is_scan;
+
+    public String getDiy_contet() {
+        return diy_contet;
+    }
+
+    public void setDiy_contet(String diy_contet) {
+        this.diy_contet = diy_contet;
+    }
 
     public int getIs_scan() {
         return is_scan;
@@ -73,8 +82,6 @@ public class TailorItemBean implements Serializable {
     public void setDingzhi_time(long dingzhi_time) {
         this.dingzhi_time = dingzhi_time;
     }
-
-
 
 
     public String getFabric_id() {

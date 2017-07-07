@@ -233,7 +233,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void confirmLogin() {
-//        String manufacturer = Build.MODEL;
+
         if (!PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim()) ||
                 TextUtils.isEmpty(etUserPassword.getText().toString().trim())) {
             ToastUtils.showToast(this, "手机号或验证码有误，请重新输入");
@@ -247,6 +247,8 @@ public class LoginActivity extends BaseActivity {
                 if (logId != null) {
                     map.put("id", logId);
                 }
+                map.put("device_type",Build.MODEL);
+                map.put("phone_type","1");
 
                 OkHttpUtils.post()
                         .url(Constant.LOG_IN)

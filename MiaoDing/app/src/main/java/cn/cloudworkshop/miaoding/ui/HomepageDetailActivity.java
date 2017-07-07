@@ -180,7 +180,6 @@ public class HomepageDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.log("homepage");
                     }
                 });
 

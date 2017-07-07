@@ -382,7 +382,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener, Cur
                     requestRender();
                 } else {
                     if (!isFirstOrLast) {
-                        LogUtils.log(mCurrentIndex+"");
+
                         onPageClickListener.currentItem(mCurrentIndex);
                     }
                 }
