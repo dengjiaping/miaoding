@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -43,7 +44,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-06-08 11:29
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：腔调作品
  */
 public class WorksFragment extends BaseFragment {
 
@@ -126,8 +127,6 @@ public class WorksFragment extends BaseFragment {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvWorks.setAdapter(mLRecyclerViewAdapter);
-        rvWorks.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvWorks.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -145,9 +144,13 @@ public class WorksFragment extends BaseFragment {
         rvWorks.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
 

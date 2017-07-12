@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_marginRight="20dp">
 
     <cn.cloudworkshop.miaoding.view.CircleImageView
@@ -9,7 +10,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
-        android:background="@drawable/ring_gray"/>
+        app:civ_border_color="@color/light_gray_97"
+        app:civ_border_width="1dp"/>
 
     <cn.cloudworkshop.miaoding.view.CircleImageView
         android:id="@+id/img_works_mask"

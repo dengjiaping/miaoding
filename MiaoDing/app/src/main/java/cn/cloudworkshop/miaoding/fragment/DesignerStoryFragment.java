@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,15 +21,14 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 /**
  * Author：binge on 2017-06-08 15:39
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：设计师故事
  */
 public class DesignerStoryFragment extends BaseFragment {
     @BindView(R.id.img_designer_story)
     ImageView imgDesignerStory;
-    @BindView(R.id.tv_no_story)
-    TextView tvNoStory;
+    @BindView(R.id.img_no_story)
+    ImageView imgNoStory;
     private Unbinder unbinder;
-
     private String imgStory;
 
     @Nullable
@@ -50,7 +48,7 @@ public class DesignerStoryFragment extends BaseFragment {
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgDesignerStory);
         } else {
-            tvNoStory.setVisibility(View.VISIBLE);
+            imgNoStory.setVisibility(View.VISIBLE);
         }
 
     }

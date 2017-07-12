@@ -2,13 +2,13 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +21,10 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
@@ -52,11 +50,9 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
-import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -66,7 +62,7 @@ import okhttp3.Call;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class HomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.Sectionizer {
+public class HomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.SectionTitle {
     @BindView(R.id.rv_recommend)
     LRecyclerView mRecyclerView;
     private Unbinder unbinder;
@@ -80,7 +76,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     private boolean isRefresh;
     //加载更多
     private boolean isLoadMore;
-
 
     @Nullable
     @Override
@@ -136,7 +131,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                                 mRecyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
-
                                 initView();
                             }
                             isLoadMore = false;
@@ -163,54 +157,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         sectionedRecyclerViewAdapter.setSections(dataList);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
-
-
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-//        mRecyclerView.setRefreshHeader(new IRefreshHeader() {
-//            @Override
-//            public void onReset() {
-//
-//            }
-//
-//            @Override
-//            public void onPrepare() {
-//
-//            }
-//
-//            @Override
-//            public void onRefreshing() {
-//
-//            }
-//
-//            @Override
-//            public void onMove(float offSet, float sumOffSet) {
-//
-//            }
-//
-//            @Override
-//            public boolean onRelease() {
-//                return false;
-//            }
-//
-//            @Override
-//            public void refreshComplete() {
-//
-//            }
-//
-//            @Override
-//            public View getHeaderView() {
-//                return null;
-//            }
-//
-//            @Override
-//            public int getVisibleHeight() {
-//                return 0;
-//            }
-//        });
-
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-
         mLRecyclerViewAdapter.addHeaderView(initHeader());
 
 
@@ -218,9 +165,14 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
+
             }
         });
 
@@ -241,8 +193,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
      * 加载头部
      */
     private View initHeader() {
-        View view = LayoutInflater.from(getParentFragment().getActivity()).inflate
-                (R.layout.fragment_homepage_header, null);
+        View view = LayoutInflater.from(getParentFragment().getActivity())
+                .inflate(R.layout.fragment_homepage_header, null);
         view.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -391,7 +343,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     }
 
 
-    //-------------------Adapter----------------------------
+    //Adapter
     private class MyAdapter extends RecyclerView.Adapter<HomeRecommendFragment.MyViewHolder> {
 
         @Override
@@ -420,7 +372,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     homepageLog(dataList.get(position).type);
 
                     Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);

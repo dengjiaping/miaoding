@@ -35,7 +35,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-06-08 11:25
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：腔调
  */
 public class NewDesignerWorksFragment extends BaseFragment {
 
@@ -48,7 +48,6 @@ public class NewDesignerWorksFragment extends BaseFragment {
     ImageView imgDesignerWorks;
     @BindView(R.id.app_bar_works)
     AppBarLayout appBar;
-
 
     private Unbinder unbinder;
     private String imgUrl;

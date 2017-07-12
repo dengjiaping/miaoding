@@ -45,16 +45,17 @@ public class HomepageDetailActivity extends BaseActivity {
     ImageView imgHeaderShare;
 
     //webView url
-    private String url = "";
+    private String url;
     //商品图片
-    private String imgUrl = "";
+    private String imgUrl;
     //标题
-    private String title = "";
+    private String title;
     //内容
-    private String content = "";
+    private String content;
     //分享 url
-    private String shareUrl = "";
+    private String shareUrl;
 
+    //首页进入时间
     private long enterTime;
 
 
@@ -107,9 +108,7 @@ public class HomepageDetailActivity extends BaseActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.equals("onlogin://tobuy")) {
-                    view.loadUrl(url);
-                }
+                view.loadUrl(url);
                 return true;
             }
         });

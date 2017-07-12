@@ -34,7 +34,7 @@ import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 /**
  * Author：binge on 2017-06-08 15:52
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：设计师作品
  */
 public class DesignerGoodsFragment extends BaseFragment {
 

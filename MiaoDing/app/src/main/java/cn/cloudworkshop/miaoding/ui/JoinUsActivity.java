@@ -43,8 +43,10 @@ public class JoinUsActivity extends BaseActivity {
     ImageView imgJoinUs;
     private JoinUsBean joinUsBean;
 
+    /**
+     * 是否已申请入驻
+     */
     private int isApply = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,6 @@ public class JoinUsActivity extends BaseActivity {
                         if (joinUsBean.getData() != null) {
                             initView();
                         }
-
                     }
                 });
     }
@@ -117,7 +118,6 @@ public class JoinUsActivity extends BaseActivity {
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));
                 }
-
                 break;
         }
     }

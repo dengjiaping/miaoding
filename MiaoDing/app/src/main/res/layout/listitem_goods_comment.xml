@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/ll_none_evaluate"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@android:color/white"
               android:orientation="vertical">
 
@@ -18,7 +18,9 @@
             android:id="@+id/img_user_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/ring_normal_bg"/>
+            app:civ_border_overlay="true"
+            app:civ_border_width="1px"
+            app:civ_border_color="@color/light_gray_97"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

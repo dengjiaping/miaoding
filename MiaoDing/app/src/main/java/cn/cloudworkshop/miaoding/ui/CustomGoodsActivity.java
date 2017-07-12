@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -54,7 +53,6 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -117,14 +115,14 @@ public class CustomGoodsActivity extends BaseActivity {
     ScrollViewContainer scrollContainer;
     @BindView(R.id.img_user_grade)
     ImageView imgUserGrade;
-    @BindView(R.id.tv_none_love)
-    TextView tvNoneLove;
     @BindView(R.id.img_tailor_details1)
     ImageView imgDetails1;
     @BindView(R.id.img_tailor_details2)
     ImageView imgDetails2;
     @BindView(R.id.ll_no_evaluate)
     LinearLayout llNoEvaluate;
+    @BindView(R.id.ll_no_collection)
+    LinearLayout llNoCollection;
     private String id;
     private CustomGoodsBean customBean;
     private long enterTime;
@@ -157,10 +155,12 @@ public class CustomGoodsActivity extends BaseActivity {
         initData();
     }
 
+
     /**
      * 加载数据
      */
     private void initData() {
+
 
         OkHttpUtils.get()
                 .url(Constant.NEW_GOODS_DETAILS)
@@ -213,7 +213,6 @@ public class CustomGoodsActivity extends BaseActivity {
         //喜爱人数
         if (customBean.getData().getCollect_num() > 0) {
             tvCollectCount.setText("喜爱  （" + customBean.getData().getCollect_num() + "人）");
-            rvCollectUser.setVisibility(View.VISIBLE);
             rvCollectUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
             CommonAdapter<CustomGoodsBean.DataBean.CollectUserBean> collectAdapter = new CommonAdapter
@@ -231,8 +230,7 @@ public class CustomGoodsActivity extends BaseActivity {
             };
             rvCollectUser.setAdapter(collectAdapter);
         } else {
-            tvCollectCount.setText("喜爱  （0人）");
-            tvNoneLove.setVisibility(View.VISIBLE);
+            llNoCollection.setVisibility(View.GONE);
         }
 
         //评价人数

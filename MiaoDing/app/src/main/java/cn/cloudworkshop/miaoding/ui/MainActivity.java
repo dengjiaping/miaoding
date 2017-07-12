@@ -122,7 +122,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         iconBean = GsonUtils.jsonToBean(response, AppIconBean.class);
                         if (iconBean.getData() != null && iconBean.getData().size() > 0) {
                             initView();
-//                            setCurrentPage();
                         }
                     }
                 });
@@ -209,7 +208,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                             MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
-//                        MyApplication.measureAgreement = appIndexBean.getData().getLt_agreement();
                             if (appIndexBean.getData().getVersion().getAndroid() != null &&
                                     Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
                                             .getVersion()) > getVersionCode()) {
@@ -297,12 +295,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
     }
 
-    /**
-     * 设置当前页面
-     */
-    private void setCurrentPage() {
-        fragmentUtils.setCurrentFragment(getIntent().getIntExtra("page", 0));
-    }
 
     /**
      * 加载Fragment
@@ -375,7 +367,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             }
                         }
                     });
-
         }
     }
 
@@ -386,7 +377,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @AfterPermissionGranted(111)
     private void writeToStorage() {
         if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "本应用需要使用存储权限，请选择确定", 111, perms);
+            EasyPermissions.requestPermissions(this, "本应用需要使用存储权限", 111, perms);
         }
     }
 
@@ -434,6 +425,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
+
                 System.exit(0);
             }
             return true;

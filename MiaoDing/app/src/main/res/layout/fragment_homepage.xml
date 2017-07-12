@@ -9,9 +9,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="43dp"
-        android:src="@mipmap/icon_logo"
         android:layout_gravity="center"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@mipmap/icon_logo"/>
 
     <View
         android:layout_width="match_parent"
@@ -25,14 +25,15 @@
         android:background="@android:color/white"
         app:tl_indicator_color="#414141"
         app:tl_indicator_height="2.5dp"
+        app:tl_indicator_margin_bottom="5dp"
         app:tl_indicator_width_equal_title="true"
         app:tl_tab_space_equal="true"
+        app:tl_textBold="SELECT"
         app:tl_textSelectColor="#4F4F4F"
         app:tl_textUnselectColor="#7A7A7A"
-        app:tl_indicator_margin_bottom="5dp"
-        app:tl_textBold="SELECT"
         app:tl_textsize="12sp">
     </com.flyco.tablayout.SlidingTabLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_homepage"
         android:layout_width="match_parent"

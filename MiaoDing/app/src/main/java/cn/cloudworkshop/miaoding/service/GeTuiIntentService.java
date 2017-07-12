@@ -2,16 +2,13 @@ package cn.cloudworkshop.miaoding.service;
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
-
 import cn.cloudworkshop.miaoding.bean.GeTuiBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
-import cn.cloudworkshop.miaoding.ui.DesignerInfoActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MessageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
@@ -27,8 +24,6 @@ public class GeTuiIntentService extends GTIntentService {
 
     @Override
     public void onReceiveServicePid(Context context, int i) {
-
-
     }
 
     @Override
@@ -36,7 +31,6 @@ public class GeTuiIntentService extends GTIntentService {
         if (s != null) {
             SharedPreferencesUtils.saveString(this, "client_id", s);
         }
-
     }
 
     @Override

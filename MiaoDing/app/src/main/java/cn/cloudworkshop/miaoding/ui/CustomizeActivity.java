@@ -873,7 +873,6 @@ public class CustomizeActivity extends BaseActivity {
                     });
         }
 
-
     }
 
     @Override

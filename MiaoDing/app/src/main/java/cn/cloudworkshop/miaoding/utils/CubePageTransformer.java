@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.utils;
 
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -28,7 +27,6 @@ public class CubePageTransformer implements ViewPager.PageTransformer {
             ViewHelper.setRotationY(view, 90f * position);
         } else if (position <= 1) {
             //从左向右滑动为当前View
-
             view.setAlpha(1);
             ViewHelper.setPivotX(view, 0);
             ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);

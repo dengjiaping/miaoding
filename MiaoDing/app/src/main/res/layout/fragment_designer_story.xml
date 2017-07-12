@@ -7,6 +7,7 @@
     android:fillViewport="true"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,17 +18,16 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"/>
-        <TextView
-            android:id="@+id/tv_no_story"
+
+        <ImageView
+            android:id="@+id/img_no_story"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="暂无故事~"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp"
+            android:scaleType="center"
+            android:src="@mipmap/icon_no_story"
             android:visibility="gone"/>
     </RelativeLayout>
-
 
 
 </android.support.v4.widget.NestedScrollView>

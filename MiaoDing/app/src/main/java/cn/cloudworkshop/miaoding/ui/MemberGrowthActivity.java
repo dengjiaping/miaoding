@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -145,15 +146,17 @@ public class MemberGrowthActivity extends BaseActivity {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvMemberGrow.setAdapter(mLRecyclerViewAdapter);
-        rvMemberGrow.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvMemberGrow.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         rvMemberGrow.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
 

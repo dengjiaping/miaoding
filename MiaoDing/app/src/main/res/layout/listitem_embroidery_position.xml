@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ll_embroidery_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -10,7 +11,8 @@
         android:id="@+id/img_embroidery_position"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/ring_gray"
+        app:civ_border_color="@color/light_gray_97"
+        app:civ_border_width="1dp"
         android:scaleType="centerCrop"/>
 
     <TextView

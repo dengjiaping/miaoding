@@ -41,8 +41,6 @@ import okhttp3.Call;
  * Describe：设计师详情
  */
 public class DesignerDetailActivity extends BaseActivity {
-//    @BindView(R.id.img_designer_bg)
-//    ImageView imgBg;
     @BindView(R.id.img_designer_icon)
     CircleImageView imgAvatar;
     @BindView(R.id.tv_designer_name)

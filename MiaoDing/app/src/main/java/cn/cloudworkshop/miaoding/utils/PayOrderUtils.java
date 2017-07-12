@@ -178,7 +178,7 @@ public class PayOrderUtils {
 
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                index = holder.getAdapterPosition();
+                index = holder.getLayoutPosition();
                 adapter.notifyDataSetChanged();
             }
 

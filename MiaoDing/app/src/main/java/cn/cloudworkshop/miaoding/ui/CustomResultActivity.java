@@ -444,13 +444,12 @@ public class CustomResultActivity extends BaseActivity {
                 // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
                 imgGoods.setTranslationX(mCurrentPosition[0]);
                 imgGoods.setTranslationY(mCurrentPosition[1]);
-
             }
         });
-        //五、开始执行动画
+        //4、开始执行动画
         valueAnimator.start();
 
-        //六、动画结束后的处理
+        //5、动画结束后的处理
         valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -463,7 +462,6 @@ public class CustomResultActivity extends BaseActivity {
                 // 把移动的图片从父布局里移除
                 rlCustomResult.removeView(imgGoods);
             }
-
 
             @Override
             public void onAnimationCancel(Animator animation) {

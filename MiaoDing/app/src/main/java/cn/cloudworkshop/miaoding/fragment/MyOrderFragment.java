@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -196,7 +197,6 @@ public class MyOrderFragment extends BaseFragment {
                     holder.setText(R.id.tv_order_count, "共" + dataBean.getList().get(0).getNum() + "件商品");
                 }
 
-
                 holder.setText(R.id.tv_order_price, "¥" + dataBean.getMoney());
 
                 switch (dataBean.getStatus()) {
@@ -207,7 +207,6 @@ public class MyOrderFragment extends BaseFragment {
                         holder.setText(R.id.tv_order_status, "待付款");
                         holder.setText(R.id.tv_order_control, "取消订单");
                         holder.setText(R.id.tv_order_pay, "付款");
-
                         break;
                     case 2:
                         holder.setVisible(R.id.tv_after_sale, false);
@@ -330,9 +329,13 @@ public class MyOrderFragment extends BaseFragment {
         rvGoods.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
 

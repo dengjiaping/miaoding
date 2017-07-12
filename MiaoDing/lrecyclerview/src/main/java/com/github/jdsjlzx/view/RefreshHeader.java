@@ -42,7 +42,7 @@ public class RefreshHeader extends LinearLayout implements IRefreshHeader{
         this.setLayoutParams(lp);
         this.setPadding(0, 0, 0, 0);
 
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.listview_header, null);
+        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_gif, null);
         addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, 0));
         setGravity(Gravity.BOTTOM);
 
@@ -52,41 +52,9 @@ public class RefreshHeader extends LinearLayout implements IRefreshHeader{
 
     public void setState(int state) {
         if (state == mState) return ;
-
         if (state == STATE_REFRESHING) {	// 显示进度
-
             smoothScrollTo(mMeasuredHeight);
-        } else if(state == STATE_DONE) {
-
-        } else {	// 显示箭头图片
-
         }
-
-
-        switch(state){
-            case STATE_NORMAL:
-                if (mState == STATE_RELEASE_TO_REFRESH) {
-
-                }
-                if (mState == STATE_REFRESHING) {
-
-                }
-
-                break;
-            case STATE_RELEASE_TO_REFRESH:
-                if (mState != STATE_RELEASE_TO_REFRESH) {
-
-                }
-                break;
-            case STATE_REFRESHING:
-
-                break;
-            case STATE_DONE:
-
-                break;
-            default:
-        }
-
         mState = state;
     }
 
@@ -137,26 +105,64 @@ public class RefreshHeader extends LinearLayout implements IRefreshHeader{
 
     @Override
     public void onMove(float offSet, float sumOffSet) {
-
+        if (getVisibleHeight() > 0 || offSet > 0) {
+            setVisibleHeight((int) offSet + getVisibleHeight());
+            if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
+                if (getVisibleHeight() > mMeasuredHeight) {
+                    onPrepare();
+                } else {
+                    onReset();
+                }
+            }
+        }
     }
 
     @Override
     public boolean onRelease() {
-        return false;
+        boolean isOnRefresh = false;
+        int height = getVisibleHeight();
+        if (height == 0) {// not visible.
+            isOnRefresh = false;
+        }
+
+        if(getVisibleHeight() > mMeasuredHeight &&  mState < STATE_REFRESHING){
+            setState(STATE_REFRESHING);
+            isOnRefresh = true;
+        }
+        // refreshing and header isn't shown fully. do nothing.
+        if (mState == STATE_REFRESHING && height > mMeasuredHeight) {
+            smoothScrollTo(mMeasuredHeight);
+        }
+        if (mState != STATE_REFRESHING) {
+            smoothScrollTo(0);
+        }
+
+        if (mState == STATE_REFRESHING) {
+            int destHeight = mMeasuredHeight;
+            smoothScrollTo(destHeight);
+        }
+
+        return isOnRefresh;
     }
 
     @Override
     public void refreshComplete() {
-
+        setState(STATE_DONE);
+        new Handler().postDelayed(new Runnable(){
+            public void run() {
+                reset();
+            }
+        }, 200);
     }
 
     @Override
     public View getHeaderView() {
-        return null;
+        return this;
     }
 
     @Override
     public int getVisibleHeight() {
-        return 0;
+        LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
+        return lp.height;
     }
 }

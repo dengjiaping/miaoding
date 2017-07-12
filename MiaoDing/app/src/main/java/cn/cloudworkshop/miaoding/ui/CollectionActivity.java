@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -156,17 +157,18 @@ public class CollectionActivity extends BaseActivity {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvMyCollection.setAdapter(mLRecyclerViewAdapter);
-        rvMyCollection.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvMyCollection.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-
 
         //刷新
         rvMyCollection.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
         //加载更多

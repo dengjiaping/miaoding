@@ -59,14 +59,12 @@ public class ActivityManagerUtils {
      */
 
     public void exit() {
-
         for (Activity activity : activities) {
             if (activity != null) {
                 activity.finish();
             }
         }
         System.exit(0);
-
     }
 
     /**

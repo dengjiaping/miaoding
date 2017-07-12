@@ -27,7 +27,6 @@ public class GsonUtils {
 
     static {
         if (gson == null) {
-//            gson = new Gson();
             gson = new GsonBuilder().serializeNulls().create();
         }
     }
@@ -114,7 +113,5 @@ public class GsonUtils {
         }
         return map;
     }
-
-
 
 }

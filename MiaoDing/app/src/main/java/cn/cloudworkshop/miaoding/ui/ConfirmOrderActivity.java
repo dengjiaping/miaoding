@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,7 +37,6 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -73,7 +71,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     TextView tvGoodsTotal;
     @BindView(R.id.tv_freight)
     TextView tvFreight;
-    @BindView(R.id.tv_first_discount)
+    @BindView(R.id.tv_discount_money)
     TextView tvCouponDiscount;
     @BindView(R.id.ll_first_order)
     LinearLayout llFirstOrder;
@@ -125,7 +123,9 @@ public class ConfirmOrderActivity extends BaseActivity {
     private String goodsIds;
     //优惠券数量
     private int couponNum;
-    //优惠金额
+    //显示优惠金额
+    private float discountCoupon = 0.00f;
+    //实际优惠金额
     private float discountMoney = 0.00f;
     //商品adapter
     private CommonAdapter<ConfirmOrderBean.DataBean.CarListBean> adapter;
@@ -133,9 +133,10 @@ public class ConfirmOrderActivity extends BaseActivity {
     private PayOrderUtils payOrderUtil;
 
     //收货地址是否为空，新建地址
-    private boolean nullAddress;
-
+    private boolean isNoAddress;
+    //商品id
     private String goodsId;
+    //商品名称
     private String goodsName;
     private String logId;
     private long goodsTime;
@@ -293,7 +294,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void initAddress() {
         if (addressId == null) {
             tvNoAddress.setVisibility(View.VISIBLE);
-            if (nullAddress) {
+            if (isNoAddress) {
                 tvNoAddress.setText("请创建收货地址");
             } else {
                 tvNoAddress.setText("请选择收货地址");
@@ -323,16 +324,17 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void initCoupon() {
         if (couponId == null) {
             tvCouponCount.setText(couponNum + "张");
-            tvCouponDiscount.setText("- ¥0.00");
             tvCouponCount.setVisibility(View.VISIBLE);
             tvCouponContent.setText("请选择优惠券");
             tvCouponContent.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
                     R.color.dark_gray_22));
+            tvCouponDiscount.setText("- ¥0.00");
+
         } else {
             tvCouponCount.setVisibility(View.GONE);
             tvCouponContent.setText(couponContent);
             tvCouponContent.setTextColor(0xffea3a37);
-            tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(discountMoney));
+            tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(discountCoupon));
         }
 
         getTotalPrice();
@@ -398,7 +400,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                     .getGoods_id() + "")) {
                 float price = Float.parseFloat(confirmOrderBean.getData().getCar_list().get(i).getPrice());
                 int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
-//                maxPrice = price * num > maxPrice ? price * num : maxPrice;
                 maxPrice += price * num;
                 count++;
             }
@@ -406,8 +407,10 @@ public class ConfirmOrderActivity extends BaseActivity {
         //单种商品最高总价格
         if (maxPrice >= Float.parseFloat(couponMinMoney)) {
             if (Float.parseFloat(couponMoney) <= (maxPrice - 0.01 * count)) {
+                discountCoupon = Float.parseFloat(couponMoney);
                 discountMoney = Float.parseFloat(couponMoney);
             } else {
+                discountCoupon = maxPrice;
                 discountMoney = (float) (maxPrice - 0.01 * count);
             }
             return true;
@@ -445,7 +448,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 break;
             case R.id.rl_select_address:
                 if (addressId == null) {
-                    if (nullAddress) {
+                    if (isNoAddress) {
                         Intent intent = new Intent(ConfirmOrderActivity.this, AddAddressActivity.class);
                         intent.putExtra("type", "add");
                         startActivityForResult(intent, 2);
@@ -473,7 +476,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                 Intent intent = new Intent(this, SelectCouponActivity.class);
                 intent.putExtra("cart_ids", cartIds);
                 startActivityForResult(intent, 1);
-
                 break;
         }
     }
@@ -500,7 +502,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             map.put("log_id", logId);
         }
 
-        map.put("method","1");
+        map.put("method", "1");
 
         OkHttpUtils.post()
                 .url(Constant.CONFIRM_BUY)
@@ -601,13 +603,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                     //收货地址全部被删除，重新创建地址
                     case 2:
                         addressId = null;
-                        nullAddress = true;
+                        isNoAddress = true;
                         initAddress();
                         break;
                     //收货地址不为空，但已选择地址被删除
                     case 3:
                         addressId = null;
-                        nullAddress = false;
+                        isNoAddress = false;
                         initAddress();
                         break;
                     //收货地址被修改

@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -165,17 +166,18 @@ public class AllEvaluationActivity extends BaseActivity {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvComment.setAdapter(mLRecyclerViewAdapter);
-        rvComment.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvComment.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-
 
         //刷新
         rvComment.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
         //加载更多

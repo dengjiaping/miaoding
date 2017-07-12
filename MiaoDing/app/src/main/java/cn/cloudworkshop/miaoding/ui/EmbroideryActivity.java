@@ -145,8 +145,7 @@ public class EmbroideryActivity extends BaseActivity {
                 R.layout.listitem_embroidery_position, embroideryBean.getData().getPosition()) {
             @Override
             protected void convert(ViewHolder holder, EmbroideryBean.DataBean.PositionBean positionBean, int position) {
-
-                ImageView imgPosition = holder.getView(R.id.img_embroidery_position);
+                CircleImageView imgPosition = holder.getView(R.id.img_embroidery_position);
                 TextView tvPosition = holder.getView(R.id.tv_embroidery_position);
                 Glide.with(EmbroideryActivity.this)
                         .load(Constant.HOST + positionBean.getImg())
@@ -156,10 +155,10 @@ public class EmbroideryActivity extends BaseActivity {
                 isAllSelect();
                 if (flowerPosition == position) {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.dark_gray_22));
-                    imgPosition.setBackgroundResource(R.drawable.ring_select_bg);
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,R.color.light_gray_3d));
                 } else {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_7a));
-                    imgPosition.setBackgroundResource(R.drawable.ring_normal_bg);
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,R.color.light_gray_97));
                 }
             }
         };
@@ -169,7 +168,7 @@ public class EmbroideryActivity extends BaseActivity {
         positionAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                flowerPosition = holder.getAdapterPosition();
+                flowerPosition = holder.getLayoutPosition();
                 positionAdapter.notifyDataSetChanged();
             }
 
@@ -208,7 +207,7 @@ public class EmbroideryActivity extends BaseActivity {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 ToastUtils.showToast(EmbroideryActivity.this, embroideryBean.getData().getColor()
                         .get(position).getName());
-                flowerColor = holder.getAdapterPosition();
+                flowerColor = holder.getLayoutPosition();
                 colorAdapter.notifyDataSetChanged();
             }
 
@@ -250,7 +249,7 @@ public class EmbroideryActivity extends BaseActivity {
         fontAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                flowerFont = holder.getAdapterPosition();
+                flowerFont = holder.getLayoutPosition();
 
                 if (position == 0) {
                     etEmbroideryContent.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -345,7 +344,6 @@ public class EmbroideryActivity extends BaseActivity {
      * 所有部件是否完善
      */
     private void isAllSelect() {
-
         boolean flag = embroideryBean.getData().getPosition().get(flowerPosition).getName() != null
                 && embroideryBean.getData().getColor().get(flowerColor).getName() != null
                 && embroideryBean.getData().getFont().get(flowerFont).getName() != null
@@ -388,8 +386,6 @@ public class EmbroideryActivity extends BaseActivity {
      * @param isEmbroidery 是否绣花
      */
     private void confirmTailor(boolean isEmbroidery) {
-
-
         Intent intent = new Intent(this, CustomResultActivity.class);
         Bundle bundle = new Bundle();
         if (isEmbroidery) {

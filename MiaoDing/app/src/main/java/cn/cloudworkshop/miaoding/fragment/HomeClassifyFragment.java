@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -138,20 +139,19 @@ public class HomeClassifyFragment extends BaseFragment {
             }
 
         };
-
-
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvRecommend.setAdapter(mLRecyclerViewAdapter);
-        rvRecommend.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvRecommend.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-
 
         rvRecommend.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
 

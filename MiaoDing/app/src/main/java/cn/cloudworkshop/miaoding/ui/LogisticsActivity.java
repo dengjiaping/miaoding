@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -41,6 +43,8 @@ public class LogisticsActivity extends BaseActivity {
     TextView tvCompany;
     @BindView(R.id.rv_logistics)
     RecyclerView rvLogistics;
+    @BindView(R.id.img_goods_thumb)
+    ImageView imgGoods;
 
     //快递单号
     private String number;
@@ -68,6 +72,10 @@ public class LogisticsActivity extends BaseActivity {
         tvHeaderTitle.setText("物流追踪");
         tvNumber.setText(number);
         tvCompany.setText(companyName);
+        Glide.with(getApplicationContext())
+                .load(Constant.HOST + imgUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgGoods);
         OkHttpUtils.get()
                 .url(Constant.LOGISTICS_TRACK)
                 .addParams("ems_no", number)
@@ -94,7 +102,6 @@ public class LogisticsActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-
         rvLogistics.setLayoutManager(new LinearLayoutManager(this));
         CommonAdapter<LogisticsBean.DataBean> adapter = new CommonAdapter
                 <LogisticsBean.DataBean>(this, R.layout.listitem_logistics, dataList) {

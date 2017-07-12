@@ -34,8 +34,7 @@ public class NewClothInfoActivity extends BaseActivity {
     TabLayout tabClothInfo;
     @BindView(R.id.vp_cloth_info)
     ViewPager vpClothInfo;
-
-
+    
     private List<String> titleList = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
 

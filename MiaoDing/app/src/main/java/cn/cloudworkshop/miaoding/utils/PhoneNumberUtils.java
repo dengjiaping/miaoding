@@ -10,8 +10,7 @@ import android.text.TextUtils;
 
 public class PhoneNumberUtils {
     public static boolean judgePhoneNumber(String phoneNumber) {
-        return isMatchLength(phoneNumber, 11)
-                && isMobileNO(phoneNumber);
+        return isMatchLength(phoneNumber, 11) && isMobileNO(phoneNumber);
     }
 
 
@@ -37,10 +36,10 @@ public class PhoneNumberUtils {
      * 1340-1348、135、136、137、138、139、150、151、152、157、158、159、182、183、184、187、188、147、178
      */
 
-    private static boolean isMobileNO(String mobileNums) {
+    private static boolean isMobileNO(String mobileNum) {
         // "[1]"代表第1位为数字1，"[34578]"代表第二位可以为3、4、5、7、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         String telRegex = "[1][34578]\\d{9}";
-        return !TextUtils.isEmpty(mobileNums) && mobileNums.matches(telRegex);
+        return !TextUtils.isEmpty(mobileNum) && mobileNum.matches(telRegex);
     }
 }
 

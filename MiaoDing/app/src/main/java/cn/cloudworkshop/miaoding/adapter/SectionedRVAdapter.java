@@ -31,18 +31,18 @@ public class SectionedRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private RecyclerView.Adapter mBaseAdapter;
     private SparseArray<Section> mSections = new SparseArray<>();
     private List<?> mListValues;
-    private Sectionizer mSectionizer;
+    private SectionTitle mSectionTitle;
 
 
     public SectionedRVAdapter(Context context, int sectionResourceId, int textResourceId,
-                              RecyclerView.Adapter baseAdapter, Sectionizer sectionizer) {
+                              RecyclerView.Adapter baseAdapter, SectionTitle sectionTitle) {
 
         if (context == null) {
             throw new IllegalArgumentException("context cannot be null.");
         } else if (baseAdapter == null) {
             throw new IllegalArgumentException("baseAdapter cannot be null.");
-        } else if (sectionizer == null) {
-            throw new IllegalArgumentException("sectionizer cannot be null.");
+        } else if (sectionTitle == null) {
+            throw new IllegalArgumentException("sectionTitle cannot be null.");
         } else if (!isTextView(context, sectionResourceId, textResourceId)) {
             throw new IllegalArgumentException("textResourceId should be a TextView.");
         }
@@ -51,7 +51,7 @@ public class SectionedRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mTextResourceId = textResourceId;
         mBaseAdapter = baseAdapter;
         mContext = context;
-        mSectionizer = sectionizer;
+        mSectionTitle = sectionTitle;
 
         mBaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -219,12 +219,11 @@ public class SectionedRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LinkedHashMap<String, Integer> mSections = new LinkedHashMap<>();
 
         for (int i = 0; i < n; i++) {
-            String sectionName = mSectionizer.getSectionTitle(mListValues.get(i));
+            String sectionName = mSectionTitle.getSectionTitle(mListValues.get(i));
 
             if (!mSections.containsKey(sectionName)) {
                 mSections.put(sectionName, i);
                 listSection.add(new SectionedRVAdapter.Section(i, sectionName));
-
             }
         }
 
@@ -243,7 +242,7 @@ public class SectionedRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return (mValid ? mBaseAdapter.getItemCount() + mSections.size() : 0);
     }
 
-    public interface Sectionizer<T> {
+    public interface SectionTitle<T> {
         String getSectionTitle(T object);
     }
 

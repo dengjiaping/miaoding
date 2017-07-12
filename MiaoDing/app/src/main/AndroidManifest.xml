@@ -201,7 +201,6 @@
         <activity android:name=".ui.CustomGoodsActivity"/>
         <activity android:name=".ui.WorksDetailActivity"/>
         <activity android:name=".ui.CustomizeActivity"/>
-        <activity android:name=".ui.DesignerInfoActivity"/>
         <activity android:name=".ui.DesignerDetailActivity"/>
         <activity
             android:name=".ui.EvaluateActivity"

@@ -2,12 +2,12 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +22,7 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -47,7 +45,6 @@ import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -57,7 +54,7 @@ import okhttp3.Call;
  * Email：1993911441@qq.com
  * Describe：推荐
  */
-public class NewHomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.Sectionizer {
+public class NewHomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.SectionTitle {
     @BindView(R.id.rv_recommend)
     LRecyclerView mRecyclerView;
     private Unbinder unbinder;
@@ -155,16 +152,18 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
         mLRecyclerViewAdapter.addHeaderView(initHeader());
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isRefresh = true;
-                page = 1;
-                initData();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        initData();
+                    }
+                }, 1000);
             }
         });
 
@@ -363,7 +362,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     homepageLog(dataList.get(position).type);
 
                     Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);

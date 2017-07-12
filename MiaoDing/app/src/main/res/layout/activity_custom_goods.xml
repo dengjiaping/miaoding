@@ -56,20 +56,22 @@
                     android:textColor="@color/light_gray_7a"
                     android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/tv_collect_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginTop="25dp"
-                    android:text="喜爱人数"
-                    android:textColor="@color/light_gray_3d"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/ll_no_collection"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_collect_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/light_gray_3d"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_collect_user"
@@ -78,20 +80,9 @@
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="22dp"
                         android:layout_marginTop="13dp"
-                        android:visibility="gone"
                         android:overScrollMode="never">
                     </android.support.v7.widget.RecyclerView>
-
-                    <TextView
-                        android:id="@+id/tv_none_love"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="暂无喜欢"
-                        android:textColor="@color/light_gray_93"
-                        android:textSize="14sp"
-                        android:visibility="gone"/>
-                </RelativeLayout>
+                </LinearLayout>
 
 
                 <LinearLayout

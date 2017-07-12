@@ -22,6 +22,7 @@ import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
 import com.github.jdsjlzx.view.LoadingFooter;
+import com.github.jdsjlzx.view.RefreshHeader;
 
 /**
  *
@@ -122,7 +123,7 @@ public class LRecyclerView extends RecyclerView {
         mTouchSlop = ViewConfiguration.get(getContext().getApplicationContext()).getScaledTouchSlop();
         if (mPullRefreshEnabled) {
 
-            setRefreshHeader(new ArrowRefreshHeader(getContext().getApplicationContext()));
+            setRefreshHeader(new RefreshHeader(getContext().getApplicationContext()));
         }
 
         if (mLoadMoreEnabled) {
@@ -489,11 +490,11 @@ public class LRecyclerView extends RecyclerView {
      * @param backgroundColor
      */
     public void setHeaderViewColor(int indicatorColor, int hintColor, int backgroundColor) {
-        if (mRefreshHeader != null && mRefreshHeader instanceof ArrowRefreshHeader) {
-            ArrowRefreshHeader arrowRefreshHeader = ((ArrowRefreshHeader) mRefreshHeader);
-            arrowRefreshHeader.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
-            arrowRefreshHeader.setHintTextColor(hintColor);
-            arrowRefreshHeader.setViewBackgroundColor(backgroundColor);
+        if (mRefreshHeader != null && mRefreshHeader instanceof RefreshHeader) {
+            RefreshHeader arrowRefreshHeader = ((RefreshHeader) mRefreshHeader);
+//            arrowRefreshHeader.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
+//            arrowRefreshHeader.setHintTextColor(hintColor);
+//            arrowRefreshHeader.setViewBackgroundColor(backgroundColor);
         }
 
     }

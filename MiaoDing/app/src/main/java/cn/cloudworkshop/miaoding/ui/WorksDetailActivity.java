@@ -21,12 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -119,19 +116,16 @@ public class WorksDetailActivity extends BaseActivity {
     ScrollViewContainer scrollContainer;
     @BindView(R.id.img_user_grade)
     ImageView imgUserGrade;
-    @BindView(R.id.tv_none_collect)
-    TextView tvNoneCollect;
-
     @BindView(R.id.ll_designer_info)
     LinearLayout llDesignerInfo;
-    @BindView(R.id.view_evaluate)
-    View viewEvaluate;
     @BindView(R.id.img_works_details1)
     ImageView imgDetails1;
     @BindView(R.id.img_works_details2)
     ImageView imgDetails2;
     @BindView(R.id.ll_null_evaluate)
     LinearLayout llNullEvaluate;
+    @BindView(R.id.ll_null_collect)
+    LinearLayout llNullCollect;
 
     private String id;
 
@@ -250,8 +244,7 @@ public class WorksDetailActivity extends BaseActivity {
             };
             rvCollectUser.setAdapter(collectAdapter);
         } else {
-            tvCollectCount.setText("喜爱  （0人）");
-            tvNoneCollect.setVisibility(View.VISIBLE);
+            llNullCollect.setVisibility(View.GONE);
         }
 
         //评价人数
@@ -476,7 +469,7 @@ public class WorksDetailActivity extends BaseActivity {
             sizeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    currentSize = holder.getAdapterPosition();
+                    currentSize = holder.getLayoutPosition();
                     currentColor = 0;
                     colorList.clear();
                     colorList.addAll(worksBean.getData().getSize_list().get(currentSize).getSize_list());
@@ -516,7 +509,7 @@ public class WorksDetailActivity extends BaseActivity {
             colorAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    currentColor = holder.getAdapterPosition();
+                    currentColor = holder.getLayoutPosition();
                     ToastUtils.showToast(WorksDetailActivity.this, colorList.get(position).getColor_name());
                     reSelectWorks();
                 }
