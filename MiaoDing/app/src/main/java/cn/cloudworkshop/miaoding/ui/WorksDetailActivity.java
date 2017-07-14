@@ -177,6 +177,7 @@ public class WorksDetailActivity extends BaseActivity {
      * 加载数据
      */
     private void initData() {
+
         OkHttpUtils.get()
                 .url(Constant.NEW_GOODS_DETAILS)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
@@ -359,11 +360,12 @@ public class WorksDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share_works:
-                ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
-                        worksBean.getData().getName(),
-                        worksBean.getData().getContent(),
-                        Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id + "&token=" +
-                                SharedPreferencesUtils.getString(this, "token"));
+                if (worksBean != null) {
+                    ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
+                            worksBean.getData().getName(), worksBean.getData().getContent(),
+                            Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id + "&token=" +
+                                    SharedPreferencesUtils.getString(this, "token"));
+                }
                 break;
             case R.id.tv_works_cart:
                 index = 2;

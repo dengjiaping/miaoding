@@ -45,7 +45,6 @@ public class JazzyPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return dataList.size();
-
     }
 
     @Override
@@ -70,16 +69,6 @@ public class JazzyPagerAdapter extends PagerAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
 
-
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, CustomGoodsActivity.class);
-//                intent.putExtra("id", String.valueOf(dataList.get(position).getId()));
-//                context.startActivity(intent);
-//
-//            }
-//        });
         container.addView(view);
         jazzyViewPager.setObjectForPosition(view, position);
         return view;

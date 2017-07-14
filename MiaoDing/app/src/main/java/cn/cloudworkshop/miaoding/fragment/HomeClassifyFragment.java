@@ -85,7 +85,7 @@ public class HomeClassifyFragment extends BaseFragment {
                 .get()
                 .url(Constant.HOMEPAGE_TAB_LIST)
                 .addParams("tags_id", type + "")
-                .addParams("page", String.valueOf(page))
+                .addParams("page", page + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -109,7 +109,6 @@ public class HomeClassifyFragment extends BaseFragment {
                             }
                             isLoadMore = false;
                             isRefresh = false;
-
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
                                     rvRecommend, 0, LoadingFooter.State.Normal, null);
@@ -137,7 +136,6 @@ public class HomeClassifyFragment extends BaseFragment {
                 holder.setText(R.id.tv_recommend_title, dataBean.getTitle());
                 holder.setText(R.id.tv_recommend_content, dataBean.getSub_title());
             }
-
         };
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvRecommend.setAdapter(mLRecyclerViewAdapter);
@@ -145,7 +143,7 @@ public class HomeClassifyFragment extends BaseFragment {
         rvRecommend.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;
@@ -171,8 +169,7 @@ public class HomeClassifyFragment extends BaseFragment {
             public void onItemClick(View view, int position) {
                 homepageLog(itemList.get(position).getTags_name());
                 Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
-                intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" +
-                        itemList.get(position).getId());
+                intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" + itemList.get(position).getId());
                 intent.putExtra("title", itemList.get(position).getTitle());
                 intent.putExtra("content", itemList.get(position).getContent());
                 intent.putExtra("img_url", itemList.get(position).getImg());

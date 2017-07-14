@@ -133,7 +133,7 @@ public class WorksFragment extends BaseFragment {
             public void onItemClick(View view, int position) {
                 if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
                     Intent intent = new Intent(getParentFragment().getActivity(), WorksDetailActivity.class);
-                    intent.putExtra("id", String.valueOf(worksList.get(position).getId() + ""));
+                    intent.putExtra("id", worksList.get(position).getId() + "");
                     startActivity(intent);
                 }
             }
@@ -144,7 +144,7 @@ public class WorksFragment extends BaseFragment {
         rvWorks.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;

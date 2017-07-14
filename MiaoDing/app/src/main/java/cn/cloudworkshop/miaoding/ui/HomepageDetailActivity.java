@@ -54,7 +54,6 @@ public class HomepageDetailActivity extends BaseActivity {
     private String content;
     //分享 url
     private String shareUrl;
-
     //首页进入时间
     private long enterTime;
 
@@ -72,7 +71,7 @@ public class HomepageDetailActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        initData();
+        initView();
     }
 
     /**
@@ -90,7 +89,6 @@ public class HomepageDetailActivity extends BaseActivity {
     }
 
     /**
-     * V
      * 加载webView
      */
     private void initView() {
@@ -104,7 +102,7 @@ public class HomepageDetailActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.addJavascriptInterface(this, "nativeMethod");
 
-        webView.loadUrl(url + "&token=" + SharedPreferencesUtils.getString(this, "token"));
+        webView.loadUrl(url+ "&token=" + SharedPreferencesUtils.getString(this, "token"));
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -153,8 +151,7 @@ public class HomepageDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.img_header_share:
-                ShareUtils.showShare(this, imgUrl, title, content, shareUrl + "&token=" +
-                        SharedPreferencesUtils.getString(this, "token"));
+                ShareUtils.showShare(this, imgUrl, title, content, shareUrl);
                 break;
         }
     }

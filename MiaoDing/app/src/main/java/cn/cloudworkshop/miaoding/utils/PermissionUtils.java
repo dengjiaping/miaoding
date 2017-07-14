@@ -25,7 +25,6 @@ import static android.R.attr.theme;
 public class PermissionUtils {
     private Context mContext;
 
-
     public PermissionUtils(Context context) {
         this.mContext = context;
     }
@@ -40,7 +39,6 @@ public class PermissionUtils {
             }
         }
         return false;
-
     }
 
     /**

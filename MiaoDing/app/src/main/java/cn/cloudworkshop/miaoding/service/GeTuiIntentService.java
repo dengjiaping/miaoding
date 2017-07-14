@@ -2,9 +2,11 @@ package cn.cloudworkshop.miaoding.service;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+
 import cn.cloudworkshop.miaoding.bean.GeTuiBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;

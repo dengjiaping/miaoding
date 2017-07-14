@@ -68,6 +68,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
     private boolean isRefresh;
     //加载更多
     private boolean isLoadMore;
+    private SectionedRVAdapter sectionedAdapter;
 
 
     @Nullable
@@ -109,8 +110,8 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                                 for (int j = 0; j < itemList.get(i).size(); j++) {
                                     dataList.add(new HomepageItemBean(Constant.HOST
                                             + itemList.get(i).get(j).getImg(),
-                                            Constant.HOMEPAGE_INFO + "?content=1&id="
-                                                    + itemList.get(i).get(j).getId(),
+                                            Constant.HOMEPAGE_INFO + "?content=1&id=" + itemList
+                                                    .get(i).get(j).getId(),
                                             itemList.get(i).get(j).getP_time(),
                                             itemList.get(i).get(j).getImg_list(),
                                             itemList.get(i).get(j).getTitle(),
@@ -122,6 +123,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
                             if (isLoadMore || isRefresh) {
                                 mRecyclerView.refreshComplete(0);
+                                sectionedAdapter.setSections(dataList);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
 
@@ -146,18 +148,18 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
     protected void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         NewHomeRecommendFragment.MyAdapter myAdapter = new MyAdapter();
-        SectionedRVAdapter sectionedRecyclerViewAdapter = new SectionedRVAdapter
-                (getActivity(), R.layout.listitem_homepage_title_new, R.id.tv_list_title, myAdapter, this);
-        sectionedRecyclerViewAdapter.setSections(dataList);
+        sectionedAdapter = new SectionedRVAdapter(getActivity(), R.layout.listitem_homepage_title_new,
+                R.id.tv_list_title, myAdapter, this);
+        sectionedAdapter.setSections(dataList);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mLRecyclerViewAdapter.addHeaderView(initHeader());
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;
@@ -241,7 +243,8 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                         //咨询页webview
                         case 1:
                             Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
-                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
+                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                                    .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                             intent.putExtra("content", "");
                             intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
@@ -250,9 +253,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                             break;
                         //设计师申请入驻
                         case 2:
-
                             startActivity(new Intent(getActivity(), JoinUsActivity.class));
-
                             break;
                     }
                 }

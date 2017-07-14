@@ -89,7 +89,6 @@ public class HomepageFragment extends BaseFragment {
         viewPager.setAdapter(adapter);
         tabLayout.setViewPager(viewPager);
         tabLayout.setCurrentTab(0);
-
     }
 
     public static HomepageFragment newInstance() {

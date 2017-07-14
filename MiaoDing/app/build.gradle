@@ -9,8 +9,8 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 31
-        versionName "1.5.3"
+        versionCode 35
+        versionName "1.5.4"
         multiDexEnabled true
 
         manifestPlaceholders = [
@@ -22,7 +22,6 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64"
         }
-
 
     }
 

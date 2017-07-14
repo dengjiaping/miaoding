@@ -51,6 +51,7 @@ import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
@@ -76,6 +77,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     private boolean isRefresh;
     //加载更多
     private boolean isLoadMore;
+    private SectionedRVAdapter sectionedAdapter;
 
     @Nullable
     @Override
@@ -94,7 +96,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         OkHttpUtils
                 .get()
                 .url(Constant.NEW_HOMEPAGE_LIST)
-                .addParams("page", String.valueOf(page))
+                .addParams("page", page + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -106,7 +108,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     public void onResponse(String response, int id) {
                         homepageBean = GsonUtils.jsonToBean(response, NewHomepageBean.class);
                         if (homepageBean != null && homepageBean.getData().size() > 0) {
-
                             itemList = new ArrayList<>();
                             if (isRefresh) {
                                 dataList.clear();
@@ -116,8 +117,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                                 for (int j = 0; j < itemList.get(i).size(); j++) {
                                     dataList.add(new HomepageItemBean(Constant.HOST
                                             + itemList.get(i).get(j).getImg(),
-                                            Constant.HOMEPAGE_INFO + "?content=1&id="
-                                                    + itemList.get(i).get(j).getId(),
+                                            Constant.HOMEPAGE_INFO + "?content=1&id=" + itemList
+                                                    .get(i).get(j).getId(),
                                             itemList.get(i).get(j).getP_time(),
                                             itemList.get(i).get(j).getImg_list(),
                                             itemList.get(i).get(j).getTitle(),
@@ -129,6 +130,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
                             if (isLoadMore || isRefresh) {
                                 mRecyclerView.refreshComplete(0);
+                                sectionedAdapter.setSections(dataList);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
                                 initView();
@@ -152,20 +154,19 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     protected void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
         HomeRecommendFragment.MyAdapter myAdapter = new HomeRecommendFragment.MyAdapter();
-        SectionedRVAdapter sectionedRecyclerViewAdapter = new SectionedRVAdapter
-                (getParentFragment().getActivity(), R.layout.listitem_homepage_title, R.id.tv_info_title, myAdapter, this);
-        sectionedRecyclerViewAdapter.setSections(dataList);
+        sectionedAdapter = new SectionedRVAdapter(getParentFragment().getActivity(),
+                R.layout.listitem_homepage_title, R.id.tv_info_title, myAdapter, this);
+        sectionedAdapter.setSections(dataList);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedAdapter);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedRecyclerViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mLRecyclerViewAdapter.addHeaderView(initHeader());
-
 
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;
@@ -242,7 +243,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             banner.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-
                     homepageLog("banner");
                     //banner点击事件统计
                     MobclickAgent.onEvent(getParentFragment().getActivity(), "banner");

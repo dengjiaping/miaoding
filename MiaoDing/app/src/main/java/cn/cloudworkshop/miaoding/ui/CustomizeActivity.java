@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,14 +35,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.NewTailorBean;
+import cn.cloudworkshop.miaoding.bean.CustomizeBean;
 import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -99,7 +97,7 @@ public class CustomizeActivity extends BaseActivity {
     private int classifyId;
     private String logId;
     private long goodsTime;
-    private NewTailorBean tailorBean;
+    private CustomizeBean customizeBean;
 
     //当前面料
     private int currentFabric = 0;
@@ -163,8 +161,8 @@ public class CustomizeActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        tailorBean = GsonUtils.jsonToBean(response, NewTailorBean.class);
-                        if (tailorBean.getData() != null) {
+                        customizeBean = GsonUtils.jsonToBean(response, CustomizeBean.class);
+                        if (customizeBean.getData() != null) {
                             initView();
                         }
                     }
@@ -180,7 +178,7 @@ public class CustomizeActivity extends BaseActivity {
         tvItemTitle.setTypeface(DisplayUtils.setTextType(this));
         ((RadioButton) rgsSelect.getChildAt(0)).setChecked(true);
 
-        for (int i = 0; i < tailorBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
             ImageView imgPositive = new ImageView(this);
             imgPositive.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -341,18 +339,18 @@ public class CustomizeActivity extends BaseActivity {
      * 选择面料
      */
     private void selectFabric() {
-        if (tailorBean.getData().getMianliao() != null) {
+        if (customizeBean != null && customizeBean.getData().getMianliao() != null) {
             rvSelectItem.setVisibility(View.VISIBLE);
             tvHeaderTitle.setText("面料");
             tvClothFabric.setTextColor(Color.WHITE);
             tvClothFabric.setBackgroundResource(R.drawable.circle_black);
             tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
             tvClothType.setBackgroundResource(R.drawable.ring_gray);
-            final CommonAdapter<NewTailorBean.DataBean.MianliaoBean> fabricAdapter = new
-                    CommonAdapter<NewTailorBean.DataBean.MianliaoBean>(CustomizeActivity.this, R.layout.listitem_custom_parts,
-                            tailorBean.getData().getMianliao()) {
+            final CommonAdapter<CustomizeBean.DataBean.MianliaoBean> fabricAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.MianliaoBean>(CustomizeActivity.this, R.layout.listitem_custom_parts,
+                            customizeBean.getData().getMianliao()) {
                         @Override
-                        protected void convert(ViewHolder holder, NewTailorBean.DataBean.MianliaoBean
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.MianliaoBean
                                 mianliaoBean, int position) {
                             Glide.with(CustomizeActivity.this)
                                     .load(Constant.HOST + mianliaoBean.getImg_a())
@@ -374,7 +372,7 @@ public class CustomizeActivity extends BaseActivity {
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     currentFabric = position;
                     fabricAdapter.notifyDataSetChanged();
-                    tvHeaderTitle.setText(tailorBean.getData().getMianliao().get(position).getName());
+                    tvHeaderTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
                     if (rlClothDetail.getVisibility() == View.VISIBLE) {
                         rlClothDetail.setVisibility(View.GONE);
                     }
@@ -388,12 +386,12 @@ public class CustomizeActivity extends BaseActivity {
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                     Glide.with(CustomizeActivity.this)
-                            .load(Constant.HOST + tailorBean.getData().getMianliao().get(position).getImg_b())
+                            .load(Constant.HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
                             .into(imgClothLarge);
-                    tvItemTitle.setText(tailorBean.getData().getMianliao().get(position).getName());
-                    tvIntroduce.setText(tailorBean.getData().getMianliao().get(position).getIntroduce());
+                    tvItemTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
+                    tvIntroduce.setText(customizeBean.getData().getMianliao().get(position).getIntroduce());
                     if (rlClothDetail.getVisibility() == View.GONE) {
                         rlClothDetail.setVisibility(View.VISIBLE);
                     }
@@ -409,27 +407,27 @@ public class CustomizeActivity extends BaseActivity {
      * 初始化部件
      */
     private void initCloth() {
-        for (int i = 0; i < tailorBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
 
-            if (tailorBean.getData().getBanxin().get(currentType).getPeijian().get(i)
-                    .getSpec_list() != null && tailorBean.getData().getBanxin()
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(i)
+                    .getSpec_list() != null && customizeBean.getData().getBanxin()
                     .get(currentType).getPeijian().get(i).getSpec_list().size() > 0) {
                 int currentItem = 0;
-                for (int j = 0; j < tailorBean.getData().getBanxin().get(currentType)
+                for (int j = 0; j < customizeBean.getData().getBanxin().get(currentType)
                         .getPeijian().get(i).getSpec_list().size(); j++) {
 
-                    if (tailorBean.getData().getMianliao().get(currentFabric).getId() == tailorBean
+                    if (customizeBean.getData().getMianliao().get(currentFabric).getId() == customizeBean
                             .getData().getBanxin().get(currentType).getPeijian().get(i)
                             .getSpec_list().get(j).getMianliao_id()) {
                         currentItem = j;
                         //选择正反面
-                        int positionId = tailorBean.getData().getBanxin().get(currentType)
+                        int positionId = customizeBean.getData().getBanxin().get(currentType)
                                 .getPeijian().get(i).getPosition_id();
                         switch (positionId) {
                             case 1:
                                 ImageView imgPositive = (ImageView) rlClothPositive.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + tailorBean.getData().getBanxin()
+                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -439,7 +437,7 @@ public class CustomizeActivity extends BaseActivity {
                             case 2:
                                 ImageView imgBack = (ImageView) rlClothBack.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + tailorBean.getData().getBanxin()
+                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -449,7 +447,7 @@ public class CustomizeActivity extends BaseActivity {
                             case 3:
                                 ImageView imgInSide = (ImageView) rlClothInside.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + tailorBean.getData().getBanxin()
+                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -491,18 +489,18 @@ public class CustomizeActivity extends BaseActivity {
      * 选择版型
      */
     private void selectType() {
-        if (tailorBean.getData().getBanxin() != null) {
+        if (customizeBean!= null && customizeBean.getData().getBanxin() != null) {
             rvSelectItem.setVisibility(View.VISIBLE);
             tvHeaderTitle.setText("版型");
             tvClothType.setTextColor(Color.WHITE);
             tvClothType.setBackgroundResource(R.drawable.circle_black);
             tvClothFabric.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
             tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
-            final CommonAdapter<NewTailorBean.DataBean.BanxinBean> typeAdapter = new
-                    CommonAdapter<NewTailorBean.DataBean.BanxinBean>(CustomizeActivity.this,
-                            R.layout.listitem_custom_parts, tailorBean.getData().getBanxin()) {
+            final CommonAdapter<CustomizeBean.DataBean.BanxinBean> typeAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.BanxinBean>(CustomizeActivity.this,
+                            R.layout.listitem_custom_parts, customizeBean.getData().getBanxin()) {
                         @Override
-                        protected void convert(ViewHolder holder, NewTailorBean.DataBean.BanxinBean
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.BanxinBean
                                 banxinBean, int position) {
                             Glide.with(CustomizeActivity.this)
                                     .load(Constant.HOST + banxinBean.getImg_a())
@@ -522,7 +520,7 @@ public class CustomizeActivity extends BaseActivity {
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     currentType = position;
                     typeAdapter.notifyDataSetChanged();
-                    tvHeaderTitle.setText(tailorBean.getData().getBanxin().get(position).getName());
+                    tvHeaderTitle.setText(customizeBean.getData().getBanxin().get(position).getName());
                     if (rlClothDetail.getVisibility() == View.VISIBLE) {
                         rlClothDetail.setVisibility(View.GONE);
                     }
@@ -536,11 +534,11 @@ public class CustomizeActivity extends BaseActivity {
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                     Glide.with(CustomizeActivity.this)
-                            .load(Constant.HOST + tailorBean.getData().getBanxin().get(position).getImg_b())
+                            .load(Constant.HOST + customizeBean.getData().getBanxin().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
                             .into(imgClothLarge);
-                    tvItemTitle.setText(tailorBean.getData().getBanxin().get(position).getName());
+                    tvItemTitle.setText(customizeBean.getData().getBanxin().get(position).getName());
                     tvIntroduce.setText("");
                     if (rlClothDetail.getVisibility() == View.GONE) {
                         rlClothDetail.setVisibility(View.VISIBLE);
@@ -556,80 +554,82 @@ public class CustomizeActivity extends BaseActivity {
      * 选择部位
      */
     private void selectParts() {
-        tvHeaderTitle.setText("细节");
-        llSelectType.setVisibility(View.INVISIBLE);
-        rvSelectType.setVisibility(View.VISIBLE);
-        rvSelectItem.setVisibility(View.INVISIBLE);
-        imgResetTailor.setVisibility(View.VISIBLE);
-        CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean> partsAdapter = new
-                CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean>
-                        (CustomizeActivity.this, R.layout.listitem_custom_parts, tailorBean.getData()
-                                .getBanxin().get(currentType).getPeijian()) {
-                    @Override
-                    protected void convert(ViewHolder holder, NewTailorBean.DataBean.BanxinBean
-                            .PeijianBean peijianBean, int position) {
+        if (customizeBean != null && customizeBean.getData() != null) {
+            tvHeaderTitle.setText("细节");
+            llSelectType.setVisibility(View.INVISIBLE);
+            rvSelectType.setVisibility(View.VISIBLE);
+            rvSelectItem.setVisibility(View.INVISIBLE);
+            imgResetTailor.setVisibility(View.VISIBLE);
+            CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean> partsAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean>
+                            (CustomizeActivity.this, R.layout.listitem_custom_parts, customizeBean.getData()
+                                    .getBanxin().get(currentType).getPeijian()) {
+                        @Override
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.BanxinBean
+                                .PeijianBean peijianBean, int position) {
 
-                        Glide.with(CustomizeActivity.this)
-                                .load(Constant.HOST + peijianBean.getSpec_list().get(itemArray
-                                        .get(position)).getImg_a())
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into((ImageView) holder.getView(R.id.img_tailor_item));
+                            Glide.with(CustomizeActivity.this)
+                                    .load(Constant.HOST + peijianBean.getSpec_list().get(itemArray
+                                            .get(position)).getImg_a())
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
 
-                        holder.setVisible(R.id.view_tailor_item, true);
+                            holder.setVisible(R.id.view_tailor_item, true);
 
-                    }
-                };
+                        }
+                    };
 
-        HeaderAndFooterWrapper headerAndFooterWrapper = new HeaderAndFooterWrapper(partsAdapter);
+            HeaderAndFooterWrapper headerAndFooterWrapper = new HeaderAndFooterWrapper(partsAdapter);
 
-        LinearLayout layout = new LinearLayout(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layoutParams.setMargins((int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6),
-                (int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6));
-        layout.setLayoutParams(layoutParams);
+            LinearLayout layout = new LinearLayout(this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layoutParams.setMargins((int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6),
+                    (int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6));
+            layout.setLayoutParams(layoutParams);
 
-        ImageView imgClose = new ImageView(this);
-        imgClose.setImageResource(R.mipmap.icon_close);
-        ViewGroup.LayoutParams param1 = new ViewGroup.LayoutParams((int) DisplayUtils.dp2px(this, 50)
-                , (int) DisplayUtils.dp2px(this, 50));
+            ImageView imgClose = new ImageView(this);
+            imgClose.setImageResource(R.mipmap.icon_close);
+            ViewGroup.LayoutParams param1 = new ViewGroup.LayoutParams((int) DisplayUtils.dp2px(this, 50)
+                    , (int) DisplayUtils.dp2px(this, 50));
 
-        layout.addView(imgClose, param1);
-        headerAndFooterWrapper.addFootView(layout);
+            layout.addView(imgClose, param1);
+            headerAndFooterWrapper.addFootView(layout);
 
-        imgClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvHeaderTitle.setText("细节");
-                llSelectType.setVisibility(View.VISIBLE);
-                rvSelectType.setVisibility(View.INVISIBLE);
-                rvSelectItem.setVisibility(View.INVISIBLE);
-                tvClothFabric.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
-                tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
-                tvClothType.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
-                tvClothType.setBackgroundResource(R.drawable.ring_gray);
-            }
-        });
+            imgClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tvHeaderTitle.setText("细节");
+                    llSelectType.setVisibility(View.VISIBLE);
+                    rvSelectType.setVisibility(View.INVISIBLE);
+                    rvSelectItem.setVisibility(View.INVISIBLE);
+                    tvClothFabric.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
+                    tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
+                    tvClothType.setTextColor(ContextCompat.getColor(CustomizeActivity.this, R.color.dark_gray_22));
+                    tvClothType.setBackgroundResource(R.drawable.ring_gray);
+                }
+            });
 
-        rvSelectType.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL
-                , false));
-        rvSelectType.setAdapter(headerAndFooterWrapper);
+            rvSelectType.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL
+                    , false));
+            rvSelectType.setAdapter(headerAndFooterWrapper);
 
-        selectItem(0);
+            selectItem(0);
 
-        partsAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                selectItem(position);
-            }
+            partsAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    selectItem(position);
+                }
 
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
 
+        }
     }
 
     /**
@@ -638,26 +638,26 @@ public class CustomizeActivity extends BaseActivity {
     private void selectItem(int position) {
         currentParts = position;
         rvSelectItem.setVisibility(View.VISIBLE);
-        tvHeaderTitle.setText(tailorBean.getData().getBanxin().get(currentType)
+        tvHeaderTitle.setText(customizeBean.getData().getBanxin().get(currentType)
                 .getPeijian().get(currentParts).getName());
 
-        ((RadioButton) rgsSelect.getChildAt(tailorBean.getData().getBanxin().get(currentType)
+        ((RadioButton) rgsSelect.getChildAt(customizeBean.getData().getBanxin().get(currentType)
                 .getPeijian().get(currentParts).getPosition_id() - 1)).setChecked(true);
-        final List<NewTailorBean.DataBean.BanxinBean.PeijianBean.SpecListBean> itemList = new ArrayList<>();
-        for (int i = 0; i < tailorBean.getData().getBanxin().get(currentType).getPeijian()
+        final List<CustomizeBean.DataBean.BanxinBean.PeijianBean.SpecListBean> itemList = new ArrayList<>();
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
                 .get(position).getSpec_list().size(); i++) {
-            if (tailorBean.getData().getBanxin().get(currentType).getPeijian().get(position)
-                    .getSpec_list().get(i).getMianliao_id() == tailorBean.getData()
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(position)
+                    .getSpec_list().get(i).getMianliao_id() == customizeBean.getData()
                     .getMianliao().get(currentFabric).getId()) {
-                itemList.add(tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                itemList.add(customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(position).getSpec_list().get(i));
             }
         }
-        final CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean.SpecListBean>
-                itemAdapter = new CommonAdapter<NewTailorBean.DataBean.BanxinBean.PeijianBean
+        final CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean.SpecListBean>
+                itemAdapter = new CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean
                 .SpecListBean>(CustomizeActivity.this, R.layout.listitem_custom_parts, itemList) {
             @Override
-            protected void convert(ViewHolder holder, NewTailorBean.DataBean
+            protected void convert(ViewHolder holder, CustomizeBean.DataBean
                     .BanxinBean.PeijianBean.SpecListBean specListBean, int position) {
 
                 Glide.with(CustomizeActivity.this)
@@ -665,7 +665,7 @@ public class CustomizeActivity extends BaseActivity {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
 
-                if (tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(currentParts).getSpec_list().get(itemArray.get(currentParts))
                         .getId() == specListBean.getId()) {
                     holder.setVisible(R.id.img_tailor_bg, true);
@@ -703,7 +703,7 @@ public class CustomizeActivity extends BaseActivity {
 
 
                 //选择正反面
-                int positionId = tailorBean.getData().getBanxin().get(currentType)
+                int positionId = customizeBean.getData().getBanxin().get(currentType)
                         .getPeijian().get(currentParts).getPosition_id();
                 ((RadioButton) rgsSelect.getChildAt(positionId - 1)).setChecked(true);
 
@@ -737,9 +737,9 @@ public class CustomizeActivity extends BaseActivity {
 
                 tvHeaderTitle.setText(itemList.get(position).getName());
 
-                for (int i = 0; i < tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(currentParts).getSpec_list().size(); i++) {
-                    if (tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                    if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
                             .get(currentParts).getSpec_list().get(i).getId() ==
                             itemList.get(position).getId()) {
                         itemArray.put(currentParts, i);
@@ -792,8 +792,8 @@ public class CustomizeActivity extends BaseActivity {
         tailorItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
         tailorItemBean.setIs_scan(0);
         //面料
-        tailorItemBean.setFabric_id(tailorBean.getData().getMianliao().get(currentFabric).getId() + "");
-        tailorItemBean.setBanxing_id(tailorBean.getData().getBanxin().get(currentType).getId() + "");
+        tailorItemBean.setFabric_id(customizeBean.getData().getMianliao().get(currentFabric).getId() + "");
+        tailorItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
 
         //部件
         List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
@@ -803,23 +803,23 @@ public class CustomizeActivity extends BaseActivity {
             TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
             int key = itemArray.keyAt(i);
             int value = itemArray.valueAt(i);
-            if (tailorBean.getData().getBanxin().get(currentType).getPeijian()
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
                     .get(key).getSpec_list().get(value) != null) {
 
-                sbIds.append(tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                sbIds.append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(key).getSpec_list().get(value).getId())
                         .append(",");
 
-                sbContent.append(tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                sbContent.append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(key).getName())
                         .append(":")
-                        .append(tailorBean.getData().getBanxin().get(currentType).getPeijian()
+                        .append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
                                 .get(key).getSpec_list().get(value).getName())
                         .append(";");
 
-                itemBean.setImg(tailorBean.getData().getBanxin().get(currentType)
+                itemBean.setImg(customizeBean.getData().getBanxin().get(currentType)
                         .getPeijian().get(key).getSpec_list().get(value).getImg_c());
-                itemBean.setPosition_id(tailorBean.getData().getBanxin().get(currentType)
+                itemBean.setPosition_id(customizeBean.getData().getBanxin().get(currentType)
                         .getPeijian().get(key).getPosition_id());
 
                 itemList.add(itemBean);
@@ -828,10 +828,10 @@ public class CustomizeActivity extends BaseActivity {
         }
 
         sbContent.append("面料:")
-                .append(tailorBean.getData().getMianliao().get(currentFabric).getName())
+                .append(customizeBean.getData().getMianliao().get(currentFabric).getName())
                 .append(";");
         sbContent.append("版型:")
-                .append(tailorBean.getData().getBanxin().get(currentType).getName())
+                .append(customizeBean.getData().getBanxin().get(currentType).getName())
                 .append(";");
 
         tailorItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
@@ -849,7 +849,7 @@ public class CustomizeActivity extends BaseActivity {
      * 商品订制跟踪
      */
     private void customGoodsLog() {
-        if (tailorBean != null) {
+        if (customizeBean != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
                     .addParams("token", SharedPreferencesUtils.getString(this, "token"))

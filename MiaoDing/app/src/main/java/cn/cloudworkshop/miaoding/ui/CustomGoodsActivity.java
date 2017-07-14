@@ -59,6 +59,7 @@ import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
 
@@ -160,8 +161,6 @@ public class CustomGoodsActivity extends BaseActivity {
      * 加载数据
      */
     private void initData() {
-
-
         OkHttpUtils.get()
                 .url(Constant.NEW_GOODS_DETAILS)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
@@ -291,7 +290,6 @@ public class CustomGoodsActivity extends BaseActivity {
                             int height = decoder.getHeight();
                             BitmapFactory.Options opts = new BitmapFactory.Options();
                             Rect rect = new Rect();
-
 
                             rect.set(0, 0, width, height / 3);
                             bm0 = decoder.decodeRegion(rect, opts);
@@ -443,10 +441,12 @@ public class CustomGoodsActivity extends BaseActivity {
                 ContactService.contactService(this);
                 break;
             case R.id.img_tailor_share:
-                ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
-                        customBean.getData().getName(),
-                        customBean.getData().getContent(),
-                        Constant.CUSTOM_SHARE + "?goods_id=" + id);
+                if (customBean!= null){
+                    ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
+                            customBean.getData().getName(),
+                            customBean.getData().getContent(),
+                            Constant.CUSTOM_SHARE + "?goods_id=" + id);
+                }
                 break;
             case R.id.tv_all_evaluate:
                 if (customBean.getData().getComment_num() > 0) {
