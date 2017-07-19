@@ -443,8 +443,7 @@ public class CustomGoodsActivity extends BaseActivity {
             case R.id.img_tailor_share:
                 if (customBean!= null){
                     ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
-                            customBean.getData().getName(),
-                            customBean.getData().getContent(),
+                            customBean.getData().getName(), customBean.getData().getContent(),
                             Constant.CUSTOM_SHARE + "?goods_id=" + id);
                 }
                 break;

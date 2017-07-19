@@ -66,7 +66,7 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2016/11/3 14:46
  * Email：1993911441@qq.com
- * Describe：预约地图界面
+ * Describe：预约量体地图界面
  */
 public class ApplyMeasureActivity extends BaseActivity implements LocationSource,
         AMapLocationListener, PoiSearch.OnPoiSearchListener, AMap.OnCameraChangeListener {

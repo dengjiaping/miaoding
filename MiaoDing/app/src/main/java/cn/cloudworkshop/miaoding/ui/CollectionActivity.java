@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -37,6 +38,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CollectionBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -68,6 +70,7 @@ public class CollectionActivity extends BaseActivity {
     //加载更多
     private boolean isLoadMore;
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
+    private CommonAdapter<CollectionBean.DataBean> adapter;
 
 
     @Override
@@ -92,7 +95,6 @@ public class CollectionActivity extends BaseActivity {
      * 获取网络数据
      */
     private void initData() {
-
         OkHttpUtils.get()
                 .url(Constant.COLLECTION)
                 .addParams("token", SharedPreferencesUtils.getString(this, "token"))
@@ -142,7 +144,7 @@ public class CollectionActivity extends BaseActivity {
 
         final GridLayoutManager mLayoutManager = new GridLayoutManager(CollectionActivity.this, 2);
         rvMyCollection.setLayoutManager(mLayoutManager);
-        CommonAdapter<CollectionBean.DataBean> adapter = new CommonAdapter<CollectionBean.DataBean>(CollectionActivity.this,
+        adapter = new CommonAdapter<CollectionBean.DataBean>(CollectionActivity.this,
                 R.layout.listitem_collection, itemList) {
             @Override
             protected void convert(ViewHolder holder, CollectionBean.DataBean itemBean, int position) {
@@ -197,7 +199,13 @@ public class CollectionActivity extends BaseActivity {
                 intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));
                 startActivity(intent);
             }
+        });
 
+        mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                cancelCollection(itemList.get(position).getId(),position);
+            }
         });
 
 
@@ -207,7 +215,7 @@ public class CollectionActivity extends BaseActivity {
     /**
      * 取消收藏
      */
-    private void cancelCollection(final int id) {
+    private void cancelCollection(final int id, final int position) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
         dialog.setTitle("取消收藏");
         dialog.setMessage("您确定要取消收藏？");
@@ -229,9 +237,16 @@ public class CollectionActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                itemList.clear();
-                                page = 1;
-                                initData();
+//                                itemList.clear();
+//                                page = 1;
+//                                initData();
+
+                                itemList.remove(position);
+                                adapter.notifyItemRemoved(position);
+                                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+                                if (itemList.size() == 0) {
+                                    llNullCollection.setVisibility(View.VISIBLE);
+                                }
                             }
                         });
             }

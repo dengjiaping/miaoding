@@ -44,7 +44,7 @@ public class MyOrderActivity extends BaseActivity implements MyOrderFragment.OnS
     int currentPage;
     private List<String> titleList;
     private List<Fragment> fragmentList;
-    private GoodsFragmentAdapter adapter;
+
 
 
     @Override
@@ -96,7 +96,7 @@ public class MyOrderActivity extends BaseActivity implements MyOrderFragment.OnS
         } else {
             tabMyOrder.setTabSpaceEqual(false);
         }
-        adapter = new GoodsFragmentAdapter(getSupportFragmentManager(),
+        GoodsFragmentAdapter adapter = new GoodsFragmentAdapter(getSupportFragmentManager(),
                 fragmentList, titleList);
         vpMyOrder.setOffscreenPageLimit(titleList.size());
         vpMyOrder.setAdapter(adapter);

@@ -55,6 +55,7 @@ import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;

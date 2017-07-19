@@ -363,8 +363,7 @@ public class WorksDetailActivity extends BaseActivity {
                 if (worksBean != null) {
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
-                            Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id + "&token=" +
-                                    SharedPreferencesUtils.getString(this, "token"));
+                            Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id);
                 }
                 break;
             case R.id.tv_works_cart:

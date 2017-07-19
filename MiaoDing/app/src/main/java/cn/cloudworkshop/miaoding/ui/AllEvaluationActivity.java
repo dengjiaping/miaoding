@@ -70,6 +70,7 @@ public class AllEvaluationActivity extends BaseActivity {
         ButterKnife.bind(this);
         getData();
         initData();
+
     }
 
 

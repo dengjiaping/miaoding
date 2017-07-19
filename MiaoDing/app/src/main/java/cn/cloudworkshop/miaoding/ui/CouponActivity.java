@@ -34,20 +34,16 @@ import okhttp3.Call;
  * Describe：优惠券
  */
 public class CouponActivity extends BaseActivity {
-
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
     TextView tvHeaderTitle;
-    @BindView(R.id.tab_my_coupon)
-    SlidingTabLayout tabCoupon;
-    @BindView(R.id.vp_my_coupon)
-    ViewPager vpCoupon;
-    @BindView(R.id.tv_header_next)
-    TextView tvHeaderNext;
     @BindView(R.id.img_header_share)
     ImageView imgHeaderShare;
-
+    @BindView(R.id.tab_my_order)
+    SlidingTabLayout tabCoupon;
+    @BindView(R.id.vp_my_order)
+    ViewPager vpCoupon;
 
     private List<String> titleList;
     private List<Fragment> fragmentList;
@@ -56,7 +52,7 @@ public class CouponActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mycoupon);
+        setContentView(R.layout.activity_myorder);
         ButterKnife.bind(this);
         initData();
     }
@@ -114,7 +110,8 @@ public class CouponActivity extends BaseActivity {
         } else {
             tabCoupon.setTabSpaceEqual(false);
         }
-        GoodsFragmentAdapter adapter = new GoodsFragmentAdapter(getSupportFragmentManager(), fragmentList, titleList);
+        GoodsFragmentAdapter adapter = new GoodsFragmentAdapter(getSupportFragmentManager(),
+                fragmentList, titleList);
         vpCoupon.setOffscreenPageLimit(titleList.size());
         vpCoupon.setAdapter(adapter);
         tabCoupon.setViewPager(vpCoupon);
@@ -122,8 +119,10 @@ public class CouponActivity extends BaseActivity {
 
     }
 
+
+
     @OnClick({R.id.img_header_back, R.id.img_header_share})
-    public void onClick(View view) {
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
                 finish();
@@ -135,9 +134,7 @@ public class CouponActivity extends BaseActivity {
                     intent.putExtra("img_url", couponRule);
                     startActivity(intent);
                 }
-
                 break;
         }
     }
-
 }

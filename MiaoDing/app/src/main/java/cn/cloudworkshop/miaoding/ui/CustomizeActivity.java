@@ -273,9 +273,7 @@ public class CustomizeActivity extends BaseActivity {
             }
         });
 
-        rlClothInside.setOnTouchListener(new View.OnTouchListener()
-
-        {
+        rlClothInside.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -294,9 +292,7 @@ public class CustomizeActivity extends BaseActivity {
             }
         });
 
-        rvSelectItem.setOnTouchListener(new View.OnTouchListener()
-
-        {
+        rvSelectItem.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -333,73 +329,6 @@ public class CustomizeActivity extends BaseActivity {
                 selectParts();
                 break;
         }
-    }
-
-    /**
-     * 选择面料
-     */
-    private void selectFabric() {
-        if (customizeBean != null && customizeBean.getData().getMianliao() != null) {
-            rvSelectItem.setVisibility(View.VISIBLE);
-            tvHeaderTitle.setText("面料");
-            tvClothFabric.setTextColor(Color.WHITE);
-            tvClothFabric.setBackgroundResource(R.drawable.circle_black);
-            tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
-            tvClothType.setBackgroundResource(R.drawable.ring_gray);
-            final CommonAdapter<CustomizeBean.DataBean.MianliaoBean> fabricAdapter = new
-                    CommonAdapter<CustomizeBean.DataBean.MianliaoBean>(CustomizeActivity.this, R.layout.listitem_custom_parts,
-                            customizeBean.getData().getMianliao()) {
-                        @Override
-                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.MianliaoBean
-                                mianliaoBean, int position) {
-                            Glide.with(CustomizeActivity.this)
-                                    .load(Constant.HOST + mianliaoBean.getImg_a())
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
-                            if (currentFabric == position) {
-                                holder.setVisible(R.id.img_tailor_bg, true);
-                            } else {
-                                holder.setVisible(R.id.img_tailor_bg, false);
-                            }
-                        }
-                    };
-            rvSelectItem.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            rvSelectItem.setAdapter(fabricAdapter);
-
-
-            fabricAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    currentFabric = position;
-                    fabricAdapter.notifyDataSetChanged();
-                    tvHeaderTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
-                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
-                        rlClothDetail.setVisibility(View.GONE);
-                    }
-
-                    initCloth();
-
-                    imgResetTailor.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-
-                    Glide.with(CustomizeActivity.this)
-                            .load(Constant.HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .fitCenter()
-                            .into(imgClothLarge);
-                    tvItemTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
-                    tvIntroduce.setText(customizeBean.getData().getMianliao().get(position).getIntroduce());
-                    if (rlClothDetail.getVisibility() == View.GONE) {
-                        rlClothDetail.setVisibility(View.VISIBLE);
-                    }
-                    return false;
-                }
-            });
-        }
-
     }
 
 
@@ -465,6 +394,73 @@ public class CustomizeActivity extends BaseActivity {
     }
 
     /**
+     * 选择面料
+     */
+    private void selectFabric() {
+        if (customizeBean != null && customizeBean.getData().getMianliao() != null) {
+            rvSelectItem.setVisibility(View.VISIBLE);
+            tvHeaderTitle.setText("面料");
+            tvClothFabric.setTextColor(Color.WHITE);
+            tvClothFabric.setBackgroundResource(R.drawable.circle_black);
+            tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
+            tvClothType.setBackgroundResource(R.drawable.ring_gray);
+            final CommonAdapter<CustomizeBean.DataBean.MianliaoBean> fabricAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.MianliaoBean>(CustomizeActivity.this,
+                            R.layout.listitem_custom_parts, customizeBean.getData().getMianliao()) {
+                        @Override
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.MianliaoBean
+                                mianliaoBean, int position) {
+                            Glide.with(CustomizeActivity.this)
+                                    .load(Constant.HOST + mianliaoBean.getImg_a())
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
+                            if (currentFabric == position) {
+                                holder.setVisible(R.id.img_tailor_bg, true);
+                            } else {
+                                holder.setVisible(R.id.img_tailor_bg, false);
+                            }
+                        }
+                    };
+            rvSelectItem.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvSelectItem.setAdapter(fabricAdapter);
+
+
+            fabricAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    currentFabric = position;
+                    fabricAdapter.notifyDataSetChanged();
+                    tvHeaderTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
+                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                        rlClothDetail.setVisibility(View.GONE);
+                    }
+
+                    initCloth();
+
+                    imgResetTailor.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+                    Glide.with(CustomizeActivity.this)
+                            .load(Constant.HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .fitCenter()
+                            .into(imgClothLarge);
+                    tvItemTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
+                    tvIntroduce.setText(customizeBean.getData().getMianliao().get(position).getIntroduce());
+                    if (rlClothDetail.getVisibility() == View.GONE) {
+                        rlClothDetail.setVisibility(View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
+        }
+
+    }
+
+    /**
      * 重置
      */
     private void resetTailor() {
@@ -489,7 +485,7 @@ public class CustomizeActivity extends BaseActivity {
      * 选择版型
      */
     private void selectType() {
-        if (customizeBean!= null && customizeBean.getData().getBanxin() != null) {
+        if (customizeBean != null && customizeBean.getData().getBanxin() != null) {
             rvSelectItem.setVisibility(View.VISIBLE);
             tvHeaderTitle.setText("版型");
             tvClothType.setTextColor(Color.WHITE);

@@ -232,6 +232,7 @@ public class PayOrderUtils {
                             if (!api.isWXAppSupportAPI()) {
                                 ToastUtils.showToast(context, "当前版本不支持支付功能");
                             }
+                            MyApplication.payCode = weChatPay.getPay_code();
                             PayReq req = new PayReq();
                             req.appId = Constant.APP_ID;
                             req.partnerId = weChatPay.getData().getPartnerid();
@@ -248,6 +249,7 @@ public class PayOrderUtils {
                             ((Activity) context).finish();
                             context.startActivity(intent);
                             ToastUtils.showToast(context, weChatPay.getMsg());
+
                         }
 
                     }
@@ -278,6 +280,7 @@ public class PayOrderUtils {
                             int code = jsonObject.getInt("code");
                             if (code == 1) {
                                 final String orderInfo = jsonObject.getString("data");
+                                MyApplication.payCode = jsonObject.getString("pay_code");
                                 Runnable payRunnable = new Runnable() {
                                     @Override
                                     public void run() {

@@ -39,14 +39,10 @@ import okhttp3.Call;
  * Describe：腔调设计师
  */
 public class DesignerFragment extends BaseFragment {
-
-
     @BindView(R.id.rv_works)
     RecyclerView rvDesigner;
     private Unbinder unbinder;
     private List<PopDesignerBean.DataBean> designerList = new ArrayList<>();
-
-
 
     @Nullable
     @Override
@@ -61,7 +57,6 @@ public class DesignerFragment extends BaseFragment {
      * 加载数据
      */
     private void initData() {
-
         OkHttpUtils.get()
                 .url(Constant.DESIGNER_LIST)
                 .build()

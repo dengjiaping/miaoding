@@ -51,5 +51,4 @@ public class GoodsFragmentAdapter extends FragmentStatePagerAdapter {
         return titleList.get(position);
     }
 
-
 }

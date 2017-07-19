@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -29,10 +29,14 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,10 +50,8 @@ import cn.cloudworkshop.miaoding.ui.EvaluateActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -69,6 +71,8 @@ public class MyOrderFragment extends BaseFragment {
     LRecyclerView rvGoods;
     @BindView(R.id.ll_null_order)
     LinearLayout llNullOrder;
+    @BindView(R.id.img_no_order)
+    ImageView imgNoOrder;
 
     private CommonAdapter<OrderInfoBean.DataBeanX.DataBean> adapter;
     private List<OrderInfoBean.DataBeanX.DataBean> dataList = new ArrayList<>();
@@ -86,7 +90,7 @@ public class MyOrderFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.viewpager_item_goods, container, false);
+        View view = inflater.inflate(R.layout.viewpager_item_order, container, false);
         unbinder = ButterKnife.bind(this, view);
         getData();
         initData();
@@ -107,7 +111,6 @@ public class MyOrderFragment extends BaseFragment {
             throw new ClassCastException(context.toString() + "must implement OnButton2ClickListener");
         }
     }
-
 
 
     /**
@@ -157,6 +160,7 @@ public class MyOrderFragment extends BaseFragment {
                                     rvGoods, 0, LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 rvGoods.setVisibility(View.GONE);
+                                imgNoOrder.setImageResource(R.mipmap.icon_null_order);
                                 llNullOrder.setVisibility(View.VISIBLE);
                             }
                         }
@@ -324,7 +328,7 @@ public class MyOrderFragment extends BaseFragment {
         rvGoods.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;

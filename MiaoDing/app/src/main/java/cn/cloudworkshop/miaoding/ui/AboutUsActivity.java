@@ -80,7 +80,6 @@ public class AboutUsActivity extends BaseActivity {
      * 检查更新
      */
     private void checkUpdate() {
-
         if (MyApplication.updateUrl != null) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(AboutUsActivity.this, R.style.AlertDialog);
             dialog.setTitle("检测到新版本，请更新");

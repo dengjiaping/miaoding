@@ -81,8 +81,7 @@ public class HomeClassifyFragment extends BaseFragment {
      * 加载数据
      */
     private void initData() {
-        OkHttpUtils
-                .get()
+        OkHttpUtils.get()
                 .url(Constant.HOMEPAGE_TAB_LIST)
                 .addParams("tags_id", type + "")
                 .addParams("page", page + "")

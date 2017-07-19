@@ -93,8 +93,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
      * 加载数据
      */
     private void initData() {
-        OkHttpUtils
-                .get()
+        OkHttpUtils.get()
                 .url(Constant.NEW_HOMEPAGE_LIST)
                 .addParams("page", page + "")
                 .build()
@@ -153,9 +152,37 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
      */
     protected void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
-        HomeRecommendFragment.MyAdapter myAdapter = new HomeRecommendFragment.MyAdapter();
+        CommonAdapter<HomepageItemBean> adapter = new CommonAdapter<HomepageItemBean>
+                (getParentFragment().getActivity(), R.layout.listitem_homepage, dataList) {
+            @Override
+            protected void convert(ViewHolder holder, final HomepageItemBean homepageItemBean, final int position) {
+
+                holder.setText(R.id.tv_recommend_title, homepageItemBean.title);
+                holder.setText(R.id.tv_recommend_content, homepageItemBean.type + " · " + homepageItemBean.content);
+                Glide.with(getParentFragment().getActivity())
+                        .load(homepageItemBean.img)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into((ImageView) holder.getView(R.id.img_homepage_item));
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        homepageLog(homepageItemBean.type);
+
+                        Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                        intent.putExtra("url", homepageItemBean.link);
+                        intent.putExtra("title", homepageItemBean.title);
+                        intent.putExtra("content", homepageItemBean.content);
+                        intent.putExtra("img_url", homepageItemBean.img);
+                        intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
+                                homepageItemBean.id);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
         sectionedAdapter = new SectionedRVAdapter(getParentFragment().getActivity(),
-                R.layout.listitem_homepage_title, R.id.tv_info_title, myAdapter, this);
+                R.layout.listitem_homepage_title, R.id.tv_info_title, adapter, this);
         sectionedAdapter.setSections(dataList);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(sectionedAdapter);
 
@@ -326,73 +353,6 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         return ((HomepageItemBean) object).time;
     }
 
-    //--------------- MyViewHolder-----------------------
-    private static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView image;
-        public TextView tvTitle;
-        public TextView tvContent;
-
-
-        MyViewHolder(View itemView) {
-            super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.img_homepage_item);
-            tvTitle = (TextView) itemView.findViewById(R.id.tv_recommend_title);
-            tvContent = (TextView) itemView.findViewById(R.id.tv_recommend_content);
-        }
-    }
-
-
-    //Adapter
-    private class MyAdapter extends RecyclerView.Adapter<HomeRecommendFragment.MyViewHolder> {
-
-        @Override
-        public int getItemCount() {
-            return dataList.size();
-        }
-
-        @Override
-        public HomeRecommendFragment.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            View itemView = LayoutInflater.
-                    from(parent.getContext()).
-                    inflate(R.layout.listitem_homepage, parent, false);
-
-            return new HomeRecommendFragment.MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(final HomeRecommendFragment.MyViewHolder holder, final int position) {
-            holder.tvTitle.setText(dataList.get(position).title);
-            holder.tvContent.setText(dataList.get(position).type + " · " + dataList.get(position).content);
-            Glide.with(getParentFragment().getActivity())
-                    .load(dataList.get(position).img)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(holder.image);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    homepageLog(dataList.get(position).type);
-
-                    Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
-                    intent.putExtra("url", dataList.get(position).link);
-                    intent.putExtra("title", dataList.get(position).title);
-                    intent.putExtra("content", dataList.get(position).content);
-                    intent.putExtra("img_url", dataList.get(position).img);
-                    intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
-                            dataList.get(position).id);
-                    startActivity(intent);
-                }
-            });
-
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return super.getItemViewType(position);
-        }
-
-    }
 
     public static HomeRecommendFragment newInstance() {
         Bundle args = new Bundle();

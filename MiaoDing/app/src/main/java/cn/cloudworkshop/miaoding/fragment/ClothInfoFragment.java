@@ -8,17 +8,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.ui.ClothMaterialInfo;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
+import cn.cloudworkshop.miaoding.ui.ClothMaterialInfo;
 import cn.cloudworkshop.miaoding.utils.GridDividerItemDecoration;
 
 /**
@@ -35,7 +39,7 @@ public class ClothInfoFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.viewpager_item_goods, container, false);
+        View view = inflater.inflate(R.layout.viewpager_item_order, container, false);
         unbinder = ButterKnife.bind(this, view);
         initData();
         initView();
@@ -47,12 +51,12 @@ public class ClothInfoFragment extends BaseFragment {
     }
 
     protected void initView() {
-        rvGoods.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        rvGoods.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         GridDividerItemDecoration dividerItemDecoration = new GridDividerItemDecoration(getActivity(),
                 GridDividerItemDecoration.GRID_DIVIDER_VERTICAL);
 
         rvGoods.addItemDecoration(dividerItemDecoration);
-        CommonAdapter<Integer> adapter = new CommonAdapter<Integer>(getActivity(),R.layout.listitem_cloth_info,imgList) {
+        CommonAdapter<Integer> adapter = new CommonAdapter<Integer>(getActivity(), R.layout.listitem_cloth_info, imgList) {
             @Override
             protected void convert(ViewHolder holder, Integer integer, int position) {
 
@@ -63,7 +67,7 @@ public class ClothInfoFragment extends BaseFragment {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(getActivity(),ClothMaterialInfo.class));
+                startActivity(new Intent(getActivity(), ClothMaterialInfo.class));
             }
 
             @Override

@@ -19,7 +19,6 @@ public class ShareUtils {
 
         ShareSDK.initSDK(activity, "188b0b9b49186");
         OnekeyShare oks = new OnekeyShare();
-
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
@@ -44,3 +43,4 @@ public class ShareUtils {
         MobclickAgent.onEvent(activity,"share");
     }
 }
+

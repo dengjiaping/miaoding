@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomTailor</string>
+    <string name="app_name">妙定</string>
     <string name="content_description_item_custom_image">image</string>
     <string-array name="jazzy_effects">
         <item>Standard</item>

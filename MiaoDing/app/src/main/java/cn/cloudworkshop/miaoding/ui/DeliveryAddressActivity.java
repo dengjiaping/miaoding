@@ -173,11 +173,13 @@ public class DeliveryAddressActivity extends BaseActivity {
 
                 TextView tvDefault = holder.getView(R.id.tv_set_default);
                 if (dataBean.getIs_default() == 1) {
-                    Drawable leftDrawable = ContextCompat.getDrawable(DeliveryAddressActivity.this, R.mipmap.icon_default_address);
+                    Drawable leftDrawable = ContextCompat.getDrawable(DeliveryAddressActivity.this,
+                            R.mipmap.icon_default_address);
                     leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
                     tvDefault.setCompoundDrawables(leftDrawable, null, null, null);
                 } else if (dataBean.getIs_default() == 0) {
-                    Drawable leftDrawable = ContextCompat.getDrawable(DeliveryAddressActivity.this, R.mipmap.icon_not_default);
+                    Drawable leftDrawable = ContextCompat.getDrawable(DeliveryAddressActivity.this,
+                            R.mipmap.icon_not_default);
                     leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
                     tvDefault.setCompoundDrawables(leftDrawable, null, null, null);
                 }
@@ -213,8 +215,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
-
-
             }
         };
 
@@ -255,9 +255,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                     finish();
                 }
             }
-
         });
-
 
     }
 

@@ -21,12 +21,11 @@
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/img_no_order"
             android:layout_width="211dp"
             android:layout_height="220dp"
             android:layout_gravity="center_horizontal"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/icon_null_order"/>
-
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/tv_my_order"

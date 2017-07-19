@@ -1,12 +1,19 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -18,9 +25,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
+import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -44,7 +54,7 @@ public class AppointmentActivity extends BaseActivity {
     TextView tvCheckOrder;
     @BindView(R.id.img_pay_result)
     ImageView imgPayResult;
-    
+
     private String type;
 
     @Override
@@ -107,6 +117,7 @@ public class AppointmentActivity extends BaseActivity {
                                 }
                             }
                         });
+
                 break;
             case "apply_join":
                 tvHeaderTitle.setText("申请详情");
@@ -120,6 +131,7 @@ public class AppointmentActivity extends BaseActivity {
                 tvCheckOrder.setVisibility(View.VISIBLE);
                 tvGoBack.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
                 tvGoBack.setBackgroundResource(R.drawable.text_white_2dp);
+                shareCoupon();
                 break;
             case "pay_fail":
                 tvHeaderTitle.setText("支付失败");
@@ -129,9 +141,65 @@ public class AppointmentActivity extends BaseActivity {
                 tvGoBack.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
                 tvGoBack.setBackgroundResource(R.drawable.text_white_2dp);
                 break;
-            default:
-                break;
         }
+    }
+
+    /**
+     * 支付成功分享红包
+     */
+    private void shareCoupon() {
+
+        OkHttpUtils.get()
+                .url(Constant.GUIDE_IMG)
+                .addParams("id", "6")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        GuideBean guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
+                        if (guideBean.getData() != null && guideBean.getData().getImg_urls() != null
+                                && guideBean.getData().getImg_urls().size() > 0) {
+
+                            View popupView = getLayoutInflater().inflate(R.layout.ppw_coupon, null);
+                            final PopupWindow mPopupWindow = new PopupWindow(popupView,
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT);
+                            mPopupWindow.setTouchable(true);
+                            mPopupWindow.setFocusable(true);
+                            mPopupWindow.setOutsideTouchable(true);
+                            mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+                            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+
+                            View viewShare = popupView.findViewById(R.id.view_share);
+                            View viewCancel = popupView.findViewById(R.id.view_close);
+                            ImageView imgCoupon = (ImageView) popupView.findViewById(R.id.img_coupon);
+
+                            Glide.with(AppointmentActivity.this)
+                                    .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into(imgCoupon);
+                            viewShare.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPopupWindow.dismiss();
+                                    ShareUtils.showShare(AppointmentActivity.this, "", "", "", "");
+                                }
+                            });
+                            viewCancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPopupWindow.dismiss();
+                                }
+                            });
+                        }
+                    }
+                });
+
     }
 
     private void getData() {
@@ -152,7 +220,7 @@ public class AppointmentActivity extends BaseActivity {
             case R.id.tv_go_back:
                 if (type.equals("pay_success") || type.equals("pay_fail")) {
                     Intent intent2 = new Intent(this, MainActivity.class);
-                    intent2.putExtra("page",0);
+                    intent2.putExtra("page", 0);
                     finish();
                     startActivity(intent2);
                 } else {

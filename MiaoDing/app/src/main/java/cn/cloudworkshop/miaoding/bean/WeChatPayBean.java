@@ -21,6 +21,16 @@ public class WeChatPayBean implements Serializable{
     private String msg;
     private DataBean data;
 
+    public String getPay_code() {
+        return pay_code;
+    }
+
+    public void setPay_code(String pay_code) {
+        this.pay_code = pay_code;
+    }
+
+    private String pay_code;
+
     public int getCode() {
         return code;
     }
@@ -64,6 +74,8 @@ public class WeChatPayBean implements Serializable{
         private String prepayid;
         private int timestamp;
         private String sign;
+
+
 
         public String getAppid() {
             return appid;

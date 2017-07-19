@@ -43,6 +43,7 @@ import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.MemberCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MessageCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
+import cn.cloudworkshop.miaoding.ui.NewCollectionActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
@@ -140,7 +141,6 @@ public class MyCenterFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
-//                        LogUtils.log(e.toString());
                     }
 
                     @Override
@@ -215,7 +215,7 @@ public class MyCenterFragment extends BaseFragment {
                         startActivity(new Intent(getActivity(), CouponActivity.class));
                         break;
                     case 3:
-                        startActivity(new Intent(getActivity(), CollectionActivity.class));
+                        startActivity(new Intent(getActivity(), NewCollectionActivity.class));
                         break;
                     case 4:
                         if (userInfoBean.getData().getIs_yuyue() == 1) {

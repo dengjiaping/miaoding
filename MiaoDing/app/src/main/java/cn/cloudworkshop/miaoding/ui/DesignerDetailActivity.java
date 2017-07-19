@@ -135,8 +135,7 @@ public class DesignerDetailActivity extends BaseActivity {
             case R.id.img_designer_share:
                 ShareUtils.showShare(this, Constant.HOST + designerBean.getData().getAvatar(),
                         designerBean.getData().getName(), designerBean.getData().getContent(),
-                        Constant.DESIGNER_SHARE + "?id=" + id + "&token=" +
-                                SharedPreferencesUtils.getString(this, "token"));
+                        Constant.DESIGNER_SHARE + "?id=" + id);
                 break;
         }
     }

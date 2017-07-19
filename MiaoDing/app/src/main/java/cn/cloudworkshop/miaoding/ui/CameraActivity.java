@@ -20,7 +20,6 @@
 //import android.widget.ImageView;
 //import android.widget.TextView;
 //import android.widget.Toast;
-//
 //import com.wang.avi.AVLoadingIndicatorView;
 //import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 //import com.zhy.http.okhttp.OkHttpUtils;
@@ -97,7 +96,6 @@
 //    static final String[] permissionStr = new String[]{Manifest.permission.CAMERA};
 //    //检测权限
 //    PermissionUtils permissionUtils = new PermissionUtils(this);
-//
 //
 //    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 //        @Override

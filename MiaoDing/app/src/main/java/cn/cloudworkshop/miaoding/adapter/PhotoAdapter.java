@@ -30,21 +30,17 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     private Context mContext;
 
-
     public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
-
     }
-
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.__picker_item_photo, parent, false);
         return new PhotoViewHolder(itemView);
     }
-
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {

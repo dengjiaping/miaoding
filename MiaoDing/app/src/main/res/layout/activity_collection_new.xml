@@ -10,24 +10,26 @@
     <include
         layout="@layout/widget_header_layout"/>
 
+
     <com.flyco.tablayout.SlidingTabLayout
-        android:id="@+id/tab_my_coupon"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:id="@+id/tab_collection"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
         android:background="@android:color/white"
+        android:layout_gravity="center_horizontal"
         app:tl_indicator_color="#414141"
         app:tl_indicator_height="2.5dp"
-        app:tl_indicator_margin_bottom="5dp"
         app:tl_indicator_width_equal_title="true"
         app:tl_tab_space_equal="true"
-        app:tl_textBold="SELECT"
         app:tl_textSelectColor="#4F4F4F"
         app:tl_textUnselectColor="@color/light_gray_7a"
-        app:tl_textsize="12sp">
+        app:tl_indicator_margin_bottom="6dp"
+        app:tl_textBold="SELECT"
+        app:tl_textsize="13sp">
     </com.flyco.tablayout.SlidingTabLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/vp_my_coupon"
+        android:id="@+id/vp_collection"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>

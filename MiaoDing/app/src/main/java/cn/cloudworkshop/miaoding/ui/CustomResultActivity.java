@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -430,7 +432,7 @@ public class CustomResultActivity extends BaseActivity {
 
         //属性动画实现（从0到贝塞尔曲线的长度之间进行插值计算，获取中间过程的距离值）
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, mPathMeasure.getLength());
-        valueAnimator.setDuration(1000);
+        valueAnimator.setDuration(700);
         // 匀速线性插值器
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -461,6 +463,10 @@ public class CustomResultActivity extends BaseActivity {
             public void onAnimationEnd(Animator animation) {
                 // 把移动的图片从父布局里移除
                 rlCustomResult.removeView(imgGoods);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,
+                        Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                scaleAnimation.setDuration(250);
+                imgShoppingBag.startAnimation(scaleAnimation);
             }
 
             @Override

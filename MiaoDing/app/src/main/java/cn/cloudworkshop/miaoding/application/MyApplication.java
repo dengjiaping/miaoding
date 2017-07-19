@@ -48,6 +48,8 @@ public class MyApplication extends Application {
     public static String orderId;
     //首页时间
     public static long homeEnterTime;
+    //支付id
+    public static String payCode;
 
 
     @Override
