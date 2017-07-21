@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -101,7 +100,7 @@ public class ChangeOrderActivity extends BaseActivity {
     private ArrayList<String> selectedPhotos = new ArrayList<>();
 
     private String orderId;
-    private OrderDetailsBean entity;
+    private OrderDetailsBean orderBean;
     //是否选中
     private boolean[] isSelected;
     private StringBuilder sb = new StringBuilder();
@@ -135,8 +134,8 @@ public class ChangeOrderActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        entity = GsonUtils.jsonToBean(response, OrderDetailsBean.class);
-                        if (entity.getData() != null) {
+                        orderBean = GsonUtils.jsonToBean(response, OrderDetailsBean.class);
+                        if (orderBean.getData() != null) {
                             initView();
                         }
                     }
@@ -155,31 +154,32 @@ public class ChangeOrderActivity extends BaseActivity {
     private void initView() {
         loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
         loadingView.setIndicatorColor(Color.GRAY);
-        isSelected = new boolean[entity.getData().getCar_list().size()];
-        for (int i = 0; i < entity.getData().getCar_list().size(); i++) {
+        isSelected = new boolean[orderBean.getData().getCar_list().size()];
+        for (int i = 0; i < orderBean.getData().getCar_list().size(); i++) {
             isSelected[i] = false;
         }
         rvSelectGoods.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<OrderDetailsBean.DataBean.CarListBean> adapter = new CommonAdapter<OrderDetailsBean.DataBean.CarListBean>(this,
-                R.layout.listitem_shopping_cart, entity.getData().getCar_list()) {
+        CommonAdapter<OrderDetailsBean.DataBean.CarListBean> adapter = new CommonAdapter
+                <OrderDetailsBean.DataBean.CarListBean>(this, R.layout.listitem_shopping_cart,
+                orderBean.getData().getCar_list()) {
             @Override
             protected void convert(ViewHolder holder, OrderDetailsBean.DataBean.CarListBean carListBean, final int position) {
                 holder.setChecked(R.id.checkbox_goods_select, false);
                 Glide.with(ChangeOrderActivity.this)
-                        .load(Constant.HOST + entity.getData().getCar_list().get(position).getGoods_thumb())
+                        .load(Constant.HOST + orderBean.getData().getCar_list().get(position).getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
-                holder.setText(R.id.tv_goods_name, entity.getData().getCar_list().get(position).getGoods_name());
-                switch (entity.getData().getCar_list().get(position).getGoods_type()) {
+                holder.setText(R.id.tv_goods_name, orderBean.getData().getCar_list().get(position).getGoods_name());
+                switch (orderBean.getData().getCar_list().get(position).getGoods_type()) {
                     case 2:
-                        holder.setText(R.id.tv_goods_content, entity.getData().getCar_list().get(position).getSize_content());
+                        holder.setText(R.id.tv_goods_content, orderBean.getData().getCar_list().get(position).getSize_content());
                         break;
                     default:
                         holder.setText(R.id.tv_goods_content, "定制款");
                         break;
                 }
-                holder.setText(R.id.tv_goods_price, "¥" + entity.getData().getCar_list().get(position).getPrice());
-                holder.setText(R.id.tv_goods_count, "x" + entity.getData().getCar_list().get(position).getNum());
+                holder.setText(R.id.tv_goods_price, "¥" + orderBean.getData().getCar_list().get(position).getPrice());
+                holder.setText(R.id.tv_goods_count, "x" + orderBean.getData().getCar_list().get(position).getNum());
                 holder.setVisible(R.id.view_cart, true);
 
                 ((CheckBox) holder.getView(R.id.checkbox_goods_select)).
@@ -372,9 +372,9 @@ public class ChangeOrderActivity extends BaseActivity {
             if (isSelected[i]) {
                 isChecked = true;
                 if (i == isSelected.length - 1) {
-                    sb.append(entity.getData().getCar_list().get(i).getId());
+                    sb.append(orderBean.getData().getCar_list().get(i).getId());
                 } else {
-                    sb.append(entity.getData().getCar_list().get(i).getId()).append(",");
+                    sb.append(orderBean.getData().getCar_list().get(i).getId()).append(",");
                 }
             }
         }
