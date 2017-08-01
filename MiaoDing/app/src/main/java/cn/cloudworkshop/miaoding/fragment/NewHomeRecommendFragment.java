@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -367,7 +366,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
         long time = DateUtils.getCurrentTime() - MyApplication.homeEnterTime;
         OkHttpUtils.post()
                 .url(Constant.HOMEPAGE_LOG)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("time", time + "")
                 .addParams("p_module_name", "首页")
                 .addParams("module_name", module_name)

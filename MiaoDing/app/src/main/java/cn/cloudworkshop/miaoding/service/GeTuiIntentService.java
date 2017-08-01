@@ -31,7 +31,7 @@ public class GeTuiIntentService extends GTIntentService {
     @Override
     public void onReceiveClientId(Context context, String s) {
         if (s != null) {
-            SharedPreferencesUtils.saveString(this, "client_id", s);
+            SharedPreferencesUtils.saveStr(this, "client_id", s);
         }
     }
 

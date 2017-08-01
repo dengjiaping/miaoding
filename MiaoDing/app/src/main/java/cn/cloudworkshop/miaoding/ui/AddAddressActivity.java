@@ -188,7 +188,7 @@ public class AddAddressActivity extends BaseActivity {
         } else {
             if (PhoneNumberUtils.judgePhoneNumber(etAddNumber.getText().toString().trim())) {
                 Map<String, String> map = new HashMap<>();
-                map.put("token", SharedPreferencesUtils.getString(this, "token"));
+                map.put("token", SharedPreferencesUtils.getStr(this, "token"));
                 map.put("name", etAddName.getText().toString().trim());
                 map.put("phone", etAddNumber.getText().toString().trim());
                 map.put("is_default", index + "");

@@ -69,7 +69,7 @@ public class InviteFriendActivity extends BaseActivity {
 
         OkHttpUtils.get()
                 .url(Constant.INVITE_FRIEND)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -109,7 +109,7 @@ public class InviteFriendActivity extends BaseActivity {
                 break;
             case R.id.img_header_share:
                 if (inviteBean != null) {
-                    ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils.getString(this
+                    ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils.getStr(this
                             , "avatar"), "邀请有礼", "TA得优惠，你得奖励", Constant.INVITE_SHARE +
                             "?id=" + inviteBean.getData().getUp_uid());
                     MobclickAgent.onEvent(InviteFriendActivity.this, "invite_friend");

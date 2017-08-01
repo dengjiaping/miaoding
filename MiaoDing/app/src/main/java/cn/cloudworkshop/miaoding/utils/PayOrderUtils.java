@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -213,7 +212,7 @@ public class PayOrderUtils {
         OkHttpUtils.post()
                 .url(Constant.WE_CHAT_PAY)
                 .addParams("order_id", orderId)
-                .addParams("token", SharedPreferencesUtils.getString(context, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(context, "token"))
                 .addParams("pay_type", "2")
                 .build()
                 .execute(new StringCallback() {
@@ -232,7 +231,7 @@ public class PayOrderUtils {
                             if (!api.isWXAppSupportAPI()) {
                                 ToastUtils.showToast(context, "当前版本不支持支付功能");
                             }
-                            MyApplication.payCode = weChatPay.getPay_code();
+                            MyApplication.payId = weChatPay.getPay_code();
                             PayReq req = new PayReq();
                             req.appId = Constant.APP_ID;
                             req.partnerId = weChatPay.getData().getPartnerid();
@@ -265,7 +264,7 @@ public class PayOrderUtils {
         OkHttpUtils.post()
                 .url(Constant.ALI_PAY)
                 .addParams("order_id", orderId)
-                .addParams("token", SharedPreferencesUtils.getString(context, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(context, "token"))
                 .addParams("pay_type", "1")
                 .build()
                 .execute(new StringCallback() {
@@ -280,7 +279,7 @@ public class PayOrderUtils {
                             int code = jsonObject.getInt("code");
                             if (code == 1) {
                                 final String orderInfo = jsonObject.getString("data");
-                                MyApplication.payCode = jsonObject.getString("pay_code");
+                                MyApplication.payId = jsonObject.getString("pay_code");
                                 Runnable payRunnable = new Runnable() {
                                     @Override
                                     public void run() {

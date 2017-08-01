@@ -107,7 +107,6 @@ public class SectionedRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (isSectionHeaderPosition(position)) {
             ((SectionViewHolder) sectionViewHolder).title.setTypeface(DisplayUtils
                     .setTextType(mContext));
-            LogUtils.log(mSections.get(position).title+"");
             ((SectionViewHolder) sectionViewHolder).title.setText(mSections.get(position).title);
         } else {
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));

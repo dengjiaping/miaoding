@@ -88,7 +88,6 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
 
     /**
      * 切换tab
-     *
      * @param index
      */
     private void showTab(int index) {

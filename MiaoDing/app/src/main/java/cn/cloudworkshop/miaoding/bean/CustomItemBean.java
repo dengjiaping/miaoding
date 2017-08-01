@@ -8,7 +8,7 @@ import java.util.List;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class TailorItemBean implements Serializable {
+public class CustomItemBean implements Serializable {
     private String id;
     private String goods_name;
     private String img_url;
@@ -121,7 +121,7 @@ public class TailorItemBean implements Serializable {
         return id;
     }
 
-    public TailorItemBean() {
+    public CustomItemBean() {
     }
 
     public void setId(String id) {

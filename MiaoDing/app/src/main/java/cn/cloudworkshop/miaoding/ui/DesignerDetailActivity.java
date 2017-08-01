@@ -28,6 +28,7 @@ import cn.cloudworkshop.miaoding.fragment.DesignerFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerStoryFragment;
 import cn.cloudworkshop.miaoding.fragment.WorksFragment;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -86,7 +87,12 @@ public class DesignerDetailActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(DesignerDetailActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override

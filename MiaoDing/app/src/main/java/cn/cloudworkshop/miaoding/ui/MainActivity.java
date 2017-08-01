@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,7 +39,9 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +56,8 @@ import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
-import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
@@ -80,7 +81,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private List<Fragment> fragmentList = new ArrayList<>();
     private NewFragmentTabUtils fragmentUtils;
     //下载服务
-    private DownloadService service;
+    private DownloadService downloadService;
     //退出应用
     private long exitTime = 0;
     //是否检测更新
@@ -115,7 +116,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(MainActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initIcon();
+                            }
+                        });
                     }
 
                     @Override
@@ -133,12 +139,19 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 推送，提交设备id
      */
     private void submitClientId() {
-        String clientId = SharedPreferencesUtils.getString(this, "client_id");
+        String clientId = SharedPreferencesUtils.getStr(this, "client_id");
         if (clientId != null) {
-            OkHttpUtils.get()
+            Map<String, String> map = new HashMap<>();
+            map.put("device_id", clientId);
+
+            String token = SharedPreferencesUtils.getStr(this, "token");
+            if (!TextUtils.isEmpty(token)) {
+                map.put("token", token);
+            }
+
+            OkHttpUtils.post()
                     .url(Constant.CLIENT_ID)
-                    .addParams("type", "1")
-                    .addParams("device_id", clientId)
+                    .params(map)
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -159,15 +172,16 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 检测是否登录
      */
     private void isLogin() {
-        if (SharedPreferencesUtils.getString(this, "token") != null) {
+        String token = SharedPreferencesUtils.getStr(this, "token");
+        if (!TextUtils.isEmpty(token)) {
             OkHttpUtils.get()
                     .url(Constant.CHECK_LOGIN)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", token)
                     .build()
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            SharedPreferencesUtils.deleteString(MainActivity.this, "token");
+                            SharedPreferencesUtils.deleteStr(MainActivity.this, "token");
                         }
 
                         @Override
@@ -177,7 +191,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     if (code == 10001) {
-                                        SharedPreferencesUtils.deleteString(MainActivity.this, "token");
+                                        SharedPreferencesUtils.deleteStr(MainActivity.this, "token");
+                                        SharedPreferencesUtils.deleteStr(MainActivity.this, "avatar");
+                                        SharedPreferencesUtils.deleteStr(MainActivity.this, "phone");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -221,14 +237,14 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                         R.style.AlertDialog);
                                 dialog.setTitle("检测到新版本，请更新");
                                 dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
-                                //为“确定”按钮注册监听事件
+                                //确定
                                 dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         downloadFile(appIndexBean.getData().getDownload_url());
                                     }
                                 });
-                                //为“取消”按钮注册监听事件
+                                //取消
                                 dialog.setNegativeButton("下次再说", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -275,8 +291,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }
         request.setDestinationUri(Uri.fromFile(file));
 
-        service = new DownloadService(file);
-        registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        downloadService = new DownloadService(file);
+        registerReceiver(downloadService, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         manager.enqueue(request);
     }
 
@@ -316,7 +332,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void isFirstIn() {
         //默认首次
         boolean isFirst = SharedPreferencesUtils.getBoolean(this, "first_in", true);
-        if (isFirst && TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+        if (isFirst && TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
             OkHttpUtils.get()
                     .url(Constant.GUIDE_IMG)
                     .addParams("id", "5")
@@ -403,14 +419,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
 
     @Override
-    protected void onDestroy() {
-        if (service != null) {
-            unregisterReceiver(service);
-        }
-        super.onDestroy();
-    }
-
-    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -426,7 +434,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
-
                 System.exit(0);
             }
             return true;
@@ -438,7 +445,16 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        int currentPage = intent.getIntExtra("page", 0);
+        int currentPage = getIntent().getIntExtra("page", 0);
         fragmentUtils.setCurrentFragment(currentPage);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (downloadService != null) {
+            unregisterReceiver(downloadService);
+        }
+        super.onDestroy();
     }
 }

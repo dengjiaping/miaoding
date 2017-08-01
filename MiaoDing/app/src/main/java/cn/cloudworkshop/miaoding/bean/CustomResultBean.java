@@ -5,7 +5,7 @@ package cn.cloudworkshop.miaoding.bean;
  * Email：1993911441@qq.com
  * Describe：
  */
-public class TailorInfoBean {
+public class CustomResultBean {
     private String type;
     private String name;
 

@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -37,6 +36,7 @@ import cn.cloudworkshop.miaoding.bean.CouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
@@ -112,13 +112,18 @@ public class MyCouponFragment extends BaseFragment {
 
         OkHttpUtils.get()
                 .url(Constant.MY_COUPON)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("status", currentPos + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -224,7 +229,7 @@ public class MyCouponFragment extends BaseFragment {
 
         OkHttpUtils.post()
                 .url(Constant.EXCHANGE_COUPON)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("kouling", etInputCode.getText().toString().trim())
                 .build()
                 .execute(new StringCallback() {

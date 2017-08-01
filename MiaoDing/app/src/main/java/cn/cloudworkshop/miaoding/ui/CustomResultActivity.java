@@ -40,11 +40,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.TailorInfoBean;
-import cn.cloudworkshop.miaoding.bean.TailorItemBean;
+import cn.cloudworkshop.miaoding.bean.CustomResultBean;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -95,7 +94,7 @@ public class CustomResultActivity extends BaseActivity {
     private float x1 = 0;
     private float x2 = 0;
 
-    private TailorItemBean tailorBean;
+    private CustomItemBean customBean;
 
 
     @Override
@@ -116,7 +115,7 @@ public class CustomResultActivity extends BaseActivity {
      */
     private void getData() {
         Bundle bundle = getIntent().getExtras();
-        tailorBean = (TailorItemBean) bundle.getSerializable("tailor");
+        customBean = (CustomItemBean) bundle.getSerializable("tailor");
         initView();
     }
 
@@ -127,16 +126,16 @@ public class CustomResultActivity extends BaseActivity {
     private void initView() {
 
         //部件图展示
-        switch (tailorBean.getIs_scan()) {
+        switch (customBean.getIs_scan()) {
             case 0:
-                for (int i = 0; i < tailorBean.getItemBean().size(); i++) {
+                for (int i = 0; i < customBean.getItemBean().size(); i++) {
                     ImageView img = new ImageView(this);
                     Glide.with(getApplicationContext())
-                            .load(Constant.HOST + tailorBean.getItemBean().get(i).getImg())
+                            .load(Constant.HOST + customBean.getItemBean().get(i).getImg())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img);
-                    switch (tailorBean.getItemBean().get(i).getPosition_id()) {
+                    switch (customBean.getItemBean().get(i).getPosition_id()) {
                         case 1:
                             rlTailorPositive.addView(img);
                             break;
@@ -251,29 +250,29 @@ public class CustomResultActivity extends BaseActivity {
                 rlTailorPosition.setVisibility(View.GONE);
                 imgDefaultItem.setVisibility(View.VISIBLE);
                 Glide.with(getApplicationContext())
-                        .load(Constant.HOST + tailorBean.getDefault_img())
+                        .load(Constant.HOST + customBean.getDefault_img())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgDefaultItem);
                 break;
         }
 
 
-        tvTailorName.setText(tailorBean.getGoods_name());
-        tvTailorPrice.setText("¥" + tailorBean.getPrice());
+        tvTailorName.setText(customBean.getGoods_name());
+        tvTailorPrice.setText("¥" + customBean.getPrice());
         rvTailorName.setFocusable(false);
 
 
-        if (!TextUtils.isEmpty(tailorBean.getSpec_content())) {
-            String customStr = tailorBean.getSpec_content();
-            if (!TextUtils.isEmpty(tailorBean.getDiy_contet())) {
-                customStr += tailorBean.getDiy_contet();
+        if (!TextUtils.isEmpty(customBean.getSpec_content())) {
+            String customStr = customBean.getSpec_content();
+            if (!TextUtils.isEmpty(customBean.getDiy_contet())) {
+                customStr += customBean.getDiy_contet();
             }
 
-            List<TailorInfoBean> itemList = new ArrayList<>();
+            List<CustomResultBean> itemList = new ArrayList<>();
             String[] typeStr = customStr.split(";");
             for (int i = 0; i < typeStr.length; i++) {
                 String[] nameStr = typeStr[i].split(":");
-                TailorInfoBean tailorInfoBean = new TailorInfoBean();
+                CustomResultBean tailorInfoBean = new CustomResultBean();
                 tailorInfoBean.setType(nameStr[0]);
                 tailorInfoBean.setName(nameStr[1]);
                 itemList.add(tailorInfoBean);
@@ -283,10 +282,10 @@ public class CustomResultActivity extends BaseActivity {
             MyLinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(this);
             linearLayoutManager.setScrollEnabled(false);
             rvTailorName.setLayoutManager(linearLayoutManager);
-            CommonAdapter<TailorInfoBean> adapter = new CommonAdapter<TailorInfoBean>(this,
+            CommonAdapter<CustomResultBean> adapter = new CommonAdapter<CustomResultBean>(this,
                     R.layout.listitem_custom_result, itemList) {
                 @Override
-                protected void convert(ViewHolder holder, TailorInfoBean tailorInfoBean, int position) {
+                protected void convert(ViewHolder holder, CustomResultBean tailorInfoBean, int position) {
                     holder.setText(R.id.tv_tailor_type, tailorInfoBean.getType());
                     holder.setText(R.id.tv_tailor_item, tailorInfoBean.getName());
                 }
@@ -322,21 +321,21 @@ public class CustomResultActivity extends BaseActivity {
      */
     private void addToCart() {
         Map<String, String> map = new HashMap<>();
-        map.put("token", SharedPreferencesUtils.getString(this, "token"));
+        map.put("token", SharedPreferencesUtils.getStr(this, "token"));
         map.put("type", type + "");
-        map.put("price_id", tailorBean.getPrice_type());
-        map.put("goods_id", tailorBean.getId());
+        map.put("price_id", customBean.getPrice_type());
+        map.put("goods_id", customBean.getId());
         map.put("goods_type", "1");
-        map.put("price", tailorBean.getPrice());
-        map.put("goods_name", tailorBean.getGoods_name());
-        map.put("goods_thumb", tailorBean.getImg_url());
-        map.put("spec_ids", tailorBean.getSpec_ids());
-        map.put("spec_content", tailorBean.getSpec_content());
-        map.put("mianliao_id", tailorBean.getFabric_id());
-        map.put("banxing_id", tailorBean.getBanxing_id());
-        map.put("is_scan", tailorBean.getIs_scan() + "");
-        if (!TextUtils.isEmpty(tailorBean.getDiy_contet())) {
-            map.put("diy_content", tailorBean.getDiy_contet());
+        map.put("price", customBean.getPrice());
+        map.put("goods_name", customBean.getGoods_name());
+        map.put("goods_thumb", customBean.getImg_url());
+        map.put("spec_ids", customBean.getSpec_ids());
+        map.put("spec_content", customBean.getSpec_content());
+        map.put("mianliao_id", customBean.getFabric_id());
+        map.put("banxing_id", customBean.getBanxing_id());
+        map.put("is_scan", customBean.getIs_scan() + "");
+        if (!TextUtils.isEmpty(customBean.getDiy_contet())) {
+            map.put("diy_content", customBean.getDiy_contet());
         }
 
         OkHttpUtils.post()
@@ -365,11 +364,11 @@ public class CustomResultActivity extends BaseActivity {
                                             ConfirmOrderActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putString("cart_id", cartId);
-                                    bundle.putString("log_id", tailorBean.getLog_id());
-                                    bundle.putLong("goods_time", tailorBean.getGoods_time());
-                                    bundle.putLong("dingzhi_time", tailorBean.getDingzhi_time());
-                                    bundle.putString("goods_id", tailorBean.getId());
-                                    bundle.putString("goods_name", tailorBean.getGoods_name());
+                                    bundle.putString("log_id", customBean.getLog_id());
+                                    bundle.putLong("goods_time", customBean.getGoods_time());
+                                    bundle.putLong("dingzhi_time", customBean.getDingzhi_time());
+                                    bundle.putString("goods_id", customBean.getId());
+                                    bundle.putString("goods_name", customBean.getGoods_name());
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                 }
@@ -390,7 +389,7 @@ public class CustomResultActivity extends BaseActivity {
         //1、添加执行动画效果的图片
         final ImageView imgGoods = new ImageView(this);
         Glide.with(this)
-                .load(Constant.HOST + tailorBean.getImg_url())
+                .load(Constant.HOST + customBean.getImg_url())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgGoods);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80, 80);

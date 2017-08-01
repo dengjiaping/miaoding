@@ -24,12 +24,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -37,7 +37,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2016/11/24 12:18
  * Email：1993911441@qq.com
- * Describe：预约结果
+ * Describe：预约结果、支付结果、入驻结果
  */
 public class AppointmentActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
@@ -56,6 +56,7 @@ public class AppointmentActivity extends BaseActivity {
     ImageView imgPayResult;
 
     private String type;
+    private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,14 @@ public class AppointmentActivity extends BaseActivity {
         ButterKnife.bind(this);
         getData();
         initView();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (mPopupWindow != null && mPopupWindow.isShowing()){
+            mPopupWindow.dismiss();
+        }
     }
 
     /**
@@ -77,7 +86,7 @@ public class AppointmentActivity extends BaseActivity {
 
                 OkHttpUtils.get()
                         .url(Constant.APPOINTMENT_STATUS)
-                        .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -161,12 +170,12 @@ public class AppointmentActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        GuideBean guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
+                        final GuideBean guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
                         if (guideBean.getData() != null && guideBean.getData().getImg_urls() != null
                                 && guideBean.getData().getImg_urls().size() > 0) {
 
                             View popupView = getLayoutInflater().inflate(R.layout.ppw_coupon, null);
-                            final PopupWindow mPopupWindow = new PopupWindow(popupView,
+                            mPopupWindow = new PopupWindow(popupView,
                                     ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.MATCH_PARENT);
                             mPopupWindow.setTouchable(true);
@@ -186,8 +195,12 @@ public class AppointmentActivity extends BaseActivity {
                             viewShare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mPopupWindow.dismiss();
-                                    ShareUtils.showShare(AppointmentActivity.this, "", "", "", "");
+                                    ShareUtils.showShare(AppointmentActivity.this,
+                                            Constant.HOST + guideBean.getData().getImg_urls().get(0),
+                                            "【妙定APP】送你1000元定制红包，手快有，手慢无！",
+                                            "做你不敢想的黑科技服饰定制，雅痞还是绅士，成熟还是睿智，先从一件衬衣开始。",
+                                            Constant.SHARE_COUPON + "?pay_ids=" + MyApplication.payId
+                                                    + "&uid=" + SharedPreferencesUtils.getStr(AppointmentActivity.this, "uid"));
                                 }
                             });
                             viewCancel.setOnClickListener(new View.OnClickListener() {

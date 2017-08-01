@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -128,7 +127,7 @@ public class FeedbackActivity extends BaseActivity {
             super.handleMessage(msg);
 
             Map<String, String> map = new HashMap<>();
-            map.put("token", SharedPreferencesUtils.getString(FeedbackActivity.this, "token"));
+            map.put("token", SharedPreferencesUtils.getStr(FeedbackActivity.this, "token"));
             map.put("content", etFeedBack.getText().toString().trim());
             if (!TextUtils.isEmpty(etFeedBackPhone.getText().toString().trim())) {
                 map.put("contact", etFeedBackPhone.getText().toString().trim());
@@ -183,7 +182,7 @@ public class FeedbackActivity extends BaseActivity {
         @Override
         public void run() {
             if (selectedPhotos.size() != 0) {
-                imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
+                imgEncode = ImageEncodeUtils.encodeFile(selectedPhotos);
                 handler.sendEmptyMessage(1);
             } else {
                 handler.sendEmptyMessage(2);

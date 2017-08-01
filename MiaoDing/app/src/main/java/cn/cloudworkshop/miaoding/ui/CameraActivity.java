@@ -43,7 +43,6 @@
 //import cn.cloudworkshop.customtailor.view.CustomCameraView;
 //import cn.cloudworkshop.customtailor.view.SensorView;
 //import okhttp3.Call;
-//
 ///**
 // * Author：binge on 2017/3/6 12:17
 // * Email：1993911441@qq.com

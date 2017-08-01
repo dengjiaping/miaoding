@@ -10,7 +10,7 @@ import android.view.View;
  *
  * 
  */
-public class VerVPTransformer implements ViewPager.PageTransformer{
+public class VerPageTransformer implements ViewPager.PageTransformer{
     @Override
     public void transformPage(View page, float position) {
         page.setTranslationX(page.getWidth() * -position);

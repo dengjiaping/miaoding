@@ -49,6 +49,7 @@ import cn.cloudworkshop.miaoding.bean.WorksDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
@@ -180,13 +181,18 @@ public class WorksDetailActivity extends BaseActivity {
 
         OkHttpUtils.get()
                 .url(Constant.NEW_GOODS_DETAILS)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("goods_id", id)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(WorksDetailActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -300,27 +306,28 @@ public class WorksDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Bitmap response, int id) {
-                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
                         try {
-                            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
-                            int width = decoder.getWidth();
-                            int height = decoder.getHeight();
-                            BitmapFactory.Options opts = new BitmapFactory.Options();
-                            Rect rect = new Rect();
+                            if (response != null) {
+                                InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
+                                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
+                                int width = decoder.getWidth();
+                                int height = decoder.getHeight();
+                                BitmapFactory.Options opts = new BitmapFactory.Options();
+                                Rect rect = new Rect();
 
-                            //平分三份
-                            rect.set(0, 0, width, height / 3);
-                            bm0 = decoder.decodeRegion(rect, opts);
-                            imgDetails.setImageBitmap(bm0);
+                                //平分三份
+                                rect.set(0, 0, width, height / 3);
+                                bm0 = decoder.decodeRegion(rect, opts);
+                                imgDetails.setImageBitmap(bm0);
 
-                            rect.set(0, height / 3, width, height / 3 * 2);
-                            bm1 = decoder.decodeRegion(rect, opts);
-                            imgDetails1.setImageBitmap(bm1);
+                                rect.set(0, height / 3, width, height / 3 * 2);
+                                bm1 = decoder.decodeRegion(rect, opts);
+                                imgDetails1.setImageBitmap(bm1);
 
-                            rect.set(0, height / 3 * 2, width, height);
-                            bm2 = decoder.decodeRegion(rect, opts);
-                            imgDetails2.setImageBitmap(bm2);
-
+                                rect.set(0, height / 3 * 2, width, height);
+                                bm2 = decoder.decodeRegion(rect, opts);
+                                imgDetails2.setImageBitmap(bm2);
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -345,7 +352,7 @@ public class WorksDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_goods_like:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
                     addCollection();
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
@@ -434,8 +441,7 @@ public class WorksDetailActivity extends BaseActivity {
                 .into(imageView);
         tvPrice.setTypeface(DisplayUtils.setTextType(this));
         if (worksBean.getData().getSize_list() != null) {
-            tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list()
-                    .get(0).getPrice());
+            tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list().get(0).getPrice());
             tvStock.setText("库存：" + worksBean.getData().getSize_list().get(0).getSize_list()
                     .get(0).getSku_num() + "件");
             tvCount.setText("1");
@@ -548,7 +554,7 @@ public class WorksDetailActivity extends BaseActivity {
             tvBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(WorksDetailActivity.this, "token"))) {
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(WorksDetailActivity.this, "token"))) {
                         addToCart();
                     } else {
                         Intent login = new Intent(WorksDetailActivity.this, LoginActivity.class);
@@ -595,7 +601,7 @@ public class WorksDetailActivity extends BaseActivity {
 
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("type", index + "")
                 .addParams("goods_id", id)
                 .addParams("goods_type", "2")
@@ -608,7 +614,6 @@ public class WorksDetailActivity extends BaseActivity {
                 .addParams("size_content", "颜色:" + worksBean.getData().getSize_list().get(currentSize)
                         .getSize_list().get(currentColor).getColor_name() + ";尺码:" + worksBean.getData()
                         .getSize_list().get(currentSize).getSize_name())
-
                 .addParams("num", tvCount.getText().toString().trim())
                 .build()
                 .execute(new StringCallback() {
@@ -671,7 +676,7 @@ public class WorksDetailActivity extends BaseActivity {
     private void addCollection() {
         OkHttpUtils.get()
                 .url(Constant.ADD_COLLECTION)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("type", String.valueOf(2))
                 .addParams("cid", id)
                 .build()

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -35,7 +34,6 @@ import cn.cloudworkshop.miaoding.adapter.PhotoAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -172,7 +170,7 @@ public class EvaluateActivity extends BaseActivity {
         @Override
         public void run() {
             if (selectedPhotos.size() != 0) {
-                imgEncode = ImageEncodeUtils.enCodeFile(selectedPhotos);
+                imgEncode = ImageEncodeUtils.encodeFile(selectedPhotos);
                 handler.sendEmptyMessage(1);
             } else {
                 handler.sendEmptyMessage(2);
@@ -190,7 +188,7 @@ public class EvaluateActivity extends BaseActivity {
             map.put("order_id", orderId);
             map.put("car_id", cartId);
             map.put("goods_id", goodsId);
-            map.put("token", SharedPreferencesUtils.getString(EvaluateActivity.this, "token"));
+            map.put("token", SharedPreferencesUtils.getStr(EvaluateActivity.this, "token"));
             map.put("content", etEvaluate.getText().toString().trim());
             if (msg.what == 1) {
                 map.put("img_list", imgEncode);

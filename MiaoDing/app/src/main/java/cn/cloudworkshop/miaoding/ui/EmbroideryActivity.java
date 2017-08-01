@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,12 +32,12 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.EmbroideryBean;
-import cn.cloudworkshop.miaoding.bean.TailorItemBean;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.CharacterUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -79,7 +77,7 @@ public class EmbroideryActivity extends BaseActivity {
     //商品分类
     private int classifyId;
 
-    private TailorItemBean tailorBean;
+    private CustomItemBean tailorBean;
 
 
     @Override
@@ -102,7 +100,7 @@ public class EmbroideryActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         classifyId = bundle.getInt("classify_id");
-        tailorBean = (TailorItemBean) bundle.getSerializable("tailor");
+        tailorBean = (CustomItemBean) bundle.getSerializable("tailor");
     }
 
     /**
@@ -119,7 +117,12 @@ public class EmbroideryActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(EmbroideryActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override

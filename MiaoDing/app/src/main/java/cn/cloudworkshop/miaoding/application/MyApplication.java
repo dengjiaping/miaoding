@@ -1,7 +1,6 @@
 package cn.cloudworkshop.miaoding.application;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
@@ -16,7 +15,6 @@ import com.qiyukf.unicorn.api.YSFOptions;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
-import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import cn.cloudworkshop.miaoding.constant.Constant;
@@ -49,8 +47,7 @@ public class MyApplication extends Application {
     //首页时间
     public static long homeEnterTime;
     //支付id
-    public static String payCode;
-
+    public static String payId;
 
     @Override
     public void onCreate() {
@@ -83,7 +80,7 @@ public class MyApplication extends Application {
         options.savePowerConfig = new SavePowerConfig();
         UICustomization uiCustomization = new UICustomization();
         uiCustomization.leftAvatar = "";
-        uiCustomization.rightAvatar = Constant.HOST + SharedPreferencesUtils.getString(this, "avatar");
+        uiCustomization.rightAvatar = Constant.HOST + SharedPreferencesUtils.getStr(this, "avatar");
         options.uiCustomization = uiCustomization;
         return options;
     }

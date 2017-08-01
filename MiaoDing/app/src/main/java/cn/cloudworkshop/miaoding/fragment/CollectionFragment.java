@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
-import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -49,6 +47,7 @@ import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -101,14 +100,19 @@ public class CollectionFragment extends BaseFragment {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.COLLECTION)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("type", type + "")
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -228,7 +232,6 @@ public class CollectionFragment extends BaseFragment {
                         intent.putExtra("img_url", itemList.get(position).getImg());
                         intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
                                 itemList.get(position).getCid());
-
                         break;
                     case 2:
                         if (itemList.get(position).getGoods_type() == 1) {
@@ -247,7 +250,7 @@ public class CollectionFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                cancelCollection(itemList.get(position).getCid());
+                cancelCollection(itemList.get(position).getCid(), position);
             }
         });
 
@@ -257,7 +260,7 @@ public class CollectionFragment extends BaseFragment {
     /**
      * 取消收藏
      */
-    private void cancelCollection(final int cid) {
+    private void cancelCollection(final int cid, final int position) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
         dialog.setTitle("取消收藏");
         dialog.setMessage("您确定要取消收藏？");
@@ -267,7 +270,7 @@ public class CollectionFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.ADD_COLLECTION)
-                        .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                         .addParams("type", type + "")
                         .addParams("cid", cid + "")
                         .build()
@@ -279,17 +282,23 @@ public class CollectionFragment extends BaseFragment {
 
                             @Override
                             public void onResponse(String response, int id) {
-
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     String msg = jsonObject.getString("msg");
                                     if (code == 2) {
                                         ToastUtils.showToast(getActivity(), msg);
-                                        itemList.clear();
-                                        page = 1;
-                                        initData();
 
+                                        itemList.remove(position);
+                                        adapter.notifyItemRemoved(position);
+                                        if (position != itemList.size()) {
+                                            adapter.notifyItemRangeChanged(position, itemList.size() - position);
+                                        }
+                                        if (itemList.size() == 0) {
+                                            rvCollection.setVisibility(View.GONE);
+                                            imgNoCollect.setImageResource(R.mipmap.icon_null_collection);
+                                            llNullCollect.setVisibility(View.VISIBLE);
+                                        }
                                     }
 
                                 } catch (JSONException e) {

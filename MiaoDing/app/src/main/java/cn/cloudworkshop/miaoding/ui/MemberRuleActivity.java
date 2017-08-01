@@ -25,6 +25,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberRuleBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -57,12 +58,17 @@ public class MemberRuleActivity extends BaseActivity {
         tvHeaderTitle.setText("会员制度");
         OkHttpUtils.get()
                 .url(Constant.MEMBER_RULE)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(MemberRuleActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override

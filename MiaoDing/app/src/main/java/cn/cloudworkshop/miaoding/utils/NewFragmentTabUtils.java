@@ -162,7 +162,6 @@ public class NewFragmentTabUtils implements TabLayout.OnTabSelectedListener {
 
     /**
      * 切换tab
-     *
      * @param index
      */
     private void showTab(int index) {

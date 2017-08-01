@@ -27,6 +27,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MsgDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -68,13 +69,18 @@ public class MessageDetailActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.MESSAGE_DETAIL)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("type", type + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(MessageDetailActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override

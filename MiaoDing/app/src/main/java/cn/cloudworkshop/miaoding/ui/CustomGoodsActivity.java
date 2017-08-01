@@ -46,7 +46,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CustomGoodsBean;
-import cn.cloudworkshop.miaoding.bean.TailorItemBean;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -163,13 +163,18 @@ public class CustomGoodsActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.NEW_GOODS_DETAILS)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("goods_id", id)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(CustomGoodsActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -283,25 +288,27 @@ public class CustomGoodsActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Bitmap response, int id) {
-                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
                         try {
-                            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
-                            int width = decoder.getWidth();
-                            int height = decoder.getHeight();
-                            BitmapFactory.Options opts = new BitmapFactory.Options();
-                            Rect rect = new Rect();
+                            if (response != null) {
+                                InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
+                                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
+                                int width = decoder.getWidth();
+                                int height = decoder.getHeight();
+                                BitmapFactory.Options opts = new BitmapFactory.Options();
+                                Rect rect = new Rect();
 
-                            rect.set(0, 0, width, height / 3);
-                            bm0 = decoder.decodeRegion(rect, opts);
-                            imgDetails.setImageBitmap(bm0);
+                                rect.set(0, 0, width, height / 3);
+                                bm0 = decoder.decodeRegion(rect, opts);
+                                imgDetails.setImageBitmap(bm0);
 
-                            rect.set(0, height / 3, width, height / 3 * 2);
-                            bm1 = decoder.decodeRegion(rect, opts);
-                            imgDetails1.setImageBitmap(bm1);
+                                rect.set(0, height / 3, width, height / 3 * 2);
+                                bm1 = decoder.decodeRegion(rect, opts);
+                                imgDetails1.setImageBitmap(bm1);
 
-                            rect.set(0, height / 3 * 2, width, height);
-                            bm2 = decoder.decodeRegion(rect, opts);
-                            imgDetails2.setImageBitmap(bm2);
+                                rect.set(0, height / 3 * 2, width, height);
+                                bm2 = decoder.decodeRegion(rect, opts);
+                                imgDetails2.setImageBitmap(bm2);
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -400,7 +407,7 @@ public class CustomGoodsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goods_tailor:
-                if (TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                if (TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
                     Intent login = new Intent(this, LoginActivity.class);
                     login.putExtra("page_name", "定制");
                     startActivity(login);
@@ -416,7 +423,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_custom_goods:
-                if (TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                if (TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
                     Intent login = new Intent(this, LoginActivity.class);
                     login.putExtra("page_name", "定制");
                     startActivity(login);
@@ -429,7 +436,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_add_like:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
                     addCollection();
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
@@ -441,7 +448,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 ContactService.contactService(this);
                 break;
             case R.id.img_tailor_share:
-                if (customBean!= null){
+                if (customBean != null) {
                     ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
                             customBean.getData().getName(), customBean.getData().getContent(),
                             Constant.CUSTOM_SHARE + "?goods_id=" + id);
@@ -515,7 +522,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 }
 
 
-                TailorItemBean tailorItemBean = new TailorItemBean();
+                CustomItemBean tailorItemBean = new CustomItemBean();
                 tailorItemBean.setId(id);
                 tailorItemBean.setGoods_name(customBean.getData().getName());
                 tailorItemBean.setPrice(new DecimalFormat("#0.00").format(customBean.getData().getDefault_price()));
@@ -555,7 +562,7 @@ public class CustomGoodsActivity extends BaseActivity {
         if (customBean != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .addParams("id", customBean.getId())
                     .addParams("goods_time", (DateUtils.getCurrentTime() - enterTime) + "")
                     .addParams("goods_id", id)
@@ -584,7 +591,7 @@ public class CustomGoodsActivity extends BaseActivity {
     private void addCollection() {
         OkHttpUtils.get()
                 .url(Constant.ADD_COLLECTION)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("type", "2")
                 .addParams("cid", id)
                 .build()

@@ -30,6 +30,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import okhttp3.Call;
 
 /**
@@ -68,14 +69,18 @@ public class NewDesignerWorksFragment extends BaseFragment {
      */
     private void initData() {
 
-
         OkHttpUtils.get()
                 .url(Constant.DESIGNER_TITLE)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override

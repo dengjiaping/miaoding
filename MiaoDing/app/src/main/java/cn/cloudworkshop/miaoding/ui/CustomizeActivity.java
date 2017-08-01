@@ -36,10 +36,11 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CustomizeBean;
-import cn.cloudworkshop.miaoding.bean.TailorItemBean;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -156,7 +157,12 @@ public class CustomizeActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(CustomizeActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -777,7 +783,7 @@ public class CustomizeActivity extends BaseActivity {
         }
 
 
-        TailorItemBean tailorItemBean = new TailorItemBean();
+        CustomItemBean tailorItemBean = new CustomItemBean();
         tailorItemBean.setId(id);
         tailorItemBean.setGoods_name(goodsName);
         tailorItemBean.setPrice(price);
@@ -792,11 +798,11 @@ public class CustomizeActivity extends BaseActivity {
         tailorItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
 
         //部件
-        List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+        List<CustomItemBean.ItemBean> itemList = new ArrayList<>();
         StringBuilder sbIds = new StringBuilder();
         StringBuilder sbContent = new StringBuilder();
         for (int i = 0; i < itemArray.size(); i++) {
-            TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+            CustomItemBean.ItemBean itemBean = new CustomItemBean.ItemBean();
             int key = itemArray.keyAt(i);
             int value = itemArray.valueAt(i);
             if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
@@ -848,7 +854,7 @@ public class CustomizeActivity extends BaseActivity {
         if (customizeBean != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .addParams("id", logId)
                     .addParams("goods_time", (DateUtils.getCurrentTime() - goodsTime) + "")
                     .addParams("dingzhi_time", (DateUtils.getCurrentTime() - enterTime) + "")

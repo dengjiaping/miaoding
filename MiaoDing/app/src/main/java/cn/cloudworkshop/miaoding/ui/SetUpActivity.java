@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -44,6 +43,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DataManagerUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
@@ -185,12 +185,17 @@ public class SetUpActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.USER_INFO)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(SetUpActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -199,7 +204,7 @@ public class SetUpActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                             userIcon = jsonObject1.getString("avatar");
-                            SharedPreferencesUtils.saveString(SetUpActivity.this, "avatar", userIcon);
+                            SharedPreferencesUtils.saveStr(SetUpActivity.this, "avatar", userIcon);
                             userName = jsonObject1.getString("name");
                             userSex = jsonObject1.getInt("sex");
                             userBirthday = jsonObject1.getString("birthday");
@@ -225,8 +230,8 @@ public class SetUpActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.LOG_OUT)
-                        .addParams("token", SharedPreferencesUtils.getString(SetUpActivity.this, "token"))
-                        .addParams("device_id", SharedPreferencesUtils.getString(SetUpActivity.this, "client_id"))
+                        .addParams("token", SharedPreferencesUtils.getStr(SetUpActivity.this, "token"))
+                        .addParams("device_id", SharedPreferencesUtils.getStr(SetUpActivity.this, "client_id"))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -236,9 +241,9 @@ public class SetUpActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                SharedPreferencesUtils.deleteString(SetUpActivity.this, "token");
-                                SharedPreferencesUtils.deleteString(SetUpActivity.this, "avatar");
-                                SharedPreferencesUtils.deleteString(SetUpActivity.this, "phone");
+                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "token");
+                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "avatar");
+                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "phone");
                                 Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
                                 intent.putExtra("page", 0);
                                 finish();
@@ -409,7 +414,7 @@ public class SetUpActivity extends BaseActivity {
     private void changeInfo(final String key, final String name) {
         OkHttpUtils.post()
                 .url(Constant.CHANGE_INFO)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams(key, name)
                 .build()
                 .execute(new StringCallback() {

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +16,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.util.RecyclerViewStateUtils;
+import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -38,11 +46,12 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CartDetailsBean;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.bean.RecommendGoodsBean;
 import cn.cloudworkshop.miaoding.bean.ShoppingCartBean;
-import cn.cloudworkshop.miaoding.bean.TailorItemBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -60,8 +69,6 @@ public class ShoppingCartActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.img_header_share)
     ImageView imgHeaderShare;
-    @BindView(R.id.rv_goods_cart)
-    RecyclerView rvGoodsCart;
     @BindView(R.id.tv_my_bag)
     TextView tvMyBag;
     @BindView(R.id.rl_null_bag)
@@ -82,8 +89,18 @@ public class ShoppingCartActivity extends BaseActivity {
     TextView tvGoodsBuy;
     @BindView(R.id.rv_cart_recommend)
     RecyclerView rvRecommend;
-    private CommonAdapter<ShoppingCartBean.DataBean> adapter;
-    private List<ShoppingCartBean.DataBean> dataList;
+    @BindView(R.id.rv_goods_cart)
+    LRecyclerView rvGoodsCart;
+
+    private List<ShoppingCartBean.DataBeanX.DataBean> dataList = new ArrayList<>();
+    //页数
+    private int page = 1;
+    //刷新
+    private boolean isRefresh;
+    //加载更多
+    private boolean isLoadMore;
+    private CommonAdapter<ShoppingCartBean.DataBeanX.DataBean> adapter;
+    private LRecyclerViewAdapter mLRecyclerViewAdapter;
 
     //编辑状态
     private boolean isEdited;
@@ -105,6 +122,8 @@ public class ShoppingCartActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        dataList.clear();
+        page = 1;
         initData();
     }
 
@@ -112,32 +131,51 @@ public class ShoppingCartActivity extends BaseActivity {
      * 获取网络数据
      */
     private void initData() {
-        checkboxAllSelect.setChecked(true);
+
         OkHttpUtils.get()
                 .url(Constant.SHOPPING_CART)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(ShoppingCartActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        ShoppingCartBean shoppingCartBean = GsonUtils.jsonToBean(response,
-                                ShoppingCartBean.class);
-                        dataList = new ArrayList<>();
-                        if (shoppingCartBean.getData() != null && shoppingCartBean.getData().size() > 0) {
+                        ShoppingCartBean cartBean = GsonUtils.jsonToBean(response, ShoppingCartBean.class);
+                        if (cartBean.getData().getData() != null && cartBean.getData().getData().size() > 0) {
+                            if (isRefresh) {
+                                dataList.clear();
+                            }
+                            dataList.addAll(cartBean.getData().getData());
+                            if (isLoadMore || isRefresh) {
+                                rvGoodsCart.refreshComplete(0);
+                                mLRecyclerViewAdapter.notifyDataSetChanged();
+                                getTotalCount();
+                                getTotalPrice();
+                            } else {
+                                initView();
+                            }
+                            isRefresh = false;
+                            isLoadMore = false;
+
                             rlNullBag.setVisibility(View.GONE);
                             llCartGoods.setVisibility(View.VISIBLE);
                             tvHeaderNext.setVisibility(View.VISIBLE);
-
-                            dataList.addAll(shoppingCartBean.getData());
-
-                            initView();
                         } else {
-                            nullCart();
+                            RecyclerViewStateUtils.setFooterViewState(ShoppingCartActivity.this,
+                                    rvGoodsCart, 0, LoadingFooter.State.NoMore, null);
+                            if (page == 1) {
+                                nullCart();
+                            }
                         }
                     }
                 });
@@ -219,12 +257,13 @@ public class ShoppingCartActivity extends BaseActivity {
         getTotalPrice();
         getTotalCount();
 
+        checkboxAllSelect.setChecked(true);
         rvGoodsCart.setLayoutManager(new LinearLayoutManager(ShoppingCartActivity.this));
-        adapter = new CommonAdapter<ShoppingCartBean.DataBean>(ShoppingCartActivity.this,
+        adapter = new CommonAdapter<ShoppingCartBean.DataBeanX.DataBean>(ShoppingCartActivity.this,
                 R.layout.listitem_shopping_cart, dataList) {
             @Override
-            protected void convert(final ViewHolder holder, final ShoppingCartBean.DataBean dataBean,
-                                   final int position) {
+            protected void convert(final ViewHolder holder, final ShoppingCartBean.DataBeanX.DataBean
+                    dataBean, final int position) {
                 Glide.with(ShoppingCartActivity.this)
                         .load(Constant.HOST + dataBean.getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -232,7 +271,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 TextView tvGoodsName = holder.getView(R.id.tv_goods_name);
                 tvGoodsName.setTypeface(DisplayUtils.setTextType(mContext));
                 tvGoodsName.setText(dataBean.getGoods_name());
-                switch (dataList.get(position).getGoods_type()) {
+                switch (dataBean.getGoods_type()) {
                     case 2:
                         holder.setText(R.id.tv_goods_content, dataBean.getSize_content());
                         break;
@@ -242,13 +281,14 @@ public class ShoppingCartActivity extends BaseActivity {
                 }
 
 
-                holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00").format(dataBean.getPrice()));
+                holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00")
+                        .format(Float.parseFloat(dataBean.getPrice())));
                 holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum() + "");
                 holder.setVisible(R.id.ll_cart_edit, isEdited);
                 holder.setVisible(R.id.tv_goods_content, !isEdited);
                 holder.setVisible(R.id.tv_goods_price, !isEdited);
                 holder.setVisible(R.id.tv_goods_count, !isEdited);
-                holder.setText(R.id.tv_cart_count, dataList.get(position).getNum() + "");
+                holder.setText(R.id.tv_cart_count, dataBean.getNum() + "");
                 final CheckBox checkBox = holder.getView(R.id.checkbox_goods_select);
                 checkBox.setOnCheckedChangeListener(null);
                 holder.setChecked(R.id.checkbox_goods_select, dataBean.getIs_select());
@@ -258,7 +298,7 @@ public class ShoppingCartActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         if (dataBean.getNum() > 1) {
-                            changeCartCount(position, dataBean.getNum() - 1);
+                            changeCartCount(position - 1, dataBean.getNum() - 1);
                         }
                     }
                 });
@@ -267,7 +307,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 tvAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        changeCartCount(position, dataBean.getNum() + 1);
+                        changeCartCount(position - 1, dataBean.getNum() + 1);
                     }
                 });
 
@@ -293,7 +333,63 @@ public class ShoppingCartActivity extends BaseActivity {
                 });
             }
         };
-        rvGoodsCart.setAdapter(adapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
+        rvGoodsCart.setAdapter(mLRecyclerViewAdapter);
+
+        //刷新
+        rvGoodsCart.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        isRefresh = true;
+                        page = 1;
+                        checkboxAllSelect.setChecked(true);
+                        initData();
+                    }
+                }, 1000);
+            }
+        });
+        //加载更多
+        rvGoodsCart.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                RecyclerViewStateUtils.setFooterViewState(ShoppingCartActivity.this, rvGoodsCart,
+                        0, LoadingFooter.State.Loading, null);
+                isLoadMore = true;
+                page++;
+                initData();
+            }
+        });
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (tvHeaderNext.getText().toString().equals("编辑")) {
+                    switch (dataList.get(position).getGoods_type()) {
+                        case 1:
+                            cartToCustomResult(position);
+                            break;
+                        case 2:
+                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
+                            intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
+                            startActivity(intent);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+
+        mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                List<Integer> itemList = new ArrayList<>();
+                itemList.add(dataList.get(position).getId());
+                deleteGoods(itemList);
+            }
+        });
 
         checkboxAllSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,36 +412,6 @@ public class ShoppingCartActivity extends BaseActivity {
             }
         });
 
-
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
-                if (tvHeaderNext.getText().toString().equals("编辑")) {
-                    switch (dataList.get(position).getGoods_type()) {
-                        case 1:
-                            cartToCustomResult(position);
-                            break;
-                        case 2:
-                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
-                            intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
-                            startActivity(intent);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                List<Integer> itemList = new ArrayList<>();
-                itemList.add(dataList.get(position).getId());
-                deleteGoods(itemList);
-                return false;
-            }
-        });
-
     }
 
     /**
@@ -354,7 +420,7 @@ public class ShoppingCartActivity extends BaseActivity {
     private void cartToCustomResult(int position) {
         OkHttpUtils.get()
                 .url(Constant.CART_TO_TAILOR)
-                .addParams("token", SharedPreferencesUtils.getString(ShoppingCartActivity.this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(ShoppingCartActivity.this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
                 .addParams("phone_type", "6")
                 .build()
@@ -371,7 +437,7 @@ public class ShoppingCartActivity extends BaseActivity {
                         if (cartDetails.getData() != null) {
                             Intent intent = new Intent(ShoppingCartActivity.this, CustomResultActivity.class);
                             Bundle bundle = new Bundle();
-                            TailorItemBean tailorBean = new TailorItemBean();
+                            CustomItemBean tailorBean = new CustomItemBean();
                             tailorBean.setId(cartDetails.getData().getGoods_id() + "");
                             tailorBean.setGoods_name(cartDetails.getData().getGoods_name());
                             tailorBean.setPrice(new DecimalFormat("#0.00").format(cartDetails
@@ -384,9 +450,9 @@ public class ShoppingCartActivity extends BaseActivity {
                             //0：个性定制 1：定制同款
                             switch (cartDetails.getData().getIs_scan()) {
                                 case 0:
-                                    List<TailorItemBean.ItemBean> itemList = new ArrayList<>();
+                                    List<CustomItemBean.ItemBean> itemList = new ArrayList<>();
                                     for (int i = 0; i < cartDetails.getData().getImg_list().size(); i++) {
-                                        TailorItemBean.ItemBean itemBean = new TailorItemBean.ItemBean();
+                                        CustomItemBean.ItemBean itemBean = new CustomItemBean.ItemBean();
                                         itemBean.setImg(cartDetails.getData().getImg_list().get(i).getImg_c());
                                         itemBean.setPosition_id(cartDetails.getData().getImg_list().get(i)
                                                 .getPosition_id());
@@ -409,7 +475,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             //部件名称
                             tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
                             //个性定制
-                            if (!TextUtils.isEmpty(cartDetails.getData().getDiy_content())){
+                            if (!TextUtils.isEmpty(cartDetails.getData().getDiy_content())) {
                                 tailorBean.setDiy_contet(cartDetails.getData().getDiy_content());
                             }
                             bundle.putSerializable("tailor", tailorBean);
@@ -428,7 +494,7 @@ public class ShoppingCartActivity extends BaseActivity {
     private void changeCartCount(final int position, final int counts) {
         OkHttpUtils.post()
                 .url(Constant.CART_COUNT)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
                 .addParams("num", counts + "")
                 .addParams("type", "1")
@@ -474,7 +540,6 @@ public class ShoppingCartActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < itemList.size(); i++) {
-
                     if (i == itemList.size() - 1) {
                         sb.append(itemList.get(i));
                     } else {
@@ -485,7 +550,7 @@ public class ShoppingCartActivity extends BaseActivity {
 
                 OkHttpUtils.post()
                         .url(Constant.DELETE_CART)
-                        .addParams("token", SharedPreferencesUtils.getString(ShoppingCartActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(ShoppingCartActivity.this, "token"))
                         .addParams("car_id", sb.toString())
                         .build()
                         .execute(new StringCallback() {
@@ -501,7 +566,10 @@ public class ShoppingCartActivity extends BaseActivity {
                                         if (dataList.get(i).getId() == (itemList.get(j))) {
                                             dataList.remove(i);
                                             adapter.notifyItemRemoved(i);
-                                            adapter.notifyItemRangeChanged(i, adapter.getItemCount());
+                                            if (i != dataList.size()){
+                                                adapter.notifyItemRangeChanged(i, dataList.size() - i);
+                                            }
+
                                         }
                                     }
                                 }
@@ -626,7 +694,6 @@ public class ShoppingCartActivity extends BaseActivity {
     }
 
 
-
     /**
      * 获取总价格
      */
@@ -634,7 +701,7 @@ public class ShoppingCartActivity extends BaseActivity {
         float sum = 0;
         for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).getIs_select()) {
-                sum += dataList.get(i).getPrice() * dataList.get(i).getNum();
+                sum += Float.parseFloat(dataList.get(i).getPrice()) * dataList.get(i).getNum();
             }
         }
         tvTotalPrice.setText("¥" + new DecimalFormat("#0.00").format(sum));

@@ -97,12 +97,17 @@ public class NewCustomGoodsFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_TITLE)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initTitle();
+                            }
+                        });
                     }
 
                     @Override

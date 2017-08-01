@@ -17,7 +17,7 @@ public class SharedPreferencesUtils {
      * @param key
      * @param value   保存字符串
      */
-    public static void saveString(Context context, String key, String value) {
+    public static void saveStr(Context context, String key, String value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
         editor.putString(key, value);
@@ -27,7 +27,7 @@ public class SharedPreferencesUtils {
     /**
      * @return 获取字符串
      */
-    public static String getString(Context context, String key) {
+    public static String getStr(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE);
         LogUtils.log(sharedPreferences.getString(key, ""));
         return sharedPreferences.getString(key, "");
@@ -56,7 +56,7 @@ public class SharedPreferencesUtils {
     /**
      * 删除数据
      */
-    public static void deleteString(Context context, String key) {
+    public static void deleteStr(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
         editor.remove(key);

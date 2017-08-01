@@ -8,7 +8,7 @@ import android.view.View;
  * Email：1993911441@qq.com
  * Describe：viewpager单页显示3个item,滑动fadeout效果
  */
-public class HorVPTransformer implements ViewPager.PageTransformer {
+public class FadePageTransformer implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View page, float position) {
         float v = Math.abs(position);

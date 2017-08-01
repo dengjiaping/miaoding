@@ -38,7 +38,6 @@ import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
  */
 public class DesignerGoodsFragment extends BaseFragment {
 
-
     @BindView(R.id.rv_member_rights)
     RecyclerView rvWorks;
     @BindView(R.id.sv_no_works)

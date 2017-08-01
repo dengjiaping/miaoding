@@ -41,6 +41,7 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.OrderDetailsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
@@ -123,13 +124,18 @@ public class ChangeOrderActivity extends BaseActivity {
         tvHeaderTitle.setText("售后服务");
         OkHttpUtils.get()
                 .url(Constant.ORDER_DETAIL)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("id", orderId)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(ChangeOrderActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -338,12 +344,12 @@ public class ChangeOrderActivity extends BaseActivity {
             tvNextStep.setEnabled(false);
             OkHttpUtils.post()
                     .url(Constant.AFTER_SALE)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .addParams("order_id", orderId)
                     .addParams("content", etChangeOrder.getText().toString().trim())
                     .addParams("name", etInputName.getText().toString().trim())
                     .addParams("phone", etInputTel.getText().toString().trim())
-                    .addParams("img_list", ImageEncodeUtils.enCodeFile(selectedPhotos))
+                    .addParams("img_list", ImageEncodeUtils.encodeFile(selectedPhotos))
                     .addParams("car_id", sb.toString().trim())
                     .build()
                     .execute(new StringCallback() {

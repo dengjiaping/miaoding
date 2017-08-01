@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -104,7 +103,7 @@ public class ApplyJoinActivity extends BaseActivity {
             super.handleMessage(msg);
             OkHttpUtils.post()
                     .url(Constant.APPLY_JOIN)
-                    .addParams("token", SharedPreferencesUtils.getString(ApplyJoinActivity.this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(ApplyJoinActivity.this, "token"))
                     .addParams("name", etApplyName.getText().toString().trim())
                     .addParams("phone", etApplyPhone.getText().toString().trim())
                     .addParams("weixin", etApplyQq.getText().toString().trim())
@@ -260,8 +259,8 @@ public class ApplyJoinActivity extends BaseActivity {
     Runnable myRunnable = new Runnable() {
         @Override
         public void run() {
-            imgList1 = ImageEncodeUtils.enCodeFile(selectedPhotos1);
-            imgList2 = ImageEncodeUtils.enCodeFile(selectedPhotos2);
+            imgList1 = ImageEncodeUtils.encodeFile(selectedPhotos1);
+            imgList2 = ImageEncodeUtils.encodeFile(selectedPhotos2);
             handler.sendEmptyMessage(1);
         }
     };

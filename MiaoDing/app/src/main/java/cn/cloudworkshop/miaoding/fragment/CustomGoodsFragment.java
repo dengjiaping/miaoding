@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
@@ -37,7 +36,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
@@ -45,10 +43,8 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.pagecurl.CurlView;
 import cn.cloudworkshop.miaoding.pagecurl.ImagePageProvider;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
-import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -96,7 +92,7 @@ public class CustomGoodsFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_TITLE)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(),"token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -213,7 +209,7 @@ public class CustomGoodsFragment extends BaseFragment {
 
 //        curlPage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         ImagePageProvider imagePageProvider = new ImagePageProvider(curlPage.getWidth(),
-                curlPage.getHeight()+DisplayUtils.getNavigationBarHeight(getActivity()));
+                curlPage.getHeight() + DisplayUtils.getNavigationBarHeight(getActivity()));
         imagePageProvider.setBitmaps(bitmapList);
         curlPage.setPageProvider(imagePageProvider);
 

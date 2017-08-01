@@ -30,6 +30,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.SelectCouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
@@ -87,13 +88,18 @@ public class SelectCouponActivity extends BaseActivity {
         tvHeaderTitle.setText("选择优惠券");
         OkHttpUtils.get()
                 .url(Constant.NEW_SELECT_COUPON)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_ids", cartIds)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(SelectCouponActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -247,7 +253,7 @@ public class SelectCouponActivity extends BaseActivity {
 
         OkHttpUtils.post()
                 .url(Constant.EXCHANGE_COUPON)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("kouling", etCouponCode.getText().toString().trim())
                 .build()
                 .execute(new StringCallback() {

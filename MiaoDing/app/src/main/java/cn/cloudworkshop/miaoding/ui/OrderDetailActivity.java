@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,7 +30,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.OrderDetailsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -112,7 +110,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.NEW_ORDER_DETAIL)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("id", orderId)
                 .build()
                 .execute(new StringCallback() {
@@ -387,7 +385,7 @@ public class OrderDetailActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CONFIRM_RECEIVE)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(OrderDetailActivity.this, "token"))
                         .addParams("order_id", id + "")
                         .build()
                         .execute(new StringCallback() {
@@ -432,7 +430,7 @@ public class OrderDetailActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.DELETE_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(OrderDetailActivity.this, "token"))
                         .addParams("order_id", orderId)
                         .build()
                         .execute(new StringCallback() {
@@ -474,7 +472,7 @@ public class OrderDetailActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(OrderDetailActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(OrderDetailActivity.this, "token"))
                         .addParams("order_id", orderId)
                         .build()
                         .execute(new StringCallback() {

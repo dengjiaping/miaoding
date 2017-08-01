@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class OldMainActivity extends BaseActivity {
 //        OkHttpUtils.post()
 //                .url("http://192.168.1.156/index.php/web/cc/accept_img")
 //                .files("img_list", map)
-//                .addParams("token",SharedPreferencesUtils.getString(this,"token"))
+//                .addParams("token",SharedPreferencesUtils.getStr(this,"token"))
 //                .addParams("scale", "1,2,3,4")
 //                .addParams("y_position", "1,2,3,4")
 //                .addParams("phone", "13333333333")
@@ -112,7 +111,7 @@ public class OldMainActivity extends BaseActivity {
      * 推送，提交设备id
      */
     private void submitClientId() {
-        String clientId = SharedPreferencesUtils.getString(this, "client_id");
+        String clientId = SharedPreferencesUtils.getStr(this, "client_id");
         if (clientId != null) {
 
             OkHttpUtils.get()
@@ -139,15 +138,15 @@ public class OldMainActivity extends BaseActivity {
      * 检测是否登录
      */
     private void isLogin() {
-        if (SharedPreferencesUtils.getString(this, "token") != null) {
+        if (SharedPreferencesUtils.getStr(this, "token") != null) {
             OkHttpUtils.get()
                     .url(Constant.CHECK_LOGIN)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .build()
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            SharedPreferencesUtils.deleteString(OldMainActivity.this, "token");
+                            SharedPreferencesUtils.deleteStr(OldMainActivity.this, "token");
                         }
 
                         @Override
@@ -157,7 +156,7 @@ public class OldMainActivity extends BaseActivity {
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     if (code == 10001) {
-                                        SharedPreferencesUtils.deleteString(OldMainActivity.this, "token");
+                                        SharedPreferencesUtils.deleteStr(OldMainActivity.this, "token");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

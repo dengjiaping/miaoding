@@ -44,7 +44,7 @@ public class Constant {
     public static final String CONFIRM_ORDER = HOST + INDEX + "buy";
     public static final String CONFIRM_BUY = HOST + INDEX + "add_order_v4";
     public static final String CHANGE_INFO = HOST + INDEX + "change_user_info";
-    public static final String SHOPPING_CART = HOST + INDEX + "my_car";
+    public static final String SHOPPING_CART = HOST + INDEX + "my_car_page";
     public static final String CART_COUNT = HOST + INDEX + "change_car_num";
     public static final String DELETE_CART = HOST + INDEX + "delete_car";
     public static final String MY_ORDER = HOST + INDEX + "goods_order";
@@ -97,7 +97,6 @@ public class Constant {
     public static final String GOODS_LOG = HOST + INDEX + "save_goods_log";
     public static final String LOGIN_LOG = HOST + INDEX + "save_user_login_log";
 
-
     //WebView
     public static final String CLOTH_TEST_RESULT = HOST + "/web/jquery-obj/static/web/html/clo.html";
     public static final String DESIGNER_INFO = HOST + "/web/jquery-obj/static/web/html/jiangxin.html";
@@ -112,5 +111,6 @@ public class Constant {
     public static final String DESIGNER_SHARE = HOST + "/web/jquery-obj/static/fx/html/jiangxin.html";
     public static final String INVITE_SHARE = HOST + "/web/jquery-obj/static/fx/html/yaoqing.html";
     public static final String SHARE_RULE = HOST + "/web/jquery-obj/static/fx/html/huodong.html";
+    public static final String SHARE_COUPON = HOST + "/web/jquery-obj/static/fx/html/invitation_1000.html";
 
 }

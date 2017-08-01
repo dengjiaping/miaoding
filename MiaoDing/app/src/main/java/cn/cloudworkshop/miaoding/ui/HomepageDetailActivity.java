@@ -102,7 +102,7 @@ public class HomepageDetailActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.addJavascriptInterface(this, "nativeMethod");
 
-        webView.loadUrl(url+ "&token=" + SharedPreferencesUtils.getString(this, "token"));
+        webView.loadUrl(url+ "&token=" + SharedPreferencesUtils.getStr(this, "token"));
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -131,7 +131,6 @@ public class HomepageDetailActivity extends BaseActivity {
                 MyApplication.homeEnterTime = DateUtils.getCurrentTime();
                 finish();
             }
-
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -163,7 +162,7 @@ public class HomepageDetailActivity extends BaseActivity {
         long time = DateUtils.getCurrentTime() - enterTime;
         OkHttpUtils.post()
                 .url(Constant.HOMEPAGE_LOG)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("time", time + "")
                 .addParams("p_module_name", "首页详情")
                 .addParams("module_name", "首页")

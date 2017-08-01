@@ -33,7 +33,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +49,7 @@ import cn.cloudworkshop.miaoding.ui.EvaluateActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
@@ -82,6 +82,7 @@ public class MyOrderFragment extends BaseFragment {
     private int page = 1;
     //刷新
     private boolean isRefresh;
+
     //加载更多
     private boolean isLoadMore;
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
@@ -126,7 +127,7 @@ public class MyOrderFragment extends BaseFragment {
         }
         OkHttpUtils.get()
                 .url(Constant.GOODS_ORDER)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("status", orderStatus + "")
                 .addParams("page", page + "")
                 .addParams("sh_status", isAfterSale + "")
@@ -134,7 +135,12 @@ public class MyOrderFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -378,7 +384,7 @@ public class MyOrderFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CONFIRM_RECEIVE)
-                        .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                         .addParams("order_id", id + "")
                         .build()
                         .execute(new StringCallback() {
@@ -424,7 +430,7 @@ public class MyOrderFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.DELETE_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                         .addParams("order_id", id + "")
                         .build()
                         .execute(new StringCallback() {
@@ -441,8 +447,11 @@ public class MyOrderFragment extends BaseFragment {
                                     if (code == 1) {
                                         dataList.remove(position);
                                         adapter.notifyItemRemoved(position);
-                                        adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+                                        if (position != dataList.size()) {
+                                            adapter.notifyItemRangeChanged(position, dataList.size() - position);
+                                        }
                                         if (dataList.size() == 0 && orderStatus == 0) {
+                                            imgNoOrder.setImageResource(R.mipmap.icon_null_order);
                                             llNullOrder.setVisibility(View.VISIBLE);
                                         }
                                         ToastUtils.showToast(getActivity(), "删除成功");
@@ -481,7 +490,7 @@ public class MyOrderFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_ORDER)
-                        .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                         .addParams("order_id", id + "")
                         .build()
                         .execute(new StringCallback() {

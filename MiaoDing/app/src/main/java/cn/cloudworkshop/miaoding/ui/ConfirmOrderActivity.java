@@ -36,6 +36,7 @@ import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
@@ -162,13 +163,18 @@ public class ConfirmOrderActivity extends BaseActivity {
 
         OkHttpUtils.get()
                 .url(Constant.CONFIRM_ORDER)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_ids", cartIds)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(ConfirmOrderActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -347,7 +353,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void changeCartCount(final int position, final int currentCount) {
         OkHttpUtils.post()
                 .url(Constant.CART_COUNT)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_id", confirmOrderBean.getData().getCar_list().get(position).getId() + "")
                 .addParams("num", currentCount + "")
                 .addParams("type", "1")
@@ -486,7 +492,7 @@ public class ConfirmOrderActivity extends BaseActivity {
      */
     private void confirmOrder() {
         Map<String, String> map = new HashMap<>();
-        map.put("token", SharedPreferencesUtils.getString(this, "token"));
+        map.put("token", SharedPreferencesUtils.getStr(this, "token"));
         map.put("car_ids", cartIds);
         if (couponId != null) {
             map.put("ticket_id", couponId);
@@ -644,7 +650,7 @@ public class ConfirmOrderActivity extends BaseActivity {
         if (logId != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
-                    .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .addParams("id", logId)
                     .addParams("goods_time", (DateUtils.getCurrentTime() - goodsTime) + "")
                     .addParams("dingzhi_time", dingzhiTime + "")

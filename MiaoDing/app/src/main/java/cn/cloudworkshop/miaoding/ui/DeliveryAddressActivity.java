@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -38,8 +36,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.ReceiveAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -110,14 +108,19 @@ public class DeliveryAddressActivity extends BaseActivity {
 
         OkHttpUtils.get()
                 .url(Constant.MY_ADDRESS)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(DeliveryAddressActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -282,7 +285,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     private void setDefaultAddress(int id) {
         OkHttpUtils.post()
                 .url(Constant.DEFAULT_ADDRESS)
-                .addParams("token", SharedPreferencesUtils.getString(DeliveryAddressActivity.this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(DeliveryAddressActivity.this, "token"))
                 .addParams("id", id + "")
                 .build()
                 .execute(new StringCallback() {
@@ -315,7 +318,7 @@ public class DeliveryAddressActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.post()
                         .url(Constant.DELETE_ADDRESS)
-                        .addParams("token", SharedPreferencesUtils.getString(DeliveryAddressActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(DeliveryAddressActivity.this, "token"))
                         .addParams("id", id+"")
                         .build()
                         .execute(new StringCallback() {

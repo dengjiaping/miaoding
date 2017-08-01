@@ -51,7 +51,6 @@ import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
@@ -375,7 +374,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
         long time = DateUtils.getCurrentTime() - MyApplication.homeEnterTime;
         OkHttpUtils.post()
                 .url(Constant.HOMEPAGE_LOG)
-                .addParams("token", SharedPreferencesUtils.getString(getParentFragment().getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getParentFragment().getActivity(), "token"))
                 .addParams("time", time + "")
                 .addParams("p_module_name", "首页")
                 .addParams("module_name", module_name)

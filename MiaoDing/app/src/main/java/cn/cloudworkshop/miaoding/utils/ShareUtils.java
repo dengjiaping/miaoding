@@ -4,7 +4,11 @@ import android.app.Activity;
 
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
+
 import cn.cloudworkshop.miaoding.R;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -15,7 +19,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 public class ShareUtils {
 
-    public static void showShare(Activity activity,String imgUrl, String title, String content, String url) {
+    public static void showShare(final Activity activity, String imgUrl, String title, String content, String url) {
 
         ShareSDK.initSDK(activity, "188b0b9b49186");
         OnekeyShare oks = new OnekeyShare();
@@ -40,7 +44,24 @@ public class ShareUtils {
         // 启动分享GUI
         oks.show(activity);
 
-        MobclickAgent.onEvent(activity,"share");
+        oks.setCallback(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                MobclickAgent.onEvent(activity,"share");
+            }
+
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+
+            }
+        });
+
     }
 }
 

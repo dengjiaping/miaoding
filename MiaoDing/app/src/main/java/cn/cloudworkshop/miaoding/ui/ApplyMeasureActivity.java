@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -347,7 +345,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
         tvSubmit.setEnabled(false);
 
         Map<String, String> map = new HashMap<>();
-        map.put("token", SharedPreferencesUtils.getString(this, "token"));
+        map.put("token", SharedPreferencesUtils.getStr(this, "token"));
         map.put("address", etCurrentAddress.getText().toString());
         if (goodsName != null) {
             map.put("goods_name", goodsName);

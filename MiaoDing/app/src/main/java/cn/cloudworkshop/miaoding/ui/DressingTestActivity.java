@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -142,7 +141,7 @@ public class DressingTestActivity extends BaseActivity {
     private void submitData() {
         OkHttpUtils.get()
                 .url(Constant.DRESSING_TEST)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("age", tvUserAge.getText().toString().trim())
                 .addParams("height", tvUserHeight.getText().toString().trim())
                 .addParams("weight", tvUserWeight.getText().toString().trim())

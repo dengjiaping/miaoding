@@ -23,6 +23,7 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import okhttp3.Call;
@@ -64,6 +65,9 @@ public class UserRuleActivity extends BaseActivity {
         imgUrl = getIntent().getStringExtra("img_url");
     }
 
+    /**
+     * 加载视图
+     */
     private void initView() {
         tvHeaderTitle.setText(title);
         OkHttpUtils.get()
@@ -72,32 +76,37 @@ public class UserRuleActivity extends BaseActivity {
                 .execute(new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(UserRuleActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initView();
+                            }
+                        });
                     }
 
                     @Override
                     public void onResponse(Bitmap response, int id) {
-                        InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
                         try {
-                            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
-                            int width = decoder.getWidth();
-                            int height = decoder.getHeight();
-                            BitmapFactory.Options opts = new BitmapFactory.Options();
-                            Rect rect = new Rect();
+                            if (response != null) {
+                                InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
+                                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
+                                int width = decoder.getWidth();
+                                int height = decoder.getHeight();
+                                BitmapFactory.Options opts = new BitmapFactory.Options();
+                                Rect rect = new Rect();
 
+                                rect.set(0, 0, width, height / 3);
+                                bm0 = decoder.decodeRegion(rect, opts);
+                                imgUserRule.setImageBitmap(bm0);
 
-                            rect.set(0, 0, width, height / 3);
-                            bm0 = decoder.decodeRegion(rect, opts);
-                            imgUserRule.setImageBitmap(bm0);
+                                rect.set(0, height / 3, width, height / 3 * 2);
+                                bm1 = decoder.decodeRegion(rect, opts);
+                                imgUserRule1.setImageBitmap(bm1);
 
-                            rect.set(0, height / 3, width, height / 3 * 2);
-                            bm1 = decoder.decodeRegion(rect, opts);
-                            imgUserRule1.setImageBitmap(bm1);
-
-                            rect.set(0, height / 3 * 2, width, height);
-                            bm2 = decoder.decodeRegion(rect, opts);
-                            imgUserRule2.setImageBitmap(bm2);
-
+                                rect.set(0, height / 3 * 2, width, height);
+                                bm2 = decoder.decodeRegion(rect, opts);
+                                imgUserRule2.setImageBitmap(bm2);
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

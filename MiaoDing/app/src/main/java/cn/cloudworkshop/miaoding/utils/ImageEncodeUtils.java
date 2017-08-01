@@ -21,7 +21,7 @@ public class ImageEncodeUtils {
      * @param fileList
      * @return 文件编码
      */
-    public static String enCodeFile(List<String> fileList) {
+    public static String encodeFile(List<String> fileList) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < fileList.size(); i++) {
             String s = fileToBase64(fileList.get(i));

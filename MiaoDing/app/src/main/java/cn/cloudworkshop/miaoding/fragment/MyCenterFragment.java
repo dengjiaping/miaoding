@@ -34,7 +34,6 @@ import cn.cloudworkshop.miaoding.bean.UserInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.ApplyMeasureActivity;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
-import cn.cloudworkshop.miaoding.ui.CollectionActivity;
 import cn.cloudworkshop.miaoding.ui.CouponActivity;
 import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
 import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
@@ -47,9 +46,9 @@ import cn.cloudworkshop.miaoding.ui.NewCollectionActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.BadgeView;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -103,7 +102,7 @@ public class MyCenterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
+        if (TextUtils.isEmpty(SharedPreferencesUtils.getStr(getActivity(), "token"))) {
             rlCenter.setVisibility(View.GONE);
         } else {
             rlCenter.setVisibility(View.VISIBLE);
@@ -118,7 +117,7 @@ public class MyCenterFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            if (TextUtils.isEmpty(SharedPreferencesUtils.getString(getActivity(), "token"))) {
+            if (TextUtils.isEmpty(SharedPreferencesUtils.getStr(getActivity(), "token"))) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra("log_in", "center");
                 intent.putExtra("page_name", "我的");
@@ -134,13 +133,18 @@ public class MyCenterFragment extends BaseFragment {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.USER_INFO)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .addParams("is_android", "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -275,7 +279,7 @@ public class MyCenterFragment extends BaseFragment {
     private void inviteFriends() {
         OkHttpUtils.get()
                 .url(Constant.INVITE_FRIEND)
-                .addParams("token", SharedPreferencesUtils.getString(getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override

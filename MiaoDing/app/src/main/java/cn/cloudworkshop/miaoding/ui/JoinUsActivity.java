@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -20,6 +19,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -70,14 +70,19 @@ public class JoinUsActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.JOIN_US)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("type", "3")
-                .addParams("phone", SharedPreferencesUtils.getString(this, "phone"))
+                .addParams("phone", SharedPreferencesUtils.getStr(this, "phone"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(JoinUsActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -107,7 +112,7 @@ public class JoinUsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_apply_join:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getString(this, "token"))) {
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
                     if (joinUsBean.getData() != null) {
                         if (isApply == 0) {
                             startActivity(new Intent(this, ApplyJoinActivity.class));

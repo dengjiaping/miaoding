@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -91,7 +90,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        msgToken = SharedPreferencesUtils.getString(this, "msg_token");
+        msgToken = SharedPreferencesUtils.getStr(this, "msg_token");
         ButterKnife.bind(this);
         loginLog();
         initView();
@@ -243,7 +242,7 @@ public class LoginActivity extends BaseActivity {
                 map.put("phone", etUserName.getText().toString().trim());
                 map.put("code", etUserPassword.getText().toString().trim());
                 map.put("token", msgToken);
-                map.put("device_id", SharedPreferencesUtils.getString(LoginActivity.this, "client_id"));
+                map.put("device_id", SharedPreferencesUtils.getStr(LoginActivity.this, "client_id"));
                 if (logId != null) {
                     map.put("id", logId);
                 }
@@ -262,15 +261,15 @@ public class LoginActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                JSONObject jsonObject;
                                 try {
-                                    jsonObject = new JSONObject(response);
+                                    JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     if (code == 1) {
                                         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                         loginToken = jsonObject1.getString("token");
-                                        SharedPreferencesUtils.saveString(LoginActivity.this, "token",
-                                                loginToken);
+                                        int uid = jsonObject1.getInt("uid");
+                                        SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", uid+"");
+                                        SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
                                         getUserInfo();
                                         MobclickAgent.onEvent(LoginActivity.this, "log_in");
                                         finish();
@@ -293,7 +292,7 @@ public class LoginActivity extends BaseActivity {
     private void getUserInfo() {
         OkHttpUtils.get()
                 .url(Constant.USER_INFO)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -306,9 +305,9 @@ public class LoginActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            SharedPreferencesUtils.saveString(LoginActivity.this, "avatar",
+                            SharedPreferencesUtils.saveStr(LoginActivity.this, "avatar",
                                     jsonObject1.getString("avatar"));
-                            SharedPreferencesUtils.saveString(LoginActivity.this, "phone",
+                            SharedPreferencesUtils.saveStr(LoginActivity.this, "phone",
                                     jsonObject1.getString("phone"));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -376,7 +375,7 @@ public class LoginActivity extends BaseActivity {
                                 ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 msgToken = jsonObject1.getString("token");
-                                SharedPreferencesUtils.saveString(LoginActivity.this, "msg_token", msgToken);
+                                SharedPreferencesUtils.saveStr(LoginActivity.this, "msg_token", msgToken);
                             }
 
                         } catch (JSONException e) {

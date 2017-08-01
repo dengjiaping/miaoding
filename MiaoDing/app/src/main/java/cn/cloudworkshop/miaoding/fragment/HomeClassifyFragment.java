@@ -17,7 +17,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -39,7 +38,6 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -110,7 +108,7 @@ public class HomeClassifyFragment extends BaseFragment {
                             isRefresh = false;
                         } else {
                             RecyclerViewStateUtils.setFooterViewState(getParentFragment().getActivity(),
-                                    rvRecommend, 0, LoadingFooter.State.Normal, null);
+                                    rvRecommend, 0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });
@@ -204,7 +202,7 @@ public class HomeClassifyFragment extends BaseFragment {
         long time = DateUtils.getCurrentTime() - MyApplication.homeEnterTime;
         OkHttpUtils.post()
                 .url(Constant.HOMEPAGE_LOG)
-                .addParams("token", SharedPreferencesUtils.getString(getParentFragment().getActivity(), "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(getParentFragment().getActivity(), "token"))
                 .addParams("time", time + "")
                 .addParams("p_module_name", "首页")
                 .addParams("module_name", module_name)

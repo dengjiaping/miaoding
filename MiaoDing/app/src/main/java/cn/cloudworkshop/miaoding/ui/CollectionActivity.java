@@ -19,7 +19,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -37,8 +36,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CollectionBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -97,13 +96,18 @@ public class CollectionActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.COLLECTION)
-                .addParams("token", SharedPreferencesUtils.getString(this, "token"))
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        DialogUtils.showDialog(CollectionActivity.this, new DialogUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -223,10 +227,9 @@ public class CollectionActivity extends BaseActivity {
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_COLLECTION)
-                        .addParams("token", SharedPreferencesUtils.getString(CollectionActivity.this, "token"))
+                        .addParams("token", SharedPreferencesUtils.getStr(CollectionActivity.this, "token"))
                         .addParams("id", "" + id)
                         .build()
                         .execute(new StringCallback() {
@@ -237,13 +240,12 @@ public class CollectionActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-//                                itemList.clear();
-//                                page = 1;
-//                                initData();
 
                                 itemList.remove(position);
                                 adapter.notifyItemRemoved(position);
-                                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+                                if (position!= itemList.size()){
+                                    adapter.notifyItemRangeChanged(position, itemList.size() - position);
+                                }
                                 if (itemList.size() == 0) {
                                     llNullCollection.setVisibility(View.VISIBLE);
                                 }
