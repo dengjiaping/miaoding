@@ -26,10 +26,8 @@ public class SensorView extends View {
     public SensorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // 加载水平仪图片和气泡图片
-        verBubble = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.icon_water_bubble);
-        horBubble = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.icon_water_bubble);
+        verBubble = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_water_bubble);
+        horBubble = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_water_bubble);
     }
 
     @Override

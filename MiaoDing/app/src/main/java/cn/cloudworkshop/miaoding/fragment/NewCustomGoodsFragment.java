@@ -49,7 +49,7 @@ import cn.cloudworkshop.miaoding.utils.DialogUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
-import cn.cloudworkshop.miaoding.view.JazzyViewPager;
+import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import okhttp3.Call;
 
 /**

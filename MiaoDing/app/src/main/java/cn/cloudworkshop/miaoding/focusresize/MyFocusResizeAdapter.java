@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.adapter;
+package cn.cloudworkshop.miaoding.focusresize;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import java.util.List;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.focusresize.FocusResizeAdapter;
 
 
 /**

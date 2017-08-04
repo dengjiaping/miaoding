@@ -151,8 +151,6 @@ public class AddAddressActivity extends BaseActivity {
     private void selectAddress() {
 
         AddressPickTask task = new AddressPickTask(this);
-        task.setHideProvince(false);
-        task.setHideCounty(false);
         task.setCallback(new AddressPickTask.Callback() {
             @Override
             public void onAddressInitFailed() {
@@ -178,7 +176,6 @@ public class AddAddressActivity extends BaseActivity {
      * 添加地址、编辑地址
      */
     private void addAddress() {
-
         if (TextUtils.isEmpty(etAddName.getText().toString().trim()) ||
                 TextUtils.isEmpty(etAddNumber.getText().toString().trim()) ||
                 TextUtils.isEmpty(tvSelectAddress.getText().toString().trim()) ||

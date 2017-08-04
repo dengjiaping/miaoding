@@ -30,12 +30,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.PhotoAdapter;
+import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
+import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -78,7 +78,7 @@ public class EvaluateActivity extends BaseActivity {
     private String goodsImg;
     private String goodsType;
 
-    private PhotoAdapter photoAdapter;
+    private PhotoPickerAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
     private String imgEncode;
 
@@ -101,7 +101,7 @@ public class EvaluateActivity extends BaseActivity {
         tvGoodsName.setText(goodsName);
         tvGoodsType.setText(goodsType);
 
-        photoAdapter = new PhotoAdapter(this, selectedPhotos);
+        photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
         rvGoodsPicture.setLayoutManager(new LinearLayoutManager(EvaluateActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
         rvGoodsPicture.setAdapter(photoAdapter);

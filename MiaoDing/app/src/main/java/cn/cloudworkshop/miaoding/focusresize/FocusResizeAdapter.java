@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.adapter;
+package cn.cloudworkshop.miaoding.focusresize;
 
 import android.app.Activity;
 import android.content.Context;

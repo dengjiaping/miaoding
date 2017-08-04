@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.utils;
+package cn.cloudworkshop.miaoding.jazzyviewpager;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,9 +11,6 @@ import android.util.TypedValue;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
-
-import cn.cloudworkshop.miaoding.view.JazzyViewPager;
-
 
 
 /**

@@ -93,8 +93,6 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
     private boolean isFirstLoc = true;
     //商品名称
     private String goodsName;
-    //地址
-    private String location = "";
     //搜索地图
     private boolean isSearch;
     //是否定位
@@ -209,6 +207,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
         mLocationClient.startLocation();
+
     }
 
 
@@ -264,8 +263,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                             .append(aMapLocation.getDistrict()).append("")
                             .append(aMapLocation.getStreet()).append("")
                             .append(aMapLocation.getStreetNum());
-                    location = sb.toString();
-                    if (TextUtils.isEmpty(location)) {
+                    if (TextUtils.isEmpty(sb.toString())) {
                         ActivityCompat.requestPermissions(this, permissionStr, 1);
                     }
                     etCurrentAddress.setText(sb.toString());
@@ -350,6 +348,7 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
         if (goodsName != null) {
             map.put("goods_name", goodsName);
         }
+
 
         OkHttpUtils.post()
                 .url(Constant.APPOINTMENT_ORDER)

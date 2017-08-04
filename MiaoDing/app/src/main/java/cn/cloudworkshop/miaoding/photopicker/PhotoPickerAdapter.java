@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.adapter;
+package cn.cloudworkshop.miaoding.photopicker;
 
 
 import android.content.Context;
@@ -23,14 +23,14 @@ import me.iwf.photopicker.utils.AndroidLifecycleUtils;
  * 图片上传
  */
 
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
+public class PhotoPickerAdapter extends RecyclerView.Adapter<PhotoPickerAdapter.PhotoViewHolder> {
 
     private ArrayList<String> photoPaths = new ArrayList<String>();
     private LayoutInflater inflater;
 
     private Context mContext;
 
-    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
+    public PhotoPickerAdapter(Context mContext, ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);

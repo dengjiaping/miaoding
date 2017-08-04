@@ -1,12 +1,10 @@
-package cn.cloudworkshop.miaoding.utils;
+package cn.cloudworkshop.miaoding.focusresize;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-
-import cn.cloudworkshop.miaoding.adapter.FocusResizeAdapter;
 
 /**
  * Author：Libin on 2016/9/8 11:22

@@ -28,13 +28,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.PhotoAdapter;
+import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
+import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
@@ -72,8 +72,8 @@ public class ApplyJoinActivity extends BaseActivity {
     @BindView(R.id.view_loading)
     AVLoadingIndicatorView loadingView;
 
-    private PhotoAdapter photoAdapter1;
-    private PhotoAdapter photoAdapter2;
+    private PhotoPickerAdapter photoAdapter1;
+    private PhotoPickerAdapter photoAdapter2;
     private ArrayList<String> selectedPhotos1 = new ArrayList<>();
     private ArrayList<String> selectedPhotos2 = new ArrayList<>();
     private int currentClickId1 = -1;
@@ -150,9 +150,9 @@ public class ApplyJoinActivity extends BaseActivity {
     }
 
 
-    private PhotoAdapter initView(RecyclerView recyclerView, final ArrayList<String> selectedPhotos) {
+    private PhotoPickerAdapter initView(RecyclerView recyclerView, final ArrayList<String> selectedPhotos) {
 
-        PhotoAdapter photoAdapter = new PhotoAdapter(this, selectedPhotos);
+        PhotoPickerAdapter photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
         recyclerView.setLayoutManager(new LinearLayoutManager(ApplyJoinActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(photoAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {

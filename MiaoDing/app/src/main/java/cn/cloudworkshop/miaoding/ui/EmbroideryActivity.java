@@ -339,7 +339,6 @@ public class EmbroideryActivity extends BaseActivity {
                     etEmbroideryContent.setText(null);
                 }
             }
-
         }
     }
 
@@ -398,7 +397,6 @@ public class EmbroideryActivity extends BaseActivity {
                     + ";字体:" + embroideryBean.getData().getFont().get(flowerFont).getName()
                     + ";文字:" + etEmbroideryContent.getText().toString() + ";";
             tailorBean.setDiy_contet(sb);
-
         }
 
         bundle.putSerializable("tailor", tailorBean);

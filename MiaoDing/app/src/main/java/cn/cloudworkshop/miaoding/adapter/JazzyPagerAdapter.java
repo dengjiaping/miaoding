@@ -1,13 +1,9 @@
 package cn.cloudworkshop.miaoding.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,8 +16,7 @@ import java.util.List;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
-import cn.cloudworkshop.miaoding.view.JazzyViewPager;
+import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 
 /**
  * Author：binge on 2016/11/25 14:45

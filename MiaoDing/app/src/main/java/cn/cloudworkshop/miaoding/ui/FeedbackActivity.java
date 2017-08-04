@@ -33,12 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.PhotoAdapter;
+import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.utils.RecyclerItemClickListener;
+import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
@@ -78,7 +78,7 @@ public class FeedbackActivity extends BaseActivity {
 
     //字数限制
     private int num = 300;
-    private PhotoAdapter photoAdapter;
+    private PhotoPickerAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
     private String imgEncode;
 
@@ -245,7 +245,7 @@ public class FeedbackActivity extends BaseActivity {
             }
         });
 
-        photoAdapter = new PhotoAdapter(this, selectedPhotos);
+        photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
         rvFeedBack.setLayoutManager(new LinearLayoutManager(FeedbackActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
         rvFeedBack.setAdapter(photoAdapter);

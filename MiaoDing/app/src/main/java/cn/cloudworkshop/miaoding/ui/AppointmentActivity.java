@@ -115,8 +115,6 @@ public class AppointmentActivity extends BaseActivity {
                                             case -1:
                                                 tvAppointResult.setText("当前状态：已取消");
                                                 break;
-                                            default:
-                                                break;
                                         }
 
                                     }

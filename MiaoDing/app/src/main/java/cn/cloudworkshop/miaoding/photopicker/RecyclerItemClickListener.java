@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.utils;
+package cn.cloudworkshop.miaoding.photopicker;
 
 
 import android.content.Context;

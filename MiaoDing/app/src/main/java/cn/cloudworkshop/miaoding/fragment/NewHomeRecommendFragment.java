@@ -59,7 +59,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
     @BindView(R.id.rv_recommend)
     LRecyclerView mRecyclerView;
     private Unbinder unbinder;
-    private List<List<NewHomepageBean.DataBean>> itemList;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private List<HomepageItemBean> dataList = new ArrayList<>();
     private NewHomepageBean homepageBean;
@@ -100,24 +99,21 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                     public void onResponse(String response, int id) {
                         homepageBean = GsonUtils.jsonToBean(response, NewHomepageBean.class);
                         if (homepageBean != null && homepageBean.getData().size() > 0) {
-
-                            itemList = new ArrayList<>();
                             if (isRefresh) {
                                 dataList.clear();
                             }
-                            itemList.addAll(homepageBean.getData());
-                            for (int i = 0; i < itemList.size(); i++) {
-                                for (int j = 0; j < itemList.get(i).size(); j++) {
-                                    dataList.add(new HomepageItemBean(Constant.HOST
-                                            + itemList.get(i).get(j).getImg(),
-                                            Constant.HOMEPAGE_INFO + "?content=1&id=" + itemList
-                                                    .get(i).get(j).getId(),
-                                            itemList.get(i).get(j).getP_time(),
-                                            itemList.get(i).get(j).getImg_list(),
-                                            itemList.get(i).get(j).getTitle(),
-                                            itemList.get(i).get(j).getTag_name(),
-                                            itemList.get(i).get(j).getSub_title(),
-                                            itemList.get(i).get(j).getId()));
+                            for (int i = 0; i < homepageBean.getData().size(); i++) {
+                                for (int j = 0; j < homepageBean.getData().get(i).size(); j++) {
+                                    dataList.add(new HomepageItemBean(Constant.HOST +
+                                            homepageBean.getData().get(i).get(j).getImg(),
+                                            Constant.HOMEPAGE_INFO + "?content=1&id=" +
+                                                    homepageBean.getData().get(i).get(j).getId(),
+                                            homepageBean.getData().get(i).get(j).getP_time(),
+                                            homepageBean.getData().get(i).get(j).getImg_list(),
+                                            homepageBean.getData().get(i).get(j).getTitle(),
+                                            homepageBean.getData().get(i).get(j).getTag_name(),
+                                            homepageBean.getData().get(i).get(j).getSub_title(),
+                                            homepageBean.getData().get(i).get(j).getId()));
                                 }
                             }
 

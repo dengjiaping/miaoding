@@ -309,7 +309,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             e.printStackTrace();
         }
         return pi != null ? pi.versionCode : 0;
-
     }
 
 

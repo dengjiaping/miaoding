@@ -1,4 +1,4 @@
-package cn.cloudworkshop.miaoding.view;
+package cn.cloudworkshop.miaoding.jazzyviewpager;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.utils.OutlineContainer;
 
 /**
  * Author：Libin on 2016/9/11 09:41

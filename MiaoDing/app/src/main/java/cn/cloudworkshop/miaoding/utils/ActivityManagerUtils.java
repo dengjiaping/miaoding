@@ -20,7 +20,6 @@ public class ActivityManagerUtils {
 
     public static ActivityManagerUtils getInstance() {
         return mActivityManagerUtils;
-
     }
 
     /**
@@ -32,7 +31,6 @@ public class ActivityManagerUtils {
 
     /**
      * 新建了一个activity
-     *
      * @param activity
      */
 
@@ -80,6 +78,5 @@ public class ActivityManagerUtils {
                 }
             }
         }
-
     }
 }

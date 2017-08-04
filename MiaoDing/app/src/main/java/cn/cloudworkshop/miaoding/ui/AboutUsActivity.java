@@ -144,7 +144,6 @@ public class AboutUsActivity extends BaseActivity {
      * 获取版本名称
      */
     private String getVersionName() {
-
         PackageManager pm = this.getPackageManager();
         PackageInfo pi = null;
         try {
