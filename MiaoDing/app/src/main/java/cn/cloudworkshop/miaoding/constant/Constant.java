@@ -8,7 +8,7 @@ package cn.cloudworkshop.miaoding.constant;
 public class Constant {
     //    public static final String HOST = "http://139.196.113.61";
     public static final String HOST = "http://www.cloudworkshop.cn";
-    //public static final String HOST = "http://192.168.1.156";
+//    public static final String HOST = "http://192.168.1.156";
     public static final String APP_ID = "wx07c2173e7686741e";
     private static final String INDEX = "/index.php/index/index5_3/";
     public static final String HOMEPAGE_BANNER = HOST + INDEX + "get_img";

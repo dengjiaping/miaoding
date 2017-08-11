@@ -25,7 +25,7 @@ public class DialogUtils {
         dialog.setContentView(view);
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);//点击外部不允许关闭dialog
-        ToastUtils.showToast(context, "数据加载失败，请检查网络配置并点击刷新");
+        ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

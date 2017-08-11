@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
@@ -213,6 +214,15 @@ public class CustomGoodsActivity extends BaseActivity {
                 .setPageIndicator(new int[]{R.drawable.dot_black, R.drawable.dot_white})
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+        bannerGoods.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(CustomGoodsActivity.this, ImagePreviewActivity.class);
+                intent.putExtra("current_pos", position);
+                intent.putStringArrayListExtra("img_list", customBean.getData().getImg_list());
+                startActivity(intent);
+            }
+        });
 
         //喜爱人数
         if (customBean.getData().getCollect_num() > 0) {

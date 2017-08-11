@@ -2,10 +2,15 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -14,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
@@ -30,6 +36,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImagePreviewActivity extends BaseActivity {
     @BindView(R.id.vp_preview)
     PhotoViewPager vpPreview;
+    @BindView(R.id.rgs_indicator)
+    RadioGroup rgsIndicator;
     //图片路径
     private ArrayList<String> imgList;
     //当期页面
@@ -89,6 +97,35 @@ public class ImagePreviewActivity extends BaseActivity {
         });
         vpPreview.setCurrentItem(currentItem);
 
+        for (int i = 0; i < imgList.size(); i++) {
+            RadioButton radioButton = new RadioButton(this);
+
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(18, 18);
+            layoutParams.setMargins(10, 10, 10, 10);
+            radioButton.setLayoutParams(layoutParams);
+            radioButton.setButtonDrawable(null);
+            radioButton.setClickable(false);
+            radioButton.setBackgroundResource(R.drawable.viewpager_indicator);
+            rgsIndicator.addView(radioButton);
+        }
+        ((RadioButton) rgsIndicator.getChildAt(currentItem)).setChecked(true);
+        vpPreview.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((RadioButton) rgsIndicator.getChildAt(position)).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     /**
@@ -96,8 +133,11 @@ public class ImagePreviewActivity extends BaseActivity {
      */
     private void getData() {
         Intent intent = getIntent();
-        currentItem = intent.getIntExtra("currentPos", 0);
+        currentItem = intent.getIntExtra("current_pos", 0);
         imgList = intent.getStringArrayListExtra("img_list");
     }
 
+    @OnClick(R.id.rgs_indicator)
+    public void onViewClicked() {
+    }
 }

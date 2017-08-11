@@ -194,7 +194,6 @@
         <activity android:name=".ui.MeasureUserActivity"/>
         <activity android:name=".ui.ImagePreviewActivity"/>
         <activity android:name=".ui.UserRuleActivity"/>
-        <activity android:name=".ui.UserAgreementActivity"/>
         <activity android:name=".ui.MemberCenterActivity"/>
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>

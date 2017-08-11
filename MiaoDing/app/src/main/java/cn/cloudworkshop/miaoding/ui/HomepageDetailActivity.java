@@ -102,7 +102,7 @@ public class HomepageDetailActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.addJavascriptInterface(this, "nativeMethod");
 
-        webView.loadUrl(url+ "&token=" + SharedPreferencesUtils.getStr(this, "token"));
+        webView.loadUrl(url + "&token=" + SharedPreferencesUtils.getStr(this, "token"));
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -112,11 +112,35 @@ public class HomepageDetailActivity extends BaseActivity {
         });
     }
 
+
+    /**
+     * @param str 跳转登录
+     */
     @JavascriptInterface
     public void toActivity(String str) {
+        LogUtils.log("1111"+str);
         if (!TextUtils.isEmpty(str)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("page_name", str);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * @param str 跳转商品
+     */
+    @JavascriptInterface
+    public void toGoods(String str) {
+        LogUtils.log("222"+str);
+        if (!TextUtils.isEmpty(str)) {
+            String[] split = str.split(",");
+            Intent intent;
+            if (split[1].equals("1")) {
+                intent = new Intent(this, CustomGoodsActivity.class);
+            } else {
+                intent = new Intent(this, WorksDetailActivity.class);
+            }
+            intent.putExtra("id", split[0]);
             startActivity(intent);
         }
     }

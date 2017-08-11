@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,7 +118,7 @@ public class CustomGoodsBean {
         private int price_type;
         private int is_collect;
         private int is_yuyue;
-        private List<String> img_list;
+        private ArrayList<String> img_list;
         private List<PriceBean> price;
         private List<DefaultSpecListBean> default_spec_list;
         private List<BanxingListBean> banxing_list;
@@ -321,11 +322,11 @@ public class CustomGoodsBean {
             this.is_yuyue = is_yuyue;
         }
 
-        public List<String> getImg_list() {
+        public ArrayList<String> getImg_list() {
             return img_list;
         }
 
-        public void setImg_list(List<String> img_list) {
+        public void setImg_list(ArrayList<String> img_list) {
             this.img_list = img_list;
         }
 

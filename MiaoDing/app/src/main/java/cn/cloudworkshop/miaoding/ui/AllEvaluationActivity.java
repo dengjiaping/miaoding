@@ -145,8 +145,8 @@ public class AllEvaluationActivity extends BaseActivity {
                     RecyclerView recyclerView = holder.getView(R.id.rv_evaluate_picture);
 
                     recyclerView.setLayoutManager(new GridLayoutManager(AllEvaluationActivity.this, 3));
-                    CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(AllEvaluationActivity
-                            .this, R.layout.listitem_user_comment, dataBean.getImg_list()) {
+                    CommonAdapter<String> adapter = new CommonAdapter<String>(AllEvaluationActivity.this,
+                            R.layout.listitem_user_comment, dataBean.getImg_list()) {
                         @Override
                         protected void convert(ViewHolder holder, String s, final int position) {
                             ImageView imageView = holder.getView(R.id.img_user_comment);
@@ -158,7 +158,7 @@ public class AllEvaluationActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     Intent intent = new Intent(AllEvaluationActivity.this, ImagePreviewActivity.class);
-                                    intent.putExtra("currentPos", position);
+                                    intent.putExtra("current_pos", position);
                                     intent.putStringArrayListExtra("img_list", dataBean.getImg_list());
                                     startActivity(intent);
                                 }
@@ -166,7 +166,7 @@ public class AllEvaluationActivity extends BaseActivity {
 
                         }
                     };
-                    recyclerView.setAdapter(evaluateAdapter);
+                    recyclerView.setAdapter(adapter);
                 }
             }
         };
