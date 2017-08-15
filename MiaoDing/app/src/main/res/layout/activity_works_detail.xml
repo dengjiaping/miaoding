@@ -3,8 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical">
+                android:fitsSystemWindows="true">
 
 
     <cn.cloudworkshop.miaoding.view.ScrollViewContainer
@@ -258,7 +257,6 @@
             android:id="@+id/tv_works_cart"
             android:layout_width="113dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:background="#4C4C4C"
             android:gravity="center"
             android:text="加入购物车"
@@ -270,7 +268,6 @@
             android:id="@+id/tv_works_buy"
             android:layout_width="113dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:background="@color/dark_gray_22"
             android:gravity="center"
             android:text="立即购买"

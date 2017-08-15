@@ -67,7 +67,7 @@ public class ScanCodeActivity extends BaseActivity {
                                         toGoodsDetail(CustomGoodsActivity.class, goods_id);
                                         break;
                                     case "2":
-                                        toGoodsDetail(WorksDetailActivity.class, goods_id);
+                                        toGoodsDetail(NewWorksDetailActivity.class, goods_id);
                                         break;
                                     default:
                                         ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");

@@ -36,6 +36,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -132,7 +133,7 @@ public class WorksFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), WorksDetailActivity.class);
+                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksDetailActivity.class);
                     intent.putExtra("id", worksList.get(position).getId() + "");
                     startActivity(intent);
                 }

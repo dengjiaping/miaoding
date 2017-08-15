@@ -29,6 +29,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.DesignerInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 
 /**
@@ -78,7 +79,7 @@ public class DesignerGoodsFragment extends BaseFragment {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
-                        Intent intent = new Intent(getActivity(), WorksDetailActivity.class);
+                        Intent intent = new Intent(getActivity(), NewWorksDetailActivity.class);
                         intent.putExtra("id", String.valueOf(worksList.get(position).getId()));
                         startActivity(intent);
                     }

@@ -197,7 +197,7 @@ public class CollectionActivity extends BaseActivity {
                 if (itemList.get(position).getType() == 1) {
                     intent = new Intent(CollectionActivity.this, CustomGoodsActivity.class);
                 } else {
-                    intent = new Intent(CollectionActivity.this, WorksDetailActivity.class);
+                    intent = new Intent(CollectionActivity.this, NewWorksDetailActivity.class);
                 }
 
                 intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));

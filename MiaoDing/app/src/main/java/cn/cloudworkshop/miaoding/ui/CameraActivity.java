@@ -102,6 +102,7 @@
 //            switch (status) {
 //                case LoaderCallbackInterface.SUCCESS:
 //                    break;
+
 //                default:
 //                    super.onManagerConnected(status);
 //                    break;

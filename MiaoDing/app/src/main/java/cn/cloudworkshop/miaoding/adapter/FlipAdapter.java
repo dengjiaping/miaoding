@@ -20,6 +20,7 @@ import cn.cloudworkshop.miaoding.bean.DesignerWorksBean;
 import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
+import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 
@@ -72,17 +73,18 @@ public class FlipAdapter extends BaseAdapter {
                 .load(Constant.HOST + itemBean.getImg())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.imgWorks);
-        if (!TextUtils.isEmpty(itemBean.getId() + "")) {
+        if (!TextUtils.isEmpty(itemBean.getId())) {
             holder.tvWorks.setText(itemBean.getName());
-            holder.tvDesigner.setText(DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()) + "         " + itemBean.getUsername());
+            holder.tvDesigner.setText(DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()) +
+                    "         " + itemBean.getUsername());
         }
 
 
         holder.imgWorks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(itemBean.getId() + "")) {
-                    Intent intent = new Intent(context, WorksDetailActivity.class);
+                if (!TextUtils.isEmpty(itemBean.getId())) {
+                    Intent intent = new Intent(context, NewWorksDetailActivity.class);
                     intent.putExtra("id", String.valueOf(itemBean.getId() + ""));
                     context.startActivity(intent);
                 }
@@ -92,7 +94,7 @@ public class FlipAdapter extends BaseAdapter {
         holder.tvDesigner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(itemBean.getId() + "")) {
+                if (!TextUtils.isEmpty(itemBean.getId())) {
                     Intent intent = new Intent(context, DesignerDetailActivity.class);
                     intent.putExtra("id", itemBean.getDes_uid() + "");
                     context.startActivity(intent);

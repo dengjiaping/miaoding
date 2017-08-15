@@ -13,6 +13,7 @@ import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MessageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -71,7 +72,7 @@ public class GeTuiIntentService extends GTIntentService {
                 startActivity(intent4);
                 break;
             case "5":
-                Intent intent5 = new Intent(context, WorksDetailActivity.class);
+                Intent intent5 = new Intent(context, NewWorksDetailActivity.class);
                 intent5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent5.putExtra("id", bean.getId());
                 startActivity(intent5);

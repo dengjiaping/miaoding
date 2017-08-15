@@ -232,7 +232,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 if (recommendBean.getData().getData().get(position).getType() == 1) {
                     intent = new Intent(ShoppingCartActivity.this, CustomGoodsActivity.class);
                 } else {
-                    intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
+                    intent = new Intent(ShoppingCartActivity.this, NewWorksDetailActivity.class);
                 }
 
                 intent.putExtra("id", String.valueOf(recommendBean.getData().getData().get(position)
@@ -371,7 +371,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             cartToCustomResult(position);
                             break;
                         case 2:
-                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
+                            Intent intent = new Intent(ShoppingCartActivity.this, NewWorksDetailActivity.class);
                             intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
                             startActivity(intent);
                             break;
