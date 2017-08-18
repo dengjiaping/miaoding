@@ -36,7 +36,7 @@ import cn.cloudworkshop.miaoding.bean.CouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
@@ -118,7 +118,7 @@ public class MyCouponFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

@@ -49,7 +49,7 @@ import cn.cloudworkshop.miaoding.ui.EvaluateActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
@@ -135,7 +135,7 @@ public class MyOrderFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

@@ -57,9 +57,8 @@ import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -116,7 +115,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(MainActivity.this, new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(MainActivity.this, new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initIcon();

@@ -44,7 +44,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberBean;
 import cn.cloudworkshop.miaoding.bean.MemberTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -116,7 +116,7 @@ public class MemberCenterActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(MemberCenterActivity.this, new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(MemberCenterActivity.this, new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

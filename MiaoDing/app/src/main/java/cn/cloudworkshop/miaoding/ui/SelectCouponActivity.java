@@ -30,7 +30,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.SelectCouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
@@ -94,7 +94,7 @@ public class SelectCouponActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(SelectCouponActivity.this, new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(SelectCouponActivity.this, new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

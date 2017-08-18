@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +32,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.QuestionClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import okhttp3.Call;
@@ -90,7 +89,7 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(UserHelpActivity.this, new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(UserHelpActivity.this, new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

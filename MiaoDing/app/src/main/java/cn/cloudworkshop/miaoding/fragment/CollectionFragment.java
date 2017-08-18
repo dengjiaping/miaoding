@@ -47,8 +47,7 @@ import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
-import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -108,7 +107,7 @@ public class CollectionFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

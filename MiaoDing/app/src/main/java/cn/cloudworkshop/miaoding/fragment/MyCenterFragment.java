@@ -46,7 +46,7 @@ import cn.cloudworkshop.miaoding.ui.NewCollectionActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -139,7 +139,7 @@ public class MyCenterFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();

@@ -14,7 +14,7 @@ import cn.cloudworkshop.miaoding.R;
  * Email：1993911441@qq.com
  * Describe：网络加载失败弹窗
  */
-public class DialogUtils {
+public class LoadErrorUtils {
 
     private static Dialog dialog;
 

@@ -3,7 +3,6 @@ package cn.cloudworkshop.miaoding.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.DialogUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import okhttp3.Call;
 
 /**
@@ -75,7 +74,7 @@ public class NewDesignerWorksFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        DialogUtils.showDialog(getActivity(), new DialogUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();
