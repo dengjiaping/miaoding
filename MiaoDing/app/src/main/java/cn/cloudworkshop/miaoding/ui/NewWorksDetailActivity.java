@@ -78,6 +78,7 @@ public class NewWorksDetailActivity extends BaseActivity {
     @BindView(R.id.img_works_share)
     ImageView imgWorksShare;
 
+    //商品id
     private String id;
 
     private WorksDetailBean worksBean;
@@ -130,7 +131,7 @@ public class NewWorksDetailActivity extends BaseActivity {
     private void initData() {
 
         OkHttpUtils.get()
-                .url(Constant.NEW_GOODS_DETAILS)
+                .url(Constant.GOODS_DETAILS)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("goods_id", id)
                 .build()
@@ -236,7 +237,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                 if (worksBean != null) {
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
-                            Constant.DESIGNER_WORKS_SHARE + "?content=2&id=" + id);
+                            Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
                 break;
         }

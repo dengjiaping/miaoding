@@ -5,7 +5,7 @@
                 android:layout_height="wrap_content">
 
     <com.bigkoo.convenientbanner.ConvenientBanner
-        android:id="@+id/banner"
+        android:id="@+id/banner_homepage"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         app:canLoop="true">

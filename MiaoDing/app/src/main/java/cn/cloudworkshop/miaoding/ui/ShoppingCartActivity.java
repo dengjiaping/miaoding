@@ -460,6 +460,7 @@ public class ShoppingCartActivity extends BaseActivity {
                                     }
                                     //图片
                                     tailorBean.setItemBean(itemList);
+                                    tailorBean.setDefault_img(cartDetails.getData().getGoods_thumb());
                                     break;
                                 case 1:
                                     tailorBean.setDefault_img(cartDetails.getData().getDefault_img());

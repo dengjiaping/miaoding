@@ -369,8 +369,8 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                         tvSubmit.setEnabled(true);
                         Intent intent = new Intent(ApplyMeasureActivity.this, AppointmentActivity.class);
                         intent.putExtra("type", "appoint_measure");
-                        finish();
                         startActivity(intent);
+                        finish();
 
                     }
                 });

@@ -163,7 +163,7 @@ public class CustomGoodsActivity extends BaseActivity {
      */
     private void initData() {
         OkHttpUtils.get()
-                .url(Constant.NEW_GOODS_DETAILS)
+                .url(Constant.GOODS_DETAILS)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("goods_id", id)
                 .build()

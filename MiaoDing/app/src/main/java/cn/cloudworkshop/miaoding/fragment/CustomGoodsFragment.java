@@ -189,7 +189,6 @@ public class CustomGoodsFragment extends BaseFragment {
                                         resizeBmp.recycle();
                                     }
                                 }
-
                             }
                             loadingView.smoothToHide();
                             imgGoodsType.setEnabled(true);
@@ -197,7 +196,6 @@ public class CustomGoodsFragment extends BaseFragment {
                         }
                     }
                 });
-
     }
 
 
@@ -243,9 +241,7 @@ public class CustomGoodsFragment extends BaseFragment {
     }
 
     public static CustomGoodsFragment newInstance() {
-
         Bundle args = new Bundle();
-
         CustomGoodsFragment fragment = new CustomGoodsFragment();
         fragment.setArguments(args);
         return fragment;

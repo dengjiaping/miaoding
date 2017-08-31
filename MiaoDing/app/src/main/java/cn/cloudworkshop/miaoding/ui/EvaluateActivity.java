@@ -57,7 +57,6 @@ public class EvaluateActivity extends BaseActivity {
     CircleImageView imgGoods;
     @BindView(R.id.tv_name_goods)
     TextView tvGoodsName;
-
     @BindView(R.id.img_select_picture)
     ImageView imgSelectPicture;
     @BindView(R.id.rv_goods_picture)
@@ -227,8 +226,7 @@ public class EvaluateActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        } else {
+        if (requestCode != PhotoPicker.REQUEST_CODE || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             new PermissionUtils(this).showPermissionDialog("读写内存");
         }
     }

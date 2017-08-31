@@ -124,8 +124,8 @@ public class ApplyJoinActivity extends BaseActivity {
                             loadingView.smoothToHide();
                             Intent intent = new Intent(ApplyJoinActivity.this, AppointmentActivity.class);
                             intent.putExtra("type", "apply_join");
-                            finish();
                             startActivity(intent);
+                            finish();
                         }
                     });
         }
@@ -143,8 +143,7 @@ public class ApplyJoinActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        } else {
+        if (requestCode != PhotoPicker.REQUEST_CODE || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             new PermissionUtils(this).showPermissionDialog("打开相机");
         }
     }
@@ -235,7 +234,6 @@ public class ApplyJoinActivity extends BaseActivity {
                     selectedPhotos1.addAll(photos1);
                     photoAdapter1.notifyDataSetChanged();
                 }
-
 
             } else if (id == currentClickId2) {
                 List<String> photos2 = null;

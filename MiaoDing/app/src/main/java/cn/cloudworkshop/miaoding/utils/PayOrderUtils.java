@@ -95,17 +95,16 @@ public class PayOrderUtils {
                         Intent intent = new Intent(context, AppointmentActivity.class);
                         intent.putExtra("type", "pay_success");
                         intent.putExtra("order_id", orderId.split(",")[0]);
-
-                        ((Activity) context).finish();
                         context.startActivity(intent);
+                        ((Activity) context).finish();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         ToastUtils.showToast(context, "支付失败");
                         Intent intent = new Intent(context, AppointmentActivity.class);
                         intent.putExtra("type", "pay_fail");
                         intent.putExtra("order_id", orderId.split(",")[0]);
-                        ((Activity) context).finish();
                         context.startActivity(intent);
+                        ((Activity) context).finish();
                     }
                     break;
                 }
@@ -126,6 +125,7 @@ public class PayOrderUtils {
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources(), (Bitmap) null));
         mPopupWindow.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
         DisplayUtils.setBackgroundAlpha(context, true);
+
         RecyclerView recyclerView = (RecyclerView) popupView.findViewById(R.id.rv_pay_type);
         TextView tvTotalPrice = (TextView) popupView.findViewById(R.id.tv_pay_price);
         TextView tvConfirmBuy = (TextView) popupView.findViewById(R.id.tv_pay_confirm);
@@ -144,11 +144,10 @@ public class PayOrderUtils {
 
                 if (!isConfirmBuy) {
                     ToastUtils.showToast(context, "取消支付");
-                    Intent intent = new Intent(context,
-                            MyOrderActivity.class);
+                    Intent intent = new Intent(context, MyOrderActivity.class);
                     intent.putExtra("page", 1);
-                    ((Activity) context).finish();
                     context.startActivity(intent);
+                    ((Activity) context).finish();
                 }
             }
         });
@@ -159,7 +158,8 @@ public class PayOrderUtils {
         payList.add(new PayTypeBean(R.mipmap.icon_wechat_pay, "微信", "推荐微信用户使用"));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        final CommonAdapter<PayTypeBean> adapter = new CommonAdapter<PayTypeBean>(context, R.layout.listitem_pay_type, payList) {
+        final CommonAdapter<PayTypeBean> adapter = new CommonAdapter<PayTypeBean>(context,
+                R.layout.listitem_pay_type, payList) {
             @Override
             protected void convert(ViewHolder holder, PayTypeBean payTypeEntity, int position) {
                 holder.setImageResource(R.id.img_pay_type, payList.get(position).img);
@@ -208,7 +208,6 @@ public class PayOrderUtils {
      * 微信支付
      */
     private void weChatPay() {
-
         OkHttpUtils.post()
                 .url(Constant.WE_CHAT_PAY)
                 .addParams("order_id", orderId)
@@ -243,12 +242,11 @@ public class PayOrderUtils {
                             api.sendReq(req);
                             ((Activity) context).finish();
                         } else {
+                            ToastUtils.showToast(context, weChatPay.getMsg());
                             Intent intent = new Intent(context, MyOrderActivity.class);
                             intent.putExtra("page", 0);
-                            ((Activity) context).finish();
                             context.startActivity(intent);
-                            ToastUtils.showToast(context, weChatPay.getMsg());
-
+                            ((Activity) context).finish();
                         }
 
                     }

@@ -87,7 +87,7 @@ public class SelectCouponActivity extends BaseActivity {
     private void initData() {
         tvHeaderTitle.setText("选择优惠券");
         OkHttpUtils.get()
-                .url(Constant.NEW_SELECT_COUPON)
+                .url(Constant.SELECT_COUPON)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_ids", cartIds)
                 .build()

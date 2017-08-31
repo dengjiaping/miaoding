@@ -105,8 +105,8 @@ public class ScanCodeActivity extends BaseActivity {
     private void toGoodsDetail(Class<? extends Activity> cls, String goodsId) {
         Intent intent = new Intent(ScanCodeActivity.this, cls);
         intent.putExtra("id", goodsId);
-        finish();
         startActivity(intent);
+        finish();
     }
 
 

@@ -56,6 +56,8 @@ import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
+import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -315,9 +317,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 加载Fragment
      */
     public void initView() {
-        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(NewHomeRecommendFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(DesignerWorksFragment.newInstance());
+        fragmentList.add(NewDesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());

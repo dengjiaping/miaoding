@@ -75,11 +75,11 @@ public class DressingTestActivity extends BaseActivity {
         rulerHeight.setOnValueChangeListener(new Ruler.OnValueChangeListener() {
             @Override
             public void onValueChange(int value) {
-                tvUserHeight.setText(value + "");
+                tvUserHeight.setText(String.valueOf(value));
             }
         });
 
-
+        //平分120份
         wheelWeight.setDivCount(120);
         wheelWeight.setWheelImage(R.mipmap.icon_wheel_ruler);
         wheelWeight.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
@@ -136,7 +136,7 @@ public class DressingTestActivity extends BaseActivity {
 
 
     /**
-     * 提交测试
+     * 提交测试数据
      */
     private void submitData() {
         OkHttpUtils.get()
@@ -160,14 +160,14 @@ public class DressingTestActivity extends BaseActivity {
                             MobclickAgent.onEvent(DressingTestActivity.this, "dressing_test");
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            String rid = jsonObject1.getString("id");
+                            String uid = jsonObject1.getString("id");
 
                             Intent intent = new Intent(DressingTestActivity.this, DressingResultActivity.class);
                             intent.putExtra("title", "测试结果");
                             intent.putExtra("share_title","穿衣测试");
                             intent.putExtra("share_content", "");
-                            intent.putExtra("url", Constant.CLOTH_TEST_RESULT + "?id=" + rid);
-                            intent.putExtra("share_url", Constant.DRESSING_TEST_SHARE + "?id=" + rid);
+                            intent.putExtra("url", Constant.DRESSING_TEST_RESULT + "?id=" + uid);
+                            intent.putExtra("share_url", Constant.DRESSING_TEST_SHARE + "?id=" + uid);
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();

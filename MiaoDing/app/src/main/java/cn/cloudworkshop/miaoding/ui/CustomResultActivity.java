@@ -328,7 +328,12 @@ public class CustomResultActivity extends BaseActivity {
         map.put("goods_type", "1");
         map.put("price", customBean.getPrice());
         map.put("goods_name", customBean.getGoods_name());
-        map.put("goods_thumb", customBean.getImg_url());
+        if (TextUtils.isEmpty(customBean.getDefault_img())){
+            map.put("goods_thumb", customBean.getImg_url());
+        }else {
+            map.put("goods_thumb", customBean.getDefault_img());
+        }
+
         map.put("spec_ids", customBean.getSpec_ids());
         map.put("spec_content", customBean.getSpec_content());
         map.put("mianliao_id", customBean.getFabric_id());
@@ -388,12 +393,19 @@ public class CustomResultActivity extends BaseActivity {
     private void aadCartAnim() {
         //1、添加执行动画效果的图片
         final ImageView imgGoods = new ImageView(this);
+        String imgUrl;
+        if (TextUtils.isEmpty(customBean.getDefault_img())){
+            imgUrl = Constant.HOST + customBean.getImg_url();
+        }else {
+            imgUrl = Constant.HOST + customBean.getDefault_img();
+        }
         Glide.with(this)
-                .load(Constant.HOST + customBean.getImg_url())
+                .load(imgUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgGoods);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80, 80);
         rlCustomResult.addView(imgGoods, params);
+
 
         //2、动画开始/结束点的坐标
         //贝塞尔曲线中间过程的点的坐标

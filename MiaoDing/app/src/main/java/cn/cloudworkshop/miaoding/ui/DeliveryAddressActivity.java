@@ -134,7 +134,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                             if (isRefresh || isLoadMore) {
                                 recyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
-
                             } else {
                                 initView();
                             }

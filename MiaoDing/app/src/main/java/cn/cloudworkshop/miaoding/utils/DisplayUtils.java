@@ -64,20 +64,17 @@ public class DisplayUtils {
     }
 
     /**
-     * 设置添加屏幕的背景透明度
+     * 设置屏幕的背景透明度
      * @param
      */
     public static void setBackgroundAlpha(Context mContext, boolean isShow) {
-        WindowManager.LayoutParams lp = ((Activity) mContext).getWindow()
-                .getAttributes();
+        WindowManager.LayoutParams lp = ((Activity) mContext).getWindow().getAttributes();
         if (isShow) {
             lp.alpha = 0.5f;
-            ((Activity) mContext).getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            ((Activity) mContext).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         } else {
             lp.alpha = 1.0f;
-            ((Activity) mContext).getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            ((Activity) mContext).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }
 
         ((Activity) mContext).getWindow().setAttributes(lp);

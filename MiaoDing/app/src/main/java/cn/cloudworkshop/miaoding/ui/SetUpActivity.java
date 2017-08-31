@@ -172,8 +172,7 @@ public class SetUpActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PhotoPicker.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        } else {
+        if (requestCode != PhotoPicker.REQUEST_CODE || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             new PermissionUtils(this).showPermissionDialog("读写内存");
         }
     }

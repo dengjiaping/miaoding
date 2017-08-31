@@ -796,6 +796,7 @@ public class CustomizeActivity extends BaseActivity {
         //面料
         tailorItemBean.setFabric_id(customizeBean.getData().getMianliao().get(currentFabric).getId() + "");
         tailorItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
+        tailorItemBean.setDefault_img(customizeBean.getData().getMianliao().get(currentFabric).getGoods_img());
 
         //部件
         List<CustomItemBean.ItemBean> itemList = new ArrayList<>();

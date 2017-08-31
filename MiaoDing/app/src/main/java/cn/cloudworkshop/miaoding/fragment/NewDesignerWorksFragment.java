@@ -39,7 +39,6 @@ import okhttp3.Call;
  */
 public class NewDesignerWorksFragment extends BaseFragment {
 
-
     @BindView(R.id.tab_designer_works)
     SlidingTabLayout tabDesignerWorks;
     @BindView(R.id.vp_designer_works)
@@ -51,7 +50,6 @@ public class NewDesignerWorksFragment extends BaseFragment {
 
     private Unbinder unbinder;
     private String imgUrl;
-
 
     @Nullable
     @Override

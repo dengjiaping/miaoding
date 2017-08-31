@@ -137,7 +137,7 @@ public class TailorActivity extends BaseActivity {
     //首次选择
     private boolean firstSelect = true;
 
-    public static Activity tailorActivity;
+
     private CommonAdapter<String> itemAdapter;
     private GuideBean guideBean;
     //首次进入引导
@@ -148,7 +148,7 @@ public class TailorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tailor);
         ButterKnife.bind(this);
-        tailorActivity = this;
+        
         getData();
         initData();
     }

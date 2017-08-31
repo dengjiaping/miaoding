@@ -1,19 +1,14 @@
 package cn.cloudworkshop.miaoding.utils;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,7 +20,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.LoginActivity;
 
 /**
  * Author：binge on 2017-06-21 10:45
@@ -65,7 +59,7 @@ public class NewFragmentTabUtils implements TabLayout.OnTabSelectedListener {
     }
 
     /**
-     * 家在底部Tab
+     * 加载底部Tab
      */
     private void initTab() {
         for (int i = 0; i < iconList.size(); i++) {
@@ -99,40 +93,40 @@ public class NewFragmentTabUtils implements TabLayout.OnTabSelectedListener {
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        View customView = tab.getCustomView();
-        TextView tvTab = (TextView) customView.findViewById(R.id.tv_tab);
-        ImageView imgTab = (ImageView) customView.findViewById(R.id.img_tab);
+        switchTab(tab, R.color.dark_gray_22, iconList.get(tab.getPosition()).getSelect_img());
 
         if (tab.getPosition() == 0) {
             MyApplication.homeEnterTime = DateUtils.getCurrentTime();
         }
         initFragment(tab.getPosition());
 
-        tvTab.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_22));
-
-        Glide.with(mContext)
-                .load(Constant.HOST + iconList.get(tab.getPosition()).getSelect_img())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgTab);
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-        View customView = tab.getCustomView();
-        TextView tvTab = (TextView) customView.findViewById(R.id.tv_tab);
-        ImageView imgTab = (ImageView) customView.findViewById(R.id.img_tab);
-        tvTab.setTextColor(ContextCompat.getColor(mContext, R.color.light_gray_B3));
-        Glide.with(mContext)
-                .load(Constant.HOST + iconList.get(tab.getPosition()).getImg())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgTab);
-
+        switchTab(tab, R.color.light_gray_B3, iconList.get(tab.getPosition()).getImg());
 
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    /**
+     * @param tab
+     * @param cid
+     * @param imgUrl tab切换
+     */
+    private void switchTab(TabLayout.Tab tab, int cid, String imgUrl) {
+        View customView = tab.getCustomView();
+        TextView tvTab = (TextView) customView.findViewById(R.id.tv_tab);
+        ImageView imgTab = (ImageView) customView.findViewById(R.id.img_tab);
+        tvTab.setTextColor(ContextCompat.getColor(mContext, cid));
+        Glide.with(mContext)
+                .load(Constant.HOST + imgUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgTab);
     }
 
 
@@ -161,7 +155,8 @@ public class NewFragmentTabUtils implements TabLayout.OnTabSelectedListener {
 
 
     /**
-     * 切换tab
+     * 切换fragment
+     *
      * @param index
      */
     private void showTab(int index) {

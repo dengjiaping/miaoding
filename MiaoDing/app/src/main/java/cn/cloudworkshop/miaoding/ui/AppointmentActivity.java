@@ -232,8 +232,8 @@ public class AppointmentActivity extends BaseActivity {
                 if (type.equals("pay_success") || type.equals("pay_fail")) {
                     Intent intent2 = new Intent(this, MainActivity.class);
                     intent2.putExtra("page", 0);
-                    finish();
                     startActivity(intent2);
+                    finish();
                 } else {
                     finish();
                 }

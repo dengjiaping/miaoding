@@ -77,7 +77,7 @@ public class EmbroideryActivity extends BaseActivity {
     //商品分类
     private int classifyId;
 
-    private CustomItemBean tailorBean;
+    private CustomItemBean customItemBean;
 
 
     @Override
@@ -100,7 +100,7 @@ public class EmbroideryActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         classifyId = bundle.getInt("classify_id");
-        tailorBean = (CustomItemBean) bundle.getSerializable("tailor");
+        customItemBean = (CustomItemBean) bundle.getSerializable("tailor");
     }
 
     /**
@@ -109,9 +109,9 @@ public class EmbroideryActivity extends BaseActivity {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.EMBROIDERY_CUSTOMIZE)
-                .addParams("goods_id", tailorBean.getId())
+                .addParams("goods_id", customItemBean.getId())
                 .addParams("phone_type", "6")
-                .addParams("price_type", tailorBean.getPrice_type())
+                .addParams("price_type", customItemBean.getPrice_type())
                 .addParams("classify_id", classifyId + "")
                 .build()
                 .execute(new StringCallback() {
@@ -158,10 +158,10 @@ public class EmbroideryActivity extends BaseActivity {
                 isAllSelect();
                 if (flowerPosition == position) {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.dark_gray_22));
-                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,R.color.light_gray_3d));
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_3d));
                 } else {
                     tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_7a));
-                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,R.color.light_gray_97));
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_97));
                 }
             }
         };
@@ -372,10 +372,10 @@ public class EmbroideryActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_header_next:
-                confirmTailor(false);
+                nextStep(false);
                 break;
             case R.id.tv_confirm_embroidery:
-                confirmTailor(true);
+                nextStep(true);
                 break;
 
         }
@@ -383,11 +383,11 @@ public class EmbroideryActivity extends BaseActivity {
 
 
     /**
-     * 确认购买
+     * 预览、跳过
      *
      * @param isEmbroidery 是否绣花
      */
-    private void confirmTailor(boolean isEmbroidery) {
+    private void nextStep(boolean isEmbroidery) {
         Intent intent = new Intent(this, CustomResultActivity.class);
         Bundle bundle = new Bundle();
         if (isEmbroidery) {
@@ -396,10 +396,10 @@ public class EmbroideryActivity extends BaseActivity {
                     + ";颜色:" + embroideryBean.getData().getColor().get(flowerColor).getName()
                     + ";字体:" + embroideryBean.getData().getFont().get(flowerFont).getName()
                     + ";文字:" + etEmbroideryContent.getText().toString() + ";";
-            tailorBean.setDiy_contet(sb);
+            customItemBean.setDiy_contet(sb);
         }
 
-        bundle.putSerializable("tailor", tailorBean);
+        bundle.putSerializable("tailor", customItemBean);
 
         intent.putExtras(bundle);
         startActivity(intent);

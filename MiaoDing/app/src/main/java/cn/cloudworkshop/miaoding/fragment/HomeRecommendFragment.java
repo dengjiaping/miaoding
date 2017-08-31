@@ -45,7 +45,7 @@ import cn.cloudworkshop.miaoding.adapter.SectionedRVAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
-import cn.cloudworkshop.miaoding.bean.NewHomepageBean;
+import cn.cloudworkshop.miaoding.bean.HomepageNewsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
@@ -60,7 +60,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-06-15 09:52
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：推荐
  */
 public class HomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.SectionTitle {
     @BindView(R.id.rv_recommend)
@@ -68,7 +68,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     private Unbinder unbinder;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private List<HomepageItemBean> dataList = new ArrayList<>();
-    private NewHomepageBean homepageBean;
+    private HomepageNewsBean homepageBean;
     //当前页
     private int page = 1;
     //刷新
@@ -103,23 +103,19 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
                     @Override
                     public void onResponse(String response, int id) {
-                        homepageBean = GsonUtils.jsonToBean(response, NewHomepageBean.class);
+                        homepageBean = GsonUtils.jsonToBean(response, HomepageNewsBean.class);
                         if (homepageBean != null && homepageBean.getData().size() > 0) {
                             if (isRefresh) {
                                 dataList.clear();
                             }
                             for (int i = 0; i < homepageBean.getData().size(); i++) {
                                 for (int j = 0; j < homepageBean.getData().get(i).size(); j++) {
-                                    dataList.add(new HomepageItemBean(Constant.HOST
-                                            + homepageBean.getData().get(i).get(j).getImg(),
-                                            Constant.HOMEPAGE_INFO + "?content=1&id=" +
-                                                    homepageBean.getData().get(i).get(j).getId(),
-                                            homepageBean.getData().get(i).get(j).getP_time(),
-                                            homepageBean.getData().get(i).get(j).getImg_list(),
-                                            homepageBean.getData().get(i).get(j).getTitle(),
-                                            homepageBean.getData().get(i).get(j).getTag_name(),
-                                            homepageBean.getData().get(i).get(j).getSub_title(),
-                                            homepageBean.getData().get(i).get(j).getId()));
+                                    HomepageNewsBean.DataBean dataBean = homepageBean.getData().get(i).get(j);
+                                    dataList.add(new HomepageItemBean(Constant.HOST + dataBean.getImg(),
+                                            Constant.HOMEPAGE_INFO + "?content=1&id=" + dataBean.getId(),
+                                            dataBean.getP_time(), dataBean.getImg_list(),
+                                            dataBean.getTitle(), dataBean.getTag_name(),
+                                            dataBean.getSub_title(), dataBean.getId()));
                                 }
                             }
 
@@ -271,11 +267,14 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                         //咨询页webview
                         case 1:
                             Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
-                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo().get(position).getLink());
+                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                                    .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                             intent.putExtra("content", "");
-                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo().get(position).getImg());
-                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo().get(position).getShare_link());
+                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo()
+                                    .get(position).getImg());
+                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo()
+                                    .get(position).getShare_link());
                             startActivity(intent);
                             break;
                         //设计师申请入驻
@@ -294,13 +293,13 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParentFragment().getActivity(),
                     LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);
-            final CommonAdapter<NewHomepageBean.DesignerListBean> adapter = new CommonAdapter
-                    <NewHomepageBean.DesignerListBean>(getParentFragment().getActivity(),
+            final CommonAdapter<HomepageNewsBean.DesignerListBean> adapter = new CommonAdapter
+                    <HomepageNewsBean.DesignerListBean>(getParentFragment().getActivity(),
                     R.layout.listitem_recommend_designer, homepageBean.getDesigner_list()) {
 
 
                 @Override
-                protected void convert(ViewHolder holder, NewHomepageBean.DesignerListBean designerListBean
+                protected void convert(ViewHolder holder, HomepageNewsBean.DesignerListBean designerListBean
                         , int position) {
                     //recyclerView横向,分为三个item
                     CardView cardView = holder.getView(R.id.cv_recommend_designer);

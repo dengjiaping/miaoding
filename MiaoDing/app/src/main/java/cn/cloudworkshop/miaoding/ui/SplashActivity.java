@@ -34,13 +34,13 @@ public class SplashActivity extends BaseActivity{
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        imgSplash.setImageResource(R.mipmap.icon_splash_bg);
+//        imgSplash.setImageResource(R.mipmap.icon_splash_bg);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             }
         }, 2500);
 

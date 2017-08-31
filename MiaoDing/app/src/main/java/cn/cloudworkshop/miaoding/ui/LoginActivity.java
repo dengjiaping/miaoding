@@ -205,8 +205,8 @@ public class LoginActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("page",0);
-                    finish();
                     startActivity(intent);
+                    finish();
                 } else {
                     finish();
                 }

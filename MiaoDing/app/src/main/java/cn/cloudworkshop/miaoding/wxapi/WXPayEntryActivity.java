@@ -66,14 +66,14 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 Intent intent = new Intent(this, AppointmentActivity.class);
                 intent.putExtra("type", "pay_success");
                 intent.putExtra("order_id", MyApplication.orderId.split(",")[0]);
-                finish();
                 startActivity(intent);
+                finish();
             } else {
                 Intent intent = new Intent(this, AppointmentActivity.class);
                 intent.putExtra("type", "pay_fail");
                 intent.putExtra("order_id", MyApplication.orderId.split(",")[0]);
-                finish();
                 startActivity(intent);
+                finish();
             }
         }
     }

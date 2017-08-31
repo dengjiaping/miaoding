@@ -269,7 +269,6 @@ public class MyCenterFragment extends BaseFragment {
             case R.id.rl_user_center:
                 startActivity(new Intent(getActivity(), MemberCenterActivity.class));
                 break;
-
         }
     }
 

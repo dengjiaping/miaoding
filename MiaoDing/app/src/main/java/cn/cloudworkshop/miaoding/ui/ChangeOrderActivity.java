@@ -295,8 +295,7 @@ public class ChangeOrderActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        } else {
+        if (requestCode != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             new PermissionUtils(this).showPermissionDialog("读写内存");
         }
     }

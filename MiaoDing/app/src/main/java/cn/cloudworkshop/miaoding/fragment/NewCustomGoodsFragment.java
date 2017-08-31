@@ -233,7 +233,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
     /**
      * 选择种类
      */
-    private void showPopWindow() {
+    private void selectType() {
         View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.ppw_goods_type, null);
         final PopupWindow mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -300,7 +300,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.img_select_type:
                 if (titleBean != null) {
-                    showPopWindow();
+                    selectType();
                 }
                 break;
             case R.id.img_code:

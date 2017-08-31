@@ -575,6 +575,15 @@ public class CustomizeBean {
             private int type;
             private String img_a;
             private String img_b;
+            private String goods_img;
+
+            public String getGoods_img() {
+                return goods_img;
+            }
+
+            public void setGoods_img(String goods_img) {
+                this.goods_img = goods_img;
+            }
 
             public String getImg_a() {
                 return img_a;

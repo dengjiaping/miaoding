@@ -176,8 +176,6 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
         <activity android:name=".ui.AppointmentActivity"/>
         <activity android:name=".ui.DressingResultActivity"/>
-        <activity android:name=".ui.InviteFriendActivity"/>
-        <activity android:name=".ui.ShareRuleActivity"/>
         <activity
             android:name=".ui.CouponActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>

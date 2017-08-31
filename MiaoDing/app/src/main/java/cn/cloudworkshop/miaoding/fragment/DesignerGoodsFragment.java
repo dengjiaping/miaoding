@@ -64,7 +64,8 @@ public class DesignerGoodsFragment extends BaseFragment {
             CommonAdapter<DesignerInfoBean.DataBean.GoodsListBean> adapter = new CommonAdapter
                     <DesignerInfoBean.DataBean.GoodsListBean>(getActivity(), R.layout.listitem_works, worksList) {
                 @Override
-                protected void convert(ViewHolder holder, DesignerInfoBean.DataBean.GoodsListBean goodsListBean, int position) {
+                protected void convert(ViewHolder holder, DesignerInfoBean.DataBean.GoodsListBean
+                        goodsListBean, int position) {
                     Glide.with(getActivity())
                             .load(Constant.HOST + goodsListBean.getThumb())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
