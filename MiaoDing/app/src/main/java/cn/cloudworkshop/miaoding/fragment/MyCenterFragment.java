@@ -34,6 +34,7 @@ import cn.cloudworkshop.miaoding.bean.UserInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.ApplyMeasureActivity;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
+import cn.cloudworkshop.miaoding.ui.CollectionActivity;
 import cn.cloudworkshop.miaoding.ui.CouponActivity;
 import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
 import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
@@ -42,7 +43,6 @@ import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.MemberCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MessageCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
-import cn.cloudworkshop.miaoding.ui.NewCollectionActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
@@ -219,7 +219,7 @@ public class MyCenterFragment extends BaseFragment {
                         startActivity(new Intent(getActivity(), CouponActivity.class));
                         break;
                     case 3:
-                        startActivity(new Intent(getActivity(), NewCollectionActivity.class));
+                        startActivity(new Intent(getActivity(), CollectionActivity.class));
                         break;
                     case 4:
                         if (userInfoBean.getData().getIs_yuyue() == 1) {

@@ -90,10 +90,15 @@ public class CustomizeActivity extends BaseActivity {
     @BindView(R.id.img_cloth_large)
     CircleImageView imgClothLarge;
 
+    //商品id
     private String id;
+    //商品名
     private String goodsName;
+    //商品图
     private String imgUrl;
+    //价格
     private String price;
+    //价格id
     private String priceType;
     private int classifyId;
     private String logId;
@@ -113,7 +118,7 @@ public class CustomizeActivity extends BaseActivity {
     //稀疏数组
     //选择部件
     private SparseIntArray itemArray = new SparseIntArray();
-
+    //进入页面时间
     private long enterTime;
 
 
@@ -151,7 +156,7 @@ public class CustomizeActivity extends BaseActivity {
                 .get()
                 .url(Constant.NEW_CUSTOMIZE)
                 .addParams("goods_id", id)
-                .addParams("phone_type", String.valueOf("6"))
+                .addParams("phone_type", "6")
                 .addParams("price_type", priceType)
                 .build()
                 .execute(new StringCallback() {
@@ -553,7 +558,7 @@ public class CustomizeActivity extends BaseActivity {
     }
 
     /**
-     * 选择部位
+     * 选择衣服部位
      */
     private void selectParts() {
         if (customizeBean != null && customizeBean.getData() != null) {
@@ -646,6 +651,7 @@ public class CustomizeActivity extends BaseActivity {
         ((RadioButton) rgsSelect.getChildAt(customizeBean.getData().getBanxin().get(currentType)
                 .getPeijian().get(currentParts).getPosition_id() - 1)).setChecked(true);
         final List<CustomizeBean.DataBean.BanxinBean.PeijianBean.SpecListBean> itemList = new ArrayList<>();
+
         for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
                 .get(position).getSpec_list().size(); i++) {
             if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(position)
@@ -668,8 +674,8 @@ public class CustomizeActivity extends BaseActivity {
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
 
                 if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
-                        .get(currentParts).getSpec_list().get(itemArray.get(currentParts))
-                        .getId() == specListBean.getId()) {
+                        .get(currentParts).getSpec_list().get(itemArray.get(currentParts)).getId()
+                        == specListBean.getId()) {
                     holder.setVisible(R.id.img_tailor_bg, true);
                 } else {
                     holder.setVisible(R.id.img_tailor_bg, false);
@@ -699,10 +705,6 @@ public class CustomizeActivity extends BaseActivity {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgItem);
 
-//                        View itemBg = rvSelectType.findViewHolderForAdapterPosition(currentParts)
-//                                .itemView.findViewById(R.id.view_tailor_item);
-//                        itemBg.setVisibility(View.VISIBLE);
-
 
                 //选择正反面
                 int positionId = customizeBean.getData().getBanxin().get(currentType)
@@ -711,30 +713,14 @@ public class CustomizeActivity extends BaseActivity {
 
                 switch (positionId) {
                     case 1:
-                        ImageView positiveImg = (ImageView) rlClothPositive.getChildAt(currentParts);
-                        Glide.with(CustomizeActivity.this)
-                                .load(Constant.HOST + itemList.get(position).getImg_c())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(positiveImg);
+                        switchParts(rlClothPositive, itemList.get(position).getImg_c());
                         break;
                     case 2:
-                        ImageView backImg = (ImageView) rlClothBack.getChildAt(currentParts);
-                        Glide.with(CustomizeActivity.this)
-                                .load(Constant.HOST + itemList.get(position).getImg_c())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(backImg);
+                        switchParts(rlClothBack, itemList.get(position).getImg_c());
                         break;
                     case 3:
-                        ImageView inSideImg = (ImageView) rlClothInside.getChildAt(currentParts);
-                        Glide.with(CustomizeActivity.this)
-                                .load(Constant.HOST + itemList.get(position).getImg_c())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(inSideImg);
+                        switchParts(rlClothInside, itemList.get(position).getImg_c());
                         break;
-
                 }
 
                 tvHeaderTitle.setText(itemList.get(position).getName());
@@ -742,8 +728,8 @@ public class CustomizeActivity extends BaseActivity {
                 for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(currentParts).getSpec_list().size(); i++) {
                     if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
-                            .get(currentParts).getSpec_list().get(i).getId() ==
-                            itemList.get(position).getId()) {
+                            .get(currentParts).getSpec_list().get(i).getId() == itemList
+                            .get(position).getId()) {
                         itemArray.put(currentParts, i);
                     }
                 }
@@ -768,6 +754,21 @@ public class CustomizeActivity extends BaseActivity {
         });
     }
 
+
+    /**
+     * @param rl
+     * @param imgUrl
+     * 切换衣服部件图片
+     */
+    private void switchParts(RelativeLayout rl, String imgUrl) {
+        ImageView imageView = (ImageView) rl.getChildAt(currentParts);
+        Glide.with(CustomizeActivity.this)
+                .load(Constant.HOST + imgUrl)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+    }
+
     /**
      * 下一步
      */
@@ -783,20 +784,20 @@ public class CustomizeActivity extends BaseActivity {
         }
 
 
-        CustomItemBean tailorItemBean = new CustomItemBean();
-        tailorItemBean.setId(id);
-        tailorItemBean.setGoods_name(goodsName);
-        tailorItemBean.setPrice(price);
-        tailorItemBean.setImg_url(imgUrl);
-        tailorItemBean.setPrice_type(priceType);
-        tailorItemBean.setLog_id(logId);
-        tailorItemBean.setGoods_time(goodsTime);
-        tailorItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
-        tailorItemBean.setIs_scan(0);
+        CustomItemBean customItemBean = new CustomItemBean();
+        customItemBean.setId(id);
+        customItemBean.setGoods_name(goodsName);
+        customItemBean.setPrice(price);
+        customItemBean.setImg_url(imgUrl);
+        customItemBean.setPrice_type(priceType);
+        customItemBean.setLog_id(logId);
+        customItemBean.setGoods_time(goodsTime);
+        customItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
+        customItemBean.setIs_scan(0);
         //面料
-        tailorItemBean.setFabric_id(customizeBean.getData().getMianliao().get(currentFabric).getId() + "");
-        tailorItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
-        tailorItemBean.setDefault_img(customizeBean.getData().getMianliao().get(currentFabric).getGoods_img());
+        customItemBean.setFabric_id(customizeBean.getData().getMianliao().get(currentFabric).getId() + "");
+        customItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
+        customItemBean.setDefault_img(customizeBean.getData().getMianliao().get(currentFabric).getGoods_img());
 
         //部件
         List<CustomItemBean.ItemBean> itemList = new ArrayList<>();
@@ -806,8 +807,8 @@ public class CustomizeActivity extends BaseActivity {
             CustomItemBean.ItemBean itemBean = new CustomItemBean.ItemBean();
             int key = itemArray.keyAt(i);
             int value = itemArray.valueAt(i);
-            if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
-                    .get(key).getSpec_list().get(value) != null) {
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(key)
+                    .getSpec_list().get(value) != null) {
 
                 sbIds.append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
                         .get(key).getSpec_list().get(value).getId())
@@ -832,16 +833,16 @@ public class CustomizeActivity extends BaseActivity {
 
         sbContent.append("面料:")
                 .append(customizeBean.getData().getMianliao().get(currentFabric).getName())
-                .append(";");
-        sbContent.append("版型:")
+                .append(";版型:")
                 .append(customizeBean.getData().getBanxin().get(currentType).getName())
                 .append(";");
 
-        tailorItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
-        tailorItemBean.setSpec_content(sbContent.toString());
+        customItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
+        customItemBean.setSpec_content(sbContent.toString());
 
-        tailorItemBean.setItemBean(itemList);
-        bundle.putSerializable("tailor", tailorItemBean);
+        customItemBean.setItemBean(itemList);
+        bundle.putSerializable("tailor", customItemBean);
+
         intent.putExtras(bundle);
         startActivity(intent);
 

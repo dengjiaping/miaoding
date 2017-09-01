@@ -48,6 +48,7 @@ import cn.cloudworkshop.miaoding.ui.CustomizeActivity;
 import cn.cloudworkshop.miaoding.ui.EmbroideryActivity;
 import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
+import cn.cloudworkshop.miaoding.ui.TailorActivity;
 import okhttp3.Call;
 
 /**
@@ -137,7 +138,7 @@ public class PayOrderUtils {
             public void onDismiss() {
                 DisplayUtils.setBackgroundAlpha(context, false);
 
-                ActivityManagerUtils.getInstance().finishActivityClass(CustomizeActivity.class);
+                ActivityManagerUtils.getInstance().finishActivityClass(TailorActivity.class);
                 ActivityManagerUtils.getInstance().finishActivityClass(EmbroideryActivity.class);
                 ActivityManagerUtils.getInstance().finishActivityClass(CustomResultActivity.class);
                 ActivityManagerUtils.getInstance().finishActivityClass(ShoppingCartActivity.class);

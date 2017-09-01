@@ -24,7 +24,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/circle_gray"
-        android:scaleType="centerCrop"
         android:visibility="gone"/>
     <cn.cloudworkshop.miaoding.view.CircleImageView
         android:id="@+id/img_tailor_bg"

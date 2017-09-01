@@ -20,7 +20,7 @@ public class Constant {
     public static final String DESIGNER_TITLE = HOST + INDEX + "cobbler_v5_2";
     public static final String NEW_DESIGNER_WORKS = HOST + INDEX + "get_chengping_goods_list";
     public static final String GOODS_DETAILS = HOST + INDEX + "new_goods_detail";
-    public static final String TAILOR_INFO = HOST + INDEX + "customize";
+    public static final String TAILOR_INFO = "http://139.196.113.61" + INDEX + "customize";
     public static final String NEW_CUSTOMIZE = HOST + INDEX + "new_customize";
     public static final String VERIFICATION_CODE = HOST + "/index.php/index/login/send_sms";
     public static final String LOG_IN = HOST + "/index.php/index/login/do_login";
@@ -50,8 +50,7 @@ public class Constant {
     public static final String DELETE_ORDER = HOST + INDEX + "delete_order";
     public static final String CONFIRM_RECEIVE = HOST + INDEX + "confirm_order";
     public static final String ADD_COLLECTION = HOST + INDEX + "add_user_collect";
-    public static final String CANCEL_COLLECTION = HOST + INDEX + "delete_collect";
-    public static final String CART_TO_TAILOR = HOST + INDEX + "dz_car_data";
+    public static final String CART_TO_CUSTOM = HOST + INDEX + "dz_car_data";
     public static final String APPOINTMENT_ORDER = HOST + INDEX + "add_order_list";
     public static final String QUESTION_CLASSIFY = HOST + INDEX + "help_classify";
     public static final String QUESTION_LIST = HOST + INDEX + "help_list";
@@ -79,6 +78,7 @@ public class Constant {
     public static final String UPGRADE_GIFT = HOST + "/index.php/index/user/user_upgrade_gift";
     public static final String BIRTHDAY_GIFT = HOST + "/index.php/index/user/get_birthday_gift";
     public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img_v5_3";
+    public static final String NEW_TAKE_PHOTO = "http://139.196.113.61/index.php/web/cc/testUpload";
     public static final String DESIGNER_LIST = HOST + INDEX + "get_designer_list";
     public static final String DESIGNER_DETAILS = HOST + INDEX + "user_intro";
     public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";

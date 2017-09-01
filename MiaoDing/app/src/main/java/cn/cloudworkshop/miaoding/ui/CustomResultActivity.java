@@ -270,8 +270,8 @@ public class CustomResultActivity extends BaseActivity {
 
             List<CustomResultBean> itemList = new ArrayList<>();
             String[] typeStr = customStr.split(";");
-            for (int i = 0; i < typeStr.length; i++) {
-                String[] nameStr = typeStr[i].split(":");
+            for (String aTypeStr : typeStr) {
+                String[] nameStr = aTypeStr.split(":");
                 CustomResultBean tailorInfoBean = new CustomResultBean();
                 tailorInfoBean.setType(nameStr[0]);
                 tailorInfoBean.setName(nameStr[1]);
@@ -336,8 +336,15 @@ public class CustomResultActivity extends BaseActivity {
 
         map.put("spec_ids", customBean.getSpec_ids());
         map.put("spec_content", customBean.getSpec_content());
-        map.put("mianliao_id", customBean.getFabric_id());
-        map.put("banxing_id", customBean.getBanxing_id());
+
+        if (!TextUtils.isEmpty(customBean.getFabric_id())){
+            map.put("mianliao_id", customBean.getFabric_id());
+        }
+
+        if (!TextUtils.isEmpty(customBean.getBanxing_id())){
+            map.put("banxing_id", customBean.getBanxing_id());
+        }
+
         map.put("is_scan", customBean.getIs_scan() + "");
         if (!TextUtils.isEmpty(customBean.getDiy_contet())) {
             map.put("diy_content", customBean.getDiy_contet());

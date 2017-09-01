@@ -12,7 +12,7 @@
         android:id="@+id/rl_tailor_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="190dp"
+        android:layout_marginBottom="226dp"
         android:layout_marginTop="44dp">
 
         <RelativeLayout
@@ -131,7 +131,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_tailor_button"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="62dp"
         android:layout_above="@+id/rv_tailor_item"
         android:layout_centerHorizontal="true"
         android:visibility="visible">
@@ -141,7 +141,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_tailor_item"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="62dp"
         android:layout_marginTop="10dp"
         android:layout_above="@+id/rv_tailor_cloth"
         android:layout_centerHorizontal="true"
@@ -151,7 +151,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_tailor_cloth"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="62dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"

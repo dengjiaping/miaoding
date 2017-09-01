@@ -1,11 +1,11 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -16,7 +16,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,11 +35,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.bean.CustomItemBean;
 import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.bean.TailorBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.SerializableMap;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -112,12 +114,9 @@ public class TailorActivity extends BaseActivity {
     Map<Integer, Integer> idMap = new TreeMap<>();
     //部件类别
     Map<Integer, String> typeMap = new TreeMap<>();
-    //部件正面
-    Map<Integer, String> positiveMap = new TreeMap<>();
-    //部件背面
-    Map<Integer, String> backMap = new TreeMap<>();
-    //部件里子
-    Map<Integer, String> insideMap = new TreeMap<>();
+    //部件正反面
+    Map<Integer, String> positionMap = new TreeMap<>();
+
 
     private CommonAdapter<String> adapter;
 
@@ -126,7 +125,16 @@ public class TailorActivity extends BaseActivity {
     private TailorBean.DataBean dataBean;
 
     private String id;
+    private String goodsName;
+    private String imgUrl;
+    private String price;
     private String priceType;
+    private int classifyId;
+    private String logId;
+    private long goodsTime;
+    //进入页面时间
+    private long enterTime;
+
     private AnimationDrawable animation;
     //选择部件位置
     private int index = 0;
@@ -136,6 +144,7 @@ public class TailorActivity extends BaseActivity {
     private String buttonName;
     //首次选择
     private boolean firstSelect = true;
+    private String deafult_img;
 
 
     private CommonAdapter<String> itemAdapter;
@@ -148,7 +157,7 @@ public class TailorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tailor);
         ButterKnife.bind(this);
-        
+
         getData();
         initData();
     }
@@ -159,7 +168,15 @@ public class TailorActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
+        goodsName = bundle.getString("goods_name");
+        imgUrl = bundle.getString("img_url");
+        price = bundle.getString("price");
         priceType = bundle.getString("price_type");
+        classifyId = bundle.getInt("classify_id");
+        logId = bundle.getString("log_id");
+        goodsTime = bundle.getLong("goods_time");
+
+        enterTime = DateUtils.getCurrentTime();
     }
 
     /**
@@ -315,6 +332,7 @@ public class TailorActivity extends BaseActivity {
                         .load(Constant.HOST + imgUrl)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
+
             }
 
         };
@@ -347,14 +365,14 @@ public class TailorActivity extends BaseActivity {
                 };
                 rvTailorItem.setAdapter(itemAdapter);
 
-                if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null){
+                if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null) {
                     imgTailorGuide.setVisibility(View.VISIBLE);
                     Glide.with(TailorActivity.this)
                             .load(Constant.HOST + guideBean.getData().getImg_urls().get(1))
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(imgTailorGuide);
                     isFirstEntry = false;
-                    SharedPreferencesUtils.saveBoolean(TailorActivity.this,"tailor_guide", false);
+                    SharedPreferencesUtils.saveBoolean(TailorActivity.this, "tailor_guide", false);
                 }
 
                 rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
@@ -402,6 +420,7 @@ public class TailorActivity extends BaseActivity {
                             noMatchSpec();
                         }
 
+
                         CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(index)
                                 .itemView.findViewById(R.id.img_tailor_item);
                         Glide.with(TailorActivity.this)
@@ -413,20 +432,29 @@ public class TailorActivity extends BaseActivity {
                                 .findViewById(R.id.view_tailor_item);
                         itemBg.setVisibility(View.VISIBLE);
 
+                        if (titleList.get(index).contains("面料")) {
+                            for (int i = 0; i < dataBean.getSpec_list().get(index).getList().size(); i++) {
+                                if (dataBean.getSpec_list().get(index).getList().get(i).getId() == idMap.get(index)) {
+                                    deafult_img = dataBean.getSpec_list().get(index).getList().get(i).getMianliao_img();
+                                    break;
+                                }
+                            }
+
+                        }
 
                         //选择正反面
                         ((RadioButton) rgsSelectOrientation.getChildAt(positionList.get(index) - 1)).setChecked(true);
 
                         switch (positionList.get(index)) {
                             case 1:
-
                                 ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(index);
                                 Glide.with(TailorActivity.this)
                                         .load(Constant.HOST + largeList.get(index).get(position))
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(positiveImg);
-                                positiveMap.put(index, largeList.get(index).get(position));
+
+                                positionMap.put(index, largeList.get(index).get(position));
 
                                 imgTailorIcon.setVisibility(View.GONE);
                                 animation.stop();
@@ -440,20 +468,28 @@ public class TailorActivity extends BaseActivity {
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(backImg);
-                                backMap.put(index, largeList.get(index).get(position));
+                                positionMap.put(index, largeList.get(index).get(position));
 
-                                if (nameList.get(index).get(position).contains("法式")) {
-                                    itemIndex = position;
-                                    imgTailorIcon.setVisibility(View.VISIBLE);
-                                    animation.start();
-                                    rvTailorButton.setVisibility(View.GONE);
-                                    ToastUtils.showToast(TailorActivity.this, "您选择了法式袖，请挑选扣子");
-                                } else {
-                                    imgTailorIcon.setVisibility(View.GONE);
-                                    animation.stop();
-                                    rvTailorButton.setVisibility(View.GONE);
-                                    buttonName = "";
-                                }
+//                                if (nameList.get(index).get(position).contains("袖")) {
+//                                    if (nameList.get(index).get(position).contains("法式")) {
+//                                        for (int i = 0; i < dataBean.getSpec_list().get(index).getList().size(); i++) {
+//                                            if (dataBean.getSpec_list().get(index).getList().get(i).getId() == idMap.get(index)) {
+//                                                itemIndex = i;
+//                                            }
+//                                        }
+
+//                                        imgTailorIcon.setVisibility(View.VISIBLE);
+//                                        animation.start();
+//                                        rvTailorButton.setVisibility(View.GONE);
+//                                        ToastUtils.showToast(TailorActivity.this, "您选择了法式袖，请挑选扣子");
+//                                    } else {
+//                                        imgTailorIcon.setVisibility(View.GONE);
+//                                        animation.stop();
+//                                        rvTailorButton.setVisibility(View.GONE);
+//                                        buttonName = "";
+//                                    }
+//                                }
+
                                 break;
                             case 3:
                                 ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(index);
@@ -462,14 +498,12 @@ public class TailorActivity extends BaseActivity {
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(inSideImg);
-                                insideMap.put(index, largeList.get(index).get(position));
+                                positionMap.put(index, largeList.get(index).get(position));
 
                                 imgTailorIcon.setVisibility(View.GONE);
                                 animation.stop();
                                 rvTailorButton.setVisibility(View.GONE);
 
-                                break;
-                            default:
                                 break;
                         }
 
@@ -481,40 +515,6 @@ public class TailorActivity extends BaseActivity {
 
                         checkedMap.put(index, position);
 
-//                        for (int i = 0; i < itemList.size(); i++) {
-//                            if (!checkedMap.containsKey(i)) {
-//                                switch (positionList.get(i)) {
-//                                    case 1:
-//                                        ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
-//                                        Glide.with(TailorActivity.this)
-//                                                .load(Constant.HOST + largeList.get(index).get(0))
-//                                                .fitCenter()
-//                                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                                                .into(positiveImg);
-//                                        break;
-//                                    case 2:
-//                                        ImageView backImg = (ImageView) rlBackTailor.getChildAt(i);
-//                                        Glide.with(TailorActivity.this)
-//                                                .load(Constant.HOST + largeList.get(index).get(0))
-//                                                .fitCenter()
-//                                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                                                .into(backImg);
-//                                        break;
-//                                    case 3:
-//                                        ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(i);
-//                                        Glide.with(TailorActivity.this)
-//                                                .load(Constant.HOST + largeList.get(index).get(0))
-//                                                .fitCenter()
-//                                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                                                .into(inSideImg);
-//                                        break;
-//                                    default:
-//                                        break;
-//
-//                                }
-//                            }
-//
-//                        }
                         isAllSelect(checkedMap);
 
                     }
@@ -551,7 +551,7 @@ public class TailorActivity extends BaseActivity {
             radioButton.setEms(1);
             radioButton.setGravity(Gravity.CENTER);
             radioButton.setBackgroundResource(R.drawable.rgs_customize_color);
-            radioButton.setTextColor(ContextCompat.getColor(this,R.color.rgs_customize_position));
+            radioButton.setTextColor(ContextCompat.getColor(this, R.color.rgs_customize_position));
 
             rgsRecommendType.addView(radioButton);
         }
@@ -570,7 +570,7 @@ public class TailorActivity extends BaseActivity {
                         for (int j = 0; j < rgsRecommendType.getChildCount(); j++) {
                             RadioButton rBtn = (RadioButton) radioGroup.getChildAt(j);
                             if (rBtn.getId() == i) {
-                                changeTailor(j);
+                                recommendType(j);
                                 tvHeaderNext.setVisibility(View.VISIBLE);
                                 tvHeaderNext.setText("下一步");
                             }
@@ -636,7 +636,7 @@ public class TailorActivity extends BaseActivity {
     /**
      * 推荐款
      */
-    private void changeTailor(int k) {
+    private void recommendType(int k) {
         typeList.clear();
         for (int i = 0; i < dataBean.getSpec_templets_recommend().get(k).getList().size(); i++) {
             typeList.add(dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_a());
@@ -653,7 +653,7 @@ public class TailorActivity extends BaseActivity {
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(positiveImg);
-                    positiveMap.put(i, dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_c());
+                    positionMap.put(i, dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_c());
                     break;
                 case 2:
                     ImageView backImg = (ImageView) rlBackTailor.getChildAt(i);
@@ -663,18 +663,32 @@ public class TailorActivity extends BaseActivity {
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(backImg);
-                    if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("法式")) {
-                        ToastUtils.showToast(this, "您选择了法式袖，请挑选扣子");
-                        imgTailorIcon.setVisibility(View.VISIBLE);
-                        rvTailorButton.setVisibility(View.GONE);
-                        animation.start();
-                    } else {
-                        imgTailorIcon.setVisibility(View.GONE);
-                        animation.stop();
-                        rvTailorButton.setVisibility(View.GONE);
-                        buttonName = "";
-
+                    positionMap.put(i, dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_c());
+                    if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("袖")) {
+                        if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("法式")) {
+                            ToastUtils.showToast(this, "您选择了法式袖，请挑选扣子");
+                            imgTailorIcon.setVisibility(View.VISIBLE);
+                            rvTailorButton.setVisibility(View.GONE);
+                            animation.start();
+                        } else {
+                            imgTailorIcon.setVisibility(View.GONE);
+                            animation.stop();
+                            rvTailorButton.setVisibility(View.GONE);
+                            buttonName = "";
+                        }
                     }
+
+
+                    break;
+                case 3:
+                    ImageView insideImg = (ImageView) rlInsideTailor.getChildAt(i);
+                    Glide.with(TailorActivity.this)
+                            .load(Constant.HOST + dataBean.getSpec_templets_recommend().get(k)
+                                    .getList().get(i).getImg_c())
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into(insideImg);
+                    positionMap.put(i, dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_c());
                     break;
             }
         }
@@ -691,7 +705,7 @@ public class TailorActivity extends BaseActivity {
     private void isAllSelect(Map<Integer, Integer> map) {
         if (map.size() == itemList.size()) {
             tvHeaderNext.setVisibility(View.VISIBLE);
-            tvHeaderNext.setText("完成");
+            tvHeaderNext.setText("下一步");
         }
     }
 
@@ -699,7 +713,7 @@ public class TailorActivity extends BaseActivity {
      * 获取网络数据
      */
     private void initData() {
-        isFirstEntry = SharedPreferencesUtils.getBoolean(this,"tailor_guide", true);
+        isFirstEntry = SharedPreferencesUtils.getBoolean(this, "tailor_guide", true);
         if (isFirstEntry) {
             OkHttpUtils.get()
                     .url(Constant.GUIDE_IMG)
@@ -725,17 +739,21 @@ public class TailorActivity extends BaseActivity {
                         }
                     });
         }
-        OkHttpUtils
-                .get()
+        OkHttpUtils.get()
                 .url(Constant.TAILOR_INFO)
                 .addParams("goods_id", id)
-                .addParams("phone_type", String.valueOf("3"))
+                .addParams("phone_type", "3")
                 .addParams("price_type", priceType)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        LoadErrorUtils.showDialog(TailorActivity.this, new LoadErrorUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
@@ -782,7 +800,7 @@ public class TailorActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_header_next:
-                completeTailor();
+                nextStep();
                 break;
             case R.id.rl_positive_tailor:
                 imgLargeMaterial.setVisibility(View.GONE);
@@ -798,8 +816,6 @@ public class TailorActivity extends BaseActivity {
                 break;
             case R.id.img_tailor_guide:
                 imgTailorGuide.setVisibility(View.GONE);
-                break;
-            default:
                 break;
 
         }
@@ -821,9 +837,8 @@ public class TailorActivity extends BaseActivity {
         nameMap.clear();
         idMap.clear();
         typeMap.clear();
-        positiveMap.clear();
-        backMap.clear();
-        insideMap.clear();
+        positionMap.clear();
+
         buttonName = "";
         firstSelect = true;
         tvHeaderNext.setVisibility(View.GONE);
@@ -838,76 +853,80 @@ public class TailorActivity extends BaseActivity {
         loadData();
     }
 
+
     /**
      * 定制完成
      */
-    private void completeTailor() {
-
-        if (idMap.size() > 0 && typeMap.size() > 0 && nameMap.size() > 0 && positiveMap.size() > 0) {
-//            if (MyApplication.classifyId == 1 || MyApplication.classifyId == 2) {
-//                nextStep(EmbroideryActivity.class);
-//            } else {
-//                nextStep(CustomResultActivity.class);
-//            }
-            nextStep();
-        }
-    }
-
     private void nextStep() {
-        boolean flag = false;
-        Intent intent = new Intent();
 
-        SerializableMap myMap1 = new SerializableMap();
-        SerializableMap myMap2 = new SerializableMap();
-        SerializableMap myMap3 = new SerializableMap();
-        SerializableMap myMap4 = new SerializableMap();
-        SerializableMap myMap5 = new SerializableMap();
-        SerializableMap myMap6 = new SerializableMap();
-
-        Map<Integer, String> newTypeMap = new TreeMap<>();
-        Map<Integer, String> newNameMap = new TreeMap<>();
-
-
-        for (Map.Entry<Integer, String> entry : nameMap.entrySet()) {
-            if (entry.getValue().contains("法式") && !buttonName.equals("")) {
-                flag = true;
+        if (idMap.size() > 0 && typeMap.size() > 0 && nameMap.size() > 0 && positionMap.size() > 0) {
+            Intent intent;
+            Bundle bundle = new Bundle();
+            if (classifyId == 1 || classifyId == 2) {
+                intent = new Intent(this, EmbroideryActivity.class);
+                bundle.putInt("classify_id", classifyId);
+            } else {
+                intent = new Intent(this, EmbroideryActivity.class);
             }
+
+            CustomItemBean customItemBean = new CustomItemBean();
+            customItemBean.setId(id);
+            customItemBean.setGoods_name(goodsName);
+            customItemBean.setPrice(price);
+            customItemBean.setImg_url(imgUrl);
+            customItemBean.setPrice_type(priceType);
+            customItemBean.setLog_id(logId);
+            customItemBean.setGoods_time(goodsTime);
+            customItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
+            customItemBean.setIs_scan(0);
+
+            //是否选择法式袖扣
+//            boolean isSelectButton = false;
+//
+//            for (Map.Entry<Integer, String> entry : nameMap.entrySet()) {
+//                if (entry.getValue().contains("法式") && !buttonName.equals("")) {
+//                    isSelectButton = true;
+//                }
+//            }
+
+            //部件
+            List<CustomItemBean.ItemBean> itemList = new ArrayList<>();
+            StringBuilder sbIds = new StringBuilder();
+            StringBuilder sbContent = new StringBuilder();
+
+            for (Map.Entry<Integer, Integer> entry : idMap.entrySet()) {
+                sbIds.append(entry.getValue()).append(",");
+            }
+
+            for (int i = 0; i < nameList.size(); i++) {
+                sbContent.append(typeMap.get(i))
+                        .append(":")
+                        .append(nameMap.get(i))
+                        .append(";");
+            }
+
+            for (int i = 0; i < positionList.size(); i++) {
+                CustomItemBean.ItemBean itemBean = new CustomItemBean.ItemBean();
+                itemBean.setImg(positionMap.get(i));
+                itemBean.setPosition_id(positionList.get(i));
+                itemList.add(itemBean);
+            }
+
+//
+//            if (isSelectButton) {
+//                sbContent.append("法式袖扣子:")
+//                        .append(buttonName)
+//                        .append(";");
+//            }
+
+            customItemBean.setDefault_img(deafult_img);
+            customItemBean.setItemBean(itemList);
+            customItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
+            customItemBean.setSpec_content(sbContent.toString());
+            bundle.putSerializable("tailor", customItemBean);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
-
-        for (Map.Entry<Integer, String> entry : typeMap.entrySet()) {
-            newTypeMap.put(entry.getKey(), entry.getValue());
-        }
-
-        for (Map.Entry<Integer, String> entry : nameMap.entrySet()) {
-            newNameMap.put(entry.getKey(), entry.getValue());
-        }
-
-        if (flag) {
-            newTypeMap.put(typeMap.size(), "法式袖扣子");
-            newNameMap.put(nameMap.size(), buttonName);
-        }
-
-        myMap1.setIntegerMap(idMap);
-        intent.putExtra("idmap", myMap1);
-
-        myMap2.setStringMap(newTypeMap);
-        intent.putExtra("typemap", myMap2);
-
-        myMap3.setStringMap(newNameMap);
-        intent.putExtra("namemap", myMap3);
-
-        myMap4.setStringMap(positiveMap);
-        intent.putExtra("positivemap", myMap4);
-
-        myMap5.setStringMap(backMap);
-        intent.putExtra("backmap", myMap5);
-
-        myMap6.setStringMap(insideMap);
-        intent.putExtra("insidemap", myMap6);
-
-        intent.putExtra("is_select", true);
-        setResult(1, intent);
-        finish();
     }
 
     /**
@@ -917,9 +936,10 @@ public class TailorActivity extends BaseActivity {
         animation.stop();
         imgTailorIcon.setVisibility(View.GONE);
         rvTailorButton.setVisibility(View.VISIBLE);
-        rvTailorButton.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        rvTailorButton.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean> buttonAdapter = new
-                CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this, R.layout.listitem_custom_parts, dataBean.getSpec_list()
+                CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this,
+                        R.layout.listitem_custom_parts, dataBean.getSpec_list()
                         .get(index).getList().get(itemIndex).getChild_list()) {
                     @Override
                     protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean
@@ -929,7 +949,6 @@ public class TailorActivity extends BaseActivity {
                                         .get(itemIndex).getChild_list().get(position).getImg_a())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_tailor_item));
-                        holder.getView(R.id.img_tailor_item).setBackgroundResource(R.drawable.tailor_item_gray);
                     }
                 };
 

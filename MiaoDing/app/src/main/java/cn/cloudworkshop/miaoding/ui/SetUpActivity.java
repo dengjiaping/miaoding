@@ -454,20 +454,19 @@ public class SetUpActivity extends BaseActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
         dialog.setTitle("清除缓存");
         dialog.setMessage("您确定要清空缓存吗？");
-        //为“确定”按钮注册监听事件
+        //确定
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 根据实际情况编写相应代码。
+
                 DataManagerUtils.cleanApplicationCache(SetUpActivity.this);
                 ToastUtils.showToast(SetUpActivity.this, "清除成功");
             }
         });
-        //为“取消”按钮注册监听事件
+        //取消
         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 根据实际情况编写相应代码。
                 dialog.dismiss();
             }
         });

@@ -379,7 +379,6 @@ public class CustomGoodsActivity extends BaseActivity {
                 tvPrice.setText("¥" + new DecimalFormat("#0.00").format(priceBean.getPrice()));
                 holder.setText(R.id.tv_type_content, priceBean.getIntroduce());
             }
-
         };
 
 
@@ -387,7 +386,7 @@ public class CustomGoodsActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 mPopupWindow.dismiss();
-                Intent intent = new Intent(CustomGoodsActivity.this, CustomizeActivity.class);
+                Intent intent = new Intent(CustomGoodsActivity.this, TailorActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());

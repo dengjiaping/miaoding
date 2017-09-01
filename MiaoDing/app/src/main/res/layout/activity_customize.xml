@@ -95,6 +95,7 @@
             android:background="@android:color/white">
         </android.support.v7.widget.RecyclerView>
 
+
     </RelativeLayout>
 
     <RelativeLayout

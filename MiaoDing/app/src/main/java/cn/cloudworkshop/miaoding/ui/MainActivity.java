@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,11 +63,19 @@ import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -101,7 +111,78 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         initIcon();
         checkUpdate();
         isLogin();
+        upLoad();
         submitClientId();
+    }
+
+    private void upLoad() {
+//        Map<String,File> map = new HashMap<>();
+        File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "CloudWorkshop/img1.jpg");
+        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "CloudWorkshop/img2.jpg");
+//        map.put("img1",file1);
+//        map.put("img2",file2);
+         MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img_list", file1.getName(), RequestBody.create(MEDIA_TYPE_PNG, file1));
+        builder.addFormDataPart("img_list", file2.getName(), RequestBody.create(MEDIA_TYPE_PNG, file2));
+        builder.addFormDataPart("xw","1");
+        builder.addFormDataPart("yw","1");
+        builder.addFormDataPart("tw","1");
+        builder.addFormDataPart("age","1");
+        builder.addFormDataPart("distance","1");
+        builder.addFormDataPart("c_time","1");
+        builder.addFormDataPart("status","1");
+        builder.addFormDataPart("type_scale","1");
+        builder.addFormDataPart("scale","0.9,0.9,0.9,0.9");
+        builder.addFormDataPart("sh_phone","13388888888");
+
+        builder.addFormDataPart("factory_id","0");
+        builder.addFormDataPart("phone","13333333333");
+        builder.addFormDataPart("name","1");
+        builder.addFormDataPart("sh_name","1");
+        builder.addFormDataPart("height","1");
+        builder.addFormDataPart("width","1");
+        builder.addFormDataPart("y_position","1136.159302,1094.154053,1062.464722,998.010254");
+
+
+        MultipartBody requestBody = builder.build();
+        //构建请求
+        Request request = new Request.Builder()
+                .url(Constant.NEW_TAKE_PHOTO)//地址
+                .post(requestBody)//添加请求体
+                .build();
+        OkHttpClient client = new OkHttpClient();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LogUtils.log(response.body().string());
+
+
+            }
+        });
+//        OkHttpUtils.post()
+//                .url(Constant.NEW_TAKE_PHOTO)
+//                .files("img_list",map)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        LogUtils.log(response);
+//                    }
+//                });
     }
 
 
@@ -317,9 +398,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 加载Fragment
      */
     public void initView() {
-        fragmentList.add(NewHomeRecommendFragment.newInstance());
+        fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(NewDesignerWorksFragment.newInstance());
+        fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());

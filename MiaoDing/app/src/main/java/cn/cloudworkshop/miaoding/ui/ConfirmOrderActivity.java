@@ -536,7 +536,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
                                     ToastUtils.showToast(ConfirmOrderActivity.this, msg);
 
-                                    ActivityManagerUtils.getInstance().finishActivityClass(CustomizeActivity.class);
+                                    ActivityManagerUtils.getInstance().finishActivityClass(TailorActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(EmbroideryActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(CustomResultActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(ShoppingCartActivity.class);

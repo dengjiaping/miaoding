@@ -149,7 +149,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         worksBean = GsonUtils.jsonToBean(response, WorksDetailBean.class);
-                        if (worksBean != null) {
+                        if (worksBean.getData() != null) {
                             initView();
                         }
                     }

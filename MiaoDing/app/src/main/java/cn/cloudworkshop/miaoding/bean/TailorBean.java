@@ -125,6 +125,16 @@ public class TailorBean {
                 private String img_a;
                 private String img_b;
                 private String img_c;
+                private String mianliao_img;
+
+                public String getMianliao_img() {
+                    return mianliao_img;
+                }
+
+                public void setMianliao_img(String mianliao_img) {
+                    this.mianliao_img = mianliao_img;
+                }
+
                 private String spec_name;
                 private int position_id;
                 private int spec_id;

@@ -419,10 +419,10 @@ public class ShoppingCartActivity extends BaseActivity {
      */
     private void cartToCustomResult(int position) {
         OkHttpUtils.get()
-                .url(Constant.CART_TO_TAILOR)
+                .url(Constant.CART_TO_CUSTOM)
                 .addParams("token", SharedPreferencesUtils.getStr(ShoppingCartActivity.this, "token"))
                 .addParams("car_id", dataList.get(position).getId() + "")
-                .addParams("phone_type", "6")
+                .addParams("phone_type", "3")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -437,16 +437,16 @@ public class ShoppingCartActivity extends BaseActivity {
                         if (cartDetails.getData() != null) {
                             Intent intent = new Intent(ShoppingCartActivity.this, CustomResultActivity.class);
                             Bundle bundle = new Bundle();
-                            CustomItemBean tailorBean = new CustomItemBean();
-                            tailorBean.setId(cartDetails.getData().getGoods_id() + "");
-                            tailorBean.setGoods_name(cartDetails.getData().getGoods_name());
-                            tailorBean.setPrice(new DecimalFormat("#0.00").format(cartDetails
+                            CustomItemBean customItemBean = new CustomItemBean();
+                            customItemBean.setId(cartDetails.getData().getGoods_id() + "");
+                            customItemBean.setGoods_name(cartDetails.getData().getGoods_name());
+                            customItemBean.setPrice(new DecimalFormat("#0.00").format(cartDetails
                                     .getData().getPrice()));
-                            tailorBean.setPrice_type(cartDetails.getData().getPrice_id() + "");
-                            tailorBean.setImg_url(cartDetails.getData().getGoods_thumb());
-                            tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
-                            tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
-                            tailorBean.setIs_scan(cartDetails.getData().getIs_scan());
+                            customItemBean.setPrice_type(cartDetails.getData().getPrice_id() + "");
+                            customItemBean.setImg_url(cartDetails.getData().getGoods_thumb());
+                            customItemBean.setSpec_ids(cartDetails.getData().getSpec_ids());
+                            customItemBean.setSpec_content(cartDetails.getData().getSpec_content());
+                            customItemBean.setIs_scan(cartDetails.getData().getIs_scan());
                             //0：个性定制 1：定制同款
                             switch (cartDetails.getData().getIs_scan()) {
                                 case 0:
@@ -459,27 +459,33 @@ public class ShoppingCartActivity extends BaseActivity {
                                         itemList.add(itemBean);
                                     }
                                     //图片
-                                    tailorBean.setItemBean(itemList);
-                                    tailorBean.setDefault_img(cartDetails.getData().getGoods_thumb());
+                                    customItemBean.setItemBean(itemList);
+                                    customItemBean.setDefault_img(cartDetails.getData().getGoods_thumb());
                                     break;
                                 case 1:
-                                    tailorBean.setDefault_img(cartDetails.getData().getDefault_img());
+                                    customItemBean.setDefault_img(cartDetails.getData().getDefault_img());
                                     break;
                             }
 
                             //面料
-                            tailorBean.setFabric_id(cartDetails.getData().getMianliao_id());
+                            if (!TextUtils.isEmpty(cartDetails.getData().getMianliao_id())){
+                                customItemBean.setFabric_id(cartDetails.getData().getMianliao_id());
+                            }
+
                             //版型
-                            tailorBean.setBanxing_id(cartDetails.getData().getBanxing_id());
+                            if (!TextUtils.isEmpty(cartDetails.getData().getBanxing_id())){
+                                customItemBean.setBanxing_id(cartDetails.getData().getBanxing_id());
+                            }
+
                             //部件id
-                            tailorBean.setSpec_ids(cartDetails.getData().getSpec_ids());
+                            customItemBean.setSpec_ids(cartDetails.getData().getSpec_ids());
                             //部件名称
-                            tailorBean.setSpec_content(cartDetails.getData().getSpec_content());
+                            customItemBean.setSpec_content(cartDetails.getData().getSpec_content());
                             //个性定制
                             if (!TextUtils.isEmpty(cartDetails.getData().getDiy_content())) {
-                                tailorBean.setDiy_contet(cartDetails.getData().getDiy_content());
+                                customItemBean.setDiy_contet(cartDetails.getData().getDiy_content());
                             }
-                            bundle.putSerializable("tailor", tailorBean);
+                            bundle.putSerializable("tailor", customItemBean);
 
                             intent.putExtras(bundle);
                             startActivity(intent);
