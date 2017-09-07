@@ -411,7 +411,11 @@ public class WorksDetailActivity extends BaseActivity {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        //当前activity被销毁会导致
+        if (!isFinishing()){
+            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        }
+
         DisplayUtils.setBackgroundAlpha(this, true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override

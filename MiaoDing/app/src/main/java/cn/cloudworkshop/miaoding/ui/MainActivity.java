@@ -111,78 +111,52 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         initIcon();
         checkUpdate();
         isLogin();
-        upLoad();
+//        upLoad();
         submitClientId();
     }
 
     private void upLoad() {
-//        Map<String,File> map = new HashMap<>();
+        Map<String, File> map = new HashMap<>();
         File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator + "CloudWorkshop/img1.jpg");
         File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator + "CloudWorkshop/img2.jpg");
-//        map.put("img1",file1);
-//        map.put("img2",file2);
-         MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img_list", file1.getName(), RequestBody.create(MEDIA_TYPE_PNG, file1));
-        builder.addFormDataPart("img_list", file2.getName(), RequestBody.create(MEDIA_TYPE_PNG, file2));
-        builder.addFormDataPart("xw","1");
-        builder.addFormDataPart("yw","1");
-        builder.addFormDataPart("tw","1");
-        builder.addFormDataPart("age","1");
-        builder.addFormDataPart("distance","1");
-        builder.addFormDataPart("c_time","1");
-        builder.addFormDataPart("status","1");
-        builder.addFormDataPart("type_scale","1");
-        builder.addFormDataPart("scale","0.9,0.9,0.9,0.9");
-        builder.addFormDataPart("sh_phone","13388888888");
+        map.put("img1", file1);
+        map.put("img2", file2);
 
-        builder.addFormDataPart("factory_id","0");
-        builder.addFormDataPart("phone","13333333333");
-        builder.addFormDataPart("name","1");
-        builder.addFormDataPart("sh_name","1");
-        builder.addFormDataPart("height","1");
-        builder.addFormDataPart("width","1");
-        builder.addFormDataPart("y_position","1136.159302,1094.154053,1062.464722,998.010254");
+        OkHttpUtils.post()
+                .url(Constant.NEW_TAKE_PHOTO)
+                .files("img_list", map)
+                .addParams("xw", "1")
+                .addParams("yw", "1")
+                .addParams("tw", "1")
+                .addParams("age", "18")
+                .addParams("distance", "3")
+                .addParams("c_time", "1")
+                .addParams("status", "1")
+                .addParams("type_scale", "1")
+                .addParams("scale", "0.9,0.9,0.9,0.9")
+                .addParams("sh_phone", "13388888888")
+                .addParams("factory_id", "0")
+                .addParams("phone", "13333333333")
+                .addParams("name", "1")
+                .addParams("sh_name", "1")
+                .addParams("height", "1")
+                .addParams("width", "1")
+                .addParams("y_position", "1136.159302,1094.154053,1062.464722,998.010254")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.log(e.toString());
+                    }
 
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.log(response);
+                    }
+                });
 
-        MultipartBody requestBody = builder.build();
-        //构建请求
-        Request request = new Request.Builder()
-                .url(Constant.NEW_TAKE_PHOTO)//地址
-                .post(requestBody)//添加请求体
-                .build();
-        OkHttpClient client = new OkHttpClient();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                LogUtils.log(response.body().string());
-
-
-            }
-        });
-//        OkHttpUtils.post()
-//                .url(Constant.NEW_TAKE_PHOTO)
-//                .files("img_list",map)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        LogUtils.log(response);
-//                    }
-//                });
     }
 
 
@@ -400,7 +374,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     public void initView() {
         fragmentList.add(HomepageFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(DesignerWorksFragment.newInstance());
+        fragmentList.add(NewDesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());

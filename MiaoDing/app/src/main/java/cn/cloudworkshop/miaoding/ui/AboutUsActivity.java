@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,7 +59,7 @@ public class AboutUsActivity extends BaseActivity {
     private void initView() {
         tvHeaderTitle.setText("关于妙定");
         tvVersionName.setText("当前版本：" + getVersionName());
-        if (MyApplication.updateUrl != null) {
+        if (!TextUtils.isEmpty(MyApplication.updateUrl)) {
             tvNewVersion.setVisibility(View.VISIBLE);
         }
     }

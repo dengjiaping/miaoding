@@ -178,7 +178,9 @@ public class MyOrderFragment extends BaseFragment {
      * 加载视图
      */
     protected void initView() {
+
         rvGoods.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         adapter = new CommonAdapter<OrderInfoBean.DataBeanX.DataBean>(getActivity(), R.layout.listitem_order, dataList) {
             @Override
             protected void convert(ViewHolder holder, final OrderInfoBean.DataBeanX.DataBean dataBean, final int position) {
@@ -366,7 +368,6 @@ public class MyOrderFragment extends BaseFragment {
             }
 
         });
-
 
     }
 

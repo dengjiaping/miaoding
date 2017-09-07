@@ -42,7 +42,6 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -144,7 +143,7 @@ public class TailorActivity extends BaseActivity {
     private String buttonName;
     //首次选择
     private boolean firstSelect = true;
-    private String deafult_img;
+    private String default_img;
 
 
     private CommonAdapter<String> itemAdapter;
@@ -435,11 +434,10 @@ public class TailorActivity extends BaseActivity {
                         if (titleList.get(index).contains("面料")) {
                             for (int i = 0; i < dataBean.getSpec_list().get(index).getList().size(); i++) {
                                 if (dataBean.getSpec_list().get(index).getList().get(i).getId() == idMap.get(index)) {
-                                    deafult_img = dataBean.getSpec_list().get(index).getList().get(i).getMianliao_img();
+                                    default_img = dataBean.getSpec_list().get(index).getList().get(i).getMianliao_img();
                                     break;
                                 }
                             }
-
                         }
 
                         //选择正反面
@@ -664,19 +662,19 @@ public class TailorActivity extends BaseActivity {
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(backImg);
                     positionMap.put(i, dataBean.getSpec_templets_recommend().get(k).getList().get(i).getImg_c());
-                    if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("袖")) {
-                        if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("法式")) {
-                            ToastUtils.showToast(this, "您选择了法式袖，请挑选扣子");
-                            imgTailorIcon.setVisibility(View.VISIBLE);
-                            rvTailorButton.setVisibility(View.GONE);
-                            animation.start();
-                        } else {
-                            imgTailorIcon.setVisibility(View.GONE);
-                            animation.stop();
-                            rvTailorButton.setVisibility(View.GONE);
-                            buttonName = "";
-                        }
-                    }
+//                    if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("袖")) {
+//                        if (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getName().contains("法式")) {
+//                            ToastUtils.showToast(this, "您选择了法式袖，请挑选扣子");
+//                            imgTailorIcon.setVisibility(View.VISIBLE);
+//                            rvTailorButton.setVisibility(View.GONE);
+//                            animation.start();
+//                        } else {
+//                            imgTailorIcon.setVisibility(View.GONE);
+//                            animation.stop();
+//                            rvTailorButton.setVisibility(View.GONE);
+//                            buttonName = "";
+//                        }
+//                    }
 
 
                     break;
@@ -919,7 +917,7 @@ public class TailorActivity extends BaseActivity {
 //                        .append(";");
 //            }
 
-            customItemBean.setDefault_img(deafult_img);
+            customItemBean.setDefault_img(default_img);
             customItemBean.setItemBean(itemList);
             customItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
             customItemBean.setSpec_content(sbContent.toString());

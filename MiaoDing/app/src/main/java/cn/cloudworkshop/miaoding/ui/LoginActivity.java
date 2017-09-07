@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity {
                 confirmLogin();
                 break;
             case R.id.tv_user_agreement:
-                if (MyApplication.userAgreement != null) {
+                if (!TextUtils.isEmpty(MyApplication.userAgreement)) {
                     Intent intent = new Intent(this, UserRuleActivity.class);
                     intent.putExtra("title", "用户协议");
                     intent.putExtra("img_url", MyApplication.userAgreement);

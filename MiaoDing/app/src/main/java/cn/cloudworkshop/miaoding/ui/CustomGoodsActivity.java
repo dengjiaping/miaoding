@@ -345,6 +345,7 @@ public class CustomGoodsActivity extends BaseActivity {
      */
     private void selectGoodsPrice() {
 
+
         View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_price, null);
         final PopupWindow mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -353,7 +354,10 @@ public class CustomGoodsActivity extends BaseActivity {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        //当前activity后台运行时被回收，会导致弹窗无法显示
+        if (!isFinishing()) {
+            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        }
         DisplayUtils.setBackgroundAlpha(this, true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -408,6 +412,7 @@ public class CustomGoodsActivity extends BaseActivity {
         });
 
         rvTailor.setAdapter(priceAdapter);
+
     }
 
 
@@ -478,7 +483,6 @@ public class CustomGoodsActivity extends BaseActivity {
      * 定制同款选择版型
      */
     private void selectGoodsType() {
-
         View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_price, null);
         final PopupWindow mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -487,7 +491,11 @@ public class CustomGoodsActivity extends BaseActivity {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        //当前activity后台运行时被回收，会导致弹窗无法显示
+        if (!isFinishing()) {
+            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        }
+
         DisplayUtils.setBackgroundAlpha(this, true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -561,6 +569,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 return false;
             }
         });
+
 
     }
 

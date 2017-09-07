@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
@@ -28,12 +29,15 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -248,177 +252,177 @@ public class NewWorksDetailActivity extends BaseActivity {
      * 商品规格
      */
     private void showWorksType() {
-
-        View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_type, null);
-        mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setContentView(contentView);
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-        DisplayUtils.setBackgroundAlpha(this, true);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                DisplayUtils.setBackgroundAlpha(NewWorksDetailActivity.this, false);
-                currentColor = 0;
-                currentSize = 0;
-                count = 1;
-                colorList.clear();
-            }
-        });
-
-        final ImageView imageView = (ImageView) contentView.findViewById(R.id.img_works_icon);
-        tvPrice = (TextView) contentView.findViewById(R.id.tv_works_price);
-        tvStock = (TextView) contentView.findViewById(R.id.tv_works_stock);
-        ImageView imgCancel = (ImageView) contentView.findViewById(R.id.img_cancel_buy);
-        RecyclerView rvSize = (RecyclerView) contentView.findViewById(R.id.rv_works_size);
-        RecyclerView rvColor = (RecyclerView) contentView.findViewById(R.id.rv_works_color);
-        TextView tvReduce = (TextView) contentView.findViewById(R.id.tv_reduce_works);
-        tvCount = (TextView) contentView.findViewById(R.id.tv_buy_count);
-        TextView tvAdd = (TextView) contentView.findViewById(R.id.tv_add_works);
-        tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
-
-        Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getData().getThumb())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imageView);
-        tvPrice.setTypeface(DisplayUtils.setTextType(this));
-        if (worksBean.getData().getSize_list() != null) {
-            tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list().get(0).getPrice());
-            tvStock.setText("库存：" + worksBean.getData().getSize_list().get(0).getSize_list()
-                    .get(0).getSku_num() + "件");
-            tvCount.setText("1");
-            currentSize = 0;
-            currentColor = 0;
-            stock = worksBean.getData().getSize_list().get(0).getSize_list().get(0).getSku_num();
-            remainGoodsCount(stock);
-            colorList.addAll(worksBean.getData().getSize_list().get(0).getSize_list());
-
-            //尺码
-            rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
-                    = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksDetailActivity.this,
-                    R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
+        if (worksBean != null) {
+            View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_type, null);
+            mPopupWindow = new PopupWindow(contentView,
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mPopupWindow.setContentView(contentView);
+            mPopupWindow.setTouchable(true);
+            mPopupWindow.setFocusable(true);
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+            DisplayUtils.setBackgroundAlpha(this, true);
+            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
-                protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
-                    TextView tvSize = holder.getView(R.id.tv_works_size);
-                    tvSize.setText(positionBean.getSize_name());
-
-                    if (currentSize == position) {
-                        tvSize.setTextColor(Color.WHITE);
-                        tvSize.setBackgroundResource(R.drawable.circle_black);
-
-                    } else {
-                        tvSize.setTextColor(ContextCompat.getColor(NewWorksDetailActivity.this, R.color.dark_gray_22));
-                        tvSize.setBackgroundResource(R.drawable.ring_gray);
-                    }
-                }
-            };
-            rvSize.setAdapter(sizeAdapter);
-
-            sizeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    currentSize = holder.getLayoutPosition();
+                public void onDismiss() {
+                    DisplayUtils.setBackgroundAlpha(NewWorksDetailActivity.this, false);
                     currentColor = 0;
+                    currentSize = 0;
+                    count = 1;
                     colorList.clear();
-                    colorList.addAll(worksBean.getData().getSize_list().get(currentSize).getSize_list());
-                    sizeAdapter.notifyDataSetChanged();
-
-                    reSelectWorks();
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    return false;
                 }
             });
 
+            final ImageView imageView = (ImageView) contentView.findViewById(R.id.img_works_icon);
+            tvPrice = (TextView) contentView.findViewById(R.id.tv_works_price);
+            tvStock = (TextView) contentView.findViewById(R.id.tv_works_stock);
+            ImageView imgCancel = (ImageView) contentView.findViewById(R.id.img_cancel_buy);
+            RecyclerView rvSize = (RecyclerView) contentView.findViewById(R.id.rv_works_size);
+            RecyclerView rvColor = (RecyclerView) contentView.findViewById(R.id.rv_works_color);
+            TextView tvReduce = (TextView) contentView.findViewById(R.id.tv_reduce_works);
+            tvCount = (TextView) contentView.findViewById(R.id.tv_buy_count);
+            TextView tvAdd = (TextView) contentView.findViewById(R.id.tv_add_works);
+            tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
 
-            //颜色
-            rvColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
-                    (NewWorksDetailActivity.this, R.layout.listitem_works_color, colorList) {
-                @Override
-                protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
-                        positionBean, int position) {
-                    CircleImageView imgColor = holder.getView(R.id.img_works_color);
-                    CircleImageView imgMask = holder.getView(R.id.img_works_mask);
-                    Glide.with(NewWorksDetailActivity.this)
-                            .load(Constant.HOST + positionBean.getColor_img())
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(imgColor);
-                    if (currentColor == position) {
-                        imgMask.setVisibility(View.VISIBLE);
-                    } else {
-                        imgMask.setVisibility(View.GONE);
+            Glide.with(getApplicationContext())
+                    .load(Constant.HOST + worksBean.getData().getThumb())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imageView);
+            tvPrice.setTypeface(DisplayUtils.setTextType(this));
+            if (worksBean.getData().getSize_list() != null) {
+                tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list().get(0).getPrice());
+                tvStock.setText("库存：" + worksBean.getData().getSize_list().get(0).getSize_list()
+                        .get(0).getSku_num() + "件");
+                tvCount.setText("1");
+                currentSize = 0;
+                currentColor = 0;
+                stock = worksBean.getData().getSize_list().get(0).getSize_list().get(0).getSku_num();
+                remainGoodsCount(stock);
+                colorList.addAll(worksBean.getData().getSize_list().get(0).getSize_list());
+
+                //尺码
+                rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
+                        = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksDetailActivity.this,
+                        R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
+                    @Override
+                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
+                        TextView tvSize = holder.getView(R.id.tv_works_size);
+                        tvSize.setText(positionBean.getSize_name());
+
+                        if (currentSize == position) {
+                            tvSize.setTextColor(Color.WHITE);
+                            tvSize.setBackgroundResource(R.drawable.circle_black);
+
+                        } else {
+                            tvSize.setTextColor(ContextCompat.getColor(NewWorksDetailActivity.this, R.color.dark_gray_22));
+                            tvSize.setBackgroundResource(R.drawable.ring_gray);
+                        }
                     }
-                }
-            };
-            rvColor.setAdapter(colorAdapter);
-            colorAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    currentColor = holder.getLayoutPosition();
-                    ToastUtils.showToast(NewWorksDetailActivity.this, colorList.get(position).getColor_name());
-                    reSelectWorks();
-                }
+                };
+                rvSize.setAdapter(sizeAdapter);
 
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    return false;
-                }
-            });
+                sizeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        currentSize = holder.getLayoutPosition();
+                        currentColor = 0;
+                        colorList.clear();
+                        colorList.addAll(worksBean.getData().getSize_list().get(currentSize).getSize_list());
+                        sizeAdapter.notifyDataSetChanged();
+
+                        reSelectWorks();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        return false;
+                    }
+                });
 
 
-            //增加数量
-            tvAdd.setOnClickListener(new View.OnClickListener() {
+                //颜色
+                rvColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
+                        (NewWorksDetailActivity.this, R.layout.listitem_works_color, colorList) {
+                    @Override
+                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
+                            positionBean, int position) {
+                        CircleImageView imgColor = holder.getView(R.id.img_works_color);
+                        CircleImageView imgMask = holder.getView(R.id.img_works_mask);
+                        Glide.with(NewWorksDetailActivity.this)
+                                .load(Constant.HOST + positionBean.getColor_img())
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(imgColor);
+                        if (currentColor == position) {
+                            imgMask.setVisibility(View.VISIBLE);
+                        } else {
+                            imgMask.setVisibility(View.GONE);
+                        }
+                    }
+                };
+                rvColor.setAdapter(colorAdapter);
+                colorAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        currentColor = holder.getLayoutPosition();
+                        ToastUtils.showToast(NewWorksDetailActivity.this, colorList.get(position).getColor_name());
+                        reSelectWorks();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        return false;
+                    }
+                });
+
+
+                //增加数量
+                tvAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count < stock) {
+                            count++;
+                            tvCount.setText(String.valueOf(count));
+                        }
+                    }
+                });
+
+                //减少数量
+                tvReduce.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count > 1) {
+                            count--;
+                            tvCount.setText(String.valueOf(count));
+                        }
+                    }
+                });
+
+                //确定购买
+                tvBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(NewWorksDetailActivity.this, "token"))) {
+                            addToCart();
+                        } else {
+                            Intent login = new Intent(NewWorksDetailActivity.this, LoginActivity.class);
+                            login.putExtra("page_name", "立即购买");
+                            startActivity(login);
+                        }
+                    }
+                });
+            }
+
+            //取消购买
+            imgCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (count < stock) {
-                        count++;
-                        tvCount.setText(String.valueOf(count));
-                    }
-                }
-            });
-
-            //减少数量
-            tvReduce.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (count > 1) {
-                        count--;
-                        tvCount.setText(String.valueOf(count));
-                    }
-                }
-            });
-
-            //确定购买
-            tvBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(NewWorksDetailActivity.this, "token"))) {
-                        addToCart();
-                    } else {
-                        Intent login = new Intent(NewWorksDetailActivity.this, LoginActivity.class);
-                        login.putExtra("page_name", "立即购买");
-                        startActivity(login);
-                    }
+                    mPopupWindow.dismiss();
                 }
             });
         }
-
-        //取消购买
-        imgCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupWindow.dismiss();
-            }
-        });
-
 
     }
 
