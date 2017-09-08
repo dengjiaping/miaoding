@@ -9,11 +9,13 @@ import java.util.List;
  */
 public class HomepageNewsBean {
 
+
     /**
      * code : 1
-     * data : [[{"title":"没有吴亦凡的高颜值 就学他的好衣品吧","sub_title":null,"img":"/uploads/img/2016123018170099505252.png","id":11,"link":null,"img_list":["/uploads/img/2016122718552398555156.png","/uploads/img/2016122718552848100995.png","/uploads/img/2016122718553252975651.png"],"p_time":"- DEC.27 -","view_nums":0,"name":"推荐","uname":"云小编"}]]
-     * designer_list : [{"id":79,"name":"Eric","phone":"13916905124","pwd":null,"nickname":"","avatar":"/uploads/img/2017041314512157481021.jpg","sex":1,"reg_time":1482836170,"status":1,"content":2,"remark":"杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。","age":0,"c_time":0,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"44.00","birthday":"2017-02-28","tag":"爸爸","introduce":"杜嘉班纳公司创立于1985年，"},{"id":257,"name":"黄梦炜","phone":"17012348909","pwd":null,"nickname":"","avatar":"/uploads/img/2017042809461151981015.jpg","sex":1,"reg_time":null,"status":1,"content":2,"remark":"热特瑞","age":0,"c_time":1493372778,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"失恋阵线联盟","introduce":"罚单还感觉很尴尬"}]
-     * lunbo : [{"img":"/uploads/img/2016101715541897515149","link":"","title":"1","share_link":""},{"img":"/uploads/img/2016101716465850555498","link":"","title":"设计师入住","share_link":""},{"img":"/uploads/img/2016101716475054525010","link":"","title":"设计师入住","share_link":""},{"img":"/uploads/img/2016101716485050545249","link":"","title":"设计师入住","share_link":""}]
+     * data : [[{"title":"到底有多少种类的小白鞋","sub_title":"快来快来数一数","img":"/uploads/img/2017081809121410149509.jpg","id":55,"link":null,"img_list":["/uploads/img/2017081809122052101494.jpg"],"p_time":"- AUG.18 -","view_nums":0,"tag_name":"搭配","uname":"黄嘉欣"}],[{"title":"男装周这么聊才有趣","sub_title":"看脸看身材还是看衣服？","img":"/uploads/img/2017081614552848100519.jpg","id":54,"link":null,"img_list":["/uploads/img/2017081614553555495097.jpg"],"p_time":"- AUG.16 -","view_nums":0,"tag_name":"搭配","uname":"换个名字假装换了人"}],[{"title":"红酒中的爱马仕","sub_title":"你喝的不仅仅是酒","img":"/uploads/img/2017081509234650489752.jpg","id":53,"link":null,"img_list":["/uploads/img/2017081509235054101101.jpg"],"p_time":"- AUG.15 -","view_nums":0,"tag_name":"时尚","uname":"换个名字假装换了人"},{"title":"穿衣秘籍大揭秘","sub_title":"冒着生命危险整理出来","img":"/uploads/img/2017081509221555101975.png","id":52,"link":null,"img_list":["/uploads/img/2017081509222110057985.png"],"p_time":"- AUG.15 -","view_nums":0,"tag_name":"搭配","uname":"换个名字假装换了人"}],[{"title":"细数超跑七宗罪","sub_title":"我都没有，我是良民","img":"/uploads/img/2017081114025410149485.png","id":51,"link":null,"img_list":["/uploads/img/2017081114030355545253.png"],"p_time":"- AUG.11 -","view_nums":0,"tag_name":"资讯","uname":"黄嘉欣"}],[{"title":"告别物质主义 不在靠买奢侈品炫富","sub_title":"定制才是王道","img":"/uploads/img/2017080918185097100495.jpg","id":49,"link":null,"img_list":["/uploads/img/2017080918185648501021.jpg"],"p_time":"- AUG.09 -","view_nums":0,"tag_name":"资讯","uname":"换个名字假装换了人"}],[{"title":"一百块的酒","sub_title":"一百块也能用出一千块的效果","img":"/uploads/img/2017080409134456575653.jpg","id":48,"link":null,"img_list":["/uploads/img/2017080409135110253555.jpg"],"p_time":"- AUG.04 -","view_nums":0,"tag_name":"资讯","uname":"换个名字假装换了人"}],[{"title":"你的西服扣子系对了吗","sub_title":"系对扣子和穿对西服同样重要","img":"/uploads/img/2017080215153656545210.jpg","id":47,"link":null,"img_list":["/uploads/img/2017080215154650995798.jpg"],"p_time":"- AUG.02 -","view_nums":0,"tag_name":"搭配","uname":"黄嘉欣"},{"title":"世界上最强大的男人之一 都有些什么","sub_title":"不是普京，别想歪了","img":"/uploads/img/2017080215134456545357.png","id":46,"link":null,"img_list":["/uploads/img/2017080215135010154975.png"],"p_time":"- AUG.02 -","view_nums":0,"tag_name":"资讯","uname":"黄嘉欣"}],[{"title":"你能把衬衫穿好？","sub_title":"不是说你没穿，是穿的更好。","img":"/uploads/img/2017080110024957501001.jpg","id":45,"link":null,"img_list":["/uploads/img/2017080110025850995110.jpg"],"p_time":"- AUG.01 -","view_nums":0,"tag_name":"搭配","uname":"换个名字假装换了人"}]]
+     * designer_list : [{"id":282,"name":"陈振富","phone":"13811111111","pwd":null,"nickname":"","avatar":"/uploads/img/2017070416140949555548.jpg","sex":1,"reg_time":null,"status":1,"type":2,"remark":"1","age":0,"c_time":1495880990,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"方圆设计工作室","introduce":"妙定合作设计师","story":"/uploads/img/2017072816231854549810.png","pc_story":null,"is_pop":1},{"id":308,"name":"鲁国才","phone":"13916905121","pwd":null,"nickname":"","avatar":"/uploads/img/2017062219010650979749.jpg","sex":1,"reg_time":null,"status":1,"type":2,"remark":"","age":0,"c_time":1497492970,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"鲁鲁帝工作室","introduce":"妙定合作设计师","story":"/uploads/img/2017061510321951101102.png","pc_story":"","is_pop":1},{"id":309,"name":"刘江宏","phone":"17012348999","pwd":null,"nickname":"","avatar":"/uploads/img/2017071311024856529954.jpg","sex":1,"reg_time":null,"status":1,"type":2,"remark":"","age":0,"c_time":1497493016,"a_id":0,"b_id":0,"group_id":1,"invite_ewm":null,"award_money":"0.00","tx_money":"0.00","reg_ip":null,"xf_money":"0.00","credit":"0.00","birthday":null,"tag":"龙剪风工作室","introduce":"妙定合作设计师，中国十佳设计师","story":"/uploads/img/2017072816233757539748.png","pc_story":"","is_pop":1}]
+     * lunbo : [{"img":"/uploads/img/2017061611363551985157.jpg","link":"1","title":"招募","share_link":"1","type":2,"banner_type":2},{"img":"/uploads/img/2017060116314953101102.jpg","link":"/web/jquery-obj/static/web/html/designer.html?type=1&id=16","title":"这个特工很时尚","share_link":"/web/jquery-obj/static/fx/html/designer.html?type=1&id=16","type":2,"banner_type":1},{"img":"/uploads/img/2017071415091256545257.jpg","link":"/web/jquery-obj/static/web/html/designer.html?type=1&id=21","title":"格子衬衫","share_link":"/web/jquery-obj/static/fx/html/designer.html?type=1&id=21","type":2,"banner_type":1},{"img":"/uploads/img/2017071415081951564856.jpg","link":"/web/jquery-obj/static/web/html/designer.html?type=1&id=20","title":"POLO衬衫","share_link":"/web/jquery-obj/static/fx/html/designer.html?type=1&id=20","type":2,"banner_type":1}]
+     * recommend_list : [{"goods_id":39,"goods_type":1,"name":"始终如\u201c衣\u201d","sub_name":"- 2017春夏系列 -","thumb":"/uploads/img/2017052716461454515299.jpg"},{"goods_id":40,"goods_type":1,"name":"自然亚麻","sub_name":"- 2017春夏系列 -","thumb":"/uploads/img/2017052717284297101981.jpg"}]
      * msg : 成功
      */
 
@@ -22,6 +24,7 @@ public class HomepageNewsBean {
     private List<List<DataBean>> data;
     private List<DesignerListBean> designer_list;
     private List<LunboBean> lunbo;
+    private List<RecommendListBean> recommend_list;
 
     public int getCode() {
         return code;
@@ -63,39 +66,37 @@ public class HomepageNewsBean {
         this.lunbo = lunbo;
     }
 
+    public List<RecommendListBean> getRecommend_list() {
+        return recommend_list;
+    }
+
+    public void setRecommend_list(List<RecommendListBean> recommend_list) {
+        this.recommend_list = recommend_list;
+    }
+
     public static class DataBean {
         /**
-         * title : 没有吴亦凡的高颜值 就学他的好衣品吧
-         * sub_title : null
-         * img : /uploads/img/2016123018170099505252.png
-         * id : 11
+         * title : 到底有多少种类的小白鞋
+         * sub_title : 快来快来数一数
+         * img : /uploads/img/2017081809121410149509.jpg
+         * id : 55
          * link : null
-         * img_list : ["/uploads/img/2016122718552398555156.png","/uploads/img/2016122718552848100995.png","/uploads/img/2016122718553252975651.png"]
-         * p_time : - DEC.27 -
+         * img_list : ["/uploads/img/2017081809122052101494.jpg"]
+         * p_time : - AUG.18 -
          * view_nums : 0
-         * name : 推荐
-         * uname : 云小编
+         * tag_name : 搭配
+         * uname : 黄嘉欣
          */
 
         private String title;
         private String sub_title;
         private String img;
         private int id;
-        private String link;
+        private Object link;
         private String p_time;
         private int view_nums;
-
-        public String getTag_name() {
-            return tag_name;
-        }
-
-        public void setTag_name(String tag_name) {
-            this.tag_name = tag_name;
-        }
-
-        private String name;
-        private String uname;
         private String tag_name;
+        private String uname;
         private List<String> img_list;
 
         public String getTitle() {
@@ -114,14 +115,6 @@ public class HomepageNewsBean {
             this.sub_title = sub_title;
         }
 
-        public String getLink() {
-            return link;
-        }
-
-        public void setLink(String link) {
-            this.link = link;
-        }
-
         public String getImg() {
             return img;
         }
@@ -138,7 +131,13 @@ public class HomepageNewsBean {
             this.id = id;
         }
 
+        public Object getLink() {
+            return link;
+        }
 
+        public void setLink(Object link) {
+            this.link = link;
+        }
 
         public String getP_time() {
             return p_time;
@@ -156,12 +155,12 @@ public class HomepageNewsBean {
             this.view_nums = view_nums;
         }
 
-        public String getName() {
-            return name;
+        public String getTag_name() {
+            return tag_name;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setTag_name(String tag_name) {
+            this.tag_name = tag_name;
         }
 
         public String getUname() {
@@ -183,19 +182,19 @@ public class HomepageNewsBean {
 
     public static class DesignerListBean {
         /**
-         * id : 79
-         * name : Eric
-         * phone : 13916905124
+         * id : 282
+         * name : 陈振富
+         * phone : 13811111111
          * pwd : null
          * nickname :
-         * avatar : /uploads/img/2017041314512157481021.jpg
+         * avatar : /uploads/img/2017070416140949555548.jpg
          * sex : 1
-         * reg_time : 1482836170
+         * reg_time : null
          * status : 1
-         * content : 2
-         * remark : 杜嘉班纳公司创立于1985年，总部位于意大利米兰。今天已成为在奢侈品领域中最主要的国际集团之一。
+         * type : 2
+         * remark : 1
          * age : 0
-         * c_time : 0
+         * c_time : 1495880990
          * a_id : 0
          * b_id : 0
          * group_id : 1
@@ -204,10 +203,13 @@ public class HomepageNewsBean {
          * tx_money : 0.00
          * reg_ip : null
          * xf_money : 0.00
-         * credit : 44.00
-         * birthday : 2017-02-28
-         * tag : 爸爸
-         * introduce : 杜嘉班纳公司创立于1985年，
+         * credit : 0.00
+         * birthday : null
+         * tag : 方圆设计工作室
+         * introduce : 妙定合作设计师
+         * story : /uploads/img/2017072816231854549810.png
+         * pc_story : null
+         * is_pop : 1
          */
 
         private int id;
@@ -217,7 +219,7 @@ public class HomepageNewsBean {
         private String nickname;
         private String avatar;
         private int sex;
-        private int reg_time;
+        private Object reg_time;
         private int status;
         private int type;
         private String remark;
@@ -232,9 +234,12 @@ public class HomepageNewsBean {
         private Object reg_ip;
         private String xf_money;
         private String credit;
-        private String birthday;
+        private Object birthday;
         private String tag;
         private String introduce;
+        private String story;
+        private Object pc_story;
+        private int is_pop;
 
         public int getId() {
             return id;
@@ -292,11 +297,11 @@ public class HomepageNewsBean {
             this.sex = sex;
         }
 
-        public int getReg_time() {
+        public Object getReg_time() {
             return reg_time;
         }
 
-        public void setReg_time(int reg_time) {
+        public void setReg_time(Object reg_time) {
             this.reg_time = reg_time;
         }
 
@@ -412,11 +417,11 @@ public class HomepageNewsBean {
             this.credit = credit;
         }
 
-        public String getBirthday() {
+        public Object getBirthday() {
             return birthday;
         }
 
-        public void setBirthday(String birthday) {
+        public void setBirthday(Object birthday) {
             this.birthday = birthday;
         }
 
@@ -435,14 +440,40 @@ public class HomepageNewsBean {
         public void setIntroduce(String introduce) {
             this.introduce = introduce;
         }
+
+        public String getStory() {
+            return story;
+        }
+
+        public void setStory(String story) {
+            this.story = story;
+        }
+
+        public Object getPc_story() {
+            return pc_story;
+        }
+
+        public void setPc_story(Object pc_story) {
+            this.pc_story = pc_story;
+        }
+
+        public int getIs_pop() {
+            return is_pop;
+        }
+
+        public void setIs_pop(int is_pop) {
+            this.is_pop = is_pop;
+        }
     }
 
     public static class LunboBean {
         /**
-         * img : /uploads/img/2016101715541897515149
-         * link :
-         * title : 1
-         * share_link :
+         * img : /uploads/img/2017061611363551985157.jpg
+         * link : 1
+         * title : 招募
+         * share_link : 1
+         * type : 2
+         * banner_type : 2
          */
 
         private String img;
@@ -451,23 +482,6 @@ public class HomepageNewsBean {
         private String share_link;
         private int type;
         private int banner_type;
-
-        public int getBanner_type() {
-            return banner_type;
-        }
-
-        public void setBanner_type(int banner_type) {
-            this.banner_type = banner_type;
-        }
-
-        public int getType() {
-            return type;
-
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
 
         public String getImg() {
             return img;
@@ -499,6 +513,78 @@ public class HomepageNewsBean {
 
         public void setShare_link(String share_link) {
             this.share_link = share_link;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getBanner_type() {
+            return banner_type;
+        }
+
+        public void setBanner_type(int banner_type) {
+            this.banner_type = banner_type;
+        }
+    }
+
+    public static class RecommendListBean {
+        /**
+         * goods_id : 39
+         * goods_type : 1
+         * name : 始终如“衣”
+         * sub_name : - 2017春夏系列 -
+         * thumb : /uploads/img/2017052716461454515299.jpg
+         */
+
+        private int goods_id;
+        private int goods_type;
+        private String name;
+        private String sub_name;
+        private String thumb;
+
+        public int getGoods_id() {
+            return goods_id;
+        }
+
+        public void setGoods_id(int goods_id) {
+            this.goods_id = goods_id;
+        }
+
+        public int getGoods_type() {
+            return goods_type;
+        }
+
+        public void setGoods_type(int goods_type) {
+            this.goods_type = goods_type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSub_name() {
+            return sub_name;
+        }
+
+        public void setSub_name(String sub_name) {
+            this.sub_name = sub_name;
+        }
+
+        public String getThumb() {
+            return thumb;
+        }
+
+        public void setThumb(String thumb) {
+            this.thumb = thumb;
         }
     }
 }

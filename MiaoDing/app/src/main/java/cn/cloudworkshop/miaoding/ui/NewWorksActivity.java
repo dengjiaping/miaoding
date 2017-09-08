@@ -222,7 +222,9 @@ public class NewWorksActivity extends BaseActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                tvContent.setAlpha(1 - (float) positionOffsetPixels / vpWorks.getWidth());
+
+                    tvContent.setAlpha(1 - (float) positionOffsetPixels / vpWorks.getWidth());
+
             }
 
             @Override
@@ -234,9 +236,7 @@ public class NewWorksActivity extends BaseActivity {
                         str.charAt(0) +
                         "</big></big></font>" +
                         str.substring(1);
-                tvContent.setAlpha(1);
                 tvContent.animateText(Html.fromHtml(sb));
-
 
             }
 

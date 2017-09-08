@@ -26,6 +26,7 @@ import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -43,8 +44,10 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.HomepageNewsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
+import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
@@ -218,11 +221,11 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
             }
 
             banner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
-                        @Override
-                        public NetworkImageHolderView createHolder() {
-                            return new NetworkImageHolderView();
-                        }
-                    }, bannerImg)
+                @Override
+                public NetworkImageHolderView createHolder() {
+                    return new NetworkImageHolderView();
+                }
+            }, bannerImg)
                     //设置两个点图片作为翻页指示器
                     .setPageIndicator(new int[]{R.drawable.indicator_normal, R.drawable.indicator_focus})
                     //设置指示器的方向
@@ -281,7 +284,45 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
 
         RecyclerView rvGoods = (RecyclerView) view.findViewById(R.id.rv_recommend_goods);
-        rvGoods.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        rvGoods.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        CommonAdapter<HomepageNewsBean.RecommendListBean> adapter = new CommonAdapter
+                <HomepageNewsBean.RecommendListBean>(getActivity(), R.layout.listitem_pop_goods,
+                homepageBean.getRecommend_list()) {
+            @Override
+            protected void convert(ViewHolder holder, HomepageNewsBean.RecommendListBean recommendListBean, int position) {
+
+                holder.setText(R.id.tv_title_goods, recommendListBean.getName());
+                Glide.with(getActivity())
+                        .load(Constant.HOST + recommendListBean.getThumb())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into((ImageView) holder.getView(R.id.img_pop_goods));
+
+            }
+        };
+
+        rvGoods.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = null;
+                switch (homepageBean.getRecommend_list().get(position).getGoods_type()) {
+                    case 1:
+                        intent = new Intent(getActivity(), CustomGoodsActivity.class);
+                        break;
+                    case 2:
+                        intent = new Intent(getActivity(), NewWorksActivity.class);
+                        break;
+                }
+                intent.putExtra("id", homepageBean.getRecommend_list().get(position).getGoods_id() + "");
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
         return view;
     }
