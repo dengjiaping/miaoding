@@ -270,7 +270,10 @@ public class MemberCenterActivity extends BaseActivity {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        if (!isFinishing()) {
+            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        }
+
         DisplayUtils.setBackgroundAlpha(this, true);
 
         TextView tvTitle = (TextView) popupView.findViewById(R.id.tv_gift_title);
@@ -394,8 +397,7 @@ public class MemberCenterActivity extends BaseActivity {
     }
 
     /**
-     * @param url
-     * 领取礼包
+     * @param url 领取礼包
      */
     private void submitData(String url) {
         OkHttpUtils.post()

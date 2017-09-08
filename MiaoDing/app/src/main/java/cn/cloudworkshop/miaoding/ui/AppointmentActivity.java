@@ -180,7 +180,10 @@ public class AppointmentActivity extends BaseActivity {
                             mPopupWindow.setFocusable(true);
                             mPopupWindow.setOutsideTouchable(true);
                             mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-                            mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                            if (!isFinishing()){
+                                mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                            }
+
 
                             View viewShare = popupView.findViewById(R.id.view_share);
                             View viewCancel = popupView.findViewById(R.id.view_close);

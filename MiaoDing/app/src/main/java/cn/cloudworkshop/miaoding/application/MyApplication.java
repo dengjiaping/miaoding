@@ -48,6 +48,8 @@ public class MyApplication extends Application {
     public static long homeEnterTime;
     //支付id
     public static String payId;
+    //腔调图片
+    public static String cobbler_banner;
 
     @Override
     public void onCreate() {

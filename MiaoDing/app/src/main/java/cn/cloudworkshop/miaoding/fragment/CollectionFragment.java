@@ -46,6 +46,7 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
+import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -237,7 +238,7 @@ public class CollectionFragment extends BaseFragment {
                         if (itemList.get(position).getGoods_type() == 1) {
                             intent = new Intent(getActivity(), CustomGoodsActivity.class);
                         } else {
-                            intent = new Intent(getActivity(), NewWorksDetailActivity.class);
+                            intent = new Intent(getActivity(), NewWorksActivity.class);
                         }
 
                         intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));

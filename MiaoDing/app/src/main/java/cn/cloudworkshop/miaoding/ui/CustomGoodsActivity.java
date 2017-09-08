@@ -7,6 +7,7 @@ import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +55,7 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -132,6 +134,8 @@ public class CustomGoodsActivity extends BaseActivity {
     private Bitmap bm1;
     private Bitmap bm2;
 
+    private boolean isScrolled;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,9 +206,9 @@ public class CustomGoodsActivity extends BaseActivity {
         } else {
             imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
         }
-        bannerGoods.startTurning(4000);
-        bannerGoods.setPages(
-                new CBViewHolderCreator<NetworkImageHolderView>() {
+        bannerGoods.setCanLoop(false);
+        bannerGoods.stopTurning();
+        bannerGoods.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                     @Override
                     public NetworkImageHolderView createHolder() {
                         return new NetworkImageHolderView();
@@ -223,6 +227,40 @@ public class CustomGoodsActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        bannerGoods.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+                switch (state) {
+                    case ViewPager.SCROLL_STATE_DRAGGING:
+                        isScrolled = false;
+                        break;
+                    case ViewPager.SCROLL_STATE_SETTLING:
+                        isScrolled = true;
+                        break;
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        if (!isScrolled && bannerGoods.getCurrentItem() == customBean.getData()
+                                .getImg_list().size() - 1) {
+                            scrollContainer.setAutoUp();
+                        }
+                        isScrolled = true;
+                        break;
+                }
+
+            }
+        });
+
 
         //喜爱人数
         if (customBean.getData().getCollect_num() > 0) {

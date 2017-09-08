@@ -17,8 +17,7 @@ public class Constant {
     public static final String GOODS_TITLE = HOST + INDEX + "goods_classify";
     public static final String GOODS_LIST = HOST + INDEX + "goods_list";
     public static final String DESIGNER_WORKS = HOST + INDEX + "cobbler";
-    public static final String DESIGNER_TITLE = HOST + INDEX + "cobbler_v5_2";
-    public static final String NEW_DESIGNER_WORKS = HOST + INDEX + "get_chengping_goods_list";
+    public static final String NEW_DESIGNER_WORKS = HOST + INDEX + "cobbler_goods_list";
     public static final String GOODS_DETAILS = HOST + INDEX + "new_goods_detail";
     public static final String TAILOR_INFO = "http://139.196.113.61" + INDEX + "customize";
     public static final String NEW_CUSTOMIZE = HOST + INDEX + "new_customize";

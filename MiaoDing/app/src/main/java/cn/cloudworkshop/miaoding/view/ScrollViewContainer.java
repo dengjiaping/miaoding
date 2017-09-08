@@ -322,4 +322,10 @@ public class ScrollViewContainer extends RelativeLayout {
 		void getCurrentPage(int page);
 	}
 
+	public void setAutoUp(){
+		state = AUTO_UP;
+        mMoveLen = 1;
+		mTimer.schedule(2);
+	}
+
 }

@@ -281,6 +281,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                             MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
+                            MyApplication.cobbler_banner = appIndexBean.getData().getCobbler_banner();
                             if (appIndexBean.getData().getVersion().getAndroid() != null &&
                                     Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
                                             .getVersion()) > getVersionCode()) {
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 加载Fragment
      */
     public void initView() {
-        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(NewHomeRecommendFragment.newInstance());
         fragmentList.add(NewCustomGoodsFragment.newInstance());
         fragmentList.add(NewDesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
@@ -413,8 +414,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 mPopupWindow.setFocusable(true);
                                 mPopupWindow.setOutsideTouchable(true);
                                 mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-                                mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-
+                                if (!isFinishing()){
+                                    mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                                }
                                 View viewRegister = popupView.findViewById(R.id.view_register);
                                 View viewCancel = popupView.findViewById(R.id.view_cancel);
                                 ImageView imgRegister = (ImageView) popupView.findViewById(R.id.img_register);

@@ -2,22 +2,28 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,14 +33,11 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,42 +48,39 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.WorksDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
+import cn.cloudworkshop.miaoding.view.TyperTextView;
 import okhttp3.Call;
 
+
 /**
- * Author：binge on 2017-08-15 15:26
+ * Author：binge on 2017-09-08 13:34
  * Email：1993911441@qq.com
  * Describe：
  */
-public class NewWorksDetailActivity extends BaseActivity {
-    @BindView(R.id.img_works_detail1)
-    ImageView imgDetail1;
-    @BindView(R.id.img_works_detail2)
-    ImageView imgDetail2;
-    @BindView(R.id.img_works_detail3)
-    ImageView imgDetail3;
-    @BindView(R.id.img_works_collect)
-    ImageView imgWorksCollect;
-    @BindView(R.id.img_works_consult)
-    ImageView imgWorksConsult;
-    @BindView(R.id.tv_add_cart)
-    TextView tvAddCart;
-    @BindView(R.id.tv_confirm_buy)
-    TextView tvConfirmBuy;
-    @BindView(R.id.img_works_back)
-    ImageView imgWorksBack;
-    @BindView(R.id.img_works_share)
-    ImageView imgWorksShare;
+public class NewWorksActivity extends BaseActivity {
+    @BindView(R.id.vp_works_detail)
+    JazzyViewPager vpWorks;
+    @BindView(R.id.img_add_bag)
+    ImageView imgAddBag;
+    @BindView(R.id.img_buy_works)
+    ImageView imgBuyWorks;
+    @BindView(R.id.rgs_indicator_works)
+    RadioGroup rgsIndicator;
+    @BindView(R.id.img_goods_back)
+    ImageView imgBack;
+    @BindView(R.id.img_goods_share)
+    ImageView imgShare;
+    @BindView(R.id.tv_content_goods)
+    TyperTextView tvContent;
 
     //商品id
     private String id;
@@ -106,14 +106,11 @@ public class NewWorksDetailActivity extends BaseActivity {
     private TextView tvStock;
     private TextView tvCount;
     private TextView tvBuy;
-    private Bitmap bm0;
-    private Bitmap bm1;
-    private Bitmap bm2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_works_detail_new);
+        setContentView(R.layout.activity_works_new);
         ButterKnife.bind(this);
         getData();
         initData();
@@ -142,7 +139,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(NewWorksDetailActivity.this, new LoadErrorUtils.OnRefreshListener() {
+                        LoadErrorUtils.showDialog(NewWorksActivity.this, new LoadErrorUtils.OnRefreshListener() {
                             @Override
                             public void onRefresh() {
                                 initData();
@@ -165,79 +162,108 @@ public class NewWorksDetailActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
+        String str = worksBean.getData().getContent();
+        String sb = "<font><big><big>" +
+                str.charAt(0) +
+                "</big></big></font>" +
+                str.substring(1);
 
-        //详情页图片尺寸超过手机支持最大尺寸
-        //分割图片显示
+        tvContent.animateText(Html.fromHtml(sb));
 
-        OkHttpUtils.get()
-                .url(Constant.HOST + worksBean.getData().getContent2())
-                .build()
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
+        vpWorks.setOffscreenPageLimit(worksBean.getData().getImg_list().size());
+        vpWorks.setAdapter(new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return worksBean.getData().getImg_list().size();
+            }
 
-                    }
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
 
-                    @Override
-                    public void onResponse(Bitmap response, int id) {
-                        try {
-                            if (response != null) {
-                                InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
-                                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(inputStream, true);
-                                int width = decoder.getWidth();
-                                int height = decoder.getHeight();
-                                BitmapFactory.Options opts = new BitmapFactory.Options();
-                                Rect rect = new Rect();
+            @Override
+            public Object instantiateItem(ViewGroup container, final int position) {
+                View view = LayoutInflater.from(NewWorksActivity.this)
+                        .inflate(R.layout.viewpager_goods_details, null);
+                final ImageView img = (ImageView) view.findViewById(R.id.img_goods_picture);
+                Glide.with(NewWorksActivity.this)
+                        .load(Constant.HOST + worksBean.getData().getImg_list().get(position))
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(img);
+                container.addView(view);
+                vpWorks.setObjectForPosition(view, position);
 
-                                //平分三份
-                                rect.set(0, 0, width, height / 3);
-                                bm0 = decoder.decodeRegion(rect, opts);
-                                imgDetail1.setImageBitmap(bm0);
+                return view;
+            }
 
-                                rect.set(0, height / 3, width, height / 3 * 2);
-                                bm1 = decoder.decodeRegion(rect, opts);
-                                imgDetail2.setImageBitmap(bm1);
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView((View) object);
+            }
+        });
+        vpWorks.setCurrentItem(0);
 
-                                rect.set(0, height / 3 * 2, width, height);
-                                bm2 = decoder.decodeRegion(rect, opts);
-                                imgDetail3.setImageBitmap(bm2);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        for (int i = 0; i < worksBean.getData().getImg_list().size(); i++) {
+            RadioButton radioButton = new RadioButton(this);
+
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(18, 18);
+            layoutParams.setMargins(10, 10, 10, 10);
+            radioButton.setLayoutParams(layoutParams);
+            radioButton.setButtonDrawable(null);
+            radioButton.setClickable(false);
+            radioButton.setBackgroundResource(R.drawable.viewpager_indicator);
+            rgsIndicator.addView(radioButton);
+        }
+        ((RadioButton) rgsIndicator.getChildAt(0)).setChecked(true);
+
+        vpWorks.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                tvContent.setAlpha(1 - (float) positionOffsetPixels / vpWorks.getWidth());
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((RadioButton) rgsIndicator.getChildAt(position)).setChecked(true);
+
+                String str = worksBean.getData().getContent();
+                String sb = "<font><big><big>" +
+                        str.charAt(0) +
+                        "</big></big></font>" +
+                        str.substring(1);
+                tvContent.setAlpha(1);
+                tvContent.animateText(Html.fromHtml(sb));
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
     }
 
-    @OnClick({R.id.img_works_collect, R.id.img_works_consult, R.id.tv_add_cart, R.id.tv_confirm_buy,
-            R.id.img_works_back, R.id.img_works_share})
+    @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_works_collect:
-                if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
-                    addCollection();
-                } else {
-                    Intent login = new Intent(this, LoginActivity.class);
-                    login.putExtra("page_name", "收藏");
-                    startActivity(login);
-                }
-                break;
-            case R.id.img_works_consult:
-                ContactService.contactService(this);
-                break;
-            case R.id.tv_add_cart:
+            case R.id.img_add_bag:
                 index = 2;
                 showWorksType();
                 break;
-            case R.id.tv_confirm_buy:
+            case R.id.img_buy_works:
                 index = 1;
                 showWorksType();
                 break;
-            case R.id.img_works_back:
+            case R.id.img_goods_back:
                 finish();
                 break;
-            case R.id.img_works_share:
+            case R.id.img_goods_share:
                 if (worksBean != null) {
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
@@ -261,7 +287,7 @@ public class NewWorksDetailActivity extends BaseActivity {
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-            if (!isFinishing()){
+            if (!isFinishing()) {
                 mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
             }
 
@@ -269,7 +295,7 @@ public class NewWorksDetailActivity extends BaseActivity {
             mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    DisplayUtils.setBackgroundAlpha(NewWorksDetailActivity.this, false);
+                    DisplayUtils.setBackgroundAlpha(NewWorksActivity.this, false);
                     currentColor = 0;
                     currentSize = 0;
                     count = 1;
@@ -307,7 +333,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                 //尺码
                 rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
-                        = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksDetailActivity.this,
+                        = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksActivity.this,
                         R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
                     @Override
                     protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
@@ -319,7 +345,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                             tvSize.setBackgroundResource(R.drawable.circle_black);
 
                         } else {
-                            tvSize.setTextColor(ContextCompat.getColor(NewWorksDetailActivity.this, R.color.dark_gray_22));
+                            tvSize.setTextColor(ContextCompat.getColor(NewWorksActivity.this, R.color.dark_gray_22));
                             tvSize.setBackgroundResource(R.drawable.ring_gray);
                         }
                     }
@@ -348,13 +374,13 @@ public class NewWorksDetailActivity extends BaseActivity {
                 //颜色
                 rvColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
-                        (NewWorksDetailActivity.this, R.layout.listitem_works_color, colorList) {
+                        (NewWorksActivity.this, R.layout.listitem_works_color, colorList) {
                     @Override
                     protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
                             positionBean, int position) {
                         CircleImageView imgColor = holder.getView(R.id.img_works_color);
                         CircleImageView imgMask = holder.getView(R.id.img_works_mask);
-                        Glide.with(NewWorksDetailActivity.this)
+                        Glide.with(NewWorksActivity.this)
                                 .load(Constant.HOST + positionBean.getColor_img())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(imgColor);
@@ -370,7 +396,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         currentColor = holder.getLayoutPosition();
-                        ToastUtils.showToast(NewWorksDetailActivity.this, colorList.get(position).getColor_name());
+                        ToastUtils.showToast(NewWorksActivity.this, colorList.get(position).getColor_name());
                         reSelectWorks();
                     }
 
@@ -407,10 +433,10 @@ public class NewWorksDetailActivity extends BaseActivity {
                 tvBuy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(NewWorksDetailActivity.this, "token"))) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(NewWorksActivity.this, "token"))) {
                             addToCart();
                         } else {
-                            Intent login = new Intent(NewWorksDetailActivity.this, LoginActivity.class);
+                            Intent login = new Intent(NewWorksActivity.this, LoginActivity.class);
                             login.putExtra("page_name", "立即购买");
                             startActivity(login);
                         }
@@ -434,7 +460,7 @@ public class NewWorksDetailActivity extends BaseActivity {
      */
     private void reSelectWorks() {
         colorAdapter.notifyDataSetChanged();
-        tvPrice.setTypeface(DisplayUtils.setTextType(NewWorksDetailActivity.this));
+        tvPrice.setTypeface(DisplayUtils.setTextType(NewWorksActivity.this));
         tvPrice.setText("¥" + worksBean.getData().getSize_list().get(currentSize).getSize_list()
                 .get(currentColor).getPrice());
         tvStock.setText("库存：" + worksBean.getData().getSize_list()
@@ -488,9 +514,9 @@ public class NewWorksDetailActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                         if (cartId != null) {
-                            MobclickAgent.onEvent(NewWorksDetailActivity.this, "add_cart");
+                            MobclickAgent.onEvent(NewWorksActivity.this, "add_cart");
                             if (index == 1) {
-                                Intent intent = new Intent(NewWorksDetailActivity.this,
+                                Intent intent = new Intent(NewWorksActivity.this,
                                         ConfirmOrderActivity.class);
                                 intent.putExtra("cart_id", cartId);
                                 mPopupWindow.dismiss();
@@ -498,7 +524,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                                 startActivity(intent);
 
                             } else if (index == 2) {
-                                ToastUtils.showToast(NewWorksDetailActivity.this, "加入购物袋成功");
+                                ToastUtils.showToast(NewWorksActivity.this, "加入购物袋成功");
                                 mPopupWindow.dismiss();
                             }
                         }
@@ -523,53 +549,4 @@ public class NewWorksDetailActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 添加收藏
-     */
-    private void addCollection() {
-        OkHttpUtils.get()
-                .url(Constant.ADD_COLLECTION)
-                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("type", String.valueOf(2))
-                .addParams("cid", id)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String msg = jsonObject.getString("msg");
-                            switch (msg) {
-                                case "成功":
-                                    MobclickAgent.onEvent(NewWorksDetailActivity.this, "collection");
-                                    imgWorksCollect.setImageResource(R.mipmap.icon_add_like);
-                                    ToastUtils.showToast(NewWorksDetailActivity.this, "收藏成功");
-                                    break;
-                                case "取消成功":
-                                    imgWorksCollect.setImageResource(R.mipmap.icon_cancel_like);
-                                    ToastUtils.showToast(NewWorksDetailActivity.this, "已取消收藏");
-                                    break;
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MemoryCleanUtils.bmpRecycle(bm0);
-        MemoryCleanUtils.bmpRecycle(bm1);
-        MemoryCleanUtils.bmpRecycle(bm2);
-    }
 }

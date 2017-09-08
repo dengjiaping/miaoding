@@ -290,9 +290,8 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
 
         if (homepageBean.getDesigner_list() != null) {
             final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_recommend_designer);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getParentFragment().getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
             final CommonAdapter<HomepageNewsBean.DesignerListBean> adapter = new CommonAdapter
                     <HomepageNewsBean.DesignerListBean>(getParentFragment().getActivity(),
                     R.layout.listitem_recommend_designer, homepageBean.getDesigner_list()) {

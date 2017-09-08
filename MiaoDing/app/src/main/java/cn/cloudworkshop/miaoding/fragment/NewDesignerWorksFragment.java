@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import okhttp3.Call;
 
 /**
@@ -49,58 +52,32 @@ public class NewDesignerWorksFragment extends BaseFragment {
     AppBarLayout appBar;
 
     private Unbinder unbinder;
-    private String imgUrl;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_designer_works_new, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+//        appBar.setExpanded(false);
+        initView();
 
         return view;
     }
 
     /**
-     * 加载数据
+     * 加载视图
      */
-    private void initData() {
-
-        OkHttpUtils.get()
-                .url(Constant.DESIGNER_TITLE)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            imgUrl = data.getString("img");
-                            initView();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
     private void initView() {
-        Glide.with(getActivity())
-                .load(Constant.HOST + imgUrl)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgDesignerWorks);
+        if (!TextUtils.isEmpty(MyApplication.cobbler_banner)){
+            Glide.with(getActivity())
+                    .load(Constant.HOST + MyApplication.cobbler_banner)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imgDesignerWorks);
+        }
+
         List<String> titleList = new ArrayList<>();
         List<Fragment> fragmentList = new ArrayList<>();
+
 
         titleList.add("腔调");
         titleList.add("设计师");

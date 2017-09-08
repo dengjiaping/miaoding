@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,7 +24,10 @@ public class LoadErrorUtils {
         dialog = new Dialog(context, R.style.MyDialog);//dialog样式
         View view = LayoutInflater.from(context).inflate(R.layout.layout_loading,null);
         dialog.setContentView(view);
-        dialog.show();
+        if (!((Activity)context).isFinishing()){
+            dialog.show();
+        }
+
         dialog.setCanceledOnTouchOutside(false);//点击外部不允许关闭dialog
         ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
         view.setOnClickListener(new View.OnClickListener() {

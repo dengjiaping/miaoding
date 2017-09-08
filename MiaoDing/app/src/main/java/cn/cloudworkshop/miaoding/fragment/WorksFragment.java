@@ -36,6 +36,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
@@ -52,7 +53,7 @@ public class WorksFragment extends BaseFragment {
     @BindView(R.id.rv_designer_goods)
     LRecyclerView rvWorks;
     Unbinder unbinder;
-    private List<NewDesignWorksBean.ListBean.DataBean> worksList = new ArrayList<>();
+    private List<NewDesignWorksBean.DataBeanX.DataBean> worksList = new ArrayList<>();
 
     //页面
     private int page = 1;
@@ -90,11 +91,11 @@ public class WorksFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response, int id) {
                         NewDesignWorksBean worksBean = GsonUtils.jsonToBean(response, NewDesignWorksBean.class);
-                        if (worksBean.getList().getData() != null && worksBean.getList().getData().size() > 0) {
+                        if (worksBean.getData().getData() != null && worksBean.getData().getData().size() > 0) {
                             if (isRefresh) {
                                 worksList.clear();
                             }
-                            worksList.addAll(worksBean.getList().getData());
+                            worksList.addAll(worksBean.getData().getData());
                             if (isRefresh || isLoadMore) {
                                 rvWorks.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
@@ -113,12 +114,12 @@ public class WorksFragment extends BaseFragment {
 
     private void initView() {
         rvWorks.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
-        CommonAdapter<NewDesignWorksBean.ListBean.DataBean> adapter = new CommonAdapter<NewDesignWorksBean
-                .ListBean.DataBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
+        CommonAdapter<NewDesignWorksBean.DataBeanX.DataBean> adapter = new CommonAdapter<NewDesignWorksBean
+                .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
             @Override
-            protected void convert(ViewHolder holder, NewDesignWorksBean.ListBean.DataBean itemBean, int position) {
+            protected void convert(ViewHolder holder, NewDesignWorksBean.DataBeanX.DataBean itemBean, int position) {
                 Glide.with(getParentFragment().getActivity())
-                        .load(Constant.HOST + itemBean.getThumb())
+                        .load(Constant.HOST + itemBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_designer));
                 holder.setText(R.id.tv_works_title, itemBean.getName());
@@ -133,8 +134,8 @@ public class WorksFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksDetailActivity.class);
-                    intent.putExtra("id", worksList.get(position).getId() + "");
+                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
+                    intent.putExtra("id", worksList.get(position).getRecommend_goods_ids() + "");
                     startActivity(intent);
                 }
             }

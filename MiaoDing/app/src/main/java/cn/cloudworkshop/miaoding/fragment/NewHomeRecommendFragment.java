@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,7 +209,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.listitem_homepage_header, null);
         view.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-
         if (homepageBean.getLunbo() != null && homepageBean.getLunbo().size() > 0) {
             final ConvenientBanner banner = (ConvenientBanner) view.findViewById(R.id.banner_homepage);
             banner.startTurning(4000);
@@ -278,6 +278,10 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                 }
             });
         }
+
+
+        RecyclerView rvGoods = (RecyclerView) view.findViewById(R.id.rv_recommend_goods);
+        rvGoods.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
         return view;
     }

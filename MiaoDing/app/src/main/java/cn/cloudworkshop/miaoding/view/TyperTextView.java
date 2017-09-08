@@ -7,8 +7,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import java.util.Random;
-
 import cn.cloudworkshop.miaoding.R;
 
 /**
@@ -16,30 +14,27 @@ import cn.cloudworkshop.miaoding.R;
  * Email：1993911441@qq.com
  * Describe：逐字显示
  */
-public class HTextView extends TextView {
+public class TyperTextView extends TextView {
     public static final int INVALIDATE = 0x767;
-    private Random random;
     private CharSequence mText;
     private Handler handler;
     private int charIncrease;
     private int typerSpeed;
 
-    public HTextView(Context context) {
+    public TyperTextView(Context context) {
         this(context, null);
     }
 
-    public HTextView(Context context, AttributeSet attrs) {
+    public TyperTextView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public HTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TyperTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TyperTextView);
-        typerSpeed = typedArray.getInt(R.styleable.TyperTextView_typerSpeed, 150);
-        charIncrease = typedArray.getInt(R.styleable.TyperTextView_charIncrease, 2);
+        typerSpeed = typedArray.getInt(R.styleable.TyperTextView_typerSpeed, 30);
+        charIncrease = typedArray.getInt(R.styleable.TyperTextView_charIncrease, 1);
         typedArray.recycle();
-
-        random = new Random();
         mText = getText();
         handler = new Handler(new Handler.Callback() {
             @Override
@@ -50,10 +45,10 @@ public class HTextView extends TextView {
                         charIncrease = mText.length() - currentLength;
                     }
                     append(mText.subSequence(currentLength, currentLength + charIncrease));
-                    long randomTime = typerSpeed + random.nextInt(typerSpeed);
+
                     Message message = Message.obtain();
                     message.what = INVALIDATE;
-                    handler.sendMessageDelayed(message, randomTime);
+                    handler.sendMessageDelayed(message, typerSpeed);
                     return false;
                 }
                 return false;

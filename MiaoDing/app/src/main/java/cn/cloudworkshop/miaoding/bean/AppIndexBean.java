@@ -73,6 +73,15 @@ public class AppIndexBean {
         private String reg_agreement;
         private String lt_agreement;
         private String user_manual;
+        private String cobbler_banner;
+
+        public String getCobbler_banner() {
+            return cobbler_banner;
+        }
+
+        public void setCobbler_banner(String cobbler_banner) {
+            this.cobbler_banner = cobbler_banner;
+        }
 
         public String getUser_manual() {
             return user_manual;

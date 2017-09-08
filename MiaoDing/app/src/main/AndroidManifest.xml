@@ -205,6 +205,7 @@
         <activity android:name=".ui.ScanCodeActivity"/>
         <activity android:name=".ui.CollectionActivity"/>
         <activity android:name=".ui.NewWorksDetailActivity"/>
+        <activity android:name=".ui.NewWorksActivity"/>
 
 
 

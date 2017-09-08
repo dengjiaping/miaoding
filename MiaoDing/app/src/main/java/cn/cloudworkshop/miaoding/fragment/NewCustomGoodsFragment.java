@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -33,6 +34,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,13 +45,13 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.ScanCodeActivity;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
-import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import okhttp3.Call;
 
 /**
@@ -68,6 +70,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
     AVLoadingIndicatorView loadingView;
     @BindView(R.id.img_code)
     ImageView imgCode;
+
     private Unbinder unbinder;
 
     private int page = 1;
@@ -219,6 +222,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
                 if (position == 0) {
                     ToastUtils.showToast(getActivity(), "已经是第一页了");
                 }
+
             }
 
             @Override

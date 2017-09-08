@@ -124,7 +124,9 @@ public class PayOrderUtils {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources(), (Bitmap) null));
-        mPopupWindow.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        if (!((Activity) context).isFinishing()){
+            mPopupWindow.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        }
         DisplayUtils.setBackgroundAlpha(context, true);
 
         RecyclerView recyclerView = (RecyclerView) popupView.findViewById(R.id.rv_pay_type);
