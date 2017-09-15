@@ -86,8 +86,27 @@ public class WorksDetailBean {
         private DesignerBean designer;
         private int is_collect;
         private int is_yuyue;
+        private String lt_data;
+
+        public String getLt_data() {
+            return lt_data;
+        }
+
+        public void setLt_data(String lt_data) {
+            this.lt_data = lt_data;
+        }
+
         private List<String> img_list;
+        private List<String> img_introduce;
         private List<SizeListBeanX> size_list;
+
+        public List<String> getImg_introduce() {
+            return img_introduce;
+        }
+
+        public void setImg_introduce(List<String> img_introduce) {
+            this.img_introduce = img_introduce;
+        }
 
         private NewCommentBean new_comment;
         private int comment_num;
@@ -728,6 +747,15 @@ public class WorksDetailBean {
                 private String size;
                 private Object sort;
                 private int status;
+                private int type;
+
+                public int getType() {
+                    return type;
+                }
+
+                public void setType(int type) {
+                    this.type = type;
+                }
 
                 public String getColor_name() {
                     return color_name;

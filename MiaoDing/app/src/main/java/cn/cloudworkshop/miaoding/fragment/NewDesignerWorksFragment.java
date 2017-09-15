@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -14,11 +15,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.github.jdsjlzx.recyclerview.AppBarStateChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +28,7 @@ import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
-import okhttp3.Call;
 
 /**
  * Author：binge on 2017-06-08 11:25
@@ -50,6 +45,8 @@ public class NewDesignerWorksFragment extends BaseFragment {
     ImageView imgDesignerWorks;
     @BindView(R.id.app_bar_works)
     AppBarLayout appBar;
+    @BindView(R.id.tool_bar)
+    CollapsingToolbarLayout toolBar;
 
     private Unbinder unbinder;
 
@@ -58,9 +55,7 @@ public class NewDesignerWorksFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_designer_works_new, container, false);
         unbinder = ButterKnife.bind(this, view);
-//        appBar.setExpanded(false);
         initView();
-
         return view;
     }
 
@@ -68,7 +63,7 @@ public class NewDesignerWorksFragment extends BaseFragment {
      * 加载视图
      */
     private void initView() {
-        if (!TextUtils.isEmpty(MyApplication.cobbler_banner)){
+        if (!TextUtils.isEmpty(MyApplication.cobbler_banner)) {
             Glide.with(getActivity())
                     .load(Constant.HOST + MyApplication.cobbler_banner)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -77,7 +72,6 @@ public class NewDesignerWorksFragment extends BaseFragment {
 
         List<String> titleList = new ArrayList<>();
         List<Fragment> fragmentList = new ArrayList<>();
-
 
         titleList.add("腔调");
         titleList.add("设计师");
@@ -92,6 +86,15 @@ public class NewDesignerWorksFragment extends BaseFragment {
         tabDesignerWorks.setViewPager(vpDesignerWorks);
         tabDesignerWorks.setCurrentTab(0);
 
+        //appbar滑动监听，收缩时禁止下拉
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    toolBar.removeAllViews();
+                }
+            }
+        });
     }
 
 

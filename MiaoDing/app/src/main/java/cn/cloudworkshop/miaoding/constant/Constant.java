@@ -6,11 +6,12 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-    //    public static final String HOST = "http://139.196.113.61";
+        public static final String HOST = "http://139.196.113.61";
 //    public static final String HOST = "http://www.cloudworkshop.cn";
-    public static final String HOST = "http://192.168.1.156";
+//    public static final String HOST = "http://192.168.1.156";
+
     public static final String APP_ID = "wx07c2173e7686741e";
-    private static final String INDEX = "/index.php/index/index5_3/";
+    private static final String INDEX = "/index.php/index/index5_4/";
     public static final String NEW_HOMEPAGE_LIST = HOST + INDEX + "new_index_news";
     public static final String HOMEPAGE_TAB = HOST + INDEX + "get_news_tags_arr";
     public static final String HOMEPAGE_TAB_LIST = HOST + INDEX + "index_tab_list";
@@ -76,8 +77,8 @@ public class Constant {
     public static final String MEMBER_GROWTH = HOST + "/index.php/index/user/user_credit_record";
     public static final String UPGRADE_GIFT = HOST + "/index.php/index/user/user_upgrade_gift";
     public static final String BIRTHDAY_GIFT = HOST + "/index.php/index/user/get_birthday_gift";
-    public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/accept_img_v5_3";
-    public static final String NEW_TAKE_PHOTO = "http://139.196.113.61/index.php/web/cc/testUpload";
+    public static final String TAKE_PHOTO = HOST + "/index.php/web/cc/cameraAndroidUpload";
+    public static final String NEW_TAKE_PHOTO = "http://139.196.113.61/index.php/web/cc/cameraImgUpload";
     public static final String DESIGNER_LIST = HOST + INDEX + "get_designer_list";
     public static final String DESIGNER_DETAILS = HOST + INDEX + "user_intro";
     public static final String COUPON_RULE = HOST + "/index.php/index/ticket/get_ticket_introduce";

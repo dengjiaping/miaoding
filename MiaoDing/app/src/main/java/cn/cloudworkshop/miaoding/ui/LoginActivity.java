@@ -33,6 +33,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -163,7 +164,6 @@ public class LoginActivity extends BaseActivity {
                     isPhone = false;
                     imgLogin.setEnabled(false);
                 }
-
             }
         });
 
@@ -204,7 +204,7 @@ public class LoginActivity extends BaseActivity {
                 String cancel = getIntent().getStringExtra("log_in");
                 if (!TextUtils.isEmpty(cancel) && cancel.equals("center")) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("page",0);
+                    intent.putExtra("page", 0);
                     startActivity(intent);
                     finish();
                 } else {
@@ -233,57 +233,53 @@ public class LoginActivity extends BaseActivity {
      */
     private void confirmLogin() {
 
-        if (!PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim()) ||
-                TextUtils.isEmpty(etUserPassword.getText().toString().trim())) {
-            ToastUtils.showToast(this, "手机号或验证码有误，请重新输入");
-        } else {
-            if (!TextUtils.isEmpty(msgToken)) {
-                Map<String, String> map = new HashMap<>();
-                map.put("phone", etUserName.getText().toString().trim());
-                map.put("code", etUserPassword.getText().toString().trim());
-                map.put("token", msgToken);
-                map.put("device_id", SharedPreferencesUtils.getStr(LoginActivity.this, "client_id"));
-                if (logId != null) {
-                    map.put("id", logId);
-                }
-                map.put("device_type",Build.MODEL);
-                map.put("phone_type","1");
-
-                OkHttpUtils.post()
-                        .url(Constant.LOG_IN)
-                        .params(map)
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    int code = jsonObject.getInt("code");
-                                    if (code == 1) {
-                                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                        loginToken = jsonObject1.getString("token");
-                                        int uid = jsonObject1.getInt("uid");
-                                        SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", uid+"");
-                                        SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
-                                        getUserInfo();
-                                        MobclickAgent.onEvent(LoginActivity.this, "log_in");
-                                        finish();
-                                    }
-                                    ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
+        if (!TextUtils.isEmpty(msgToken)) {
+            Map<String, String> map = new HashMap<>();
+            map.put("phone", etUserName.getText().toString().trim());
+            map.put("code", etUserPassword.getText().toString().trim());
+            map.put("token", msgToken);
+            map.put("device_id", SharedPreferencesUtils.getStr(LoginActivity.this, "client_id"));
+            if (logId != null) {
+                map.put("id", logId);
             }
+            map.put("device_type", Build.MODEL);
+            map.put("phone_type", "1");
+
+            OkHttpUtils.post()
+                    .url(Constant.LOG_IN)
+                    .params(map)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                int code = jsonObject.getInt("code");
+                                if (code == 1) {
+                                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                    loginToken = jsonObject1.getString("token");
+                                    int uid = jsonObject1.getInt("uid");
+                                    SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", uid + "");
+                                    SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
+                                    getUserInfo();
+                                    MobclickAgent.onEvent(LoginActivity.this, "log_in");
+                                    finish();
+                                }
+                                ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
         }
+
     }
 
     /**
@@ -391,13 +387,10 @@ public class LoginActivity extends BaseActivity {
             String loginTag = getIntent().getStringExtra("log_in");
             if (!TextUtils.isEmpty(loginTag) && loginTag.equals("center")) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("page",0);
-                finish();
+                intent.putExtra("page", 0);
                 startActivity(intent);
-            } else {
-                finish();
             }
-
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

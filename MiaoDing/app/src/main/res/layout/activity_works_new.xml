@@ -14,14 +14,16 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/icon_works_bg"/>
+        android:background="@mipmap/icon_works_mask"/>
 
     <cn.cloudworkshop.miaoding.view.TyperTextView
+
         android:id="@+id/tv_content_goods"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textSize="14sp"
         android:shadowRadius="2"
         android:shadowDx="1"
         android:shadowDy="1"
@@ -29,40 +31,48 @@
         android:textColor="@android:color/white"
         android:lineSpacingExtra="3dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"/>
-
-    <LinearLayout
+        android:layout_marginBottom="74dp"/>
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_gray_line"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="60dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical">
-        <ImageView
-            android:id="@+id/img_add_bag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@mipmap/icon_shopping_bag"
-            android:scaleType="fitCenter"/>
-        <ImageView
-            android:id="@+id/img_buy_works"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@mipmap/icon_shopping_bag"
-            android:scaleType="fitCenter"/>
+        android:scaleType="centerCrop"/>
+    <ImageView
+        android:id="@+id/img_add_bag"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@mipmap/icon_add_cart"
+        android:scaleType="fitCenter"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="26dp"/>
+    <ImageView
+        android:id="@+id/img_buy_works"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@mipmap/icon_buy_works"
+        android:scaleType="fitCenter"
+        android:layout_toRightOf="@id/img_add_bag"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="24dp"/>
 
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginRight="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
         <RadioGroup
             android:id="@+id/rgs_indicator_works"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginRight="10dp">
-
+            android:layout_centerVertical="true">
         </RadioGroup>
-    </LinearLayout>
-
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/img_goods_back"

@@ -291,9 +291,8 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
             @Override
             protected void convert(ViewHolder holder, HomepageNewsBean.RecommendListBean recommendListBean, int position) {
 
-                holder.setText(R.id.tv_title_goods, recommendListBean.getName());
                 Glide.with(getActivity())
-                        .load(Constant.HOST + recommendListBean.getThumb())
+                        .load(Constant.HOST + recommendListBean.getRecommend_img())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_pop_goods));
 

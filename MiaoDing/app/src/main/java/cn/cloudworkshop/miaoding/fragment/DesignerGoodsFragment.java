@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,6 +33,8 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 
 /**
  * Author：binge on 2017-06-08 15:52
@@ -71,7 +74,9 @@ public class DesignerGoodsFragment extends BaseFragment {
                             .load(Constant.HOST + goodsListBean.getThumb())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into((ImageView) holder.getView(R.id.img_designer));
-                    holder.setText(R.id.tv_works_title, goodsListBean.getName());
+                    TextView tvTitle = holder.getView(R.id.tv_works_title);
+                    tvTitle.setTypeface(DisplayUtils.setTextType(getActivity()));
+                    tvTitle.setText(goodsListBean.getName());
                     holder.setText(R.id.tv_works_time, goodsListBean.getC_time());
                 }
 

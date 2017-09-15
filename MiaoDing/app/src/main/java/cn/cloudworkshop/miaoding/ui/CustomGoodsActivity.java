@@ -228,38 +228,39 @@ public class CustomGoodsActivity extends BaseActivity {
             }
         });
 
-        bannerGoods.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-                switch (state) {
-                    case ViewPager.SCROLL_STATE_DRAGGING:
-                        isScrolled = false;
-                        break;
-                    case ViewPager.SCROLL_STATE_SETTLING:
-                        isScrolled = true;
-                        break;
-                    case ViewPager.SCROLL_STATE_IDLE:
-                        if (!isScrolled && bannerGoods.getCurrentItem() == customBean.getData()
-                                .getImg_list().size() - 1) {
-                            scrollContainer.setAutoUp();
-                        }
-                        isScrolled = true;
-                        break;
-                }
-
-            }
-        });
+//        bannerGoods.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//                switch (state) {
+//                    case ViewPager.SCROLL_STATE_IDLE:
+//                        if (!isScrolled && bannerGoods.getCurrentItem() == customBean.getData()
+//                                .getImg_list().size() - 1) {
+//                            scrollContainer.setAutoUp();
+//                        }
+//                        isScrolled = true;
+//                        break;
+//                    case ViewPager.SCROLL_STATE_DRAGGING:
+//                        isScrolled = false;
+//                        break;
+//                    case ViewPager.SCROLL_STATE_SETTLING:
+//                        isScrolled = true;
+//                        break;
+//
+//                }
+//
+//            }
+//        });
 
 
         //喜爱人数
@@ -366,16 +367,16 @@ public class CustomGoodsActivity extends BaseActivity {
                 });
 
 
-        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
-            @Override
-            public void getCurrentPage(int page) {
-                if (page == 0) {
-                    llGoodsTailor.setVisibility(View.GONE);
-                } else {
-                    llGoodsTailor.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
+//            @Override
+//            public void getCurrentPage(int page) {
+//                if (page == 0) {
+//                    llGoodsTailor.setVisibility(View.GONE);
+//                } else {
+//                    llGoodsTailor.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
     }
 
     /**

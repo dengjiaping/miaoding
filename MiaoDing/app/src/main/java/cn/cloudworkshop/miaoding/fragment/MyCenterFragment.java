@@ -190,7 +190,7 @@ public class MyCenterFragment extends BaseFragment {
         }
 
         rvCenter.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        CommonAdapter<UserInfoBean.IconListBean> adapter = new CommonAdapter<UserInfoBean.IconListBean>
+        final CommonAdapter<UserInfoBean.IconListBean> adapter = new CommonAdapter<UserInfoBean.IconListBean>
                 (getActivity(), R.layout.listitem_center, userInfoBean.getIcon_list()) {
             @Override
             protected void convert(ViewHolder holder, UserInfoBean.IconListBean iconListBean, int position) {
@@ -283,12 +283,12 @@ public class MyCenterFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         try {
+
                             JSONObject jsonObject = new JSONObject(response);
                             String url = jsonObject.getString("share_url");
                             JSONObject data = jsonObject.getJSONObject("data");

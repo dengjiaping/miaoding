@@ -198,6 +198,7 @@ public class MemberCenterActivity extends BaseActivity {
                     }
                 };
                 rvMemberRights.setAdapter(adapter);
+
                 adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

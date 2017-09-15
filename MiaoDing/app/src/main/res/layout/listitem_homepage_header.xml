@@ -8,7 +8,7 @@
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/banner_homepage"
         android:layout_width="match_parent"
-        android:layout_height="444dp"
+        android:layout_height="452dp"
         app:canLoop="true">
     </com.bigkoo.convenientbanner.ConvenientBanner>
 
@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp">
     </android.support.v7.widget.RecyclerView>
 

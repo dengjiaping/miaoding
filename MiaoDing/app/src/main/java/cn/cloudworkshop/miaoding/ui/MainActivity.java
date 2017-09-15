@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private long exitTime = 0;
     //是否检测更新
     private boolean isCheckUpdate = true;
-
+    //读写权限
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private AppIconBean iconBean;
 
@@ -124,38 +124,99 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         map.put("img1", file1);
         map.put("img2", file2);
 
-        OkHttpUtils.post()
-                .url(Constant.NEW_TAKE_PHOTO)
-                .files("img_list", map)
-                .addParams("xw", "1")
-                .addParams("yw", "1")
-                .addParams("tw", "1")
-                .addParams("age", "18")
-                .addParams("distance", "3")
-                .addParams("c_time", "1")
-                .addParams("status", "1")
-                .addParams("type_scale", "1")
-                .addParams("scale", "0.9,0.9,0.9,0.9")
-                .addParams("sh_phone", "13388888888")
-                .addParams("factory_id", "0")
-                .addParams("phone", "13333333333")
-                .addParams("name", "1")
-                .addParams("sh_name", "1")
-                .addParams("height", "1")
-                .addParams("width", "1")
-                .addParams("y_position", "1136.159302,1094.154053,1062.464722,998.010254")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.log(e.toString());
-                    }
+//        OkHttpUtils.post()
+//                .url(Constant.TAKE_PHOTO)
+//                .files("img_list", map)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        LogUtils.log("1" + e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        LogUtils.log("2" + response);
+//                    }
+//                });
+//
+//        OkHttpUtils.post()
+//                .url(Constant.TAKE_PHOTO)
+//                .addFile("img_list", file1.getName(),file1)
+//                .addFile("img_list", file2.getName(),file2)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        LogUtils.log("3" + e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        LogUtils.log("4" + response);
+//                    }
+//                });
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.log(response);
-                    }
-                });
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img1", file1.getName(), RequestBody.create(MediaType.parse("image/png"), file1));
+        builder.addFormDataPart("img2", file2.getName(), RequestBody.create(MediaType.parse("image/png"), file2));
+
+
+        MultipartBody requestBody = builder.build();
+        //构建请求
+        Request request = new Request.Builder()
+                .url(Constant.TAKE_PHOTO)//地址
+                .post(requestBody)//添加请求体
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+               LogUtils.log("1:"+response.body().string());
+
+            }
+        });
+
+
+//        OkHttpUtils.post()
+//                .url(Constant.NEW_TAKE_PHOTO)
+//                .files("img_list", map)
+//                .addParams("xw", "1")
+//                .addParams("yw", "1")
+//                .addParams("tw", "1")
+//                .addParams("age", "18")
+//                .addParams("distance", "3")
+//                .addParams("c_time", "1")
+//                .addParams("status", "1")
+//                .addParams("type_scale", "1")
+//                .addParams("scale", "0.9,0.9,0.9,0.9")
+//                .addParams("sh_phone", "13388888888")
+//                .addParams("factory_id", "0")
+//                .addParams("phone", "13333333333")
+//                .addParams("name", "1")
+//                .addParams("sh_name", "1")
+//                .addParams("height", "1")
+//                .addParams("width", "1")
+//                .addParams("y_position", "1136.159302,1094.154053,1062.464722,998.010254")
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        LogUtils.log(e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        LogUtils.log(response);
+//                    }
+//                });
 
     }
 
@@ -414,7 +475,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 mPopupWindow.setFocusable(true);
                                 mPopupWindow.setOutsideTouchable(true);
                                 mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-                                if (!isFinishing()){
+                                if (!isFinishing()) {
                                     mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
                                 }
                                 View viewRegister = popupView.findViewById(R.id.view_register);

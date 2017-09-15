@@ -66,8 +66,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
     TextView tvCustomTitle;
     @BindView(R.id.vp_custom_goods)
     JazzyViewPager vpCustomGoods;
-    @BindView(R.id.view_loading)
-    AVLoadingIndicatorView loadingView;
     @BindView(R.id.img_code)
     ImageView imgCode;
 
@@ -95,8 +93,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
     }
 
     private void initTitle() {
-        loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
-        loadingView.setIndicatorColor(Color.GRAY);
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_TITLE)
@@ -129,7 +125,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
      * 加载商品
      */
     public void initGoods() {
-        loadingView.smoothToShow();
         OkHttpUtils
                 .get()
                 .url(Constant.GOODS_LIST)
@@ -144,7 +139,6 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        loadingView.smoothToHide();
                         imgSelectType.setEnabled(true);
                         listBean = GsonUtils.jsonToBean(response, GoodsListBean.class);
                         if (listBean.getData().getData() != null && listBean.getData().getData().size() > 0) {

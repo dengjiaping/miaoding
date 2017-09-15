@@ -28,7 +28,7 @@ public class LoadErrorUtils {
             dialog.show();
         }
 
-        dialog.setCanceledOnTouchOutside(false);//点击外部不允许关闭dialog
+//        dialog.setCanceledOnTouchOutside(false);//点击外部不允许关闭dialog
         ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,17 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,27 +96,33 @@ public class NewWorksActivity extends BaseActivity {
     //颜色
     private int currentColor = 0;
     //1、直接购买  2、加入购物车
-    private int index;
+    private int type;
     private PopupWindow mPopupWindow;
-    //购物车id
-    private String cartId;
+
     private TextView tvPrice;
     private TextView tvStock;
     private TextView tvCount;
     private TextView tvBuy;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_works_new);
         ButterKnife.bind(this);
+
         getData();
         initData();
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        rgsIndicator.removeAllViews();
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
         initData();
     }
 
@@ -162,13 +166,7 @@ public class NewWorksActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        String str = worksBean.getData().getContent();
-        String sb = "<font><big><big>" +
-                str.charAt(0) +
-                "</big></big></font>" +
-                str.substring(1);
-
-        tvContent.animateText(Html.fromHtml(sb));
+        typerText(worksBean.getData().getImg_introduce().get(0));
 
         vpWorks.setOffscreenPageLimit(worksBean.getData().getImg_list().size());
         vpWorks.setAdapter(new PagerAdapter() {
@@ -222,22 +220,14 @@ public class NewWorksActivity extends BaseActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    tvContent.setAlpha(1 - (float) positionOffsetPixels / vpWorks.getWidth());
+                tvContent.setAlpha(1 - (float) positionOffsetPixels / vpWorks.getWidth());
 
             }
 
             @Override
             public void onPageSelected(int position) {
                 ((RadioButton) rgsIndicator.getChildAt(position)).setChecked(true);
-
-                String str = worksBean.getData().getContent();
-                String sb = "<font><big><big>" +
-                        str.charAt(0) +
-                        "</big></big></font>" +
-                        str.substring(1);
-                tvContent.animateText(Html.fromHtml(sb));
-
+                typerText(worksBean.getData().getImg_introduce().get(position));
             }
 
             @Override
@@ -249,15 +239,27 @@ public class NewWorksActivity extends BaseActivity {
 
     }
 
+    /**
+     * @param content 逐字显示，首个文字字体变大
+     */
+    private void typerText(String content) {
+
+        String str = "<font><big><big>" +
+                content.charAt(0) +
+                "</big></big></font>" +
+                content.substring(1);
+        tvContent.animateText(Html.fromHtml(str));
+    }
+
     @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_add_bag:
-                index = 2;
+                type = 2;
                 showWorksType();
                 break;
             case R.id.img_buy_works:
-                index = 1;
+                type = 1;
                 showWorksType();
                 break;
             case R.id.img_goods_back:
@@ -319,8 +321,9 @@ public class NewWorksActivity extends BaseActivity {
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);
             tvPrice.setTypeface(DisplayUtils.setTextType(this));
-            if (worksBean.getData().getSize_list() != null) {
-                tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list().get(0).getPrice());
+            if (worksBean.getData().getSize_list() != null && worksBean.getData().getSize_list().size() > 0) {
+                tvPrice.setText("¥" + worksBean.getData().getSize_list().get(0).getSize_list()
+                        .get(0).getPrice());
                 tvStock.setText("库存：" + worksBean.getData().getSize_list().get(0).getSize_list()
                         .get(0).getSku_num() + "件");
                 tvCount.setText("1");
@@ -477,26 +480,31 @@ public class NewWorksActivity extends BaseActivity {
      * 加入购物车
      */
     private void addToCart() {
-
+        Map<String, String> map = new HashMap<>();
+        map.put("token", SharedPreferencesUtils.getStr(this, "token"));
+        map.put("type", type + "");
+        map.put("goods_id", id);
+        map.put("goods_type", "2");
+        map.put("price", worksBean.getData().getSize_list().get(currentSize)
+                .getSize_list().get(currentColor).getPrice());
+        map.put("goods_name", worksBean.getData().getName());
+        map.put("goods_thumb", worksBean.getData().getThumb());
+        map.put("size_ids", String.valueOf(worksBean.getData().getSize_list()
+                .get(currentSize).getSize_list().get(currentColor).getId()));
+        map.put("size_content", "颜色:" + worksBean.getData().getSize_list().get(currentSize)
+                .getSize_list().get(currentColor).getColor_name() + ";尺码:" + worksBean.getData()
+                .getSize_list().get(currentSize).getSize_name());
+        map.put("num", tvCount.getText().toString().trim());
+        map.put("size_type", worksBean.getData().getSize_list().get(currentSize)
+                .getSize_list().get(currentColor).getType() + "");
+        if (!TextUtils.isEmpty(worksBean.getData().getLt_data()) && currentSize == 0) {
+            map.put("lt_data_id", worksBean.getData().getLt_data());
+        }
         OkHttpUtils.post()
                 .url(Constant.ADD_CART)
-                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("type", index + "")
-                .addParams("goods_id", id)
-                .addParams("goods_type", "2")
-                .addParams("price", worksBean.getData().getSize_list().get(currentSize)
-                        .getSize_list().get(currentColor).getPrice())
-                .addParams("goods_name", worksBean.getData().getName())
-                .addParams("goods_thumb", worksBean.getData().getThumb())
-                .addParams("size_ids", String.valueOf(worksBean.getData().getSize_list()
-                        .get(currentSize).getSize_list().get(currentColor).getId()))
-                .addParams("size_content", "颜色:" + worksBean.getData().getSize_list().get(currentSize)
-                        .getSize_list().get(currentColor).getColor_name() + ";尺码:" + worksBean.getData()
-                        .getSize_list().get(currentSize).getSize_name())
-                .addParams("num", tvCount.getText().toString().trim())
+                .params(map)
                 .build()
                 .execute(new StringCallback() {
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
@@ -505,29 +513,29 @@ public class NewWorksActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-
+                            LogUtils.log(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            cartId = jsonObject1.getString("car_id");
+                            if (type == 2) {
+                                String msg = jsonObject.getString("msg");
+                                ToastUtils.showToast(NewWorksActivity.this, msg);
+                            }
 
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                            String cartId = jsonObject1.getString("car_id");
+
+                            if (cartId != null) {
+                                MobclickAgent.onEvent(NewWorksActivity.this, "add_cart");
+                                mPopupWindow.dismiss();
+                                if (type == 1) {
+                                    Intent intent = new Intent(NewWorksActivity.this, ConfirmOrderActivity.class);
+                                    intent.putExtra("cart_id", cartId);
+                                    startActivity(intent);
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (cartId != null) {
-                            MobclickAgent.onEvent(NewWorksActivity.this, "add_cart");
-                            if (index == 1) {
-                                Intent intent = new Intent(NewWorksActivity.this,
-                                        ConfirmOrderActivity.class);
-                                intent.putExtra("cart_id", cartId);
-                                mPopupWindow.dismiss();
 
-                                startActivity(intent);
-
-                            } else if (index == 2) {
-                                ToastUtils.showToast(NewWorksActivity.this, "加入购物袋成功");
-                                mPopupWindow.dismiss();
-                            }
-                        }
 
                     }
                 });

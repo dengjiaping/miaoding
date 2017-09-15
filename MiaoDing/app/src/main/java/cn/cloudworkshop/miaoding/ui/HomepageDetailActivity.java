@@ -118,7 +118,7 @@ public class HomepageDetailActivity extends BaseActivity {
      */
     @JavascriptInterface
     public void toActivity(String str) {
-        LogUtils.log("1111"+str);
+
         if (!TextUtils.isEmpty(str)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("page_name", str);
@@ -131,7 +131,7 @@ public class HomepageDetailActivity extends BaseActivity {
      */
     @JavascriptInterface
     public void toGoods(String str) {
-        LogUtils.log("222"+str);
+
         if (!TextUtils.isEmpty(str)) {
             String[] split = str.split(",");
             Intent intent;

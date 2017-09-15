@@ -88,8 +88,7 @@ public class CustomResultActivity extends BaseActivity {
     RelativeLayout rlCustomResult;
 
     //1:直接购买 2：加入购物袋
-    private int type = 0;
-    private String cartId;
+    private int type;
 
     private float x1 = 0;
     private float x2 = 0;
@@ -328,20 +327,20 @@ public class CustomResultActivity extends BaseActivity {
         map.put("goods_type", "1");
         map.put("price", customBean.getPrice());
         map.put("goods_name", customBean.getGoods_name());
-        if (TextUtils.isEmpty(customBean.getDefault_img())){
+        if (TextUtils.isEmpty(customBean.getDefault_img())) {
             map.put("goods_thumb", customBean.getImg_url());
-        }else {
+        } else {
             map.put("goods_thumb", customBean.getDefault_img());
         }
 
         map.put("spec_ids", customBean.getSpec_ids());
         map.put("spec_content", customBean.getSpec_content());
 
-        if (!TextUtils.isEmpty(customBean.getFabric_id())){
+        if (!TextUtils.isEmpty(customBean.getFabric_id())) {
             map.put("mianliao_id", customBean.getFabric_id());
         }
 
-        if (!TextUtils.isEmpty(customBean.getBanxing_id())){
+        if (!TextUtils.isEmpty(customBean.getBanxing_id())) {
             map.put("banxing_id", customBean.getBanxing_id());
         }
 
@@ -365,13 +364,15 @@ public class CustomResultActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            cartId = jsonObject1.getString("car_id");
+                            String msg = jsonObject.getString("msg");
+                            if (type == 2) {
+                                ToastUtils.showToast(CustomResultActivity.this, msg);
+                                aadCartAnim();
+                            }
+                            String cartId = jsonObject1.getString("car_id");
                             if (cartId != null) {
                                 MobclickAgent.onEvent(CustomResultActivity.this, "add_cart");
-                                if (type == 2) {
-                                    ToastUtils.showToast(CustomResultActivity.this, "加入购物袋成功");
-                                    aadCartAnim();
-                                } else if (type == 1) {
+                                if (type == 1) {
                                     Intent intent = new Intent(CustomResultActivity.this,
                                             ConfirmOrderActivity.class);
                                     Bundle bundle = new Bundle();
@@ -384,7 +385,7 @@ public class CustomResultActivity extends BaseActivity {
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                 }
-
+                                
                             }
 
                         } catch (JSONException e) {
@@ -401,9 +402,9 @@ public class CustomResultActivity extends BaseActivity {
         //1、添加执行动画效果的图片
         final ImageView imgGoods = new ImageView(this);
         String imgUrl;
-        if (TextUtils.isEmpty(customBean.getDefault_img())){
+        if (TextUtils.isEmpty(customBean.getDefault_img())) {
             imgUrl = Constant.HOST + customBean.getImg_url();
-        }else {
+        } else {
             imgUrl = Constant.HOST + customBean.getDefault_img();
         }
         Glide.with(this)
@@ -431,12 +432,12 @@ public class CustomResultActivity extends BaseActivity {
         imgShoppingBag.getLocationInWindow(endLoc);
 
         //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
-        float startX = startLoc[0] - parentLocation[0]+ tvAddBag.getWidth() / 3;
-        float startY = startLoc[1]- parentLocation[1];
+        float startX = startLoc[0] - parentLocation[0] + tvAddBag.getWidth() / 3;
+        float startY = startLoc[1] - parentLocation[1];
 
         //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的一半
-        float toX = endLoc[0] - parentLocation[0]+ imgShoppingBag.getWidth() / 4;
-        float toY = endLoc[1] - parentLocation[1]+ imgShoppingBag.getHeight() / 2;
+        float toX = endLoc[0] - parentLocation[0] + imgShoppingBag.getWidth() / 4;
+        float toY = endLoc[1] - parentLocation[1] + imgShoppingBag.getHeight() / 2;
 
         //3、计算中间动画的插值坐标（贝塞尔曲线）
         //开始绘制贝塞尔曲线
@@ -481,8 +482,8 @@ public class CustomResultActivity extends BaseActivity {
             public void onAnimationEnd(Animator animation) {
                 // 把移动的图片从父布局里移除
                 rlCustomResult.removeView(imgGoods);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,
-                        Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 scaleAnimation.setDuration(250);
                 imgShoppingBag.startAnimation(scaleAnimation);
             }

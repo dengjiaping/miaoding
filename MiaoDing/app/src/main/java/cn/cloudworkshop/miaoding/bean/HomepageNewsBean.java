@@ -546,6 +546,15 @@ public class HomepageNewsBean {
         private String name;
         private String sub_name;
         private String thumb;
+        private String recommend_img;
+
+        public String getRecommend_img() {
+            return recommend_img;
+        }
+
+        public void setRecommend_img(String recommend_img) {
+            this.recommend_img = recommend_img;
+        }
 
         public int getGoods_id() {
             return goods_id;

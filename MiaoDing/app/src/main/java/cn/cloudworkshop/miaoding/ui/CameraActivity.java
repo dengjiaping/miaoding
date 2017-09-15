@@ -14,6 +14,7 @@
 //import android.os.Handler;
 //import android.os.Message;
 //import android.support.v4.app.ActivityCompat;
+
 //import android.view.View;
 //import android.view.Window;
 //import android.view.WindowManager;
@@ -21,6 +22,7 @@
 //import android.widget.TextView;
 //import android.widget.Toast;
 //import com.wang.avi.AVLoadingIndicatorView;
+
 //import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 //import com.zhy.http.okhttp.OkHttpUtils;
 //import com.zhy.http.okhttp.callback.StringCallback;
@@ -136,6 +138,7 @@
 //        }
 //    };
 //
+
 //
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {

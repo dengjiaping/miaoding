@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,6 +41,7 @@ import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
@@ -122,7 +124,9 @@ public class WorksFragment extends BaseFragment {
                         .load(Constant.HOST + itemBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_designer));
-                holder.setText(R.id.tv_works_title, itemBean.getName());
+                TextView tvTitle = holder.getView(R.id.tv_works_title);
+                tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
+                tvTitle.setText(itemBean.getName());
                 holder.setText(R.id.tv_works_time, DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()));
             }
         };
