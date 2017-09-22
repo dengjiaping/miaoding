@@ -190,7 +190,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
@@ -198,8 +198,8 @@
 
                 <ImageView
                     android:id="@+id/img_apply_works"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_marginRight="10dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_add_picture"/>
@@ -207,7 +207,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_apply_works"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp">
+                    android:layout_height="70dp">
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
 
@@ -222,7 +222,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
@@ -230,8 +230,8 @@
 
                 <ImageView
                     android:id="@+id/img_apply_company"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_marginRight="10dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_add_picture"/>
@@ -239,7 +239,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_apply_company"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp">
+                    android:layout_height="70dp">
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
 

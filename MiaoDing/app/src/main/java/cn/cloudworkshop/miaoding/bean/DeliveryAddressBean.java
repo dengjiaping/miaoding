@@ -9,7 +9,7 @@ import java.util.List;
  * Describe：
  */
 
-public class ReceiveAddressBean implements Serializable{
+public class DeliveryAddressBean implements Serializable{
 
     /**
      * code : 1

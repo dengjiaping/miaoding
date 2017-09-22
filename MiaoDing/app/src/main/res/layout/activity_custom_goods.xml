@@ -28,8 +28,7 @@
                 <com.bigkoo.convenientbanner.ConvenientBanner
                     android:id="@+id/banner_goods"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    app:canLoop="true">
+                    android:layout_height="500dp">
                 </com.bigkoo.convenientbanner.ConvenientBanner>
 
 

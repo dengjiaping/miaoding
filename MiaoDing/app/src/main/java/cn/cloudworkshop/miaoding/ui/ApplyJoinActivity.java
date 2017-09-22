@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.ui;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,12 +16,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,17 +35,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 import okhttp3.Call;
 
 /**
@@ -72,17 +78,14 @@ public class ApplyJoinActivity extends BaseActivity {
     @BindView(R.id.view_loading)
     AVLoadingIndicatorView loadingView;
 
-    private PhotoPickerAdapter photoAdapter1;
-    private PhotoPickerAdapter photoAdapter2;
+    private CommonAdapter photoAdapter1;
+    private CommonAdapter photoAdapter2;
     private ArrayList<String> selectedPhotos1 = new ArrayList<>();
     private ArrayList<String> selectedPhotos2 = new ArrayList<>();
-    private int currentClickId1 = -1;
-    private int currentClickId2 = -2;
-    private int id;
+    private int currentItem = 0;
 
     private String imgList1;
     private String imgList2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,22 +152,45 @@ public class ApplyJoinActivity extends BaseActivity {
     }
 
 
-    private PhotoPickerAdapter initView(RecyclerView recyclerView, final ArrayList<String> selectedPhotos) {
-
-        PhotoPickerAdapter photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ApplyJoinActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(photoAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+    private CommonAdapter<String> initPhotos(RecyclerView recyclerView, final ArrayList<String> selectedPhotos, final int index) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(ApplyJoinActivity.this,
+                LinearLayoutManager.HORIZONTAL, false));
+        CommonAdapter<String> adapter = new CommonAdapter<String>(ApplyJoinActivity.this,
+                R.layout.listitem_picker_photo, selectedPhotos) {
             @Override
-            public void onItemClick(View view, int position) {
+            protected void convert(ViewHolder holder, String s, int position) {
+                Uri uri = Uri.fromFile(new File(s));
+                boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(ApplyJoinActivity.this);
+                if (canLoadImage) {
+                    Glide.with(mContext)
+                            .load(uri)
+                            .centerCrop()
+                            .placeholder(me.iwf.photopicker.R.drawable.__picker_ic_photo_black_48dp)
+                            .error(me.iwf.photopicker.R.drawable.__picker_ic_broken_image_black_48dp)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into((ImageView) holder.getView(R.id.img_picker_photo));
+                }
+            }
+        };
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 PhotoPreview.builder()
                         .setPhotos(selectedPhotos)
                         .setCurrentItem(position)
                         .start(ApplyJoinActivity.this);
+                currentItem = index;
             }
-        }));
 
-        return photoAdapter;
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        return adapter;
     }
 
     @OnClick({R.id.img_header_back, R.id.img_apply_works, R.id.img_apply_company, R.id.tv_submit_apply})
@@ -174,28 +200,26 @@ public class ApplyJoinActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_apply_works:
-                photoAdapter1 = initView(rvApplyWorks, selectedPhotos1);
+                photoAdapter1 = initPhotos(rvApplyWorks, selectedPhotos1,1);
                 PhotoPicker.builder()
                         .setPhotoCount(4)
                         .setShowCamera(true)
                         .setSelected(selectedPhotos1)
                         .start(this);
-                currentClickId1 = view.getId();
+
                 break;
             case R.id.img_apply_company:
-                photoAdapter2 = initView(rvApplyCompany, selectedPhotos2);
+                photoAdapter2 = initPhotos(rvApplyCompany, selectedPhotos2,2);
                 PhotoPicker.builder()
                         .setPhotoCount(2)
                         .setShowCamera(true)
                         .setSelected(selectedPhotos2)
                         .start(this);
-                currentClickId2 = view.getId();
                 break;
             case R.id.tv_submit_apply:
                 submitApply();
                 break;
         }
-        id = view.getId();
     }
 
     /**
@@ -223,7 +247,7 @@ public class ApplyJoinActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK &&
                 (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-            if (id == currentClickId1) {
+            if (currentItem == 1) {
                 List<String> photos1 = null;
                 if (data != null) {
                     photos1 = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
@@ -235,7 +259,7 @@ public class ApplyJoinActivity extends BaseActivity {
                     photoAdapter1.notifyDataSetChanged();
                 }
 
-            } else if (id == currentClickId2) {
+            } else if (currentItem == 2) {
                 List<String> photos2 = null;
                 if (data != null) {
                     photos2 = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);

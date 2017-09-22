@@ -7,15 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
+
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import cn.cloudworkshop.miaoding.R;
-
-import static android.R.attr.targetSdkVersion;
-import static android.R.attr.theme;
-
 
 /**
  * Author：Libin on 2016/11/7 10:31

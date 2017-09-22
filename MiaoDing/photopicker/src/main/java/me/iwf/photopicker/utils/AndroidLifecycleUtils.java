@@ -38,7 +38,10 @@ public class AndroidLifecycleUtils {
         boolean destroyed = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
                 activity.isDestroyed();
 
-        return !(destroyed || activity.isFinishing());
+        if (destroyed || activity.isFinishing()) {
+            return false;
+        }
 
+        return true;
     }
 }

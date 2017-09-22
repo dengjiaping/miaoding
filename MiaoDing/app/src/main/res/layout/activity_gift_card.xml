@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/widget_header_layout"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_marginTop="44dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_gift_card"/>
+
+        <TextView
+            android:id="@+id/tv_card_remain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="41dp"
+            android:textColor="@android:color/white"
+            android:textSize="54sp"
+            android:text="¥ 0.00"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_card_remain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp"
+
+            android:text="(账户余额)"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_null_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="119dp"
+        android:layout_marginRight="121dp"
+        android:layout_marginTop="315dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/icon_null_card"/>
+
+    <TextView
+        android:id="@+id/tv_add_card"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_gray_22"
+        android:gravity="center"
+        android:text="+  添加礼品卡"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+</RelativeLayout>

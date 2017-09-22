@@ -54,10 +54,12 @@ import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.fragment.CustomGoodFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.NewDesignerWorkFragment;
 import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
@@ -116,46 +118,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void upLoad() {
-        Map<String, File> map = new HashMap<>();
+
         File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator + "CloudWorkshop/img1.jpg");
         File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator + "CloudWorkshop/img2.jpg");
-        map.put("img1", file1);
-        map.put("img2", file2);
-
-//        OkHttpUtils.post()
-//                .url(Constant.TAKE_PHOTO)
-//                .files("img_list", map)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        LogUtils.log("1" + e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        LogUtils.log("2" + response);
-//                    }
-//                });
-//
-//        OkHttpUtils.post()
-//                .url(Constant.TAKE_PHOTO)
-//                .addFile("img_list", file1.getName(),file1)
-//                .addFile("img_list", file2.getName(),file2)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        LogUtils.log("3" + e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        LogUtils.log("4" + response);
-//                    }
-//                });
 
 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -179,44 +146,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-               LogUtils.log("1:"+response.body().string());
 
             }
         });
 
-
-//        OkHttpUtils.post()
-//                .url(Constant.NEW_TAKE_PHOTO)
-//                .files("img_list", map)
-//                .addParams("xw", "1")
-//                .addParams("yw", "1")
-//                .addParams("tw", "1")
-//                .addParams("age", "18")
-//                .addParams("distance", "3")
-//                .addParams("c_time", "1")
-//                .addParams("status", "1")
-//                .addParams("type_scale", "1")
-//                .addParams("scale", "0.9,0.9,0.9,0.9")
-//                .addParams("sh_phone", "13388888888")
-//                .addParams("factory_id", "0")
-//                .addParams("phone", "13333333333")
-//                .addParams("name", "1")
-//                .addParams("sh_name", "1")
-//                .addParams("height", "1")
-//                .addParams("width", "1")
-//                .addParams("y_position", "1136.159302,1094.154053,1062.464722,998.010254")
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        LogUtils.log(e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        LogUtils.log(response);
-//                    }
-//                });
 
     }
 
@@ -435,8 +368,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      */
     public void initView() {
         fragmentList.add(NewHomeRecommendFragment.newInstance());
-        fragmentList.add(NewCustomGoodsFragment.newInstance());
-        fragmentList.add(NewDesignerWorksFragment.newInstance());
+        fragmentList.add(CustomGoodFragment.newInstance());
+        fragmentList.add(NewDesignerWorkFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());

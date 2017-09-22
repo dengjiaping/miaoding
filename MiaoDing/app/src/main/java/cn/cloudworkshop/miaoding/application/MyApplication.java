@@ -3,7 +3,9 @@ package cn.cloudworkshop.miaoding.application;
 import android.Manifest;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -69,6 +71,11 @@ public class MyApplication extends Application {
         OkHttpUtils.initClient(okHttpClient);
 
         Unicorn.init(this, "e98a79aca99f25ebf9bacbc8c334b76b", options(), new FrescoImageLoader(this));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder1.build());
+        }
 
     }
 

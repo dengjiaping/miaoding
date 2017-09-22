@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.ReceiveAddressBean;
+import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -67,7 +67,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     private boolean isRefresh;
     //加载更多
     private boolean isLoadMore;
-    private List<ReceiveAddressBean.DataBean> dataList = new ArrayList<>();
+    private List<DeliveryAddressBean.DataBean> dataList = new ArrayList<>();
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
 
 
@@ -125,7 +125,7 @@ public class DeliveryAddressActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        ReceiveAddressBean address = GsonUtils.jsonToBean(response, ReceiveAddressBean.class);
+                        DeliveryAddressBean address = GsonUtils.jsonToBean(response, DeliveryAddressBean.class);
                         if (address.getData() != null && address.getData().size() > 0) {
                             if (isRefresh) {
                                 dataList.clear();
@@ -161,10 +161,10 @@ public class DeliveryAddressActivity extends BaseActivity {
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        CommonAdapter<ReceiveAddressBean.DataBean> adapter = new CommonAdapter<ReceiveAddressBean
+        CommonAdapter<DeliveryAddressBean.DataBean> adapter = new CommonAdapter<DeliveryAddressBean
                 .DataBean>(this, R.layout.listitem_address, dataList) {
             @Override
-            protected void convert(ViewHolder holder, final ReceiveAddressBean.DataBean dataBean, final int position) {
+            protected void convert(ViewHolder holder, final DeliveryAddressBean.DataBean dataBean, final int position) {
                 holder.setText(R.id.tv_user_name, dataBean.getName());
                 holder.setText(R.id.tv_user_phone, dataBean.getPhone());
                 holder.setText(R.id.tv_user_address, dataBean.getProvince() + dataBean.getCity()

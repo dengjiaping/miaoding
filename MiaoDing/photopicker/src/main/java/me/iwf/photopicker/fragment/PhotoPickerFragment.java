@@ -1,5 +1,6 @@
 package me.iwf.photopicker.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -104,6 +105,8 @@ public class PhotoPickerFragment extends Fragment {
     photoGridAdapter.setShowCamera(showCamera);
     photoGridAdapter.setPreviewEnable(previewEnable);
 
+    listAdapter  = new PopupDirectoryListAdapter(mGlideRequestManager, directories);
+
     Bundle mediaStoreArgs = new Bundle();
 
     boolean showGif = getArguments().getBoolean(EXTRA_GIF);
@@ -127,8 +130,6 @@ public class PhotoPickerFragment extends Fragment {
       Bundle savedInstanceState) {
 
     final View rootView = inflater.inflate(R.layout.__picker_fragment_photo_picker, container, false);
-
-    listAdapter  = new PopupDirectoryListAdapter(mGlideRequestManager, directories);
 
     RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_photos);
     StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(column, OrientationHelper.VERTICAL);
@@ -221,6 +222,9 @@ public class PhotoPickerFragment extends Fragment {
       Intent intent = captureManager.dispatchTakePictureIntent();
       startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
     } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ActivityNotFoundException e) {
+      // TODO No Activity Found to handle Intent
       e.printStackTrace();
     }
   }

@@ -70,7 +70,7 @@ public class AppointmentActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mPopupWindow != null && mPopupWindow.isShowing()){
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
     }
@@ -180,7 +180,7 @@ public class AppointmentActivity extends BaseActivity {
                             mPopupWindow.setFocusable(true);
                             mPopupWindow.setOutsideTouchable(true);
                             mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-                            if (!isFinishing()){
+                            if (!isFinishing()) {
                                 mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
                             }
 
@@ -236,16 +236,15 @@ public class AppointmentActivity extends BaseActivity {
                     Intent intent2 = new Intent(this, MainActivity.class);
                     intent2.putExtra("page", 0);
                     startActivity(intent2);
-                    finish();
-                } else {
-                    finish();
                 }
+                finish();
+
                 break;
             case R.id.tv_check_order:
                 Intent intent1 = new Intent(this, OrderDetailActivity.class);
                 intent1.putExtra("id", getIntent().getStringExtra("order_id"));
-                finish();
                 startActivity(intent1);
+                finish();
                 break;
         }
     }

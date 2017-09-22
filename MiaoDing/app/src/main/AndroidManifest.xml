@@ -206,6 +206,9 @@
         <activity android:name=".ui.CollectionActivity"/>
         <activity android:name=".ui.NewWorksDetailActivity"/>
         <activity android:name=".ui.NewWorksActivity"/>
+        <activity android:name=".ui.GoodsDetailActivity"
+                  android:theme="@style/NoTitleTranslucentTheme"/>
+        <activity android:name=".ui.GiftCardActivity"/>
 
 
 

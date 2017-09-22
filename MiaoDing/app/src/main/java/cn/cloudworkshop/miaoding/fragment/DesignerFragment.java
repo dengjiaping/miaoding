@@ -31,6 +31,7 @@ import cn.cloudworkshop.miaoding.bean.PopDesignerBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
@@ -78,7 +79,7 @@ public class DesignerFragment extends BaseFragment {
     }
 
     private void initView() {
-        rvDesigner.setLayoutManager(new GridLayoutManager(getParentFragment().getActivity(),2));
+        rvDesigner.setLayoutManager(new GridLayoutManager(getParentFragment().getActivity(), 2));
         CommonAdapter<PopDesignerBean.DataBean> adapter = new CommonAdapter<PopDesignerBean.DataBean>
                 (getParentFragment().getActivity(), R.layout.listitem_designer, designerList) {
             @Override
@@ -87,8 +88,8 @@ public class DesignerFragment extends BaseFragment {
                         .load(Constant.HOST + dataBean.getAvatar())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_avatar_designer));
-                holder.setText(R.id.tv_nickname_designer,dataBean.getName());
-                holder.setText(R.id.tv_designer_tag,dataBean.getTag());
+                holder.setText(R.id.tv_nickname_designer, dataBean.getName());
+                holder.setText(R.id.tv_designer_tag, dataBean.getTag());
             }
 
         };
@@ -96,10 +97,12 @@ public class DesignerFragment extends BaseFragment {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (!TextUtils.isEmpty(designerList.get(position).getId() + "")) {
+                if (!TextUtils.isEmpty(designerList.get(position).getId() + "") && position < designerList.size() - 1) {
                     Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailActivity.class);
                     intent.putExtra("id", String.valueOf(designerList.get(position).getId()));
                     startActivity(intent);
+                }else {
+                    ToastUtils.showToast(getParentFragment().getActivity(),"敬请期待");
                 }
             }
 

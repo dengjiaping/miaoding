@@ -1,4 +1,4 @@
-# copyright zhonghanwen
+
 #-------------------------------------------基本不用动区域--------------------------------------------
 #---------------------------------基本指令区----------------------------------
 -optimizationpasses 5
@@ -72,7 +72,6 @@
 -keepclassmembers class * {
     native <methods>;
 }
-
 
 
 -keepclasseswithmembernames class * {

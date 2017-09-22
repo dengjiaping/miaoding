@@ -92,7 +92,7 @@ public class HomepageNewsBean {
         private String sub_title;
         private String img;
         private int id;
-        private Object link;
+        private String link;
         private String p_time;
         private int view_nums;
         private String tag_name;
@@ -131,11 +131,11 @@ public class HomepageNewsBean {
             this.id = id;
         }
 
-        public Object getLink() {
+        public String getLink() {
             return link;
         }
 
-        public void setLink(Object link) {
+        public void setLink(String link) {
             this.link = link;
         }
 

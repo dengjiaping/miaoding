@@ -33,7 +33,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -246,7 +245,7 @@ public class LoginActivity extends BaseActivity {
             map.put("phone_type", "1");
 
             OkHttpUtils.post()
-                    .url(Constant.LOG_IN)
+                    .url(Constant.LOGIN)
                     .params(map)
                     .build()
                     .execute(new StringCallback() {

@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -228,7 +229,7 @@ public class SetUpActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 OkHttpUtils.get()
-                        .url(Constant.LOG_OUT)
+                        .url(Constant.LOGOUT)
                         .addParams("token", SharedPreferencesUtils.getStr(SetUpActivity.this, "token"))
                         .addParams("device_id", SharedPreferencesUtils.getStr(SetUpActivity.this, "client_id"))
                         .build()
@@ -240,13 +241,22 @@ public class SetUpActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "token");
-                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "avatar");
-                                SharedPreferencesUtils.deleteStr(SetUpActivity.this, "phone");
-                                Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
-                                intent.putExtra("page", 0);
-                                finish();
-                                startActivity(intent);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 1) {
+                                        SharedPreferencesUtils.deleteStr(SetUpActivity.this, "token");
+                                        SharedPreferencesUtils.deleteStr(SetUpActivity.this, "avatar");
+                                        SharedPreferencesUtils.deleteStr(SetUpActivity.this, "phone");
+                                        Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
+                                        intent.putExtra("page", 0);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
             }
@@ -347,13 +357,7 @@ public class SetUpActivity extends BaseActivity {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        float scale = this.getResources().getDisplayMetrics().density;
-        //获取屏幕宽度
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        mPopupWindow.showAsDropDown(llUserIcon, (width - (int) (250 * scale + 0.5f)) / 2, 0);
+        mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, -300);
         DisplayUtils.setBackgroundAlpha(this, true);
 
         final EditText etName = (EditText) popupView.findViewById(R.id.et_change_name);
@@ -444,6 +448,7 @@ public class SetUpActivity extends BaseActivity {
 
         PhotoPicker.builder()
                 .setPhotoCount(1)
+                .setShowCamera(true)
                 .start(this);
     }
 

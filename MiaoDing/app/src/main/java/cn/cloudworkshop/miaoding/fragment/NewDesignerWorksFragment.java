@@ -87,14 +87,14 @@ public class NewDesignerWorksFragment extends BaseFragment {
         tabDesignerWorks.setCurrentTab(0);
 
         //appbar滑动监听，收缩时禁止下拉
-        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    toolBar.removeAllViews();
-                }
-            }
-        });
+//        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+//                    toolBar.removeAllViews();
+//                }
+//            }
+//        });
     }
 
 

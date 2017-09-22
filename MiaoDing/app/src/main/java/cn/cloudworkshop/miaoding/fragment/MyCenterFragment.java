@@ -38,6 +38,7 @@ import cn.cloudworkshop.miaoding.ui.CollectionActivity;
 import cn.cloudworkshop.miaoding.ui.CouponActivity;
 import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
 import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
+import cn.cloudworkshop.miaoding.ui.GiftCardActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.MemberCenterActivity;
@@ -232,7 +233,7 @@ public class MyCenterFragment extends BaseFragment {
                         }
                         break;
                     case 5:
-                        startActivity(new Intent(getActivity(), DressingTestActivity.class));
+                        startActivity(new Intent(getActivity(), GiftCardActivity.class));
                         break;
                     case 6:
                         startActivity(new Intent(getActivity(), JoinUsActivity.class));

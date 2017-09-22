@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,8 +37,9 @@ import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -92,6 +94,12 @@ public class ConfirmOrderActivity extends BaseActivity {
     RelativeLayout rlSelectAddress;
     @BindView(R.id.rl_add_address)
     RelativeLayout rlAddAddress;
+    @BindView(R.id.checkbox_card)
+    CheckBox checkboxCard;
+    @BindView(R.id.tv_card_money)
+    TextView tvCardMoney;
+    @BindView(R.id.ll_select_card)
+    LinearLayout llSelectCard;
 
     //购物车id
     private String cartIds;
@@ -128,6 +136,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     private float discountCoupon = 0.00f;
     //实际优惠金额
     private float discountMoney = 0.00f;
+    //礼品卡金额
+    private float cardMoney = 0.00f;
     //商品adapter
     private CommonAdapter<ConfirmOrderBean.DataBean.CarListBean> adapter;
 
@@ -162,7 +172,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void initData() {
 
         OkHttpUtils.get()
-                .url(Constant.CONFIRM_ORDER)
+                .url(Constant.CONFIRM_INFO)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_ids", cartIds)
                 .build()
@@ -235,9 +245,34 @@ public class ConfirmOrderActivity extends BaseActivity {
         }
 
         couponNum = confirmOrderBean.getData().getTicket_num();
+        cardMoney = Float.parseFloat(confirmOrderBean.getData().getGift_card());
+
+        if (confirmOrderBean.getData().getCard_userable() == 1) {
+            tvCardMoney.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
+                    R.color.dark_gray_22));
+        } else {
+           tvCardMoney.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
+                   R.color.light_gray_93));
+        }
 
         initAddress();
         initCoupon();
+
+        checkboxCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (confirmOrderBean.getData().getCard_userable() == 1) {
+                    if (couponId != null) {
+                        ToastUtils.showToast(ConfirmOrderActivity.this, "优惠券和礼品卡不能同时使用");
+                        checkboxCard.setChecked(false);
+                    }
+                    initCoupon();
+                } else {
+                    checkboxCard.setChecked(false);
+                    ToastUtils.showToast(ConfirmOrderActivity.this, "该订单不支持使用礼品卡");
+                }
+            }
+        });
 
 
         MyLinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(this);
@@ -334,14 +369,13 @@ public class ConfirmOrderActivity extends BaseActivity {
             tvCouponContent.setText("请选择优惠券");
             tvCouponContent.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
                     R.color.dark_gray_22));
-            tvCouponDiscount.setText("- ¥0.00");
-
         } else {
             tvCouponCount.setVisibility(View.GONE);
             tvCouponContent.setText(couponContent);
             tvCouponContent.setTextColor(0xffea3a37);
             tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(discountCoupon));
         }
+        tvCardMoney.setText("礼品卡余额(¥" + cardMoney + ")");
 
         getTotalPrice();
     }
@@ -441,11 +475,30 @@ public class ConfirmOrderActivity extends BaseActivity {
             totalPrice -= discountMoney;
         }
 
+        if (checkboxCard.isChecked()) {
+
+        } else {
+
+        }
+
+        if (checkboxCard.isChecked()) {
+            if (totalPrice > cardMoney) {
+                tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(cardMoney));
+                totalPrice -= cardMoney;
+            } else {
+                tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(totalPrice));
+                totalPrice = 0.01f;
+            }
+        } else {
+            tvCouponDiscount.setText("- ¥0.00");
+        }
+
         tvNeedPay.setText("¥" + new DecimalFormat("#0.00").format(totalPrice));
         return new DecimalFormat("#0.00").format(totalPrice);
     }
 
-    @OnClick({R.id.img_header_back, R.id.rl_select_address, R.id.tv_confirm_order, R.id.ll_select_coupon})
+    @OnClick({R.id.img_header_back, R.id.rl_select_address, R.id.tv_confirm_order,
+            R.id.ll_select_coupon, R.id.ll_select_card})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -479,9 +532,19 @@ public class ConfirmOrderActivity extends BaseActivity {
                 }
                 break;
             case R.id.ll_select_coupon:
-                Intent intent = new Intent(this, SelectCouponActivity.class);
-                intent.putExtra("cart_ids", cartIds);
-                startActivityForResult(intent, 1);
+                if (checkboxCard.isChecked()) {
+                    ToastUtils.showToast(this, "优惠券和礼品卡不能同时使用");
+                } else {
+                    Intent intent = new Intent(this, SelectCouponActivity.class);
+                    intent.putExtra("cart_ids", cartIds);
+                    startActivityForResult(intent, 1);
+                }
+
+                break;
+            case R.id.ll_select_card:
+                Intent intent = new Intent(this, GiftCardActivity.class);
+                intent.putExtra("type", "select");
+                startActivityForResult(intent, 4);
                 break;
         }
     }
@@ -497,6 +560,12 @@ public class ConfirmOrderActivity extends BaseActivity {
         if (couponId != null) {
             map.put("ticket_id", couponId);
         }
+        if (checkboxCard.isChecked()) {
+            map.put("reduce_card", "1");
+        } else {
+            map.put("reduce_card", "0");
+        }
+
         map.put("name", userName);
         map.put("phone", phoneNumber);
         map.put("province", provinceAddress);
@@ -511,7 +580,7 @@ public class ConfirmOrderActivity extends BaseActivity {
         map.put("method", "1");
 
         OkHttpUtils.post()
-                .url(Constant.CONFIRM_BUY)
+                .url(Constant.CONFIRM_ORDER)
                 .params(map)
                 .build()
                 .execute(new StringCallback() {
@@ -584,10 +653,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                         couponContent = data.getStringExtra("coupon_content");
                         couponMinMoney = data.getStringExtra("coupon_min_money");
                         goodsIds = data.getStringExtra("goods_ids");
-
-                        if (!isCouponAvailable()) {
-                            couponId = null;
-                        }
+                        isCouponAvailable();
                         initCoupon();
 
                         break;
@@ -621,6 +687,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                     //收货地址被修改
                     case 4:
                         getAddress(data);
+                        break;
+                }
+                break;
+            case 4:
+                switch (resultCode) {
+                    case 1:
+                        cardMoney = data.getFloatExtra("card_money", 0);
+                        initCoupon();
                         break;
                 }
                 break;

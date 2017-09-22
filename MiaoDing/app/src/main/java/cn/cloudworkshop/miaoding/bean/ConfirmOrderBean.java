@@ -71,12 +71,29 @@ public class ConfirmOrderBean {
          * num : 1
          */
 
-
         private List<CarListBean> car_list;
 
         private int is_first;
         private String first_money;
         private int ticket_num;
+        private String gift_card;
+        private int card_userable;
+
+        public int getCard_userable() {
+            return card_userable;
+        }
+
+        public void setCard_userable(int card_userable) {
+            this.card_userable = card_userable;
+        }
+
+        public String getGift_card() {
+            return gift_card;
+        }
+
+        public void setGift_card(String gift_card) {
+            this.gift_card = gift_card;
+        }
 
         public int getTicket_num() {
             return ticket_num;

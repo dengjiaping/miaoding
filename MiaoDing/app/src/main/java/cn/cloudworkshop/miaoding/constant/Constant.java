@@ -6,8 +6,8 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-        public static final String HOST = "http://139.196.113.61";
-//    public static final String HOST = "http://www.cloudworkshop.cn";
+//        public static final String HOST = "http://139.196.113.61";
+    public static final String HOST = "http://www.cloudworkshop.cn";
 //    public static final String HOST = "http://192.168.1.156";
 
     public static final String APP_ID = "wx07c2173e7686741e";
@@ -23,8 +23,8 @@ public class Constant {
     public static final String TAILOR_INFO = "http://139.196.113.61" + INDEX + "customize";
     public static final String NEW_CUSTOMIZE = HOST + INDEX + "new_customize";
     public static final String VERIFICATION_CODE = HOST + "/index.php/index/login/send_sms";
-    public static final String LOG_IN = HOST + "/index.php/index/login/do_login";
-    public static final String LOG_OUT = HOST + INDEX + "login_out";
+    public static final String LOGIN = HOST + "/index.php/index/login/do_login";
+    public static final String LOGOUT = HOST + INDEX + "login_out";
     public static final String COLLECTION = HOST + INDEX + "my_collect";
     public static final String DRESSING_TEST = HOST + INDEX + "add_user_data";
     public static final String FEED_BACK = HOST + INDEX + "add_suggest";
@@ -37,8 +37,8 @@ public class Constant {
     public static final String APPLY_JOIN = HOST + INDEX + "apply_in";
     public static final String USER_INFO = HOST + INDEX + "user_info";
     public static final String ADD_CART = HOST + INDEX + "add_car";
-    public static final String CONFIRM_ORDER = HOST + INDEX + "buy";
-    public static final String CONFIRM_BUY = HOST + INDEX + "add_order_v4";
+    public static final String CONFIRM_INFO = HOST + INDEX + "buy";
+    public static final String CONFIRM_ORDER = HOST + INDEX + "add_order_v4";
     public static final String CHANGE_INFO = HOST + INDEX + "change_user_info";
     public static final String SHOPPING_CART = HOST + INDEX + "my_car_page";
     public static final String CART_COUNT = HOST + INDEX + "change_car_num";
@@ -88,6 +88,8 @@ public class Constant {
     public static final String HOMEPAGE_LOG = HOST + INDEX + "save_index_log";
     public static final String GOODS_LOG = HOST + INDEX + "save_goods_log";
     public static final String LOGIN_LOG = HOST + INDEX + "save_user_login_log";
+    public static final String GIFT_CARD = HOST + INDEX + "gift_card";
+    public static final String EXCHANGE_CARD = HOST + INDEX + "exchange_gift_card";
 
     //WebView
     public static final String DRESSING_TEST_RESULT = HOST + "/web/jquery-obj/static/web/html/clo.html";

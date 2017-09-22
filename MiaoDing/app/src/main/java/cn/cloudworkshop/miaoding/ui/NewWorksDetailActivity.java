@@ -60,7 +60,7 @@ import okhttp3.Call;
 /**
  * Author：binge on 2017-08-15 15:26
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：作品详情
  */
 public class NewWorksDetailActivity extends BaseActivity {
     @BindView(R.id.img_works_detail1)
@@ -216,7 +216,9 @@ public class NewWorksDetailActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.img_works_collect:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
-                    addCollection();
+                    if (worksBean != null){
+                        addCollection();
+                    }
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
                     login.putExtra("page_name", "收藏");
@@ -228,11 +230,15 @@ public class NewWorksDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_add_cart:
                 index = 2;
-                showWorksType();
+                if (worksBean != null){
+                    showWorksType();
+                }
                 break;
             case R.id.tv_confirm_buy:
                 index = 1;
-                showWorksType();
+                if (worksBean != null){
+                    showWorksType();
+                }
                 break;
             case R.id.img_works_back:
                 finish();

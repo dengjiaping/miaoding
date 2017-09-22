@@ -42,6 +42,7 @@ public class JazzyPagerAdapter extends PagerAdapter {
         return dataList.size();
     }
 
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
@@ -54,7 +55,6 @@ public class JazzyPagerAdapter extends PagerAdapter {
         ImageView imgWorks = (ImageView) view.findViewById(R.id.img_custom_goods);
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_customs_title);
         TextView tvContent = (TextView) view.findViewById(R.id.tv_customs_content);
-
 
         tvTitle.setText(dataList.get(position).getName());
         tvContent.setText(dataList.get(position).getSub_name());
@@ -74,4 +74,9 @@ public class JazzyPagerAdapter extends PagerAdapter {
         View view = (View) object;
         container.removeView(view);
     }
+//
+//    @Override
+//    public int getItemPosition(Object object) {
+//        return POSITION_NONE;
+//    }
 }

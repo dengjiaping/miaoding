@@ -18,13 +18,11 @@ import com.umeng.analytics.MobclickAgent;
 public abstract class BaseFragment extends Fragment {
     private BaseActivity activity;
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.activity = (BaseActivity) context;
     }
-
 
     @Nullable
     @Override

@@ -15,7 +15,7 @@ import me.iwf.photopicker.utils.PermissionsUtils;
  */
 public class PhotoPicker {
 
-  public static final int REQUEST_CODE             = 9162;
+  public static final int REQUEST_CODE             = 233;
 
   public final static int DEFAULT_MAX_COUNT        = 9;
   public final static int DEFAULT_COLUMN_NUMBER    = 3;
@@ -55,7 +55,6 @@ public class PhotoPicker {
     }
 
     /**
-     * Send the Intent with a custom request code
      *
      * @param fragment    Fragment to receive result
      * @param requestCode requestCode for result

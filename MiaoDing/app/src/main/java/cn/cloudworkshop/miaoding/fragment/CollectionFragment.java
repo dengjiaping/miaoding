@@ -71,7 +71,6 @@ public class CollectionFragment extends BaseFragment {
     private Unbinder unbinder;
 
     private List<CollectionBean.DataBean> itemList = new ArrayList<>();
-
     //页数
     private int page = 1;
     //刷新
@@ -153,8 +152,7 @@ public class CollectionFragment extends BaseFragment {
      * 加载视图
      */
     private void initView() {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        rvCollection.setLayoutManager(mLayoutManager);
+        rvCollection.setLayoutManager(new LinearLayoutManager(getActivity()));
         switch (type) {
             case 1:
                 adapter = new CommonAdapter<CollectionBean.DataBean>(getActivity(),

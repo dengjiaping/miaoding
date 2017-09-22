@@ -14,11 +14,12 @@
     <color name="PointerColor">#C9DEEE</color>
     <color name="shadow_color">#2B2B2B</color>
     <color name="default_shadow_color">#50818181</color>
-    <color name="default_fill_color">#ffffff</color>
+    <color name="default_fill_color">#FFFFFF</color>
     <color name="light_gray_3d">#3D3D3D</color>
     <color name="light_gray_93">#939393</color>
     <color name="text_gray_6a">#6A6A6A</color>
     <color name="line_gray_e5">#E5E5E5</color>
+    <color name="light_gray_4f">#4F4F4F</color>
     <color name="light_gray_7a">#7A7A7A</color>
     <color name="light_gray_b9">#B9B9B9</color>
     <color name="light_gray_97">#979797</color>

@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.ReceiveAddressBean;
+import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.AddressPickTask;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
@@ -65,7 +65,7 @@ public class AddAddressActivity extends BaseActivity {
     private String cityAddress;
     //区
     private String countAddress;
-    private ReceiveAddressBean.DataBean dataBean;
+    private DeliveryAddressBean.DataBean dataBean;
 
     //add:添加地址 alert:修改地址
     private String type;
@@ -95,7 +95,7 @@ public class AddAddressActivity extends BaseActivity {
                 break;
             case "alert":
                 tvHeaderTitle.setText("编辑地址");
-                dataBean = (ReceiveAddressBean.DataBean) getIntent().getExtras().getSerializable("alert");
+                dataBean = (DeliveryAddressBean.DataBean) getIntent().getExtras().getSerializable("alert");
 
                 etAddName.setText(dataBean.getName());
                 etAddNumber.setText(dataBean.getPhone());

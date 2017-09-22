@@ -133,7 +133,7 @@ public class CustomGoodsActivity extends BaseActivity {
     private Bitmap bm0;
     private Bitmap bm1;
     private Bitmap bm2;
-
+    //监听banner滑动状态
     private boolean isScrolled;
 
 
@@ -209,11 +209,11 @@ public class CustomGoodsActivity extends BaseActivity {
         bannerGoods.setCanLoop(false);
         bannerGoods.stopTurning();
         bannerGoods.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
-                    @Override
-                    public NetworkImageHolderView createHolder() {
-                        return new NetworkImageHolderView();
-                    }
-                }, customBean.getData().getImg_list())
+            @Override
+            public NetworkImageHolderView createHolder() {
+                return new NetworkImageHolderView();
+            }
+        }, customBean.getData().getImg_list())
                 //设置两个点图片作为翻页指示器
                 .setPageIndicator(new int[]{R.drawable.dot_black, R.drawable.dot_white})
                 //设置指示器的方向
@@ -228,39 +228,41 @@ public class CustomGoodsActivity extends BaseActivity {
             }
         });
 
-//        bannerGoods.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//                switch (state) {
-//                    case ViewPager.SCROLL_STATE_IDLE:
-//                        if (!isScrolled && bannerGoods.getCurrentItem() == customBean.getData()
-//                                .getImg_list().size() - 1) {
+        bannerGoods.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                switch (state) {
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        if (!isScrolled && bannerGoods.getCurrentItem() == customBean.getData()
+                                .getImg_list().size() - 1) {
 //                            scrollContainer.setAutoUp();
-//                        }
-//                        isScrolled = true;
-//                        break;
-//                    case ViewPager.SCROLL_STATE_DRAGGING:
-//                        isScrolled = false;
-//                        break;
-//                    case ViewPager.SCROLL_STATE_SETTLING:
-//                        isScrolled = true;
-//                        break;
-//
-//                }
-//
-//            }
-//        });
+                            Intent intent = new Intent(CustomGoodsActivity.this, GoodsDetailActivity.class);
+                            intent.putExtra("img", customBean.getData().getContent2());
+                            startActivity(intent);
+                        }
+                        isScrolled = true;
+                        break;
+                    case ViewPager.SCROLL_STATE_DRAGGING:
+                        isScrolled = false;
+                        break;
+                    case ViewPager.SCROLL_STATE_SETTLING:
+                        isScrolled = true;
+                        break;
+
+                }
+
+            }
+        });
 
 
         //喜爱人数
@@ -465,7 +467,10 @@ public class CustomGoodsActivity extends BaseActivity {
                     login.putExtra("page_name", "定制");
                     startActivity(login);
                 } else {
-                    selectGoodsPrice();
+                    if (customBean != null) {
+                        selectGoodsPrice();
+                    }
+
 //                    if (customBean.getIs_yuyue() == 1) {
 //                        selectGoodsPrice();
 //                    } else {
@@ -481,16 +486,22 @@ public class CustomGoodsActivity extends BaseActivity {
                     login.putExtra("page_name", "定制");
                     startActivity(login);
                 } else {
-                    selectGoodsType();
+                    if (customBean != null) {
+                        selectGoodsType();
+                    }
                 }
                 break;
             case R.id.img_tailor_back:
-                customGoodsLog();
+                if (customBean != null) {
+                    customGoodsLog();
+                }
                 finish();
                 break;
             case R.id.img_add_like:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
-                    addCollection();
+                    if (customBean != null) {
+                        addCollection();
+                    }
                 } else {
                     Intent login = new Intent(this, LoginActivity.class);
                     login.putExtra("page_name", "收藏");
@@ -508,12 +519,11 @@ public class CustomGoodsActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_all_evaluate:
-                if (customBean.getData().getComment_num() > 0) {
+                if (customBean != null && customBean.getData().getComment_num() > 0) {
                     Intent intent = new Intent(this, AllEvaluationActivity.class);
                     intent.putExtra("goods_id", id);
                     startActivity(intent);
                 }
-
                 break;
         }
     }
@@ -545,7 +555,6 @@ public class CustomGoodsActivity extends BaseActivity {
 
         TextView tvTitle = (TextView) contentView.findViewById(R.id.tv_select_type);
         RecyclerView rvTailor = (RecyclerView) contentView.findViewById(R.id.rv_tailor_price);
-
 
         tvTitle.setText("选择版型");
         rvTailor.setLayoutManager(new LinearLayoutManager(CustomGoodsActivity.this));

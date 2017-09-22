@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.ui;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,10 +26,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.OrderDetailsBean;
@@ -46,11 +48,11 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 import okhttp3.Call;
 
 /**
@@ -97,7 +99,7 @@ public class ChangeOrderActivity extends BaseActivity {
 
     //字数限制
     private int num = 300;
-    private PhotoPickerAdapter photoAdapter;
+    private CommonAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
 
     private String orderId;
@@ -254,19 +256,44 @@ public class ChangeOrderActivity extends BaseActivity {
             }
         });
 
-        photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
         rvSelectPhoto.setLayoutManager(new LinearLayoutManager(ChangeOrderActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
-        rvSelectPhoto.setAdapter(photoAdapter);
-        rvSelectPhoto.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+        photoAdapter = new CommonAdapter<String>(ChangeOrderActivity.this, R.layout.listitem_picker_photo, selectedPhotos) {
             @Override
-            public void onItemClick(View view, int position) {
+            protected void convert(ViewHolder holder, String s, int position) {
+
+                Uri uri = Uri.fromFile(new File(s));
+
+                boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(ChangeOrderActivity.this);
+
+                if (canLoadImage) {
+                    Glide.with(mContext)
+                            .load(uri)
+                            .centerCrop()
+                            .placeholder(me.iwf.photopicker.R.drawable.__picker_ic_photo_black_48dp)
+                            .error(me.iwf.photopicker.R.drawable.__picker_ic_broken_image_black_48dp)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into((ImageView) holder.getView(R.id.img_picker_photo));
+                }
+            }
+        };
+
+        rvSelectPhoto.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 PhotoPreview.builder()
                         .setPhotos(selectedPhotos)
                         .setCurrentItem(position)
                         .start(ChangeOrderActivity.this);
             }
-        }));
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
         tvConsultPhone.setText("客服热线：" + MyApplication.serverPhone);
     }

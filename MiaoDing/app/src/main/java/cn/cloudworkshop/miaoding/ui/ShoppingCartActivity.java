@@ -280,7 +280,6 @@ public class ShoppingCartActivity extends BaseActivity {
                         break;
                 }
 
-
                 holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00")
                         .format(Float.parseFloat(dataBean.getPrice())));
                 holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum() + "");
@@ -394,13 +393,13 @@ public class ShoppingCartActivity extends BaseActivity {
         checkboxAllSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((CheckBox) view).isChecked()) {
-                    ((CheckBox) view).setChecked(true);
+                if (checkboxAllSelect.isChecked()) {
+                    checkboxAllSelect.setChecked(true);
                     for (int i = 0; i < dataList.size(); i++) {
                         dataList.get(i).setIs_select(true);
                     }
                 } else {
-                    ((CheckBox) view).setChecked(false);
+                    checkboxAllSelect.setChecked(false);
                     for (int i = 0; i < dataList.size(); i++) {
                         dataList.get(i).setIs_select(false);
                     }

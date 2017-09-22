@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.ui;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,29 +19,30 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.photopicker.PhotoPickerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
-import cn.cloudworkshop.miaoding.photopicker.RecyclerItemClickListener;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 import okhttp3.Call;
 
 /**
@@ -77,9 +79,9 @@ public class EvaluateActivity extends BaseActivity {
     private String goodsImg;
     private String goodsType;
 
-    private PhotoPickerAdapter photoAdapter;
     private ArrayList<String> selectedPhotos = new ArrayList<>();
     private String imgEncode;
+    private CommonAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,20 +102,47 @@ public class EvaluateActivity extends BaseActivity {
         tvGoodsName.setText(goodsName);
         tvGoodsType.setText(goodsType);
 
-        photoAdapter = new PhotoPickerAdapter(this, selectedPhotos);
-        rvGoodsPicture.setLayoutManager(new LinearLayoutManager(EvaluateActivity.this,
-                LinearLayoutManager.HORIZONTAL, false));
-        rvGoodsPicture.setAdapter(photoAdapter);
-        rvGoodsPicture.addOnItemTouchListener(new RecyclerItemClickListener(this,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        PhotoPreview.builder()
-                                .setPhotos(selectedPhotos)
-                                .setCurrentItem(position)
-                                .start(EvaluateActivity.this);
-                    }
-                }));
+
+
+        rvGoodsPicture.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new CommonAdapter<String>(this, R.layout.listitem_picker_photo, selectedPhotos) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+
+                Uri uri = Uri.fromFile(new File(s));
+
+                boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(EvaluateActivity.this);
+
+                if (canLoadImage) {
+                    Glide.with(mContext)
+                            .load(uri)
+                            .centerCrop()
+                            .placeholder(me.iwf.photopicker.R.drawable.__picker_ic_photo_black_48dp)
+                            .error(me.iwf.photopicker.R.drawable.__picker_ic_broken_image_black_48dp)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into((ImageView) holder.getView(R.id.img_picker_photo));
+                }
+            }
+        };
+
+        rvGoodsPicture.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                PhotoPreview.builder()
+                        .setPhotos(selectedPhotos)
+                        .setCurrentItem(position)
+                        .start(EvaluateActivity.this);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+
+
 
         loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
         loadingView.setIndicatorColor(Color.GRAY);
@@ -246,10 +275,8 @@ public class EvaluateActivity extends BaseActivity {
 
             if (photos != null) {
                 selectedPhotos.addAll(photos);
-                photoAdapter.notifyDataSetChanged();
-
+                adapter.notifyDataSetChanged();
             }
-
         }
     }
 

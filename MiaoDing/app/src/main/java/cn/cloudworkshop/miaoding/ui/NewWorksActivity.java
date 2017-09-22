@@ -513,7 +513,6 @@ public class NewWorksActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-                            LogUtils.log(response);
                             JSONObject jsonObject = new JSONObject(response);
                             if (type == 2) {
                                 String msg = jsonObject.getString("msg");

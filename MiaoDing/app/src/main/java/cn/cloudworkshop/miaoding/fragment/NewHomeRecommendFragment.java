@@ -41,7 +41,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.adapter.SectionedRVAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.HomepageItemBean;
 import cn.cloudworkshop.miaoding.bean.HomepageNewsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
@@ -64,7 +63,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
     LRecyclerView mRecyclerView;
     private Unbinder unbinder;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-    private List<HomepageItemBean> dataList = new ArrayList<>();
+    private List<HomepageNewsBean.DataBean> dataList = new ArrayList<>();
     private HomepageNewsBean homepageBean;
     //当前页
     private int page = 1;
@@ -109,11 +108,9 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                             for (int i = 0; i < homepageBean.getData().size(); i++) {
                                 for (int j = 0; j < homepageBean.getData().get(i).size(); j++) {
                                     HomepageNewsBean.DataBean dataBean = homepageBean.getData().get(i).get(j);
-                                    dataList.add(new HomepageItemBean(Constant.HOST + dataBean.getImg(),
-                                            Constant.HOMEPAGE_INFO + "?content=1&id=" + dataBean.getId(),
-                                            dataBean.getP_time(), dataBean.getImg_list(),
-                                            dataBean.getTitle(), dataBean.getTag_name(),
-                                            dataBean.getSub_title(), dataBean.getId()));
+                                    dataBean.setImg(Constant.HOST + dataBean.getImg());
+                                    dataBean.setLink(Constant.HOMEPAGE_INFO + "?content=1&id=" + dataBean.getId());
+                                    dataList.add(dataBean);
                                 }
                             }
 
@@ -144,28 +141,27 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
     protected void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        CommonAdapter<HomepageItemBean> adapter = new CommonAdapter<HomepageItemBean>(getActivity(),
-                R.layout.listitem_homepage_new, dataList) {
+        CommonAdapter<HomepageNewsBean.DataBean> adapter = new CommonAdapter<HomepageNewsBean.DataBean>
+                (getActivity(), R.layout.listitem_homepage_new, dataList) {
             @Override
-            protected void convert(ViewHolder holder, final HomepageItemBean homepageItemBean, final int position) {
-
+            protected void convert(ViewHolder holder, final HomepageNewsBean.DataBean dataBean, int position) {
                 Glide.with(getActivity())
-                        .load(homepageItemBean.img)
+                        .load(dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_home_item));
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        homepageLog(homepageItemBean.type);
+                        homepageLog(dataBean.getTag_name());
 
                         Intent intent = new Intent(getActivity(), HomepageDetailActivity.class);
-                        intent.putExtra("url", homepageItemBean.link);
-                        intent.putExtra("title", homepageItemBean.title);
-                        intent.putExtra("content", homepageItemBean.content);
-                        intent.putExtra("img_url", homepageItemBean.img);
+                        intent.putExtra("url", dataBean.getLink());
+                        intent.putExtra("title", dataBean.getTitle());
+                        intent.putExtra("content", dataBean.getSub_title());
+                        intent.putExtra("img_url", dataBean.getImg());
                         intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" +
-                                homepageItemBean.id);
+                                dataBean.getId());
                         startActivity(intent);
                     }
                 });
@@ -329,7 +325,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
 
     @Override
     public String getSectionTitle(Object object) {
-        return ((HomepageItemBean) object).time;
+        return ((HomepageNewsBean.DataBean) object).getP_time();
     }
 
 
