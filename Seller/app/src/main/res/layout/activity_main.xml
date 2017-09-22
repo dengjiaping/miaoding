@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    tools:context="cn.cloudworkshop.seller.ui.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="今日订单"
+                android:textColor="@color/light_gray_3d"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_order_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="@color/line_gray_e5"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="今日营业额"
+                android:textColor="@color/light_gray_3d"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_turnover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/dark_gray_22"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:stretchColumns="0,1">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_order"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_order"
+                android:text="订单管理"/>
+            <TextView
+                android:id="@+id/tv_wallet"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_wallet"
+                android:text="钱包"/>
+
+            <TextView
+                android:id="@+id/tv_goods"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_goods"
+                android:text="商品管理"
+                android:visibility="gone"/>
+
+        </TableRow>
+
+        <TableRow
+            android:paddingTop="30dp">
+
+            <TextView
+                android:id="@+id/tv_stock"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_stock"
+                android:text="库存查询"/>
+
+            <TextView
+                android:id="@+id/tv_distribute"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_distribute"
+                android:text="分销管理"/>
+
+            <TextView
+                android:id="@+id/tv_set"
+                style="@style/table_row"
+                android:drawableTop="@mipmap/icon_set"
+                android:text="设置"
+                android:visibility="gone"/>
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/tv_log_out"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_black_bg"
+        android:gravity="center"
+        android:text="退出"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+
+</RelativeLayout>
