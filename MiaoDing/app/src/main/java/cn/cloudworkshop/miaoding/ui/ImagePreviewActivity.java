@@ -73,12 +73,12 @@ public class ImagePreviewActivity extends BaseActivity {
             public Object instantiateItem(ViewGroup container, final int position) {
                 View view = LayoutInflater.from(ImagePreviewActivity.this)
                         .inflate(R.layout.viewpager_item_preview, null);
-                final PhotoView img = (PhotoView) view.findViewById(R.id.img_preview);
+                final PhotoView photoView = (PhotoView) view.findViewById(R.id.img_preview);
                 Glide.with(ImagePreviewActivity.this)
                         .load(Constant.HOST + imgList.get(position))
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(img);
-                PhotoViewAttacher mAttach = new PhotoViewAttacher(img);
+                        .into(photoView);
+                PhotoViewAttacher mAttach = new PhotoViewAttacher(photoView);
                 mAttach.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                     @Override
                     public void onViewTap(View view, float x, float y) {

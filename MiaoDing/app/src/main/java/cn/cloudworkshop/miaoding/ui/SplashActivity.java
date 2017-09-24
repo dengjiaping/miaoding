@@ -25,7 +25,6 @@ public class SplashActivity extends BaseActivity{
     ImageView imgSplash;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +33,6 @@ public class SplashActivity extends BaseActivity{
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-//        imgSplash.setImageResource(R.mipmap.icon_splash_bg);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -43,7 +41,6 @@ public class SplashActivity extends BaseActivity{
                 finish();
             }
         }, 2500);
-
 
 //        //首次进入，播放视频
 //        boolean user_first = SharedPreferencesUtils.getBoolean(this, "first", true);

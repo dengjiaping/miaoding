@@ -86,7 +86,7 @@ public class TailorActivity extends BaseActivity {
     @BindView(R.id.img_tailor_reset)
     ImageView imgReset;
     @BindView(R.id.img_tailor_guide)
-    ImageView imgTailorGuide;
+    ImageView imgGuide;
 
 
     //部件
@@ -175,7 +175,6 @@ public class TailorActivity extends BaseActivity {
         classifyId = bundle.getInt("classify_id");
         logId = bundle.getString("log_id");
         goodsTime = bundle.getLong("goods_time");
-
         enterTime = DateUtils.getCurrentTime();
     }
 
@@ -256,8 +255,6 @@ public class TailorActivity extends BaseActivity {
                                 rlBackTailor.setVisibility(View.GONE);
                                 break;
                         }
-
-
                     }
                 }
             }
@@ -366,11 +363,11 @@ public class TailorActivity extends BaseActivity {
                 rvTailorItem.setAdapter(itemAdapter);
 
                 if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null) {
-                    imgTailorGuide.setVisibility(View.VISIBLE);
+                    imgGuide.setVisibility(View.VISIBLE);
                     Glide.with(TailorActivity.this)
                             .load(Constant.HOST + guideBean.getData().getImg_urls().get(1))
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(imgTailorGuide);
+                            .into(imgGuide);
                     isFirstEntry = false;
                     SharedPreferencesUtils.saveBoolean(TailorActivity.this, "tailor_guide", false);
                 }
@@ -730,12 +727,13 @@ public class TailorActivity extends BaseActivity {
                             guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
                             if (guideBean.getData().getImg_urls() != null && guideBean.getData()
                                     .getImg_urls().size() > 0) {
-                                imgTailorGuide.setVisibility(View.VISIBLE);
+                                imgGuide.setVisibility(View.VISIBLE);
                                 Glide.with(TailorActivity.this)
                                         .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                        .into(imgTailorGuide);
+                                        .into(imgGuide);
                             }
+
                         }
                     });
         }
@@ -818,7 +816,7 @@ public class TailorActivity extends BaseActivity {
                 resetTailor();
                 break;
             case R.id.img_tailor_guide:
-                imgTailorGuide.setVisibility(View.GONE);
+                imgGuide.setVisibility(View.GONE);
                 break;
 
         }

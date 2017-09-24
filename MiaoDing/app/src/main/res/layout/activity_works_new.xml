@@ -11,10 +11,11 @@
         android:layout_height="match_parent">
     </cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager>
 
-    <View
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/icon_works_mask"/>
+        android:src="@mipmap/icon_works_mask"
+        android:scaleType="centerCrop"/>
 
     <cn.cloudworkshop.miaoding.view.TyperTextView
 

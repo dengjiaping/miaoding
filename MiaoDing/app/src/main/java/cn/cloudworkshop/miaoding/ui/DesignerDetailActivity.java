@@ -67,7 +67,6 @@ public class DesignerDetailActivity extends BaseActivity {
 
         getData();
         initData();
-
     }
 
 
@@ -75,6 +74,9 @@ public class DesignerDetailActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
     }
 
+    /**
+     * 加载数据
+     */
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.DESIGNER_DETAILS)
@@ -101,10 +103,12 @@ public class DesignerDetailActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 加载视图
+     */
     private void initView() {
-
         Glide.with(getApplicationContext())
-                .load(Constant.HOST+designerBean.getData().getAvatar())
+                .load(Constant.HOST + designerBean.getData().getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgAvatar);
         tvName.setText(designerBean.getData().getName());

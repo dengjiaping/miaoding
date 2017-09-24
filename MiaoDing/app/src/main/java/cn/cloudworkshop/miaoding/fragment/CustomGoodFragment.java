@@ -38,15 +38,12 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
 import cn.cloudworkshop.miaoding.bean.MemberTabBean;
-import cn.cloudworkshop.miaoding.bean.ShoppingCartBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
-import cn.cloudworkshop.miaoding.ui.GoodsDetailActivity;
 import cn.cloudworkshop.miaoding.ui.ScanCodeActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -178,7 +175,6 @@ public class CustomGoodFragment extends BaseFragment {
                                 dataList.clear();
                             }
                             dataList.addAll(listBean.getData().getData());
-                            LogUtils.log(isLoadMore+","+isSelectType);
                             if (isLoadMore) {
                                 adapter.notifyDataSetChanged();
                                 vpGoods.setCurrentItem(currentItem + 1);
@@ -191,7 +187,6 @@ public class CustomGoodFragment extends BaseFragment {
                             } else {
                                 initView();
                             }
-
                         } else {
                             if (page != 1) {
                                 ToastUtils.showToast(getActivity(), "已经是最后一页了");

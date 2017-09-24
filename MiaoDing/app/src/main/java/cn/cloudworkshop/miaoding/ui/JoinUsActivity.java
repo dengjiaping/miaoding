@@ -43,9 +43,7 @@ public class JoinUsActivity extends BaseActivity {
     ImageView imgJoinUs;
     private JoinUsBean joinUsBean;
 
-    /**
-     * 是否已申请入驻
-     */
+    //是否已申请入驻
     private int isApply = -1;
 
     @Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="526dp"
+                android:layout_height="600dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="10dp">
@@ -9,12 +9,12 @@
     <ImageView
         android:id="@+id/img_designer"
         android:layout_width="match_parent"
-        android:layout_height="526dp"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="526dp"
+        android:layout_height="match_parent"
         android:background="@drawable/color_gradient"/>
 
 
@@ -37,6 +37,5 @@
         android:layout_marginLeft="14dp"
         android:textColor="@android:color/white"
         android:textSize="22sp"/>
-
 
 </RelativeLayout>
