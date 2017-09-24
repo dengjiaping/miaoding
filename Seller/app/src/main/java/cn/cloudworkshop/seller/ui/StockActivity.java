@@ -166,9 +166,9 @@ public class StockActivity extends BaseActivity {
             mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    stockBean.getList().getData().get(position).setIntroduce("wwwwdd");
-                    stockBean.getList().getData().get(position).setImg_max("/uploads/img/2017061511061897981009.jpg");
-                    stockBean.getList().getData().get(position).setImg_min("/uploads/img/2017061511061897981009.jpg");
+                    stockBean.getList().getData().get(position).setIntroduce("");
+                    stockBean.getList().getData().get(position).setImg_max("");
+                    stockBean.getList().getData().get(position).setImg_min("");
                     Intent intent = new Intent(StockActivity.this, AddStockActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "edit");

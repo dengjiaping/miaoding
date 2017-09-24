@@ -44,8 +44,7 @@
                 android:singleLine="true"
                 android:textColor="@color/dark_gray_22"
                 android:textColorHint="#929292"
-                android:textSize="14sp"
-                android:text="18916958857"/>
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -89,8 +88,7 @@
                     android:singleLine="true"
                     android:textColor="@color/dark_gray_22"
                     android:textColorHint="#929292"
-                    android:textSize="14sp"
-                    android:text="18916958857"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
         </LinearLayout>
