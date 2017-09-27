@@ -18,7 +18,7 @@
             android:id="@+id/img_recommend_designer"
             android:layout_width="match_parent"
             android:layout_height="106.7dp"
-            app:actualImageScaleType="centerCrop"
+            android:scaleType="centerCrop"
             app:roundAsCircle="false"
             app:roundedCornerRadius="3dp"/>
 
