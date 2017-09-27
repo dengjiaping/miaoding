@@ -30,7 +30,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_my_order"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
     </android.support.v4.view.ViewPager>
 
 

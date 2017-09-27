@@ -37,6 +37,7 @@ import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
@@ -132,12 +133,16 @@ public class ConfirmOrderActivity extends BaseActivity {
     private String goodsIds;
     //优惠券数量
     private int couponNum;
-    //显示优惠金额
-    private float discountCoupon = 0.00f;
-    //实际优惠金额
-    private float discountMoney = 0.00f;
+    //显示优惠券优惠金额
+    private float displayCoupon = 0.00f;
+    //实际优惠券优惠金额
+    private float actualCoupon = 0.00f;
     //礼品卡金额
     private float cardMoney = 0.00f;
+    //显示礼品卡优惠金额
+    private float displayCard = 0.00f;
+    //实际礼品卡优惠金额
+    private float actualCard = 0.00f;
     //商品adapter
     private CommonAdapter<ConfirmOrderBean.DataBean.CarListBean> adapter;
 
@@ -251,8 +256,8 @@ public class ConfirmOrderActivity extends BaseActivity {
             tvCardMoney.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
                     R.color.dark_gray_22));
         } else {
-           tvCardMoney.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
-                   R.color.light_gray_93));
+            tvCardMoney.setTextColor(ContextCompat.getColor(ConfirmOrderActivity.this,
+                    R.color.light_gray_93));
         }
 
         initAddress();
@@ -266,6 +271,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                         ToastUtils.showToast(ConfirmOrderActivity.this, "优惠券和礼品卡不能同时使用");
                         checkboxCard.setChecked(false);
                     }
+                    discountCard();
                     initCoupon();
                 } else {
                     checkboxCard.setChecked(false);
@@ -326,7 +332,6 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         };
         rvConfirmOrder.setAdapter(adapter);
-
     }
 
     /**
@@ -360,7 +365,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 
     /**
-     * 是否选择优惠券
+     * 是否选择优惠券或礼品卡
      */
     private void initCoupon() {
         if (couponId == null) {
@@ -373,11 +378,35 @@ public class ConfirmOrderActivity extends BaseActivity {
             tvCouponCount.setVisibility(View.GONE);
             tvCouponContent.setText(couponContent);
             tvCouponContent.setTextColor(0xffea3a37);
-            tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(discountCoupon));
         }
-        tvCardMoney.setText("礼品卡余额(¥" + cardMoney + ")");
+        tvCardMoney.setText("礼品卡余额(¥" + DisplayUtils.decimalFormat(cardMoney) + ")");
 
         getTotalPrice();
+    }
+
+    /**
+     * 礼品卡优惠金额
+     */
+    private void discountCard() {
+        float maxPrice = 0.00f;
+        int count = 0;
+        //该商品是否可以使用礼品卡
+        for (int i = 0; i < confirmOrderBean.getData().getCar_list().size(); i++) {
+            if (confirmOrderBean.getData().getCar_list().get(i).getCan_use_card() == 1) {
+                float price = Float.parseFloat(confirmOrderBean.getData().getCar_list().get(i).getPrice());
+                int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
+                maxPrice += price * num;
+                count++;
+            }
+        }
+
+        if (cardMoney <= (maxPrice - 0.01 * count)) {
+            displayCard = cardMoney;
+            actualCard = cardMoney;
+        } else {
+            displayCard = maxPrice;
+            actualCard = (float) (maxPrice - 0.01 * count);
+        }
     }
 
 
@@ -406,16 +435,20 @@ public class ConfirmOrderActivity extends BaseActivity {
                             if (code == 1) {
                                 confirmOrderBean.getData().getCar_list().get(position).setNum(currentCount);
                                 adapter.notifyDataSetChanged();
+
                                 if (couponId != null) {
                                     if (!isCouponAvailable()) {
                                         couponId = null;
                                     }
                                     initCoupon();
                                 } else {
+                                    if (checkboxCard.isChecked()) {
+                                        discountCard();
+                                    }
                                     canCouponSelect = true;
                                     initData();
                                 }
-                                getTotalPrice();
+
                             } else {
                                 ToastUtils.showToast(ConfirmOrderActivity.this, "库存不足");
                             }
@@ -447,18 +480,17 @@ public class ConfirmOrderActivity extends BaseActivity {
         //单种商品最高总价格
         if (maxPrice >= Float.parseFloat(couponMinMoney)) {
             if (Float.parseFloat(couponMoney) <= (maxPrice - 0.01 * count)) {
-                discountCoupon = Float.parseFloat(couponMoney);
-                discountMoney = Float.parseFloat(couponMoney);
+                displayCoupon = Float.parseFloat(couponMoney);
+                actualCoupon = Float.parseFloat(couponMoney);
             } else {
-                discountCoupon = maxPrice;
-                discountMoney = (float) (maxPrice - 0.01 * count);
+                displayCoupon = maxPrice;
+                actualCoupon = (float) (maxPrice - 0.01 * count);
             }
             return true;
         } else {
             return false;
         }
     }
-
 
     /**
      * 获取总价格
@@ -470,31 +502,20 @@ public class ConfirmOrderActivity extends BaseActivity {
             int num = confirmOrderBean.getData().getCar_list().get(i).getNum();
             totalPrice += price * num;
         }
-        tvGoodsTotal.setText("¥" + new DecimalFormat("#0.00").format(totalPrice));
+        tvGoodsTotal.setText("¥" + DisplayUtils.decimalFormat(totalPrice));
+
         if (couponId != null) {
-            totalPrice -= discountMoney;
-        }
-
-        if (checkboxCard.isChecked()) {
-
-        } else {
-
-        }
-
-        if (checkboxCard.isChecked()) {
-            if (totalPrice > cardMoney) {
-                tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(cardMoney));
-                totalPrice -= cardMoney;
-            } else {
-                tvCouponDiscount.setText("- ¥" + new DecimalFormat("#0.00").format(totalPrice));
-                totalPrice = 0.01f;
-            }
-        } else {
+            totalPrice -= actualCoupon;
+            tvCouponDiscount.setText("- ¥" + DisplayUtils.decimalFormat(displayCoupon));
+        } else if (checkboxCard.isChecked()) {
+            totalPrice -= actualCard;
+            tvCouponDiscount.setText("- ¥" + DisplayUtils.decimalFormat(displayCard));
+        } else if (!checkboxCard.isChecked() && couponId == null) {
             tvCouponDiscount.setText("- ¥0.00");
         }
 
-        tvNeedPay.setText("¥" + new DecimalFormat("#0.00").format(totalPrice));
-        return new DecimalFormat("#0.00").format(totalPrice);
+        tvNeedPay.setText("¥" + DisplayUtils.decimalFormat(totalPrice));
+        return DisplayUtils.decimalFormat(totalPrice);
     }
 
     @OnClick({R.id.img_header_back, R.id.rl_select_address, R.id.tv_confirm_order,
@@ -655,7 +676,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                         goodsIds = data.getStringExtra("goods_ids");
                         isCouponAvailable();
                         initCoupon();
-
                         break;
                 }
                 break;
@@ -694,6 +714,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 switch (resultCode) {
                     case 1:
                         cardMoney = data.getFloatExtra("card_money", 0);
+                        discountCard();
                         initCoupon();
                         break;
                 }

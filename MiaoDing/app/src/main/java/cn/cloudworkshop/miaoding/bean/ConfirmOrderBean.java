@@ -246,6 +246,15 @@ public class ConfirmOrderBean {
             private String size_content;
             private int id;
             private int goods_id;
+            private int can_use_card;
+
+            public int getCan_use_card() {
+                return can_use_card;
+            }
+
+            public void setCan_use_card(int can_use_card) {
+                this.can_use_card = can_use_card;
+            }
 
             public int getGoods_id() {
                 return goods_id;

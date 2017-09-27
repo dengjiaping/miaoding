@@ -74,9 +74,5 @@ public class JazzyPagerAdapter extends PagerAdapter {
         View view = (View) object;
         container.removeView(view);
     }
-//
-//    @Override
-//    public int getItemPosition(Object object) {
-//        return POSITION_NONE;
-//    }
+
 }

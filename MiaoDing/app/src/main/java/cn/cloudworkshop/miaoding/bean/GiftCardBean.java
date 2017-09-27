@@ -47,6 +47,15 @@ public class GiftCardBean {
          */
 
         private String gift_card;
+        private String card_rule;
+
+        public String getCard_rule() {
+            return card_rule;
+        }
+
+        public void setCard_rule(String card_rule) {
+            this.card_rule = card_rule;
+        }
 
         public String getGift_card() {
             return gift_card;

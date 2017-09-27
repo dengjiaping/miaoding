@@ -53,12 +53,12 @@ public class LoginActivity extends BaseActivity {
     TextView tvVerificationCode;
     @BindView(R.id.et_user_password)
     EditText etUserPassword;
-    @BindView(R.id.img_login_bg)
-    ImageView imgLoginBg;
     @BindView(R.id.tv_user_agreement)
     TextView tvUserAgreement;
     @BindView(R.id.img_login)
     ImageView imgLogin;
+    @BindView(R.id.img_login_bg)
+    ImageView bgLogin;
 
     //验证码token
     private String msgToken;
@@ -131,10 +131,12 @@ public class LoginActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        Glide.with(getApplicationContext())
-                .load(Constant.HOST + MyApplication.loginBg)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgLoginBg);
+        if (MyApplication.loginBg != null){
+            Glide.with(this)
+                    .load(Constant.HOST + MyApplication.loginBg)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(bgLogin);
+        }
 
         imgLogin.setEnabled(false);
         etUserName.addTextChangedListener(new TextWatcher() {
@@ -399,5 +401,9 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(myRunnable);
+    }
+
+    @OnClick(R.id.img_login_bg)
+    public void onViewClicked() {
     }
 }

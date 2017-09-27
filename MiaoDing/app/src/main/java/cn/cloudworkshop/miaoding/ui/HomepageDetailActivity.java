@@ -138,7 +138,7 @@ public class HomepageDetailActivity extends BaseActivity {
             if (split[1].equals("1")) {
                 intent = new Intent(this, CustomGoodsActivity.class);
             } else {
-                intent = new Intent(this, NewWorksDetailActivity.class);
+                intent = new Intent(this, NewWorksActivity.class);
             }
             intent.putExtra("id", split[0]);
             startActivity(intent);

@@ -266,7 +266,7 @@ public class NewWorksActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_goods_share:
-                if (worksBean != null) {
+                if (worksBean != null && worksBean.getData() != null) {
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
@@ -280,7 +280,7 @@ public class NewWorksActivity extends BaseActivity {
      * 商品规格
      */
     private void showWorksType() {
-        if (worksBean != null) {
+        if (worksBean != null && worksBean.getData() != null) {
             View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_type, null);
             mPopupWindow = new PopupWindow(contentView,
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

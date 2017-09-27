@@ -48,6 +48,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.adapter.MyPagerAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.AppIconBean;
@@ -56,6 +57,7 @@ import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.CustomGoodFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
+import cn.cloudworkshop.miaoding.fragment.GoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
@@ -272,10 +274,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         @Override
                         public void onResponse(String response, int id) {
                             final AppIndexBean appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
-                            MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
                             MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
                             MyApplication.cobbler_banner = appIndexBean.getData().getCobbler_banner();
+                            MyApplication.loginBg = appIndexBean.getData().getLogin_img();
                             if (appIndexBean.getData().getVersion().getAndroid() != null &&
                                     Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
                                             .getVersion()) > getVersionCode()) {
@@ -368,8 +370,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      */
     public void initView() {
         fragmentList.add(NewHomeRecommendFragment.newInstance());
-        fragmentList.add(CustomGoodFragment.newInstance());
-        fragmentList.add(NewDesignerWorkFragment.newInstance());
+        fragmentList.add(GoodsFragment.newInstance());
+        fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
         fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());

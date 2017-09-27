@@ -24,7 +24,7 @@
             android:layout_marginTop="60dp"
             android:background="@drawable/text_white_4dp"
             android:gravity="center_vertical"
-            android:hint="请输入序列号"
+            android:hint="请输入密码"
             android:maxLength="20"
             android:paddingLeft="6dp"
             android:singleLine="true"

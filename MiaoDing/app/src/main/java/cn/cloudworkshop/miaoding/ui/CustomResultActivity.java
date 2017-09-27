@@ -248,6 +248,7 @@ public class CustomResultActivity extends BaseActivity {
                 rgsTailorPosition.setVisibility(View.GONE);
                 rlTailorPosition.setVisibility(View.GONE);
                 imgDefaultItem.setVisibility(View.VISIBLE);
+
                 Glide.with(getApplicationContext())
                         .load(Constant.HOST + customBean.getDefault_img())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

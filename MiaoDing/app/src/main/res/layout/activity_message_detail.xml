@@ -12,7 +12,8 @@
         android:id="@+id/rv_message_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="44dp">
+        android:layout_marginTop="44dp"
+        android:overScrollMode="never">
     </android.support.v7.widget.RecyclerView>
 
     <TextView

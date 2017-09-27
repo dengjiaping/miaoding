@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -31,6 +34,8 @@ import cn.cloudworkshop.miaoding.bean.GiftCardBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -51,6 +56,10 @@ public class GiftCardActivity extends BaseActivity {
     ImageView imgNullCard;
     @BindView(R.id.tv_add_card)
     TextView tvAddCard;
+    @BindView(R.id.img_card_rule)
+    ImageView imgCardRule;
+    @BindView(R.id.sv_card_rule)
+    ScrollView svCardRule;
     private GiftCardBean cardBean;
     private String type;
 
@@ -76,13 +85,17 @@ public class GiftCardActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        LoadErrorUtils.showDialog(GiftCardActivity.this, new LoadErrorUtils.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                initData();
+                            }
+                        });
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         cardBean = GsonUtils.jsonToBean(response, GiftCardBean.class);
-
                         if (cardBean.getInfo() != null) {
                             initView();
                         }
@@ -91,7 +104,19 @@ public class GiftCardActivity extends BaseActivity {
     }
 
     private void initView() {
-        tvCardRemain.setText("¥" + new DecimalFormat("0.00").format(Float.parseFloat(cardBean.getInfo().getGift_card())));
+        float cardMoney = Float.parseFloat(cardBean.getInfo().getGift_card());
+        tvCardRemain.setText("¥" + DisplayUtils.decimalFormat(cardMoney));
+        if (cardMoney > 0) {
+            imgNullCard.setVisibility(View.GONE);
+            svCardRule.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(Constant.HOST + cardBean.getInfo().getCard_rule())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imgCardRule);
+        } else {
+            imgNullCard.setVisibility(View.VISIBLE);
+            svCardRule.setVisibility(View.GONE);
+        }
     }
 
     @OnClick({R.id.img_header_back, R.id.tv_add_card})
@@ -140,7 +165,7 @@ public class GiftCardActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (TextUtils.isEmpty(etNumber.getText().toString().trim())) {
-                    ToastUtils.showToast(GiftCardActivity.this, "请输入序列号");
+                    ToastUtils.showToast(GiftCardActivity.this, "请输入密码");
                 } else {
                     exchangeCard(etNumber.getText().toString());
                     mPopupWindow.dismiss();

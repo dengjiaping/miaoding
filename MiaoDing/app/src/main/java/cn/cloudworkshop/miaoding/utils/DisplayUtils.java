@@ -9,6 +9,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+import java.text.DecimalFormat;
+
 /**
  * Author：binge on 2017-04-07 13:24
  * Email：1993911441@qq.com
@@ -65,6 +67,7 @@ public class DisplayUtils {
 
     /**
      * 设置屏幕的背景透明度
+     *
      * @param
      */
     public static void setBackgroundAlpha(Context mContext, boolean isShow) {
@@ -89,4 +92,10 @@ public class DisplayUtils {
         return resourceId > 0 ? activity.getResources().getDimensionPixelSize(resourceId) : 0;
     }
 
+    /**
+     * @return 保留两位小数
+     */
+    public static String decimalFormat(Float value) {
+        return new DecimalFormat("0.00").format(value);
+    }
 }

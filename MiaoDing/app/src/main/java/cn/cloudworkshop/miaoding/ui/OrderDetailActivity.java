@@ -137,7 +137,7 @@ public class OrderDetailActivity extends BaseActivity {
         recLen = orderBean.getData().getLast_time() + 1;
         switch (orderBean.getData().getStatus()) {
             case 1:
-                if (task == null){
+                if (task == null) {
                     task = new MyTimerTask();
                     timer.schedule(task, 1000, 1000);
                 }
@@ -187,8 +187,6 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
         }
         tvOrderNum.setText(orderBean.getData().getOrder_no());
-        tvOrderNeedPay.setTypeface(DisplayUtils.setTextType(this));
-        tvOrderNeedPay.setText("¥" + orderBean.getData().getMoney());
         tvOrderUserName.setText(orderBean.getData().getName());
         tvOrderUserPhone.setText(orderBean.getData().getPhone());
         tvOrderUserAddress.setText(orderBean.getData().getProvince()
@@ -196,8 +194,12 @@ public class OrderDetailActivity extends BaseActivity {
                 + orderBean.getData().getArea()
                 + orderBean.getData().getAddress());
 
-        tvOrderTotalMoney.setText("¥" + new DecimalFormat("#0.00").format(getTotalMoney()));
-        tvOrderDiscount.setText("¥" + orderBean.getData().getTicket_money());
+        tvOrderNeedPay.setTypeface(DisplayUtils.setTextType(this));
+        tvOrderNeedPay.setText("¥" + DisplayUtils.decimalFormat(Float.parseFloat(orderBean.getData()
+                .getMoney())));
+        tvOrderTotalMoney.setText("¥" + DisplayUtils.decimalFormat(getTotalMoney()));
+        tvOrderDiscount.setText("¥" + DisplayUtils.decimalFormat(Float.parseFloat(orderBean.getData()
+                .getTicket_money())));
         switch (orderBean.getData().getPay_type()) {
             case 0:
                 tvOrderPayStyle.setText("待付款");

@@ -26,7 +26,8 @@
         android:layout_above="@id/tv_apply_join"
         android:layout_marginTop="44dp"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
 
         <ImageView

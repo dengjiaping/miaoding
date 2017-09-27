@@ -84,7 +84,8 @@
         android:layout_below="@id/rl_current_address"
         android:layout_above="@id/tv_submit_appointment"
         android:layout_marginBottom="15dp"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:overScrollMode="never">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

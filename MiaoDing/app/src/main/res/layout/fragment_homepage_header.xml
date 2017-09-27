@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp">
+        android:layout_marginRight="9dp"
+        android:overScrollMode="never">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

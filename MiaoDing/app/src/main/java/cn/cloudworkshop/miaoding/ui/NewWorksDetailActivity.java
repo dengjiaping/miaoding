@@ -216,7 +216,7 @@ public class NewWorksDetailActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.img_works_collect:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
-                    if (worksBean != null){
+                    if (worksBean != null && worksBean.getData() != null) {
                         addCollection();
                     }
                 } else {
@@ -230,13 +230,13 @@ public class NewWorksDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_add_cart:
                 index = 2;
-                if (worksBean != null){
+                if (worksBean != null) {
                     showWorksType();
                 }
                 break;
             case R.id.tv_confirm_buy:
                 index = 1;
-                if (worksBean != null){
+                if (worksBean != null && worksBean.getData() != null) {
                     showWorksType();
                 }
                 break;
@@ -244,7 +244,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_works_share:
-                if (worksBean != null) {
+                if (worksBean != null && worksBean.getData() != null) {
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
@@ -258,7 +258,7 @@ public class NewWorksDetailActivity extends BaseActivity {
      * 商品规格
      */
     private void showWorksType() {
-        if (worksBean != null) {
+        if (worksBean != null && worksBean.getData() != null) {
             View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_type, null);
             mPopupWindow = new PopupWindow(contentView,
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -267,7 +267,7 @@ public class NewWorksDetailActivity extends BaseActivity {
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-            if (!isFinishing()){
+            if (!isFinishing()) {
                 mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
             }
 

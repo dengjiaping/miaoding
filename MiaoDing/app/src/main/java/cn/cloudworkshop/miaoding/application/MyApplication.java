@@ -36,10 +36,10 @@ public class MyApplication extends Application {
     public static String updateUrl;
     //更新内容
     public static String updateContent;
-    //登录背景
-    public static String loginBg;
     //客服电话
     public static String serverPhone;
+    //登录背景图
+    public static String loginBg;
     //用户协议
     public static String userAgreement;
     //量体协议

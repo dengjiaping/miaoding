@@ -176,7 +176,7 @@ public class SinglePicker<T> extends WheelPicker {
 
     private String formatToString(T item) {
         if (item instanceof Float || item instanceof Double) {
-            return new DecimalFormat("0.00").format(item);
+            return new DecimalFormat("#.00").format(item);
         }
         return item.toString();
     }

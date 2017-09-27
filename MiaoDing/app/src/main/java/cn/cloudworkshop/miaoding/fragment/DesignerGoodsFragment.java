@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -70,10 +71,9 @@ public class DesignerGoodsFragment extends BaseFragment {
                 @Override
                 protected void convert(ViewHolder holder, DesignerInfoBean.DataBean.GoodsListBean
                         goodsListBean, int position) {
-                    Glide.with(getActivity())
-                            .load(Constant.HOST + goodsListBean.getThumb())
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into((ImageView) holder.getView(R.id.img_designer));
+                    SimpleDraweeView imgWorks = holder.getView(R.id.img_designer);
+                    imgWorks.setImageURI(Constant.HOST + goodsListBean.getThumb());
+
                     TextView tvTitle = holder.getView(R.id.tv_works_title);
                     tvTitle.setTypeface(DisplayUtils.setTextType(getActivity()));
                     tvTitle.setText(goodsListBean.getName());

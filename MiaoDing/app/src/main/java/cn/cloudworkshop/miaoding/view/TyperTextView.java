@@ -32,7 +32,7 @@ public class TyperTextView extends TextView {
     public TyperTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TyperTextView);
-        typerSpeed = typedArray.getInt(R.styleable.TyperTextView_typerSpeed, 30);
+        typerSpeed = typedArray.getInt(R.styleable.TyperTextView_typerSpeed, 40);
         charIncrease = typedArray.getInt(R.styleable.TyperTextView_charIncrease, 1);
         typedArray.recycle();
         mText = getText();

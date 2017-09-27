@@ -2,14 +2,14 @@ package cn.cloudworkshop.miaoding.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +18,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.FlipAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
-import cn.cloudworkshop.miaoding.bean.DesignerWorksBean;
-import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.flipview.FlipView;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import okhttp3.Call;
+import cn.cloudworkshop.miaoding.bean.MemberTabBean;
+import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
+import cn.cloudworkshop.miaoding.utils.FragmentUtils;
+import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 
 /**
  * Author：binge on 2017-04-21 10:24
@@ -33,66 +30,36 @@ import okhttp3.Call;
  * Describe：腔调成品
  */
 public class DesignerWorksFragment extends BaseFragment {
-    @BindView(R.id.img_header_back)
-    ImageView imgHeaderBack;
-    @BindView(R.id.tv_header_title)
-    TextView tvHeaderTitle;
-    @BindView(R.id.flip_view)
-    FlipView flipView;
-    Unbinder unbinder;
-    @BindView(R.id.view_header_line)
-    View viewHeaderLine;
+    @BindView(R.id.tab_works_designer)
+    CommonTabLayout tabWorks;
 
-    private List<DesignerWorksBean.DataBeanX.DataBean> designerList = new ArrayList<>();
+    Unbinder unbinder;
+    //fragment
+    private List<Fragment> fragmentList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_designer_works, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+        initView();
         return view;
+
     }
 
-    /**
-     * 加载数据
-     */
-    private void initData() {
-        tvHeaderTitle.setText("腔调");
-        imgHeaderBack.setVisibility(View.GONE);
-        viewHeaderLine.setVisibility(View.GONE);
-
-        OkHttpUtils.get()
-                .url(Constant.DESIGNER_WORKS)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        DesignerWorksBean designerBean = GsonUtils.jsonToBean(response, DesignerWorksBean.class);
-                        if (designerBean.getData().getData() != null) {
-                            designerList.addAll(designerBean.getData().getData());
-                            initView();
-                        }
-                    }
-                });
-    }
 
     private void initView() {
-        FlipAdapter adapter = new FlipAdapter(getActivity(), designerList);
-        flipView.setAdapter(adapter);
-        if (designerList.size() > 1) {
-            flipView.flipTo(designerList.size() - 1);
-        }
+        fragmentList.add(WorksFragment.newInstance());
+        fragmentList.add(NewDesignerFragment.newInstance());
+
+        ArrayList<CustomTabEntity> tabList = new ArrayList<>();
+
+        tabList.add(new MemberTabBean("腔调"));
+        tabList.add(new MemberTabBean("设计师"));
+
+        tabWorks.setTabData(tabList);
+
+        new FragmentUtils(getChildFragmentManager(), fragmentList, R.id.fl_works, tabWorks);
 
     }
 

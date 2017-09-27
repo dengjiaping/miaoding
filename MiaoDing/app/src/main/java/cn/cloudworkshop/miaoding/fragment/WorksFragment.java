@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -120,10 +121,8 @@ public class WorksFragment extends BaseFragment {
                 .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
             @Override
             protected void convert(ViewHolder holder, NewDesignWorksBean.DataBeanX.DataBean itemBean, int position) {
-                Glide.with(getParentFragment().getActivity())
-                        .load(Constant.HOST + itemBean.getImg())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_designer));
+                SimpleDraweeView imgWorks = holder.getView(R.id.img_designer);
+                imgWorks.setImageURI(Constant.HOST + itemBean.getImg());
                 TextView tvTitle = holder.getView(R.id.tv_works_title);
                 tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
                 tvTitle.setText(itemBean.getName());
@@ -133,18 +132,6 @@ public class WorksFragment extends BaseFragment {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvWorks.setAdapter(mLRecyclerViewAdapter);
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
-                    intent.putExtra("id", worksList.get(position).getRecommend_goods_ids() + "");
-                    startActivity(intent);
-                }
-            }
-
-        });
 
         //刷新
         rvWorks.setOnRefreshListener(new OnRefreshListener() {
@@ -169,6 +156,17 @@ public class WorksFragment extends BaseFragment {
                 isLoadMore = true;
                 page++;
                 initData();
+            }
+        });
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
+                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
+                    intent.putExtra("id", worksList.get(position).getRecommend_goods_ids() + "");
+                    startActivity(intent);
+                }
             }
         });
 

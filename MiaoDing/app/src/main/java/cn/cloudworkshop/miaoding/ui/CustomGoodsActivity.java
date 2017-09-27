@@ -421,7 +421,7 @@ public class CustomGoodsActivity extends BaseActivity {
             protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.PriceBean priceBean, int position) {
                 TextView tvPrice = holder.getView(R.id.tv_type_item);
                 tvPrice.setTypeface(DisplayUtils.setTextType(CustomGoodsActivity.this));
-                tvPrice.setText("¥" + new DecimalFormat("#0.00").format(priceBean.getPrice()));
+                tvPrice.setText("¥" + DisplayUtils.decimalFormat((float) priceBean.getPrice()));
                 holder.setText(R.id.tv_type_content, priceBean.getIntroduce());
             }
         };
@@ -436,7 +436,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());
                 bundle.putString("img_url", customBean.getData().getThumb());
-                bundle.putString("price", new DecimalFormat("#0.00").format(customBean.getData().
+                bundle.putString("price", DisplayUtils.decimalFormat((float) customBean.getData().
                         getPrice().get(position).getPrice()));
                 bundle.putString("price_type", customBean.getData().getPrice().get(position).getId() + "");
                 bundle.putInt("classify_id", customBean.getData().getClassify_id());
@@ -467,7 +467,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     login.putExtra("page_name", "定制");
                     startActivity(login);
                 } else {
-                    if (customBean != null) {
+                    if (customBean != null && customBean.getData() != null) {
                         selectGoodsPrice();
                     }
 
@@ -486,20 +486,20 @@ public class CustomGoodsActivity extends BaseActivity {
                     login.putExtra("page_name", "定制");
                     startActivity(login);
                 } else {
-                    if (customBean != null) {
+                    if (customBean != null && customBean.getData() != null) {
                         selectGoodsType();
                     }
                 }
                 break;
             case R.id.img_tailor_back:
-                if (customBean != null) {
+                if (customBean != null && customBean.getData() != null) {
                     customGoodsLog();
                 }
                 finish();
                 break;
             case R.id.img_add_like:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(this, "token"))) {
-                    if (customBean != null) {
+                    if (customBean != null && customBean.getData() != null) {
                         addCollection();
                     }
                 } else {
@@ -512,7 +512,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 ContactService.contactService(this);
                 break;
             case R.id.img_tailor_share:
-                if (customBean != null) {
+                if (customBean != null && customBean.getData() != null) {
                     ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
                             customBean.getData().getName(), customBean.getData().getContent(),
                             Constant.CUSTOM_SHARE + "?goods_id=" + id);
@@ -590,7 +590,8 @@ public class CustomGoodsActivity extends BaseActivity {
                 CustomItemBean tailorItemBean = new CustomItemBean();
                 tailorItemBean.setId(id);
                 tailorItemBean.setGoods_name(customBean.getData().getName());
-                tailorItemBean.setPrice(new DecimalFormat("#0.00").format(customBean.getData().getDefault_price()));
+                tailorItemBean.setPrice(DisplayUtils.decimalFormat((float) customBean.getData()
+                        .getDefault_price()));
                 tailorItemBean.setImg_url(customBean.getData().getThumb());
                 tailorItemBean.setPrice_type(customBean.getData().getPrice_type() + "");
                 tailorItemBean.setLog_id(customBean.getId());
@@ -625,7 +626,7 @@ public class CustomGoodsActivity extends BaseActivity {
      * 商品订制跟踪
      */
     private void customGoodsLog() {
-        if (customBean != null) {
+        if (customBean != null && customBean.getData() != null) {
             OkHttpUtils.post()
                     .url(Constant.GOODS_LOG)
                     .addParams("token", SharedPreferencesUtils.getStr(this, "token"))

@@ -20,7 +20,7 @@
 
         <ImageView
             android:id="@+id/img_works_icon"
-            android:layout_width="73dp"
+            android:layout_width="55dp"
             android:layout_height="73dp"
             android:layout_marginLeft="12dp"
             android:scaleType="centerCrop"/>
@@ -113,7 +113,8 @@
             android:id="@+id/rv_works_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp">
+            android:layout_marginLeft="28dp"
+            android:overScrollMode="never">
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

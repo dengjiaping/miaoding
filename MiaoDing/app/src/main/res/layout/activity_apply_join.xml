@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"

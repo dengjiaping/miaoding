@@ -280,8 +280,8 @@ public class ShoppingCartActivity extends BaseActivity {
                         break;
                 }
 
-                holder.setText(R.id.tv_goods_price, "¥" + new DecimalFormat("#0.00")
-                        .format(Float.parseFloat(dataBean.getPrice())));
+                holder.setText(R.id.tv_goods_price, "¥" + DisplayUtils.decimalFormat(Float
+                        .parseFloat(dataBean.getPrice())));
                 holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum() + "");
                 holder.setVisible(R.id.ll_cart_edit, isEdited);
                 holder.setVisible(R.id.tv_goods_content, !isEdited);
@@ -439,7 +439,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             CustomItemBean customItemBean = new CustomItemBean();
                             customItemBean.setId(cartDetails.getData().getGoods_id() + "");
                             customItemBean.setGoods_name(cartDetails.getData().getGoods_name());
-                            customItemBean.setPrice(new DecimalFormat("#0.00").format(cartDetails
+                            customItemBean.setPrice(DisplayUtils.decimalFormat((float) cartDetails
                                     .getData().getPrice()));
                             customItemBean.setPrice_type(cartDetails.getData().getPrice_id() + "");
                             customItemBean.setImg_url(cartDetails.getData().getGoods_thumb());
@@ -467,12 +467,12 @@ public class ShoppingCartActivity extends BaseActivity {
                             }
 
                             //面料
-                            if (!TextUtils.isEmpty(cartDetails.getData().getMianliao_id())){
+                            if (!TextUtils.isEmpty(cartDetails.getData().getMianliao_id())) {
                                 customItemBean.setFabric_id(cartDetails.getData().getMianliao_id());
                             }
 
                             //版型
-                            if (!TextUtils.isEmpty(cartDetails.getData().getBanxing_id())){
+                            if (!TextUtils.isEmpty(cartDetails.getData().getBanxing_id())) {
                                 customItemBean.setBanxing_id(cartDetails.getData().getBanxing_id());
                             }
 
@@ -572,7 +572,7 @@ public class ShoppingCartActivity extends BaseActivity {
                                         if (dataList.get(i).getId() == (itemList.get(j))) {
                                             dataList.remove(i);
                                             adapter.notifyItemRemoved(i);
-                                            if (i != dataList.size()){
+                                            if (i != dataList.size()) {
                                                 adapter.notifyItemRangeChanged(i, dataList.size() - i);
                                             }
 
@@ -710,7 +710,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 sum += Float.parseFloat(dataList.get(i).getPrice()) * dataList.get(i).getNum();
             }
         }
-        tvTotalPrice.setText("¥" + new DecimalFormat("#0.00").format(sum));
+        tvTotalPrice.setText("¥" + DisplayUtils.decimalFormat(sum));
     }
 
 

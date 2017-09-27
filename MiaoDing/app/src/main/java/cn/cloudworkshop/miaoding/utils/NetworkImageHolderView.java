@@ -19,7 +19,7 @@ public class NetworkImageHolderView implements Holder<String> {
     @Override
     public View createView(Context context) {
         imageView = new SimpleDraweeView(context);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         return imageView;
     }
 
