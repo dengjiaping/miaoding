@@ -50,7 +50,6 @@ import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -79,6 +78,8 @@ public class NewWorksActivity extends BaseActivity {
     ImageView imgShare;
     @BindView(R.id.tv_content_goods)
     TyperTextView tvContent;
+    @BindView(R.id.tv_works_detail)
+    TextView tvWorksDetail;
 
     //商品id
     private String id;
@@ -251,7 +252,7 @@ public class NewWorksActivity extends BaseActivity {
         tvContent.animateText(Html.fromHtml(str));
     }
 
-    @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share})
+    @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share, R.id.tv_works_detail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_add_bag:
@@ -272,7 +273,41 @@ public class NewWorksActivity extends BaseActivity {
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
                 break;
+            case R.id.tv_works_detail:
+                if (worksBean != null && worksBean.getData() != null) {
+                    showWorksDetail();
+                }
+                break;
         }
+    }
+
+    /**
+     * 商品详情
+     */
+    private void showWorksDetail() {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_works_detail, null);
+        PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(contentView);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        if (!isFinishing()) {
+            popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 350);
+        }
+
+        DisplayUtils.setBackgroundAlpha(this, true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                DisplayUtils.setBackgroundAlpha(NewWorksActivity.this, false);
+            }
+        });
+
+        TextView tvWorks = (TextView) contentView.findViewById(R.id.tv_works_info);
+        tvWorks.setText(worksBean.getData().getContent());
+
     }
 
 
@@ -485,8 +520,8 @@ public class NewWorksActivity extends BaseActivity {
         map.put("type", type + "");
         map.put("goods_id", id);
         map.put("goods_type", "2");
-        map.put("price", worksBean.getData().getSize_list().get(currentSize)
-                .getSize_list().get(currentColor).getPrice());
+        map.put("price", worksBean.getData().getSize_list().get(currentSize).getSize_list()
+                .get(currentColor).getPrice());
         map.put("goods_name", worksBean.getData().getName());
         map.put("goods_thumb", worksBean.getData().getThumb());
         map.put("size_ids", String.valueOf(worksBean.getData().getSize_list()

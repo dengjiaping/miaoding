@@ -14,64 +14,68 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/icon_works_mask"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/icon_works_mask"/>
 
     <cn.cloudworkshop.miaoding.view.TyperTextView
 
         android:id="@+id/tv_content_goods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="74dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:textSize="14sp"
-        android:shadowRadius="2"
+        android:lineSpacingExtra="3dp"
+        android:shadowColor="@android:color/black"
         android:shadowDx="1"
         android:shadowDy="1"
-        android:shadowColor="@android:color/black"
+        android:shadowRadius="2"
         android:textColor="@android:color/white"
-        android:lineSpacingExtra="3dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="74dp"/>
+        android:textSize="14sp"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/icon_gray_line"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_marginBottom="60dp"
-        android:layout_alignParentBottom="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/icon_gray_line"/>
+
     <ImageView
         android:id="@+id/img_add_bag"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:src="@mipmap/icon_add_cart"
-        android:scaleType="fitCenter"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="26dp"/>
+        android:layout_marginLeft="26dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/icon_add_cart"/>
+
     <ImageView
         android:id="@+id/img_buy_works"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:src="@mipmap/icon_buy_works"
-        android:scaleType="fitCenter"
-        android:layout_toRightOf="@id/img_add_bag"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="24dp"/>
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@id/img_add_bag"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/icon_buy_works"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginRight="14dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true">
+        android:layout_marginRight="14dp">
+
         <RadioGroup
             android:id="@+id/rgs_indicator_works"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
         </RadioGroup>
     </RelativeLayout>
 
@@ -89,4 +93,17 @@
         android:layout_alignParentRight="true"
         android:scaleType="center"
         android:src="@mipmap/icon_share_goods"/>
+
+    <TextView
+        android:id="@+id/tv_works_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="150dp"
+        android:text="商\n品\n详\n情"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:padding="10dp"/>
 </RelativeLayout>

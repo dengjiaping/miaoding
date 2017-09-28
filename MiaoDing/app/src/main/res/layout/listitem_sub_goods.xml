@@ -4,6 +4,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="267dp"
     android:layout_marginBottom="1dp"
@@ -12,34 +13,42 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/bg_goods"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_goods"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
+        <!--   <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="208dp"
+               android:orientation="horizontal"
+               android:layout_marginTop="3.5dp">
+               <View
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"/>
+               <com.facebook.drawee.view.SimpleDraweeView
+                   android:id="@+id/img_sub_goods"
+                   android:layout_width="0dp"
+                   android:layout_height="208dp"
+                   android:layout_weight="44"
+                   android:scaleType="centerInside"
+                   app:roundedCornerRadius="3dp"/>
+               <View
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="0.963"/>
+           </LinearLayout>-->
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_goods_custom"
             android:layout_width="match_parent"
             android:layout_height="208dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="3.5dp">
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/img_sub_goods"
-                android:layout_width="0dp"
-                android:layout_height="208dp"
-                android:layout_weight="44"
-                android:scaleType="fitCenter"
-                app:roundAsCircle="false"
-                app:roundedCornerRadius="3dp"/>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.963"/>
-        </LinearLayout>
+            android:layout_marginTop="4dp"
+            android:scaleType="fitCenter"
+            app:riv_corner_radius="3dp"/>
 
         <TextView
             android:id="@+id/tv_sub_title"
@@ -59,6 +68,5 @@
             android:textColor="@color/light_gray_80"
             android:textSize="10sp"/>
     </LinearLayout>
-
 
 </RelativeLayout>
