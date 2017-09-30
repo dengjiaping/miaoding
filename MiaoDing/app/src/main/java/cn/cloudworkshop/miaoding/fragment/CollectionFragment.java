@@ -340,7 +340,7 @@ public class CollectionFragment extends BaseFragment {
     public void onViewClicked() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("page", type - 1);
-        getActivity().finish();
         startActivity(intent);
+        getActivity().finish();
     }
 }

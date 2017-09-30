@@ -122,8 +122,8 @@ public class AllEvaluationActivity extends BaseActivity {
 
     private void initView() {
         rvComment.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<GoodsCommentBean.ListBean.DataBean> adapter = new CommonAdapter<
-                GoodsCommentBean.ListBean.DataBean>(this, R.layout.listitem_goods_comment, dataList) {
+        CommonAdapter<GoodsCommentBean.ListBean.DataBean> adapter = new CommonAdapter
+                <GoodsCommentBean.ListBean.DataBean>(this, R.layout.listitem_goods_comment, dataList) {
             @Override
             protected void convert(ViewHolder holder, final GoodsCommentBean.ListBean.DataBean dataBean, int position) {
                 Glide.with(AllEvaluationActivity.this)

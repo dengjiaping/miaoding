@@ -78,8 +78,8 @@ public class NewWorksActivity extends BaseActivity {
     ImageView imgShare;
     @BindView(R.id.tv_content_goods)
     TyperTextView tvContent;
-    @BindView(R.id.tv_works_detail)
-    TextView tvWorksDetail;
+    @BindView(R.id.img_works_info)
+    ImageView imgWorksInfo;
 
     //商品id
     private String id;
@@ -167,7 +167,9 @@ public class NewWorksActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        typerText(worksBean.getData().getImg_introduce().get(0));
+        if (!TextUtils.isEmpty(worksBean.getData().getImg_introduce().get(0))) {
+            typerText(worksBean.getData().getImg_introduce().get(0));
+        }
 
         vpWorks.setOffscreenPageLimit(worksBean.getData().getImg_list().size());
         vpWorks.setAdapter(new PagerAdapter() {
@@ -188,12 +190,9 @@ public class NewWorksActivity extends BaseActivity {
                 final ImageView img = (ImageView) view.findViewById(R.id.img_goods_picture);
                 Glide.with(NewWorksActivity.this)
                         .load(Constant.HOST + worksBean.getData().getImg_list().get(position))
-                        .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(img);
                 container.addView(view);
-                vpWorks.setObjectForPosition(view, position);
-
                 return view;
             }
 
@@ -203,6 +202,7 @@ public class NewWorksActivity extends BaseActivity {
             }
         });
         vpWorks.setCurrentItem(0);
+
 
         for (int i = 0; i < worksBean.getData().getImg_list().size(); i++) {
             RadioButton radioButton = new RadioButton(this);
@@ -228,7 +228,10 @@ public class NewWorksActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 ((RadioButton) rgsIndicator.getChildAt(position)).setChecked(true);
-                typerText(worksBean.getData().getImg_introduce().get(position));
+                if (!TextUtils.isEmpty(worksBean.getData().getImg_introduce().get(position))) {
+                    typerText(worksBean.getData().getImg_introduce().get(position));
+                }
+
             }
 
             @Override
@@ -249,10 +252,12 @@ public class NewWorksActivity extends BaseActivity {
                 content.charAt(0) +
                 "</big></big></font>" +
                 content.substring(1);
+
         tvContent.animateText(Html.fromHtml(str));
     }
 
-    @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share, R.id.tv_works_detail})
+    @OnClick({R.id.img_add_bag, R.id.img_buy_works, R.id.img_goods_back, R.id.img_goods_share,
+            R.id.img_works_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_add_bag:
@@ -273,7 +278,7 @@ public class NewWorksActivity extends BaseActivity {
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
                 break;
-            case R.id.tv_works_detail:
+            case R.id.img_works_info:
                 if (worksBean != null && worksBean.getData() != null) {
                     showWorksDetail();
                 }
@@ -294,7 +299,7 @@ public class NewWorksActivity extends BaseActivity {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         if (!isFinishing()) {
-            popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 350);
+            popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.LEFT & Gravity.TOP, 0, 0);
         }
 
         DisplayUtils.setBackgroundAlpha(this, true);
@@ -306,7 +311,7 @@ public class NewWorksActivity extends BaseActivity {
         });
 
         TextView tvWorks = (TextView) contentView.findViewById(R.id.tv_works_info);
-        tvWorks.setText(worksBean.getData().getContent());
+        tvWorks.setText(worksBean.getData().getChengping_canshu());
 
     }
 

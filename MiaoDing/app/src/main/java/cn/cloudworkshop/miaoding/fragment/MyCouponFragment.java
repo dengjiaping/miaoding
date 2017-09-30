@@ -187,8 +187,8 @@ public class MyCouponFragment extends BaseFragment {
                 if (currentPos == 1) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("page", 1);
-                    getActivity().finish();
                     startActivity(intent);
+                    getActivity().finish();
                 }
             }
 

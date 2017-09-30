@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -48,21 +47,15 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.adapter.MyPagerAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.fragment.CustomGoodFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.GoodsFragment;
-import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
-import cn.cloudworkshop.miaoding.fragment.NewCustomGoodsFragment;
-import cn.cloudworkshop.miaoding.fragment.NewDesignerWorkFragment;
-import cn.cloudworkshop.miaoding.fragment.NewDesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
@@ -111,12 +104,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        writeToStorage();
+        storagePermiss();
         initIcon();
         checkUpdate();
         isLogin();
 //        upLoad();
         submitClientId();
+        LogUtils.log("main；oncreate");
     }
 
     private void upLoad() {
@@ -445,7 +439,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 读写权限
      */
     @AfterPermissionGranted(111)
-    private void writeToStorage() {
+    private void storagePermiss() {
         if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "本应用需要使用存储权限", 111, perms);
         }
@@ -497,10 +491,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LogUtils.log("main；onNewintent");
         setIntent(intent);
         int currentPage = getIntent().getIntExtra("page", 0);
-        fragmentUtils.setCurrentFragment(currentPage);
-
+        if (fragmentUtils != null && !isFinishing()) {
+            fragmentUtils.setCurrentFragment(currentPage);
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <!--   <LinearLayout
+           <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="208dp"
                android:orientation="horizontal"
@@ -40,15 +40,16 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_weight="0.963"/>
-           </LinearLayout>-->
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/img_goods_custom"
-            android:layout_width="match_parent"
-            android:layout_height="208dp"
-            android:layout_marginTop="4dp"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="3dp"/>
+           </LinearLayout>
+        <!--<com.makeramen.roundedimageview.RoundedImageView-->
+            <!--android:id="@+id/img_goods_custom"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="208dp"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--app:riv_corner_radius="3dp"-->
+            <!--android:layout_marginLeft="4dp"-->
+            <!--android:layout_marginRight="4dp"-->
+            <!--android:layout_marginTop="3.5dp"/>-->
 
         <TextView
             android:id="@+id/tv_sub_title"

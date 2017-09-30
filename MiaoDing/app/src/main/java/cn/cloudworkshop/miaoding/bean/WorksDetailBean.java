@@ -69,6 +69,15 @@ public class WorksDetailBean {
         private int like_num;
         private String content;
         private String content2;
+        private String chengping_canshu;
+
+        public String getChengping_canshu() {
+            return chengping_canshu;
+        }
+
+        public void setChengping_canshu(String chengping_canshu) {
+            this.chengping_canshu = chengping_canshu;
+        }
 
         public String getContent2() {
             return content2;

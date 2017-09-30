@@ -121,12 +121,12 @@ public class SubGoodsFragment extends BaseFragment {
                 R.layout.listitem_sub_goods, dataList) {
             @Override
             protected void convert(ViewHolder holder, GoodsListBean.DataBean.itemDataBean itemDataBean, int position) {
-//                SimpleDraweeView imgGoods = holder.getView(R.id.img_sub_goods);
-//                imgGoods.setImageURI(Constant.HOST + itemDataBean.getThumb());
-                Glide.with(getParentFragment().getActivity())
-                        .load(Constant.HOST + itemDataBean.getThumb())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((RoundedImageView)holder.getView(R.id.img_goods_custom));
+                SimpleDraweeView imgGoods = holder.getView(R.id.img_sub_goods);
+                imgGoods.setImageURI(Constant.HOST + itemDataBean.getThumb());
+//                Glide.with(getParentFragment().getActivity())
+//                        .load(Constant.HOST + itemDataBean.getThumb())
+//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                        .into((RoundedImageView)holder.getView(R.id.img_goods_custom));
                 holder.setText(R.id.tv_sub_title, itemDataBean.getName());
                 holder.setText(R.id.tv_sub_content, itemDataBean.getSub_name());
             }

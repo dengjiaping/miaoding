@@ -94,16 +94,13 @@
         android:scaleType="center"
         android:src="@mipmap/icon_share_goods"/>
 
-    <TextView
-        android:id="@+id/tv_works_detail"
+    <ImageView
+        android:id="@+id/img_works_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@mipmap/icon_works_detail"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="150dp"
-        android:text="商\n品\n详\n情"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:background="@android:color/black"
-        android:gravity="center"
-        android:padding="10dp"/>
+        android:layout_marginTop="100dp"
+        android:scaleType="center"/>
+
 </RelativeLayout>

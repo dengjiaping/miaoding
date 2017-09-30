@@ -127,6 +127,7 @@ public class WorksFragment extends BaseFragment {
                 tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
                 tvTitle.setText(itemBean.getName());
                 holder.setText(R.id.tv_works_time, DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()));
+
             }
         };
 

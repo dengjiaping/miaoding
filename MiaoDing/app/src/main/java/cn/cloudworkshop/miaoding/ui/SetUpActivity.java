@@ -250,8 +250,8 @@ public class SetUpActivity extends BaseActivity {
                                         SharedPreferencesUtils.deleteStr(SetUpActivity.this, "phone");
                                         Intent intent = new Intent(SetUpActivity.this, MainActivity.class);
                                         intent.putExtra("page", 0);
-                                        finish();
                                         startActivity(intent);
+                                        finish();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

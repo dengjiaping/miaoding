@@ -540,8 +540,8 @@ public class MyOrderFragment extends BaseFragment {
     public void onClick() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("page", 1);
-        getActivity().finish();
         startActivity(intent);
+        getActivity().finish();
     }
 
 

@@ -628,8 +628,8 @@ public class ShoppingCartActivity extends BaseActivity {
             case R.id.tv_my_bag:
                 Intent intent = new Intent(ShoppingCartActivity.this, MainActivity.class);
                 intent.putExtra("page", 1);
-                finish();
                 startActivity(intent);
+                finish();
                 break;
             case R.id.tv_header_next:
                 if (tvHeaderNext.getText().toString().equals("编辑")) {

@@ -386,7 +386,7 @@ public class TailorActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
 
-                        if (firstSelect) {
+                        if (firstSelect && index != 0) {
                             for (int i = 0; i < rlPositiveTailor.getChildCount(); i++) {
                                 ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
                                 positiveImg.setImageDrawable(null);
@@ -860,7 +860,7 @@ public class TailorActivity extends BaseActivity {
         if (idMap.size() > 0 && typeMap.size() > 0 && nameMap.size() > 0 && positionMap.size() > 0) {
             Intent intent;
             Bundle bundle = new Bundle();
-            if (classifyId == 1 || classifyId == 2) {
+            if (classifyId == 1) {
                 intent = new Intent(this, EmbroideryActivity.class);
                 bundle.putInt("classify_id", classifyId);
             } else {

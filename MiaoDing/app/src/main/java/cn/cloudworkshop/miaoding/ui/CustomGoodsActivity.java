@@ -386,7 +386,6 @@ public class CustomGoodsActivity extends BaseActivity {
      */
     private void selectGoodsPrice() {
 
-
         View contentView = LayoutInflater.from(this).inflate(R.layout.ppw_select_price, null);
         final PopupWindow mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -571,7 +570,6 @@ public class CustomGoodsActivity extends BaseActivity {
 
         rvTailor.setAdapter(typeAdapter);
 
-
         typeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -579,13 +577,12 @@ public class CustomGoodsActivity extends BaseActivity {
                 Intent intent;
                 Bundle bundle = new Bundle();
                 int classifyId = customBean.getData().getClassify_id();
-                if (classifyId == 1 || classifyId == 2) {
+                if (classifyId == 1) {
                     intent = new Intent(CustomGoodsActivity.this, EmbroideryActivity.class);
                     bundle.putInt("classify_id", classifyId);
                 } else {
                     intent = new Intent(CustomGoodsActivity.this, CustomResultActivity.class);
                 }
-
 
                 CustomItemBean tailorItemBean = new CustomItemBean();
                 tailorItemBean.setId(id);

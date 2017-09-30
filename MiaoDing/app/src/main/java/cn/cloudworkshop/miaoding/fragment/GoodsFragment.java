@@ -115,6 +115,7 @@ public class GoodsFragment extends BaseFragment {
         vpGoods.setOffscreenPageLimit(titleList.size());
         vpGoods.setAdapter(adapter);
         tabGoods.setViewPager(vpGoods);
+        tabGoods.setCurrentTab(0);
     }
 
     @Override

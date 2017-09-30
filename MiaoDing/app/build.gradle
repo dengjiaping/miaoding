@@ -9,8 +9,8 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 40
-        versionName "1.5.7"
+        versionCode 42
+        versionName "1.6.0"
         multiDexEnabled true
 
         manifestPlaceholders = [
