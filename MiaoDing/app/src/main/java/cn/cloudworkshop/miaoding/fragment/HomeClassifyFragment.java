@@ -42,7 +42,7 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-04-06 10:00
+ * Author：Libin on 2017-04-06 10:00
  * Email：1993911441@qq.com
  * Describe：搭配、潮流、风尚
  */
@@ -81,8 +81,8 @@ public class HomeClassifyFragment extends BaseFragment {
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.HOMEPAGE_TAB_LIST)
-                .addParams("tags_id", type + "")
-                .addParams("page", page + "")
+                .addParams("tags_id", String.valueOf(type))
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override

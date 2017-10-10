@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Author：binge on 2017-04-07 11:02
+ * Author：Libin on 2017-04-07 11:02
  * Email：1993911441@qq.com
  * Describe：ViewPager嵌套横向RecyclerView
  */

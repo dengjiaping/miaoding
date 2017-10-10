@@ -105,22 +105,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     //购物车id
     private String cartIds;
     private ConfirmOrderBean confirmOrderBean;
-    //地址id
-    private String addressId;
-    //省
-    private String provinceAddress;
-    //市
-    private String cityAddress;
-    //区
-    private String areaAddress;
-    //详细地址
-    private String detailAddress;
-    //是否默认地址
-    private int defaultAddress;
-    //用户名
-    private String userName;
-    //手机号
-    private String phoneNumber;
+    //收货地址
+    private ConfirmOrderBean.DataBean.AddressListBean addressListBean;
     //优惠券id
     private String couponId;
     //优惠券金额
@@ -194,6 +180,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        LogUtils.log(response);
                         if (canCouponSelect) {
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
@@ -235,18 +222,12 @@ public class ConfirmOrderActivity extends BaseActivity {
      */
     private void initView() {
 
-        if (confirmOrderBean.getData().getAddress_list() == null ||
-                confirmOrderBean.getData().getAddress_list().equals("null")) {
-            addressId = null;
+        if (confirmOrderBean.getData().getAddress_list() == null) {
+            isNoAddress = true;
+            addressListBean = null;
         } else {
-            addressId = confirmOrderBean.getData().getAddress_list().getId() + "";
-            provinceAddress = confirmOrderBean.getData().getAddress_list().getProvince();
-            cityAddress = confirmOrderBean.getData().getAddress_list().getCity();
-            areaAddress = confirmOrderBean.getData().getAddress_list().getArea();
-            detailAddress = confirmOrderBean.getData().getAddress_list().getAddress();
-            defaultAddress = confirmOrderBean.getData().getAddress_list().getIs_default();
-            userName = confirmOrderBean.getData().getAddress_list().getName();
-            phoneNumber = confirmOrderBean.getData().getAddress_list().getPhone();
+            isNoAddress = false;
+            addressListBean = confirmOrderBean.getData().getAddress_list();
         }
 
         couponNum = confirmOrderBean.getData().getTicket_num();
@@ -338,7 +319,7 @@ public class ConfirmOrderActivity extends BaseActivity {
      * 收货地址
      */
     private void initAddress() {
-        if (addressId == null) {
+        if (addressListBean == null) {
             tvNoAddress.setVisibility(View.VISIBLE);
             if (isNoAddress) {
                 tvNoAddress.setText("请创建收货地址");
@@ -351,15 +332,16 @@ public class ConfirmOrderActivity extends BaseActivity {
         } else {
             rlAddAddress.setVisibility(View.GONE);
             llUserAddress.setVisibility(View.VISIBLE);
-            if (defaultAddress == 1) {
+            if (addressListBean.getIs_default() == 1) {
                 tvDefaultAddress.setVisibility(View.VISIBLE);
             } else {
                 tvDefaultAddress.setVisibility(View.GONE);
             }
 
-            tvUserName.setText(userName);
-            tvUserPhone.setText(phoneNumber);
-            tvProvinceAddress.setText(provinceAddress + cityAddress + areaAddress + detailAddress);
+            tvUserName.setText(addressListBean.getName());
+            tvUserPhone.setText(addressListBean.getPhone());
+            tvProvinceAddress.setText(addressListBean.getProvince() + addressListBean.getCity() +
+                    addressListBean.getArea() + addressListBean.getAddress());
         }
     }
 
@@ -527,7 +509,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_select_address:
-                if (addressId == null) {
+                if (addressListBean == null) {
                     if (isNoAddress) {
                         Intent intent = new Intent(ConfirmOrderActivity.this, AddAddressActivity.class);
                         intent.putExtra("type", "add");
@@ -537,16 +519,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                         intent1.putExtra("type", "select");
                         startActivityForResult(intent1, 3);
                     }
-
                 } else {
                     Intent intent = new Intent(ConfirmOrderActivity.this, DeliveryAddressActivity.class);
                     intent.putExtra("type", "select");
-                    intent.putExtra("address_id", addressId);
+                    intent.putExtra("address_id", addressListBean.getId());
                     startActivityForResult(intent, 3);
                 }
                 break;
             case R.id.tv_confirm_order:
-                if (addressId == null) {
+                if (addressListBean == null) {
                     ToastUtils.showToast(this, "请选择地址");
                 } else {
                     confirmOrder();
@@ -587,13 +568,13 @@ public class ConfirmOrderActivity extends BaseActivity {
             map.put("reduce_card", "0");
         }
 
-        map.put("name", userName);
-        map.put("phone", phoneNumber);
-        map.put("province", provinceAddress);
-        map.put("city", cityAddress);
-        map.put("area", areaAddress);
-        map.put("address", detailAddress);
-        map.put("address_id", addressId);
+        map.put("name", addressListBean.getName());
+        map.put("phone", addressListBean.getPhone());
+        map.put("province", addressListBean.getProvince());
+        map.put("city", addressListBean.getCity());
+        map.put("area", addressListBean.getArea());
+        map.put("address", addressListBean.getAddress());
+        map.put("address_id", String.valueOf(addressListBean.getId()));
         if (logId != null) {
             map.put("log_id", logId);
         }
@@ -694,13 +675,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                         break;
                     //收货地址全部被删除，重新创建地址
                     case 2:
-                        addressId = null;
+                        addressListBean = null;
                         isNoAddress = true;
                         initAddress();
                         break;
                     //收货地址不为空，但已选择地址被删除
                     case 3:
-                        addressId = null;
+                        addressListBean = null;
                         isNoAddress = false;
                         initAddress();
                         break;
@@ -726,17 +707,9 @@ public class ConfirmOrderActivity extends BaseActivity {
      * @param intent 地址返回值
      */
     private void getAddress(Intent intent) {
-        addressId = intent.getStringExtra("address_id");
-        provinceAddress = intent.getStringExtra("province");
-        cityAddress = intent.getStringExtra("city");
-        areaAddress = intent.getStringExtra("area");
-        detailAddress = intent.getStringExtra("address");
-        userName = intent.getStringExtra("name");
-        phoneNumber = intent.getStringExtra("phone");
-        defaultAddress = intent.getIntExtra("is_default", 0);
+        addressListBean = (ConfirmOrderBean.DataBean.AddressListBean) intent.getSerializableExtra("address");
         initAddress();
     }
-
 
     /**
      * 商品订制跟踪
@@ -747,8 +720,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                     .url(Constant.GOODS_LOG)
                     .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                     .addParams("id", logId)
-                    .addParams("goods_time", (DateUtils.getCurrentTime() - goodsTime) + "")
-                    .addParams("dingzhi_time", dingzhiTime + "")
+                    .addParams("goods_time", String.valueOf(DateUtils.getCurrentTime() - goodsTime))
+                    .addParams("dingzhi_time", String.valueOf(dingzhiTime))
                     .addParams("goods_id", goodsId)
                     .addParams("goods_name", goodsName)
                     .addParams("click_dingzhi", "1")
@@ -762,6 +735,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response, int id) {
+
                         }
                     });
         }

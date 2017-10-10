@@ -55,7 +55,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-07-18 17:52
+ * Author：Libin on 2017-07-18 17:52
  * Email：1993911441@qq.com
  * Describe：
  */
@@ -101,7 +101,7 @@ public class CollectionFragment extends BaseFragment {
         OkHttpUtils.get()
                 .url(Constant.COLLECTION)
                 .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                .addParams("type", type + "")
+                .addParams("type", String.valueOf(type))
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {

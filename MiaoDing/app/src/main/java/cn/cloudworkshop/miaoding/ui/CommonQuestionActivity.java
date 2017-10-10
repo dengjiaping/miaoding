@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/11/9 17:43
+ * Author：Libin on 2016/11/9 17:43
  * Email：1993911441@qq.com
  * Describe：常见问题
  */
@@ -101,7 +101,7 @@ public class CommonQuestionActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(CommonQuestionActivity.this, QuestionDetailsActivity.class);
-                intent.putExtra("id", dataList.get(position).getId() + "");
+                intent.putExtra("id", String.valueOf(dataList.get(position).getId()));
                 intent.putExtra("title", dataList.get(position).getName());
                 startActivity(intent);
             }

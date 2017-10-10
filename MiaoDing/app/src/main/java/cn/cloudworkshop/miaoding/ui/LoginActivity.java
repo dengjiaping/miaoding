@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-        if (MyApplication.loginBg != null){
+        if (MyApplication.loginBg != null) {
             Glide.with(this)
                     .load(Constant.HOST + MyApplication.loginBg)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -265,7 +265,7 @@ public class LoginActivity extends BaseActivity {
                                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                     loginToken = jsonObject1.getString("token");
                                     int uid = jsonObject1.getInt("uid");
-                                    SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", uid + "");
+                                    SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", String.valueOf(uid));
                                     SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
                                     getUserInfo();
                                     MobclickAgent.onEvent(LoginActivity.this, "log_in");

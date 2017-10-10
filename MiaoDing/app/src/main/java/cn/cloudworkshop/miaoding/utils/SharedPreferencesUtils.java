@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Author：binge on 2016/12/14 15:02
+ * Author：Libin on 2016/12/14 15:02
  * Email：1993911441@qq.com
  * Describe：SharedPreferences工具类
  */

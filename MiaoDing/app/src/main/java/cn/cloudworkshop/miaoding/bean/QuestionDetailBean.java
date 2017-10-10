@@ -1,7 +1,7 @@
 package cn.cloudworkshop.miaoding.bean;
 
 /**
- * Author：binge on 2016/11/9 18:05
+ * Author：Libin on 2016/11/9 18:05
  * Email：1993911441@qq.com
  * Describe：
  */

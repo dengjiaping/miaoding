@@ -55,7 +55,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-05-27 20:29
+ * Author：Libin on 2017-05-27 20:29
  * Email：1993911441@qq.com
  * Describe：
  */
@@ -129,8 +129,8 @@ public class NewCustomGoodsFragment extends BaseFragment {
                 .get()
                 .url(Constant.GOODS_LIST)
                 .addParams("type", "1")
-                .addParams("classify_id", currentGoods.getId() + "")
-                .addParams("page", page + "")
+                .addParams("classify_id", String.valueOf(currentGoods.getId()))
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override

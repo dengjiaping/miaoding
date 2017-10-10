@@ -18,7 +18,7 @@ import okhttp3.Cache;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * Author：binge on 2016/11/9 15:08
+ * Author：Libin on 2016/11/9 15:08
  * Email：1993911441@qq.com
  * Describe：Glide图片清晰度
  */

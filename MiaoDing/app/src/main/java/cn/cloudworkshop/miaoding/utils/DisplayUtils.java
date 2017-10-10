@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import java.text.DecimalFormat;
 
 /**
- * Author：binge on 2017-04-07 13:24
+ * Author：Libin on 2017-04-07 13:24
  * Email：1993911441@qq.com
  * Describe：获取屏幕宽高度，dp,px转换
  */

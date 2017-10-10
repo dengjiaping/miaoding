@@ -329,8 +329,6 @@ public class MyOrderFragment extends BaseFragment {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         rvGoods.setAdapter(mLRecyclerViewAdapter);
-        rvGoods.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        rvGoods.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         //刷新
         rvGoods.setOnRefreshListener(new OnRefreshListener() {
@@ -386,7 +384,7 @@ public class MyOrderFragment extends BaseFragment {
                 OkHttpUtils.get()
                         .url(Constant.CONFIRM_RECEIVE)
                         .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                        .addParams("order_id", id + "")
+                        .addParams("order_id", String.valueOf(id))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -432,7 +430,7 @@ public class MyOrderFragment extends BaseFragment {
                 OkHttpUtils.get()
                         .url(Constant.DELETE_ORDER)
                         .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                        .addParams("order_id", id + "")
+                        .addParams("order_id", String.valueOf(id))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -492,7 +490,7 @@ public class MyOrderFragment extends BaseFragment {
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_ORDER)
                         .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                        .addParams("order_id", id + "")
+                        .addParams("order_id",String.valueOf(id))
                         .build()
                         .execute(new StringCallback() {
                             @Override

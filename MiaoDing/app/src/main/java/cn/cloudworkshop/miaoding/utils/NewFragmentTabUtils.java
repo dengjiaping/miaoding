@@ -22,7 +22,7 @@ import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 
 /**
- * Author：binge on 2017-06-21 10:45
+ * Author：Libin on 2017-06-21 10:45
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import cn.cloudworkshop.miaoding.R;
 
 /**
- * Author：binge on 2017-04-08 11:00
+ * Author：Libin on 2017-04-08 11:00
  * Email：1993911441@qq.com
  * Describe：
  */

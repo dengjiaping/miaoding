@@ -62,7 +62,7 @@ import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-04-21 11:58
+ * Author：Libin on 2017-04-21 11:58
  * Email：1993911441@qq.com
  * Describe：作品详情
  */
@@ -111,7 +111,7 @@ public class WorksDetailActivity extends BaseActivity {
     TextView tvEvaluateContent;
     @BindView(R.id.rv_evaluate_picture)
     RecyclerView rvEvaluate;
-    @BindView(R.id.tv_type_goods)
+    @BindView(R.id.tv_goods_comment)
     TextView tvTypeGoods;
     @BindView(R.id.scroll_container_works)
     ScrollViewContainer scrollContainer;

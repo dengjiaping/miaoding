@@ -7,7 +7,7 @@ import android.os.IBinder;
 import com.igexin.sdk.GTServiceManager;
 
 /**
- * Author：binge on 2016/12/20 12:16
+ * Author：Libin on 2016/12/20 12:16
  * Email：1993911441@qq.com
  * Describe：个推
  */

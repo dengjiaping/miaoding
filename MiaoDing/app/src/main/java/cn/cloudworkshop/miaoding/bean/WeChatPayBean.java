@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Author：binge on 2016/11/21 14:09
+ * Author：Libin on 2016/11/21 14:09
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
- * Author：binge on 2017/9/25 16:38
+ * Author：Libin on 2017/9/25 16:38
  * Email：1993911441@qq.com
  * Describe：
  */

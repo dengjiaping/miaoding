@@ -50,7 +50,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-04-17 09:22
+ * Author：Libin on 2017-04-17 09:22
  * Email：1993911441@qq.com
  * Describe：定制
  */
@@ -116,8 +116,7 @@ public class CustomGoodsFragment extends BaseFragment {
      * 加载商品
      */
     public void initGoods() {
-        OkHttpUtils
-                .get()
+        OkHttpUtils.get()
                 .url(Constant.GOODS_LIST)
                 .addParams("type", "1")
                 .addParams("classify_id", currentGoods.getId() + "")

@@ -40,7 +40,7 @@ import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-06-12 12:24
+ * Author：Libin on 2017-06-12 12:24
  * Email：1993911441@qq.com
  * Describe：全部评价
  */
@@ -83,7 +83,7 @@ public class AllEvaluationActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.EVALUATE_LIST)
                 .addParams("goods_id", goodsId)
-                .addParams("page", page + "")
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -138,7 +138,7 @@ public class AllEvaluationActivity extends BaseActivity {
                         .into((ImageView) holder.getView(R.id.img_user_grade));
                 holder.setText(R.id.tv_comment_time, DateUtils.getDate("yyyy-MM-dd", dataBean.getC_time()));
                 holder.setText(R.id.tv_evaluate_content, dataBean.getContent());
-                holder.setText(R.id.tv_type_goods, dataBean.getGoods_intro());
+                holder.setText(R.id.tv_goods_comment, dataBean.getGoods_intro());
                 holder.setVisible(R.id.view_evaluate, true);
                 if (dataBean.getImg_list() != null && dataBean.getImg_list().size() > 0) {
                     RecyclerView recyclerView = holder.getView(R.id.rv_evaluate_picture);

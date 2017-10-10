@@ -18,7 +18,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import java.util.List;
 
 /**
- * Author：binge on 2017/9/25 15:49
+ * Author：Libin on 2017/9/25 15:49
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/2/9 11:34
+ * Author：Libin on 2017/2/9 11:34
  * Email：1993911441@qq.com
  * Describe：用户规则，加载长图
  */

@@ -10,17 +10,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.AddressPickTask;
@@ -67,7 +72,7 @@ public class AddAddressActivity extends BaseActivity {
     private String countAddress;
     private DeliveryAddressBean.DataBean dataBean;
 
-    //add:添加地址 alert:修改地址
+    //add:添加地址 edit:修改地址
     private String type;
 
 
@@ -93,9 +98,9 @@ public class AddAddressActivity extends BaseActivity {
             case "add":
                 tvHeaderTitle.setText("新增地址");
                 break;
-            case "alert":
+            case "edit":
                 tvHeaderTitle.setText("编辑地址");
-                dataBean = (DeliveryAddressBean.DataBean) getIntent().getExtras().getSerializable("alert");
+                dataBean = (DeliveryAddressBean.DataBean) getIntent().getExtras().getSerializable("edit");
 
                 etAddName.setText(dataBean.getName());
                 etAddNumber.setText(dataBean.getPhone());
@@ -145,7 +150,6 @@ public class AddAddressActivity extends BaseActivity {
     }
 
 
-
     /**
      * 选择地址
      */
@@ -189,13 +193,13 @@ public class AddAddressActivity extends BaseActivity {
                 map.put("token", SharedPreferencesUtils.getStr(this, "token"));
                 map.put("name", etAddName.getText().toString().trim());
                 map.put("phone", etAddNumber.getText().toString().trim());
-                map.put("is_default", index + "");
+                map.put("is_default", String.valueOf(index));
                 map.put("province", provinceAddress);
                 map.put("city", cityAddress);
                 map.put("area", countAddress);
                 map.put("address", etDetailedAddress.getText().toString().trim());
-                if (type.equals("alert")) {
-                    map.put("id", dataBean.getId() + "");
+                if (type.equals("edit")) {
+                    map.put("id", String.valueOf(dataBean.getId()));
                 }
 
                 OkHttpUtils.post()
@@ -219,18 +223,23 @@ public class AddAddressActivity extends BaseActivity {
                                             case "add":
                                                 ToastUtils.showToast(AddAddressActivity.this, "添加成功");
                                                 Intent intent = new Intent();
-                                                intent.putExtra("address_id", addressId);
-                                                intent.putExtra("province", provinceAddress);
-                                                intent.putExtra("city", cityAddress);
-                                                intent.putExtra("area", countAddress);
-                                                intent.putExtra("address", etDetailedAddress.getText().toString().trim());
-                                                intent.putExtra("name", etAddName.getText().toString().trim());
-                                                intent.putExtra("phone", etAddNumber.getText().toString().trim());
-                                                intent.putExtra("is_default", 1);
+                                                ConfirmOrderBean.DataBean.AddressListBean addressListBean
+                                                        = new ConfirmOrderBean.DataBean.AddressListBean();
+                                                addressListBean.setId(Integer.parseInt(addressId));
+                                                addressListBean.setProvince(provinceAddress);
+                                                addressListBean.setCity(cityAddress);
+                                                addressListBean.setArea(countAddress);
+                                                addressListBean.setAddress(etDetailedAddress.getText().toString().trim());
+                                                addressListBean.setName(etAddName.getText().toString().trim());
+                                                addressListBean.setPhone(etAddNumber.getText().toString().trim());
+                                                addressListBean.setIs_default(1);
+
+                                                intent.putExtra("address", addressListBean);
+
                                                 setResult(1, intent);
                                                 finish();
                                                 break;
-                                            case "alert":
+                                            case "edit":
                                                 ToastUtils.showToast(AddAddressActivity.this, "修改成功");
                                                 finish();
                                                 break;

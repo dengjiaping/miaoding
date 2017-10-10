@@ -41,7 +41,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/9/25 19:
+ * Author：Libin on 2017/9/25 19:
  * Email：1993911441@qq.com
  * Describe：
  */
@@ -123,10 +123,6 @@ public class SubGoodsFragment extends BaseFragment {
             protected void convert(ViewHolder holder, GoodsListBean.DataBean.itemDataBean itemDataBean, int position) {
                 SimpleDraweeView imgGoods = holder.getView(R.id.img_sub_goods);
                 imgGoods.setImageURI(Constant.HOST + itemDataBean.getThumb());
-//                Glide.with(getParentFragment().getActivity())
-//                        .load(Constant.HOST + itemDataBean.getThumb())
-//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                        .into((RoundedImageView)holder.getView(R.id.img_goods_custom));
                 holder.setText(R.id.tv_sub_title, itemDataBean.getName());
                 holder.setText(R.id.tv_sub_content, itemDataBean.getSub_name());
             }

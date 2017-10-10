@@ -3,7 +3,7 @@ package cn.cloudworkshop.miaoding.bean;
 import com.flyco.tablayout.listener.CustomTabEntity;
 
 /**
- * Author：binge on 2017/2/15 17:03
+ * Author：Libin on 2017/2/15 17:03
  * Email：1993911441@qq.com
  * Describe：
  */

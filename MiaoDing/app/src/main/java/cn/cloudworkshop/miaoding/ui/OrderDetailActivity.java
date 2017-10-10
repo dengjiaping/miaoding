@@ -92,7 +92,7 @@ public class OrderDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
-        tvHeaderTitle.setText("订单详情");
+
         getData();
         initData();
 
@@ -194,12 +194,16 @@ public class OrderDetailActivity extends BaseActivity {
                 + orderBean.getData().getArea()
                 + orderBean.getData().getAddress());
 
+        float totalMoney = getTotalMoney();
+        float payMoney = Float.parseFloat(orderBean.getData().getMoney());
+
+        tvOrderTotalMoney.setText("¥" + DisplayUtils.decimalFormat(totalMoney));
+
+        tvOrderDiscount.setText("¥" + DisplayUtils.decimalFormat(totalMoney - payMoney));
+
         tvOrderNeedPay.setTypeface(DisplayUtils.setTextType(this));
-        tvOrderNeedPay.setText("¥" + DisplayUtils.decimalFormat(Float.parseFloat(orderBean.getData()
-                .getMoney())));
-        tvOrderTotalMoney.setText("¥" + DisplayUtils.decimalFormat(getTotalMoney()));
-        tvOrderDiscount.setText("¥" + DisplayUtils.decimalFormat(Float.parseFloat(orderBean.getData()
-                .getTicket_money())));
+        tvOrderNeedPay.setText("¥" + DisplayUtils.decimalFormat(payMoney));
+
         switch (orderBean.getData().getPay_type()) {
             case 0:
                 tvOrderPayStyle.setText("待付款");
@@ -245,18 +249,23 @@ public class OrderDetailActivity extends BaseActivity {
         rvOrderDetails.setAdapter(adapter);
     }
 
+    /**
+     * @return 订单总金额
+     */
     private float getTotalMoney() {
         float totalMoney = 0;
 
         for (int i = 0; i < orderBean.getData().getCar_list().size(); i++) {
-            totalMoney += Float.parseFloat(orderBean.getData().getCar_list().get(i).getPrice())
-                    * orderBean.getData().getCar_list().get(i).getNum();
+            totalMoney += Float.parseFloat(orderBean.getData().getCar_list().get(i).getPrice()) *
+                    orderBean.getData().getCar_list().get(i).getNum();
         }
 
         return totalMoney;
     }
 
     private void getData() {
+        tvHeaderTitle.setText("订单详情");
+
         Intent intent = getIntent();
         orderId = intent.getStringExtra("id");
 
@@ -510,7 +519,6 @@ public class OrderDetailActivity extends BaseActivity {
                 timer.cancel();
                 task.cancel();
             }
-
             finish();
             return true;
         }

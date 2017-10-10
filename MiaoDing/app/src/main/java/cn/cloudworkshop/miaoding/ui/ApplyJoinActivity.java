@@ -48,7 +48,7 @@ import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 import okhttp3.Call;
 
 /**
- * Created by Administrator on 2016/10/24.
+ * Created by Libin on 2016/10/24.
  * 提交入驻申请
  */
 

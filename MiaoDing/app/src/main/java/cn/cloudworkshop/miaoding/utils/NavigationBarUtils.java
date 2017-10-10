@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 /**
- * Author：binge on 2016/12/15 11:24
+ * Author：Libin on 2016/12/15 11:24
  * Email：1993911441@qq.com
  * Describe：底部导航栏
  */

@@ -10,7 +10,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import cn.cloudworkshop.miaoding.constant.Constant;
 
 /**
- * Author：binge on 2016/11/21 16:23
+ * Author：Libin on 2016/11/21 16:23
  * Email：1993911441@qq.com
  * Describe：微信支付
  */

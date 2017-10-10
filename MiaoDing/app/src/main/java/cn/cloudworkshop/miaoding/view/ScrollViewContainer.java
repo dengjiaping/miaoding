@@ -15,9 +15,7 @@ import java.util.TimerTask;
 
 /**
  * 包含两个ScrollView的容器
- * 更多详解见博客http://dwtedx.com
- *
- * @author chenjing
+ * @author Libin
  *
  */
 public class ScrollViewContainer extends RelativeLayout {

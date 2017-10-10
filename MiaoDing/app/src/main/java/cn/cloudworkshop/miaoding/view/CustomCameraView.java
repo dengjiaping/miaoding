@@ -34,7 +34,7 @@ import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 
 
 /**
- * Author：binge on 2017/3/10 10:55
+ * Author：Libin on 2017/3/10 10:55
  * Email：1993911441@qq.com
  * Describe：相机
  */

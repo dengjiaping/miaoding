@@ -40,7 +40,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/12/17 11:28
+ * Author：Libin on 2016/12/17 11:28
  * Email：1993911441@qq.com
  * Describe：选择优惠券
  */

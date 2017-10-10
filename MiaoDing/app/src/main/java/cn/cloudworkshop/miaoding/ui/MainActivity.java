@@ -77,7 +77,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * Author：binge on 2017-06-21 10:35
+ * Author：Libin on 2017-06-21 10:35
  * Email：1993911441@qq.com
  * Describe：首页
  */
@@ -108,44 +108,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         initIcon();
         checkUpdate();
         isLogin();
-//        upLoad();
         submitClientId();
-        LogUtils.log("main；oncreate");
-    }
-
-    private void upLoad() {
-
-        File file1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator + "CloudWorkshop/img1.jpg");
-        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator + "CloudWorkshop/img2.jpg");
-
-
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img1", file1.getName(), RequestBody.create(MediaType.parse("image/png"), file1));
-        builder.addFormDataPart("img2", file2.getName(), RequestBody.create(MediaType.parse("image/png"), file2));
-
-
-        MultipartBody requestBody = builder.build();
-        //构建请求
-        Request request = new Request.Builder()
-                .url(Constant.TAKE_PHOTO)//地址
-                .post(requestBody)//添加请求体
-                .build();
-        OkHttpClient client = new OkHttpClient();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-
-            }
-        });
-
 
     }
 
@@ -237,6 +200,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     JSONObject jsonObject = new JSONObject(response);
                                     int code = jsonObject.getInt("code");
                                     if (code == 10001) {
+                                        SharedPreferencesUtils.deleteStr(MainActivity.this, "uid");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "token");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "avatar");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "phone");
@@ -491,7 +455,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        LogUtils.log("main；onNewintent");
         setIntent(intent);
         int currentPage = getIntent().getIntExtra("page", 0);
         if (fragmentUtils != null && !isFinishing()) {

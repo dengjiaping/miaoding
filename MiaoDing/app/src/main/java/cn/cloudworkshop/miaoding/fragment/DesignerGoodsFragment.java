@@ -38,7 +38,7 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 
 /**
- * Author：binge on 2017-06-08 15:52
+ * Author：Libin on 2017-06-08 15:52
  * Email：1993911441@qq.com
  * Describe：设计师作品
  */

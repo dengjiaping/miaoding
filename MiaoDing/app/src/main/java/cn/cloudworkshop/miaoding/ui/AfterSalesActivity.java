@@ -14,7 +14,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 
 /**
- * Author：binge on 2016/12/22 13:43
+ * Author：Libin on 2016/12/22 13:43
  * Email：1993911441@qq.com
  * Describe：
  */
@@ -62,7 +62,6 @@ public class AfterSalesActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_sale_progress:
-
                 break;
             case R.id.ll_sale_consult:
                 ContactService.contactService(this);

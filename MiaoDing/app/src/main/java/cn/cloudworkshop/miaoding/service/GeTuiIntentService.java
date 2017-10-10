@@ -20,7 +20,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 
 /**
- * Author：binge on 2016/12/20 13:47
+ * Author：Libin on 2016/12/20 13:47
  * Email：1993911441@qq.com
  * Describe：个推
  */

@@ -53,7 +53,7 @@ import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/2/14 16:56
+ * Author：Libin on 2017/2/14 16:56
  * Email：1993911441@qq.com
  * Describe：会员中心
  */
@@ -154,7 +154,7 @@ public class MemberCenterActivity extends BaseActivity {
 
         float maxCredit = Float.parseFloat(memberBean.getData().getUser_info().getUser_grade().getMax_credit());
         progressMember.setProgress((int) (credit / maxCredit * 100));
-        tvMemberScore.setText(credit + "");
+        tvMemberScore.setText(String.valueOf(credit));
         tvMemberTotal.setText("/" + (int) maxCredit);
 
         ArrayList<CustomTabEntity> tabList = new ArrayList<>();

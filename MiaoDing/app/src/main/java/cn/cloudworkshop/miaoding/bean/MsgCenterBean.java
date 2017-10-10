@@ -3,7 +3,7 @@ package cn.cloudworkshop.miaoding.bean;
 import java.util.List;
 
 /**
- * Author：binge on 2017/1/2 17:53
+ * Author：Libin on 2017/1/2 17:53
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Author：binge on 2017-05-09 12:37
+ * Author：Libin on 2017-05-09 12:37
  * Email：1993911441@qq.com
  * Describe：自适应高度Viewpager
  */

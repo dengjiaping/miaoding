@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author：binge on 2017-07-03 14:49
+ * Author：Libin on 2017-07-03 14:49
  * Email：1993911441@qq.com
  * Describe：activity的管理类
  */

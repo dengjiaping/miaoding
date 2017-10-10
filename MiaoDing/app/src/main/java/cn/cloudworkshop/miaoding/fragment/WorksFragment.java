@@ -47,7 +47,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-06-08 11:29
+ * Author：Libin on 2017-06-08 11:29
  * Email：1993911441@qq.com
  * Describe：腔调作品
  */
@@ -165,7 +165,7 @@ public class WorksFragment extends BaseFragment {
             public void onItemClick(View view, int position) {
                 if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
                     Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
-                    intent.putExtra("id", worksList.get(position).getRecommend_goods_ids() + "");
+                    intent.putExtra("id", String.valueOf(worksList.get(position).getRecommend_goods_ids()));
                     startActivity(intent);
                 }
             }

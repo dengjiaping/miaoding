@@ -733,7 +733,6 @@ public class TailorActivity extends BaseActivity {
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(imgGuide);
                             }
-
                         }
                     });
         }

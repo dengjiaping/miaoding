@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,10 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageNewsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
+import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
 import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
+import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
@@ -54,7 +57,7 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-04-06 09:59
+ * Author：Libin on 2017-04-06 09:59
  * Email：1993911441@qq.com
  * Describe：推荐
  */
@@ -273,6 +276,24 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                         case 2:
                             startActivity(new Intent(getActivity(), JoinUsActivity.class));
                             break;
+                        //邀请好友
+                        case 6:
+                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(getActivity(), "token"))) {
+                                String uid = SharedPreferencesUtils.getStr(getActivity(), "uid");
+                                Intent invite = new Intent(getActivity(), DressingResultActivity.class);
+                                invite.putExtra("title", "邀请有礼");
+                                invite.putExtra("share_title", "邀请有礼");
+                                invite.putExtra("share_content", "TA得优惠，你得奖励");
+                                invite.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                                        .get(position).getLink() + uid);
+                                invite.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
+                                startActivity(invite);
+                            } else {
+                                Intent login = new Intent(getActivity(), LoginActivity.class);
+                                login.putExtra("page_name", "banner");
+                                startActivity(login);
+                            }
+                            break;
                     }
                 }
             });
@@ -309,7 +330,7 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                         intent = new Intent(getActivity(), NewWorksActivity.class);
                         break;
                 }
-                intent.putExtra("id", homepageBean.getRecommend_list().get(position).getGoods_id() + "");
+                intent.putExtra("id", String.valueOf(homepageBean.getRecommend_list().get(position).getGoods_id()));
                 startActivity(intent);
             }
 

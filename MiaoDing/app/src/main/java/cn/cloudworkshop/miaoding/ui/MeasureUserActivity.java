@@ -31,7 +31,7 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/1/6 16:20
+ * Author：Libin on 2017/1/6 16:20
  * Email：1993911441@qq.com
  * Describe：用户量体列表
  */

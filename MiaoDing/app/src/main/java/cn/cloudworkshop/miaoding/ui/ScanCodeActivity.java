@@ -24,7 +24,7 @@ import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
- * Author：binge on 2017-06-15 08:48
+ * Author：Libin on 2017-06-15 08:48
  * Email：1993911441@qq.com
  * Describe：扫描二维码
  */

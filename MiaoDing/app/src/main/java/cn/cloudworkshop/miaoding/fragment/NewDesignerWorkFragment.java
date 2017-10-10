@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
 
 /**
- * Author：binge on 2017-09-15 17:25
+ * Author：Libin on 2017-09-15 17:25
  * Email：1993911441@qq.com
  * Describe：
  */

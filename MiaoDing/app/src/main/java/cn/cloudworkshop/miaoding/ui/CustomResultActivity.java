@@ -112,6 +112,7 @@ public class CustomResultActivity extends BaseActivity {
     /**
      * 商品详情
      */
+
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         customBean = (CustomItemBean) bundle.getSerializable("tailor");
@@ -322,7 +323,7 @@ public class CustomResultActivity extends BaseActivity {
     private void addToCart() {
         Map<String, String> map = new HashMap<>();
         map.put("token", SharedPreferencesUtils.getStr(this, "token"));
-        map.put("type", type + "");
+        map.put("type", String.valueOf(type));
         map.put("price_id", customBean.getPrice_type());
         map.put("goods_id", customBean.getId());
         map.put("goods_type", "1");
@@ -334,8 +335,12 @@ public class CustomResultActivity extends BaseActivity {
             map.put("goods_thumb", customBean.getDefault_img());
         }
 
-        map.put("spec_ids", customBean.getSpec_ids());
-        map.put("spec_content", customBean.getSpec_content());
+        if (!TextUtils.isEmpty(customBean.getSpec_ids())) {
+            map.put("spec_ids", customBean.getSpec_ids());
+        }
+        if (!TextUtils.isEmpty(customBean.getSpec_content())) {
+            map.put("spec_content", customBean.getSpec_content());
+        }
 
         if (!TextUtils.isEmpty(customBean.getFabric_id())) {
             map.put("mianliao_id", customBean.getFabric_id());
@@ -345,7 +350,7 @@ public class CustomResultActivity extends BaseActivity {
             map.put("banxing_id", customBean.getBanxing_id());
         }
 
-        map.put("is_scan", customBean.getIs_scan() + "");
+        map.put("is_scan", String.valueOf(customBean.getIs_scan()));
         if (!TextUtils.isEmpty(customBean.getDiy_contet())) {
             map.put("diy_content", customBean.getDiy_contet());
         }
@@ -371,7 +376,7 @@ public class CustomResultActivity extends BaseActivity {
                                 aadCartAnim();
                             }
                             String cartId = jsonObject1.getString("car_id");
-                            if (cartId != null) {
+                            if (!TextUtils.isEmpty(cartId)) {
                                 MobclickAgent.onEvent(CustomResultActivity.this, "add_cart");
                                 if (type == 1) {
                                     Intent intent = new Intent(CustomResultActivity.this,
@@ -386,7 +391,7 @@ public class CustomResultActivity extends BaseActivity {
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                 }
-                                
+
                             }
 
                         } catch (JSONException e) {

@@ -57,7 +57,7 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-06-15 09:52
+ * Author：Libin on 2017-06-15 09:52
  * Email：1993911441@qq.com
  * Describe：推荐
  */
@@ -92,7 +92,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.NEW_HOMEPAGE_LIST)
-                .addParams("page", page + "")
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override

@@ -38,7 +38,7 @@ import cn.cloudworkshop.miaoding.utils.VerPageTransformer;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/9/25 16:09
+ * Author：Libin on 2017/9/25 16:09
  * Email：1993911441@qq.com
  * Describe：
  */
@@ -85,7 +85,7 @@ public class NewDesignerFragment extends BaseFragment {
     private void initView() {
         vpDesigner.setOffscreenPageLimit(designerBean.getData().size());
         vpDesigner.setPageTransformer(false, new FadePageTransformer());
-//        vpDesigner.setPageMargin((int) DisplayUtils.dp2px(getParentFragment().getActivity(), 10));
+
         MyPagerAdapter adapter = new MyPagerAdapter(designerBean.getData(), getParentFragment().getActivity());
         vpDesigner.setAdapter(adapter);
 

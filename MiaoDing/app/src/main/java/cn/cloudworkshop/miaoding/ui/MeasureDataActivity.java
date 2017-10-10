@@ -21,7 +21,7 @@ import cn.cloudworkshop.miaoding.bean.MeasureDataBean;
 
 
 /**
- * Author：binge on 2017/1/6 16:20
+ * Author：Libin on 2017/1/6 16:20
  * Email：1993911441@qq.com
  * Describe：量体数据
  */

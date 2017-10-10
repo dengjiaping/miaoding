@@ -36,7 +36,7 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/2/15 10:33
+ * Author：Libin on 2017/2/15 10:33
  * Email：1993911441@qq.com
  * Describe：会员成长记录
  */
@@ -81,7 +81,7 @@ public class MemberGrowthActivity extends BaseActivity {
         OkHttpUtils.get()
                 .url(Constant.MEMBER_GROWTH)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("page", page + "")
+                .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override

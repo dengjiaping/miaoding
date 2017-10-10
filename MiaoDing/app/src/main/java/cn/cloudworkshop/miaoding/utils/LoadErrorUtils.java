@@ -11,7 +11,7 @@ import android.view.View;
 import cn.cloudworkshop.miaoding.R;
 
 /**
- * Author：binge on 2017-07-14 11:38
+ * Author：Libin on 2017-07-14 11:38
  * Email：1993911441@qq.com
  * Describe：网络加载失败弹窗
  */

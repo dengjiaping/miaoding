@@ -40,7 +40,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +54,6 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -68,7 +66,7 @@ import okhttp3.Call;
 
 
 /**
- * Author：binge on 2017-04-18 10:59
+ * Author：Libin on 2017-04-18 10:59
  * Email：1993911441@qq.com
  * Describe：定制商品详情界面
  */
@@ -113,7 +111,7 @@ public class CustomGoodsActivity extends BaseActivity {
     TextView tvEvaluateContent;
     @BindView(R.id.rv_evaluate_picture)
     RecyclerView rvEvaluate;
-    @BindView(R.id.tv_type_goods)
+    @BindView(R.id.tv_goods_comment)
     TextView tvTypeGoods;
     @BindView(R.id.scroll_container)
     ScrollViewContainer scrollContainer;
@@ -289,40 +287,41 @@ public class CustomGoodsActivity extends BaseActivity {
         }
 
         //评价人数
-        if (customBean.getData().getComment_num() > 0) {
-            tvCommentCount.setText("评价  （" + customBean.getData().getComment_num() + "）");
-            Glide.with(getApplicationContext())
-                    .load(Constant.HOST + customBean.getData().getNew_comment().getAvatar())
-                    .centerCrop()
-                    .into(imgUser);
-            tvUserName.setText(customBean.getData().getNew_comment().getUser_name());
-            Glide.with(getApplicationContext())
-                    .load(Constant.HOST + customBean.getData().getNew_comment().getUser_grade().getImg2())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imgUserGrade);
-            tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", customBean.getData().getNew_comment().getC_time()));
-            tvEvaluateContent.setText(customBean.getData().getNew_comment().getContent());
-            if (customBean.getData().getNew_comment().getImg_list() != null && customBean.getData()
-                    .getNew_comment().getImg_list().size() > 0) {
-                rvEvaluate.setLayoutManager(new GridLayoutManager(CustomGoodsActivity.this, 3));
-                CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(CustomGoodsActivity
-                        .this, R.layout.listitem_user_comment, customBean.getData().getNew_comment().getImg_list()) {
-                    @Override
-                    protected void convert(ViewHolder holder, String s, int position) {
-                        Glide.with(CustomGoodsActivity.this)
-                                .load(Constant.HOST + s)
-                                .centerCrop()
-                                .into((ImageView) holder.getView(R.id.img_user_comment));
-                    }
-                };
-                rvEvaluate.setAdapter(evaluateAdapter);
-            }
+//        if (customBean.getData().getComment_num() > 0) {
+//            tvCommentCount.setText("评价  （" + customBean.getData().getComment_num() + "）");
+//            Glide.with(getApplicationContext())
+//                    .load(Constant.HOST + customBean.getData().getNew_comment().getAvatar())
+//                    .centerCrop()
+//                    .into(imgUser);
+//            tvUserName.setText(customBean.getData().getNew_comment().getUser_name());
+//            Glide.with(getApplicationContext())
+//                    .load(Constant.HOST + customBean.getData().getNew_comment().getUser_grade().getImg2())
+//                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                    .into(imgUserGrade);
+//            tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", customBean.getData().getNew_comment().getC_time()));
+//            tvEvaluateContent.setText(customBean.getData().getNew_comment().getContent());
+//            if (customBean.getData().getNew_comment().getImg_list() != null && customBean.getData()
+//                    .getNew_comment().getImg_list().size() > 0) {
+//                rvEvaluate.setLayoutManager(new GridLayoutManager(CustomGoodsActivity.this, 3));
+//                CommonAdapter<String> evaluateAdapter = new CommonAdapter<String>(CustomGoodsActivity
+//                        .this, R.layout.listitem_user_comment, customBean.getData().getNew_comment().getImg_list()) {
+//                    @Override
+//                    protected void convert(ViewHolder holder, String s, int position) {
+//                        Glide.with(CustomGoodsActivity.this)
+//                                .load(Constant.HOST + s)
+//                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                                .centerCrop()
+//                                .into((ImageView) holder.getView(R.id.img_user_comment));
+//                    }
+//                };
+//                rvEvaluate.setAdapter(evaluateAdapter);
+//            }
+//            tvTypeGoods.setText(customBean.getData().getNew_comment().getGoods_intro());
+//        } else {
+//            llNoEvaluate.setVisibility(View.GONE);
+//        }
 
-        } else {
-            llNoEvaluate.setVisibility(View.GONE);
-        }
-
-        tvTypeGoods.setText(customBean.getData().getNew_comment().getGoods_intro());
+        llNoEvaluate.setVisibility(View.GONE);
 
 
         //详情页图片尺寸超过手机支持最大尺寸

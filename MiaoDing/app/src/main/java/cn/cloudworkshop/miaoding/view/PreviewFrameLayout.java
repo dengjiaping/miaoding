@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 /**
- * Author：binge on 2017/3/10 10:59
+ * Author：Libin on 2017/3/10 10:59
  * Email：1993911441@qq.com
  * Describe：相机
  */

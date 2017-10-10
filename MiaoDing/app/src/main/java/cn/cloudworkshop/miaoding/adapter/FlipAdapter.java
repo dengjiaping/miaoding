@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 
 /**
- * Author：binge on 2017-04-21 10:43
+ * Author：Libin on 2017-04-21 10:43
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -19,7 +19,7 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 
 /**
- * Author：binge on 2016/11/25 14:45
+ * Author：Libin on 2016/11/25 14:45
  * Email：1993911441@qq.com
  * Describe：
  */

@@ -18,7 +18,7 @@ import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.LogUtils;
 
 /**
- * Author：binge on 2016/11/30 13:35
+ * Author：Libin on 2016/11/30 13:35
  * Email：1993911441@qq.com
  * Describe：滑动查看详情
  */

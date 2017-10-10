@@ -51,7 +51,7 @@ public class WheelView extends View {
     public static final int TEXT_SIZE = 14;//sp
     public static final int TEXT_COLOR_FOCUS = 0XFF222222;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
-    public static final int DIVIDER_COLOR = 0XFF666666;
+    public static final int DIVIDER_COLOR = 0XFFE5E5E5;
     public static final int DIVIDER_ALPHA = 220;
     public static final float DIVIDER_THICK = 2f;//px
     public static final int ITEM_OFF_SET = 3;

@@ -20,7 +20,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.fragment.CollectionFragment;
 
 /**
- * Author：binge on 2017-07-18 17:29
+ * Author：Libin on 2017-07-18 17:29
  * Email：1993911441@qq.com
  * Describe：收藏
  */

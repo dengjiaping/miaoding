@@ -24,10 +24,7 @@ import cn.cloudworkshop.miaoding.R;
 
 /**
  *
- * @author xiaanming
- *
- * @blog http://blog.csdn.net/xiaanming
- *
+ * @author Libin
  */
 public class SwipeBackLayout extends FrameLayout {
 	private static final String TAG = SwipeBackLayout.class.getSimpleName();

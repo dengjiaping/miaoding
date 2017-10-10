@@ -30,7 +30,7 @@ import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/12/15 16:40
+ * Author：Libin on 2016/12/15 16:40
  * Email：1993911441@qq.com
  * Describe：优惠券
  */

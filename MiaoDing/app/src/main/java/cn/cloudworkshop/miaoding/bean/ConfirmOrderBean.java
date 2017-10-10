@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -135,7 +136,7 @@ public class ConfirmOrderBean {
             this.car_list = car_list;
         }
 
-        public static class AddressListBean {
+        public static class AddressListBean implements Serializable{
             private int id;
             private int uid;
             private String name;

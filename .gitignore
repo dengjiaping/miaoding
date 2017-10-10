@@ -4,3 +4,8 @@
 /.gradle
 local.properties
 *.iml
+MiaoDing/app/app.apk
+MiaoDing/app/app-xiaomi-release.apk
+MiaoDing/app/app-m360-release.apk
+MiaoDing/app/app-huawei-release.apk
+MiaoDing/app/app-ali-release.apk

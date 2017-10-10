@@ -20,7 +20,7 @@ import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 
 /**
- * Author：binge on 2016/11/29 17:31
+ * Author：Libin on 2016/11/29 17:31
  * Email：1993911441@qq.com
  * Describe：穿衣测试结果
  */

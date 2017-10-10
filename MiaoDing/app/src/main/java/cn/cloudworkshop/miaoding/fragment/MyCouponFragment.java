@@ -45,7 +45,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/12/17 11:40
+ * Author：Libin on 2016/12/17 11:40
  * Email：1993911441@qq.com
  * Describe：优惠券子界面
  */
@@ -113,7 +113,7 @@ public class MyCouponFragment extends BaseFragment {
         OkHttpUtils.get()
                 .url(Constant.MY_COUPON)
                 .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                .addParams("status", currentPos + "")
+                .addParams("status", String.valueOf(currentPos))
                 .build()
                 .execute(new StringCallback() {
                     @Override

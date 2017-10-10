@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Author：binge on 2017/2/27 09:36
+ * Author：Libin on 2017/2/27 09:36
  * Email：1993911441@qq.com
  * Describe：App更新
  */

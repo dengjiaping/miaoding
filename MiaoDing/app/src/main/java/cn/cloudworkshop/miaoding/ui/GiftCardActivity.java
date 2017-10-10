@@ -41,7 +41,7 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-09-20 15:21
+ * Author：Libin on 2017-09-20 15:21
  * Email：1993911441@qq.com
  * Describe：礼品卡
  */

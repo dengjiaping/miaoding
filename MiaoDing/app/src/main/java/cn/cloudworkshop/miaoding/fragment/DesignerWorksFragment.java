@@ -25,7 +25,7 @@ import cn.cloudworkshop.miaoding.utils.FragmentUtils;
 import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 
 /**
- * Author：binge on 2017-04-21 10:24
+ * Author：Libin on 2017-04-21 10:24
  * Email：1993911441@qq.com
  * Describe：腔调成品
  */

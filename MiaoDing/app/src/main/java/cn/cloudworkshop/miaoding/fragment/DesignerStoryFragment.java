@@ -19,7 +19,7 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
 
 /**
- * Author：binge on 2017-06-08 15:39
+ * Author：Libin on 2017-06-08 15:39
  * Email：1993911441@qq.com
  * Describe：设计师故事
  */

@@ -56,7 +56,7 @@ import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017/1/5 13:32
+ * Author：Libin on 2017/1/5 13:32
  * Email：1993911441@qq.com
  * Describe：售后订单修改
  */
@@ -171,23 +171,28 @@ public class ChangeOrderActivity extends BaseActivity {
                 <OrderDetailsBean.DataBean.CarListBean>(this, R.layout.listitem_shopping_cart,
                 orderBean.getData().getCar_list()) {
             @Override
-            protected void convert(ViewHolder holder, OrderDetailsBean.DataBean.CarListBean carListBean, final int position) {
+            protected void convert(ViewHolder holder, OrderDetailsBean.DataBean.CarListBean carListBean,
+                                   final int position) {
                 holder.setChecked(R.id.checkbox_goods_select, false);
                 Glide.with(ChangeOrderActivity.this)
                         .load(Constant.HOST + orderBean.getData().getCar_list().get(position).getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
-                holder.setText(R.id.tv_goods_name, orderBean.getData().getCar_list().get(position).getGoods_name());
+                holder.setText(R.id.tv_goods_name, orderBean.getData().getCar_list().get(position)
+                        .getGoods_name());
                 switch (orderBean.getData().getCar_list().get(position).getGoods_type()) {
                     case 2:
-                        holder.setText(R.id.tv_goods_content, orderBean.getData().getCar_list().get(position).getSize_content());
+                        holder.setText(R.id.tv_goods_content, orderBean.getData().getCar_list()
+                                .get(position).getSize_content());
                         break;
                     default:
                         holder.setText(R.id.tv_goods_content, "定制款");
                         break;
                 }
-                holder.setText(R.id.tv_goods_price, "¥" + orderBean.getData().getCar_list().get(position).getPrice());
-                holder.setText(R.id.tv_goods_count, "x" + orderBean.getData().getCar_list().get(position).getNum());
+                holder.setText(R.id.tv_goods_price, "¥" + orderBean.getData().getCar_list()
+                        .get(position).getPrice());
+                holder.setText(R.id.tv_goods_count, "x" + orderBean.getData().getCar_list()
+                        .get(position).getNum());
                 holder.setVisible(R.id.view_cart, true);
 
                 ((CheckBox) holder.getView(R.id.checkbox_goods_select)).
@@ -258,7 +263,8 @@ public class ChangeOrderActivity extends BaseActivity {
 
         rvSelectPhoto.setLayoutManager(new LinearLayoutManager(ChangeOrderActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
-        photoAdapter = new CommonAdapter<String>(ChangeOrderActivity.this, R.layout.listitem_picker_photo, selectedPhotos) {
+        photoAdapter = new CommonAdapter<String>(ChangeOrderActivity.this,
+                R.layout.listitem_picker_photo, selectedPhotos) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
 

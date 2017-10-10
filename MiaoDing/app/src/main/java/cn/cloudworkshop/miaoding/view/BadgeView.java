@@ -14,7 +14,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 /**
- * Author：binge on 2017/1/3 09:56
+ * Author：Libin on 2017/1/3 09:56
  * Email：1993911441@qq.com
  * Describe：未读消息提醒
  */

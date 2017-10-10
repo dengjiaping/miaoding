@@ -29,7 +29,7 @@ import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
- * Author：binge on 2017/2/7 11:54
+ * Author：Libin on 2017/2/7 11:54
  * Email：1993911441@qq.com
  * Describe：图片预览
  */

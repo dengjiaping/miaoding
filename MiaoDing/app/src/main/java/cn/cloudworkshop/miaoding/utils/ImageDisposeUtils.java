@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Author：binge on 2016/12/14 13:22
+ * Author：Libin on 2016/12/14 13:22
  * Email：1993911441@qq.com
  * Describe：图片旋转问题
  */

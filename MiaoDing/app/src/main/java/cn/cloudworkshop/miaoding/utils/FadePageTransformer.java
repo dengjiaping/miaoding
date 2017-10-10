@@ -4,7 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
- * Author：binge on 2017/3/27 16:17
+ * Author：Libin on 2017/3/27 16:17
  * Email：1993911441@qq.com
  * Describe：viewpager单页显示3个item,滑动fadeout效果
  */

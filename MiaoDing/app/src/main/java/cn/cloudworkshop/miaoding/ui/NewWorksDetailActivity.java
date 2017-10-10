@@ -58,7 +58,7 @@ import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-08-15 15:26
+ * Author：Libin on 2017-08-15 15:26
  * Email：1993911441@qq.com
  * Describe：作品详情
  */

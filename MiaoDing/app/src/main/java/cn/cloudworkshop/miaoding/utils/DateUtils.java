@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Author：binge on 2016/12/19 10:11
+ * Author：Libin on 2016/12/19 10:11
  * Email：1993911441@qq.com
  * Describe：时间戳
  */

@@ -22,7 +22,7 @@ import android.widget.FrameLayout.LayoutParams;
 
 import java.lang.reflect.Method;
 /**
- * Author：binge on 2017-06-01 13:46
+ * Author：Libin on 2017-06-01 13:46
  * Email：1993911441@qq.com
  * Describe：
  */

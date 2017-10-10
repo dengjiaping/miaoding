@@ -19,7 +19,7 @@ import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.UnicornImageLoader;
 
 /**
- * Author：binge on 2016/12/8 16:35
+ * Author：Libin on 2016/12/8 16:35
  * Email：1993911441@qq.com
  * Describe：fresco七鱼图片加载
  */

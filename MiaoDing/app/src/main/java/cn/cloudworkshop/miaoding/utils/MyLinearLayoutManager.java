@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 /**
- * Author：binge on 2016/11/24 17:20
+ * Author：Libin on 2016/11/24 17:20
  * Email：1993911441@qq.com
  * Describe：ScrollerView嵌套RecyclerView
  */

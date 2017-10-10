@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
@@ -60,7 +61,7 @@ public class DeliveryAddressActivity extends BaseActivity {
     //edit：编辑地址 select:选择地址
     private String type;
     //地址id
-    private String addressId;
+    private int addressId = -1;
     //页面
     private int page = 1;
     //刷新
@@ -102,7 +103,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                 break;
             case "select":
                 tvHeaderTitle.setText("选择地址");
-                addressId = getIntent().getStringExtra("address_id");
+                addressId = getIntent().getIntExtra("address_id", -1);
                 break;
         }
 
@@ -112,7 +113,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LoadErrorUtils.showDialog(DeliveryAddressActivity.this, new LoadErrorUtils.OnRefreshListener() {
@@ -125,12 +125,12 @@ public class DeliveryAddressActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        DeliveryAddressBean address = GsonUtils.jsonToBean(response, DeliveryAddressBean.class);
-                        if (address.getData() != null && address.getData().size() > 0) {
+                        DeliveryAddressBean addressBean = GsonUtils.jsonToBean(response, DeliveryAddressBean.class);
+                        if (addressBean.getData() != null && addressBean.getData().size() > 0) {
                             if (isRefresh) {
                                 dataList.clear();
                             }
-                            dataList.addAll(address.getData());
+                            dataList.addAll(addressBean.getData());
                             if (isRefresh || isLoadMore) {
                                 recyclerView.refreshComplete(0);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
@@ -149,7 +149,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                                 llNoAddress.setVisibility(View.VISIBLE);
                             }
                         }
-
                     }
                 });
     }
@@ -164,7 +163,8 @@ public class DeliveryAddressActivity extends BaseActivity {
         CommonAdapter<DeliveryAddressBean.DataBean> adapter = new CommonAdapter<DeliveryAddressBean
                 .DataBean>(this, R.layout.listitem_address, dataList) {
             @Override
-            protected void convert(ViewHolder holder, final DeliveryAddressBean.DataBean dataBean, final int position) {
+            protected void convert(ViewHolder holder, final DeliveryAddressBean.DataBean dataBean,
+                                   final int position) {
                 holder.setText(R.id.tv_user_name, dataBean.getName());
                 holder.setText(R.id.tv_user_phone, dataBean.getPhone());
                 holder.setText(R.id.tv_user_address, dataBean.getProvince() + dataBean.getCity()
@@ -211,8 +211,8 @@ public class DeliveryAddressActivity extends BaseActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(DeliveryAddressActivity.this, AddAddressActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("type", "alert");
-                        bundle.putSerializable("alert", dataBean);
+                        bundle.putString("type", "edit");
+                        bundle.putSerializable("edit", dataBean);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
@@ -220,11 +220,8 @@ public class DeliveryAddressActivity extends BaseActivity {
             }
         };
 
-
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         recyclerView.setAdapter(mLRecyclerViewAdapter);
-        recyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        recyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         //刷新
         recyclerView.setOnRefreshListener(new OnRefreshListener() {
@@ -252,8 +249,8 @@ public class DeliveryAddressActivity extends BaseActivity {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(type.equals("select")){
-                    selectedAddress(position,1);
+                if (type.equals("select")) {
+                    selectedAddress(position, 1);
                     finish();
                 }
             }
@@ -265,16 +262,18 @@ public class DeliveryAddressActivity extends BaseActivity {
     /**
      * 已选择地址
      */
-    private void selectedAddress(int position,int resultCode) {
+    private void selectedAddress(int position, int resultCode) {
         Intent intent = new Intent();
-        intent.putExtra("address_id", dataList.get(position).getId() + "");
-        intent.putExtra("province", dataList.get(position).getProvince());
-        intent.putExtra("city", dataList.get(position).getCity());
-        intent.putExtra("area", dataList.get(position).getArea());
-        intent.putExtra("address", dataList.get(position).getAddress());
-        intent.putExtra("name", dataList.get(position).getName());
-        intent.putExtra("phone", dataList.get(position).getPhone());
-        intent.putExtra("is_default", dataList.get(position).getIs_default());
+        ConfirmOrderBean.DataBean.AddressListBean addressListBean = new ConfirmOrderBean.DataBean.AddressListBean();
+        addressListBean.setId(dataList.get(position).getId());
+        addressListBean.setProvince(dataList.get(position).getProvince());
+        addressListBean.setCity(dataList.get(position).getCity());
+        addressListBean.setArea(dataList.get(position).getArea());
+        addressListBean.setAddress(dataList.get(position).getAddress());
+        addressListBean.setName(dataList.get(position).getName());
+        addressListBean.setPhone(dataList.get(position).getPhone());
+        addressListBean.setIs_default(dataList.get(position).getIs_default());
+        intent.putExtra("address", addressListBean);
         setResult(resultCode, intent);
     }
 
@@ -285,7 +284,7 @@ public class DeliveryAddressActivity extends BaseActivity {
         OkHttpUtils.post()
                 .url(Constant.DEFAULT_ADDRESS)
                 .addParams("token", SharedPreferencesUtils.getStr(DeliveryAddressActivity.this, "token"))
-                .addParams("id", id + "")
+                .addParams("id", String.valueOf(id))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -318,7 +317,7 @@ public class DeliveryAddressActivity extends BaseActivity {
                 OkHttpUtils.post()
                         .url(Constant.DELETE_ADDRESS)
                         .addParams("token", SharedPreferencesUtils.getStr(DeliveryAddressActivity.this, "token"))
-                        .addParams("id", id+"")
+                        .addParams("id", String.valueOf(id))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -374,17 +373,17 @@ public class DeliveryAddressActivity extends BaseActivity {
     }
 
     private void isSelectAddress() {
-        //地址被清空返回2,已选地址被删除返回3
+        //地址被清空返回2;已选地址被删除返回3
         if (type.equals("select")) {
             if (dataList.size() > 0) {
-                if (addressId == null) {
+                if (addressId == -1) {
                     setResult(3);
                 } else {
-                    List<String> idList = new ArrayList<>();
+                    List<Integer> idList = new ArrayList<>();
                     for (int i = 0; i < dataList.size(); i++) {
-                        idList.add(dataList.get(i).getId() + "");
-                        if (addressId.equals(String.valueOf(dataList.get(i).getId()))){
-                            selectedAddress(i,4);
+                        idList.add(dataList.get(i).getId());
+                        if (addressId == dataList.get(i).getId()) {
+                            selectedAddress(i, 4);
                             break;
                         }
                     }
@@ -392,7 +391,6 @@ public class DeliveryAddressActivity extends BaseActivity {
                         setResult(3);
                     }
                 }
-
             } else {
                 setResult(2);
             }

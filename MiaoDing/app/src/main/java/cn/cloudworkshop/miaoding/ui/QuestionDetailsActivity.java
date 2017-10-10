@@ -19,7 +19,7 @@ import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/11/9 18:25
+ * Author：Libin on 2016/11/9 18:25
  * Email：1993911441@qq.com
  * Describe：问题详情
  */

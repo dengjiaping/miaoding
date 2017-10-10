@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import cn.cloudworkshop.miaoding.R;
 
 /**
- * Author：binge on 2017/9/25 17:27
+ * Author：Libin on 2017/9/25 17:27
  * Email：1993911441@qq.com
  * Describe：
  */

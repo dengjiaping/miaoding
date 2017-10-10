@@ -24,7 +24,7 @@ import cn.cloudworkshop.miaoding.view.SwipeBackActivity;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2017-09-18 09:42
+ * Author：Libin on 2017-09-18 09:42
  * Email：1993911441@qq.com
  * Describe：
  */

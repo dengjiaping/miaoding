@@ -79,8 +79,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".ui.OldMainActivity"/>
         <activity android:name=".ui.TailorActivity"/>
@@ -206,10 +208,10 @@
         <activity android:name=".ui.CollectionActivity"/>
         <activity android:name=".ui.NewWorksDetailActivity"/>
         <activity android:name=".ui.NewWorksActivity"/>
-        <activity android:name=".ui.GoodsDetailActivity"
-                  android:theme="@style/NoTitleTranslucentTheme"/>
+        <activity
+            android:name=".ui.GoodsDetailActivity"
+            android:theme="@style/NoTitleTranslucentTheme"/>
         <activity android:name=".ui.GiftCardActivity"/>
-
 
 
         <service android:name="com.amap.api.location.APSService"/>

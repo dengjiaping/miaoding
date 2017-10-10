@@ -37,7 +37,6 @@ import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
 import cn.cloudworkshop.miaoding.ui.CollectionActivity;
 import cn.cloudworkshop.miaoding.ui.CouponActivity;
 import cn.cloudworkshop.miaoding.ui.DressingResultActivity;
-import cn.cloudworkshop.miaoding.ui.DressingTestActivity;
 import cn.cloudworkshop.miaoding.ui.GiftCardActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.ui.LoginActivity;
@@ -86,7 +85,8 @@ public class MyCenterFragment extends BaseFragment {
     BadgeView badgeView;
 
     private UserInfoBean userInfoBean;
-
+    //邀请好友点击事件处理
+    private boolean isClickable = true;
 
     @Nullable
     @Override
@@ -242,7 +242,11 @@ public class MyCenterFragment extends BaseFragment {
                         ContactService.contactService(getActivity());
                         break;
                     case 8:
-                        inviteFriends();
+                        if (isClickable) {
+                            isClickable = false;
+                            inviteFriends();
+                        }
+
                         break;
 
                 }
@@ -253,7 +257,6 @@ public class MyCenterFragment extends BaseFragment {
                 return false;
             }
         });
-
 
     }
 
@@ -284,12 +287,13 @@ public class MyCenterFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        isClickable = true;
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-
+                            isClickable = true;
                             JSONObject jsonObject = new JSONObject(response);
                             String url = jsonObject.getString("share_url");
                             JSONObject data = jsonObject.getJSONObject("data");

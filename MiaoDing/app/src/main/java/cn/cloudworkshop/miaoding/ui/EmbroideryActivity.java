@@ -275,7 +275,7 @@ public class EmbroideryActivity extends BaseActivity {
         etEmbroideryContent.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                changeScrollView();
+                scrollScrollView();
                 return false;
             }
         });
@@ -356,7 +356,7 @@ public class EmbroideryActivity extends BaseActivity {
     /**
      * 使ScrollView指向底部
      */
-    private void changeScrollView() {
+    private void scrollScrollView() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

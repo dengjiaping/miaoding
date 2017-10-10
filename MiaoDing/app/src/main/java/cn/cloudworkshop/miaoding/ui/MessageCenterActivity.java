@@ -33,7 +33,7 @@ import cn.cloudworkshop.miaoding.view.BadgeView;
 import okhttp3.Call;
 
 /**
- * Author：binge on 2016/12/22 16:16
+ * Author：Libin on 2016/12/22 16:16
  * Email：1993911441@qq.com
  * Describe：消息中心
  */
