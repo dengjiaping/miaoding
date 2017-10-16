@@ -157,9 +157,7 @@ public class DeliveryAddressActivity extends BaseActivity {
      * 加载视图
      */
     private void initView() {
-
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         CommonAdapter<DeliveryAddressBean.DataBean> adapter = new CommonAdapter<DeliveryAddressBean
                 .DataBean>(this, R.layout.listitem_address, dataList) {
             @Override
@@ -174,6 +172,7 @@ public class DeliveryAddressActivity extends BaseActivity {
 
 
                 TextView tvDefault = holder.getView(R.id.tv_set_default);
+
                 if (dataBean.getIs_default() == 1) {
                     Drawable leftDrawable = ContextCompat.getDrawable(DeliveryAddressActivity.this,
                             R.mipmap.icon_default_address);

@@ -23,7 +23,7 @@
             android:layout_width="55dp"
             android:layout_height="73dp"
             android:layout_marginLeft="12dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/tv_works_price"

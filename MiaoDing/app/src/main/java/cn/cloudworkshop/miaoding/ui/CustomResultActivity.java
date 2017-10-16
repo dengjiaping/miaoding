@@ -326,6 +326,12 @@ public class CustomResultActivity extends BaseActivity {
         map.put("type", String.valueOf(type));
         map.put("price_id", customBean.getPrice_type());
         map.put("goods_id", customBean.getId());
+        if (!TextUtils.isEmpty(customBean.getShop_id())) {
+            map.put("shop_id", customBean.getShop_id());
+        }
+        if (!TextUtils.isEmpty(customBean.getMarket_id())) {
+            map.put("market_id", customBean.getMarket_id());
+        }
         map.put("goods_type", "1");
         map.put("price", customBean.getPrice());
         map.put("goods_name", customBean.getGoods_name());
@@ -336,6 +342,7 @@ public class CustomResultActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(customBean.getSpec_ids())) {
+
             map.put("spec_ids", customBean.getSpec_ids());
         }
         if (!TextUtils.isEmpty(customBean.getSpec_content())) {

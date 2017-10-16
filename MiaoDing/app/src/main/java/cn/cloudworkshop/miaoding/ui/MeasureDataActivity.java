@@ -30,7 +30,6 @@ public class MeasureDataActivity extends BaseActivity {
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
     TextView tvHeaderTitle;
-
     @BindView(R.id.rv_measure_data)
     RecyclerView rvMeasureData;
     private List<MeasureDataBean.DataBean> dataList = new ArrayList<>();

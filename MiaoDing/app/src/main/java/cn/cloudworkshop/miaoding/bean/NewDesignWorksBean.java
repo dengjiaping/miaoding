@@ -116,6 +116,15 @@ public class NewDesignWorksBean {
             private String img;
             private String p_time;
             private int sort;
+            private String c_time_format;
+
+            public String getC_time_format() {
+                return c_time_format;
+            }
+
+            public void setC_time_format(String c_time_format) {
+                this.c_time_format = c_time_format;
+            }
 
             public int getId() {
                 return id;

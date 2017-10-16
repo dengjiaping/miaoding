@@ -11,7 +11,6 @@ public class MemoryCleanUtils {
     public static void bmpRecycle(Bitmap bmp) {
         if (bmp != null && !bmp.isRecycled()) {
             bmp.recycle();
-            bmp = null;
         }
         System.gc();
     }

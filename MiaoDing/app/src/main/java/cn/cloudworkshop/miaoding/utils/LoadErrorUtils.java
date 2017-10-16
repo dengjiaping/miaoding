@@ -21,22 +21,20 @@ public class LoadErrorUtils {
 
     //显示dialog的方法
     public static void showDialog(Context context, final OnRefreshListener onRefreshListener) {
-        dialog = new Dialog(context, R.style.MyDialog);//dialog样式
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_loading,null);
-        dialog.setContentView(view);
-        if (!((Activity)context).isFinishing()){
+        if (context != null && !((Activity)context).isFinishing()){
+            dialog = new Dialog(context, R.style.MyDialog);//dialog样式
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_loading,null);
+            dialog.setContentView(view);
             dialog.show();
+            ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissDialog();
+                    onRefreshListener.onRefresh();
+                }
+            });
         }
-
-//        dialog.setCanceledOnTouchOutside(false);//点击外部不允许关闭dialog
-        ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismissDialog();
-                onRefreshListener.onRefresh();
-            }
-        });
     }
 
     /**

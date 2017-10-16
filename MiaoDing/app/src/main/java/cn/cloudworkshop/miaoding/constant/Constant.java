@@ -97,7 +97,7 @@ public class Constant {
     public static final String HOMEPAGE_INFO = HOST + "/web/jquery-obj/static/web/html/designer.html";
     public static final String CUSTOM_SHARE = HOST + "/web/jquery-obj/static/fx/html/dingzhi.html";
     public static final String HOMEPAGE_SHARE = HOST + "/web/jquery-obj/static/fx/html/designer.html";
-    public static final String WORKS_SHARE = HOST + "/web/jquery-obj/static/fx/html/detail.html";
+    public static final String WORKS_SHARE = HOST + "/web/jquery-obj/static/fx/html/chengping.html";
     public static final String DRESSING_TEST_SHARE = HOST + "/web/jquery-obj/static/fx/html/clo.html";
     public static final String DESIGNER_SHARE = HOST + "/web/jquery-obj/static/fx/html/jiangxin.html";
     public static final String INVITE_SHARE = HOST + "/web/jquery-obj/static/fx/html/yaoqing.html";

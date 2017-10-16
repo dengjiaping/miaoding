@@ -61,6 +61,7 @@ public class GiftCardActivity extends BaseActivity {
     @BindView(R.id.sv_card_rule)
     ScrollView svCardRule;
     private GiftCardBean cardBean;
+    //选择礼品卡
     private String type;
 
     @Override
@@ -105,7 +106,7 @@ public class GiftCardActivity extends BaseActivity {
 
     private void initView() {
         float cardMoney = Float.parseFloat(cardBean.getInfo().getGift_card());
-        tvCardRemain.setText("¥" + DisplayUtils.decimalFormat(cardMoney));
+        tvCardRemain.setText(DisplayUtils.decimalFormat(cardMoney));
         if (cardMoney > 0) {
             imgNullCard.setVisibility(View.GONE);
             svCardRule.setVisibility(View.VISIBLE);

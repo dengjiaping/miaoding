@@ -9,8 +9,8 @@ android {
         applicationId "cn.cloudworkshop.miaoding"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 43
-        versionName "1.7.0"
+        versionCode 45
+        versionName "1.7.2"
         multiDexEnabled true
 
         manifestPlaceholders = [
@@ -105,7 +105,6 @@ dependencies {
     compile 'com.yanzhenjie.zbar:camera:1.0.0'
     compile project(':wheelpicker')
     compile 'pub.devrel:easypermissions:0.4.2'
-    compile 'com.makeramen:roundedimageview:2.3.0'
     compile project(':appbarbehavior')
     compile project(':lrecyclerview')
     compile project(':photopicker')

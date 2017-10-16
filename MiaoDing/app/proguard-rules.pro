@@ -73,11 +73,6 @@
     native <methods>;
 }
 
-
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-
 #保持 Parcelable 不被混淆
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;

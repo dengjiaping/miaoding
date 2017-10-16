@@ -88,7 +88,6 @@ public class TailorActivity extends BaseActivity {
     @BindView(R.id.img_tailor_guide)
     ImageView imgGuide;
 
-
     //部件
     private List<String> typeList = new ArrayList<>();
     //部件名称 标题
@@ -125,6 +124,8 @@ public class TailorActivity extends BaseActivity {
     private TailorBean.DataBean dataBean;
 
     private String id;
+    private String shop_id;
+    private String market_id;
     private String goodsName;
     private String imgUrl;
     private String price;
@@ -168,6 +169,8 @@ public class TailorActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
+        shop_id = bundle.getString("shop_id");
+        market_id = bundle.getString("market_id");
         goodsName = bundle.getString("goods_name");
         imgUrl = bundle.getString("img_url");
         price = bundle.getString("price");
@@ -868,6 +871,12 @@ public class TailorActivity extends BaseActivity {
 
             CustomItemBean customItemBean = new CustomItemBean();
             customItemBean.setId(id);
+            if (shop_id != null) {
+                customItemBean.setShop_id(shop_id);
+            }
+            if (market_id != null) {
+                customItemBean.setMarket_id(market_id);
+            }
             customItemBean.setGoods_name(goodsName);
             customItemBean.setPrice(price);
             customItemBean.setImg_url(imgUrl);

@@ -247,6 +247,7 @@ public class SetUpActivity extends BaseActivity {
                                     if (code == 1) {
                                         SharedPreferencesUtils.deleteStr(SetUpActivity.this, "token");
                                         SharedPreferencesUtils.deleteStr(SetUpActivity.this, "uid");
+                                        SharedPreferencesUtils.deleteStr(SetUpActivity.this, "username");
                                         SharedPreferencesUtils.deleteStr(SetUpActivity.this, "avatar");
                                         SharedPreferencesUtils.deleteStr(SetUpActivity.this, "phone");
                                         Intent intent = new Intent(SetUpActivity.this, MainActivity.class);

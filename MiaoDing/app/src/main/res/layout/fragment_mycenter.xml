@@ -21,36 +21,29 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/icon_mycenter_bg"/>
 
-        <RelativeLayout
-            android:id="@+id/rl_set_center"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <ImageView
+            android:id="@+id/img_center_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
             android:paddingLeft="12dp"
-            android:paddingTop="7dp">
+            android:paddingRight="40dp"
+            android:paddingTop="7dp"
+            android:scaleType="center"
+            android:src="@mipmap/icon_mycenter_set"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/icon_mycenter_set"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_msg_center"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <ImageView
+            android:id="@+id/img_center_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:paddingBottom="40dp"
+            android:paddingLeft="40dp"
             android:paddingRight="12dp"
-            android:paddingTop="7dp">
+            android:paddingTop="7dp"
+            android:scaleType="center"
+            android:src="@mipmap/icon_mycenter_message"/>
 
-            <ImageView
-                android:id="@+id/img_center_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@mipmap/icon_mycenter_message"/>
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_user_center"

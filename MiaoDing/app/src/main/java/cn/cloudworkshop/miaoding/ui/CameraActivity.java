@@ -153,6 +153,8 @@
 //        setContentView(R.layout.activity_camera);
 //        ButterKnife.bind(this);
 //        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+
 //        loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
 //        loadingView.setIndicatorColor(Color.GRAY);
 //
@@ -371,7 +373,6 @@
 //                mLastX = zAngle;
 //                mLastY = verAngle;
 //                mLastZ = horAngle;
-//
 //                break;
 //        }
 //

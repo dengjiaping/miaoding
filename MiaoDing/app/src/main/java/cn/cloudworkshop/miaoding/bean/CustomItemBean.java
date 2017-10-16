@@ -10,12 +10,31 @@ import java.util.List;
  */
 public class CustomItemBean implements Serializable {
     private String id;
+    private String shop_id;
+    private String market_id;
     private String goods_name;
     private String img_url;
     private String price;
     private String price_type;
     private String spec_ids;
     private String spec_content;
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public String getMarket_id() {
+        return market_id;
+    }
+
+    public void setMarket_id(String market_id) {
+        this.market_id = market_id;
+    }
+
     private String diy_contet;
     private String log_id;
     private long goods_time;

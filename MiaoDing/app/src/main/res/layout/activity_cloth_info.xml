@@ -23,7 +23,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="纽扣"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
 
         <RadioButton
             android:layout_width="0dp"
@@ -32,7 +32,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="花纹"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
 
         <RadioButton
             android:layout_width="0dp"
@@ -41,7 +41,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="门襟"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
 
         <RadioButton
             android:layout_width="0dp"
@@ -50,7 +50,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="面料"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
 
         <RadioButton
             android:layout_width="0dp"
@@ -59,7 +59,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="袖口"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
 
         <RadioButton
             android:layout_width="0dp"
@@ -68,7 +68,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="领子"
-            android:textColor="@color/rgs_tab_textcolor"/>
+            android:textColor="@color/rgs_text_color"/>
     </RadioGroup>
     <!--<android.support.v7.widget.RecyclerView-->
     <!--android:id="@+id/rv_cloth_info"-->

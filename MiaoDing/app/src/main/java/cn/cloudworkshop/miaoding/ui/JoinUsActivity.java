@@ -96,7 +96,7 @@ public class JoinUsActivity extends BaseActivity {
     private void initView() {
         isApply = joinUsBean.getData().getIs_apply();
         if (joinUsBean.getData().getImg_list() != null && joinUsBean.getData().getImg_list().size() > 0) {
-            Glide.with(this)
+            Glide.with(getApplicationContext())
                     .load(Constant.HOST + joinUsBean.getData().getImg_list().get(0).getImg())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgJoinUs);

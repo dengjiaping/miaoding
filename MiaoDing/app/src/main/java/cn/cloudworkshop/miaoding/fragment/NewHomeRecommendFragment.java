@@ -122,19 +122,17 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                                 sectionedAdapter.setSections(dataList);
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                             } else {
-
                                 initView();
                             }
                             isLoadMore = false;
                             isRefresh = false;
 
                         } else {
-                            RecyclerViewStateUtils.setFooterViewState(getActivity(),
-                                    mRecyclerView, 0, LoadingFooter.State.NoMore, null);
+                            RecyclerViewStateUtils.setFooterViewState(getActivity(), mRecyclerView,
+                                    0, LoadingFooter.State.NoMore, null);
                         }
                     }
                 });
-
     }
 
 
@@ -283,7 +281,8 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                                 Intent invite = new Intent(getActivity(), DressingResultActivity.class);
                                 invite.putExtra("title", "邀请有礼");
                                 invite.putExtra("share_title", "邀请有礼");
-                                invite.putExtra("share_content", "TA得优惠，你得奖励");
+                                invite.putExtra("share_content", "好友" + SharedPreferencesUtils
+                                        .getStr(getActivity(), "username") + "邀请您加入妙定，为您定制绅士腔调");
                                 invite.putExtra("url", Constant.HOST + homepageBean.getLunbo()
                                         .get(position).getLink() + uid);
                                 invite.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
@@ -312,7 +311,6 @@ public class NewHomeRecommendFragment extends BaseFragment implements SectionedR
                         .load(Constant.HOST + recommendListBean.getRecommend_img())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_pop_goods));
-
             }
         };
 

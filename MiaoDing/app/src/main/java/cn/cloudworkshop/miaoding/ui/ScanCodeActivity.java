@@ -55,19 +55,42 @@ public class ScanCodeActivity extends BaseActivity {
             public void onScanResult(String content) {
                 if (content != null) {
                     vibrator();
+                    String goods_id = null;
+                    String goods_type = null;
+                    String shop_id = null;
+                    String market_id = null;
                     String[] split = content.split("\\?");
-                    if (split.length > 1 && split[1] != null) {
+                    if (split.length > 1) {
                         String[] split1 = split[1].split("&");
-                        if (split1.length > 1 && split1[0] != null && split1[1] != null) {
-                            String goods_id = split1[0].split("=")[1];
-                            String goods_type = split1[1].split("=")[1];
+                        if (split1.length > 1) {
+                            for (int i = 0; i < split1.length; i++) {
+                                if (i == split1.length - 1) {
+                                    goods_type = split1[split1.length - 1].split("=")[1];
+                                }
+
+                                switch (split1[i].split("=")[0]) {
+                                    case "goods_id":
+                                        goods_id = split1[i].split("=")[1];
+                                        break;
+                                    case "shop_id":
+                                        shop_id = split1[i].split("=")[1];
+                                        break;
+                                    case "market_id":
+                                        market_id = split1[i].split("=")[1];
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+
                             if (goods_id != null && goods_type != null) {
                                 switch (goods_type) {
                                     case "1":
-                                        toGoodsDetail(CustomGoodsActivity.class, goods_id);
+                                        toGoodsDetail(CustomGoodsActivity.class, goods_id, shop_id, market_id);
                                         break;
                                     case "2":
-                                        toGoodsDetail(NewWorksActivity.class, goods_id);
+                                        toGoodsDetail(NewWorksActivity.class, goods_id, shop_id, market_id);
                                         break;
                                     default:
                                         ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
@@ -102,9 +125,15 @@ public class ScanCodeActivity extends BaseActivity {
      * @param cls
      * @param goodsId 跳转商品详情
      */
-    private void toGoodsDetail(Class<? extends Activity> cls, String goodsId) {
+    private void toGoodsDetail(Class<? extends Activity> cls, String goodsId, String shopId, String marketId) {
         Intent intent = new Intent(ScanCodeActivity.this, cls);
         intent.putExtra("id", goodsId);
+        if (shopId != null) {
+            intent.putExtra("shop_id", shopId);
+        }
+        if (marketId != null) {
+            intent.putExtra("market_id", marketId);
+        }
         startActivity(intent);
         finish();
     }

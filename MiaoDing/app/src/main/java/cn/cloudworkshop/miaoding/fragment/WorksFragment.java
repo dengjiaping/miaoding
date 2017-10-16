@@ -126,7 +126,7 @@ public class WorksFragment extends BaseFragment {
                 TextView tvTitle = holder.getView(R.id.tv_works_title);
                 tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
                 tvTitle.setText(itemBean.getName());
-                holder.setText(R.id.tv_works_time, DateUtils.getDate("yyyy-MM-dd", itemBean.getC_time()));
+                holder.setText(R.id.tv_works_time, itemBean.getC_time_format());
 
             }
         };
@@ -163,15 +163,13 @@ public class WorksFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
+                if (!TextUtils.isEmpty(String.valueOf(worksList.get(position).getId()))) {
                     Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
                     intent.putExtra("id", String.valueOf(worksList.get(position).getRecommend_goods_ids()));
                     startActivity(intent);
                 }
             }
         });
-
-
     }
 
     public static WorksFragment newInstance() {

@@ -19,20 +19,32 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg_gift_card"/>
-
-        <TextView
-            android:id="@+id/tv_card_remain"
+        <LinearLayout
+            android:id="@+id/ll_gift_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="41dp"
-            android:textColor="@android:color/white"
-            android:textSize="54sp"/>
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="41dp"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                android:text="¥ "/>
+            <TextView
+                android:id="@+id/tv_card_remain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="41dp"
+                android:textColor="@android:color/white"
+                android:textSize="54sp"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_card_remain"
+            android:layout_below="@id/ll_gift_card"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="13dp"
             android:text="(账户余额)"

@@ -267,6 +267,7 @@ public class LoginActivity extends BaseActivity {
                                     int uid = jsonObject1.getInt("uid");
                                     SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", String.valueOf(uid));
                                     SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
+
                                     getUserInfo();
                                     MobclickAgent.onEvent(LoginActivity.this, "log_in");
                                     finish();
@@ -304,6 +305,8 @@ public class LoginActivity extends BaseActivity {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                             SharedPreferencesUtils.saveStr(LoginActivity.this, "avatar",
                                     jsonObject1.getString("avatar"));
+                            SharedPreferencesUtils.saveStr(LoginActivity.this, "username",
+                                    jsonObject1.getString("name"));
                             SharedPreferencesUtils.saveStr(LoginActivity.this, "phone",
                                     jsonObject1.getString("phone"));
                         } catch (JSONException e) {

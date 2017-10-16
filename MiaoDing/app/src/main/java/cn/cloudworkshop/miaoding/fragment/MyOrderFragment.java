@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -128,9 +129,9 @@ public class MyOrderFragment extends BaseFragment {
         OkHttpUtils.get()
                 .url(Constant.GOODS_ORDER)
                 .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                .addParams("status", orderStatus + "")
-                .addParams("page", page + "")
-                .addParams("sh_status", isAfterSale + "")
+                .addParams("status", String.valueOf(orderStatus))
+                .addParams("page", String.valueOf(page))
+                .addParams("sh_status", String.valueOf(isAfterSale))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -181,14 +182,17 @@ public class MyOrderFragment extends BaseFragment {
 
         rvGoods.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new CommonAdapter<OrderInfoBean.DataBeanX.DataBean>(getActivity(), R.layout.listitem_order, dataList) {
+        adapter = new CommonAdapter<OrderInfoBean.DataBeanX.DataBean>(getActivity(),
+                R.layout.listitem_order, dataList) {
             @Override
-            protected void convert(ViewHolder holder, final OrderInfoBean.DataBeanX.DataBean dataBean, final int position) {
+            protected void convert(ViewHolder holder, final OrderInfoBean.DataBeanX.DataBean dataBean,
+                                   final int position) {
                 holder.setText(R.id.tv_order_number, dataBean.getOrder_no());
 
                 if (dataBean.getList() != null && dataBean.getList().size() > 0) {
                     Glide.with(getActivity())
                             .load(Constant.HOST + dataBean.getList().get(0).getGoods_thumb())
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into((ImageView) holder.getView(R.id.img_order_info));
                     TextView tvGoodsName = holder.getView(R.id.tv_order_name);
                     tvGoodsName.setText(dataBean.getList().get(0).getGoods_name());
@@ -295,9 +299,9 @@ public class MyOrderFragment extends BaseFragment {
                             case 4:
                                 //订单评价
                                 Intent intent = new Intent(getActivity(), EvaluateActivity.class);
-                                intent.putExtra("order_id", dataBean.getId() + "");
-                                intent.putExtra("goods_id", dataBean.getList().get(0).getGoods_id() + "");
-                                intent.putExtra("cart_id", dataBean.getList().get(0).getId() + "");
+                                intent.putExtra("order_id", String.valueOf(dataBean.getId()));
+                                intent.putExtra("goods_id", String.valueOf(dataBean.getList().get(0).getGoods_id()));
+                                intent.putExtra("cart_id", String.valueOf(dataBean.getList().get(0).getId()));
                                 intent.putExtra("goods_img", dataBean.getList().get(0).getGoods_thumb());
                                 intent.putExtra("goods_name", dataBean.getList().get(0).getGoods_name());
 
@@ -490,7 +494,7 @@ public class MyOrderFragment extends BaseFragment {
                 OkHttpUtils.get()
                         .url(Constant.CANCEL_ORDER)
                         .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                        .addParams("order_id",String.valueOf(id))
+                        .addParams("order_id", String.valueOf(id))
                         .build()
                         .execute(new StringCallback() {
                             @Override

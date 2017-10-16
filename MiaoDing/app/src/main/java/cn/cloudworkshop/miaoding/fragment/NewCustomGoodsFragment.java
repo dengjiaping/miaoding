@@ -157,7 +157,8 @@ public class NewCustomGoodsFragment extends BaseFragment {
         tvCustomTitle.setText(currentGoods.getName());
         vpCustomGoods.setOffscreenPageLimit(listBean.getData().getData().size());
         vpCustomGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
-        JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(), getActivity(), vpCustomGoods);
+        JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(),
+                getActivity(), vpCustomGoods);
         vpCustomGoods.setAdapter(adapter);
 
         //手指左右滑动不超过48px,上下滑动不超过250px

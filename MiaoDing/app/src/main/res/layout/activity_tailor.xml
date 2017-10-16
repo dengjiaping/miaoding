@@ -60,7 +60,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="正面"
-                android:textColor="@color/rgs_tab_textcolor"
+                android:textColor="@color/rgs_text_color"
                 android:textSize="15sp"/>
 
             <RadioButton
@@ -69,7 +69,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="背面"
-                android:textColor="@color/rgs_tab_textcolor"
+                android:textColor="@color/rgs_text_color"
                 android:textSize="16sp"/>
 
             <RadioButton
@@ -78,7 +78,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="里子"
-                android:textColor="@color/rgs_tab_textcolor"
+                android:textColor="@color/rgs_text_color"
                 android:textSize="16sp"
                 android:layout_marginLeft="20dp"
                 android:visibility="gone"/>

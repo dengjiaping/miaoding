@@ -65,7 +65,7 @@ public class CollectionFragment extends BaseFragment {
     @BindView(R.id.img_no_order)
     ImageView imgNoCollect;
     @BindView(R.id.tv_my_order)
-    TextView tvMyOrder;
+    TextView tvCollection;
     @BindView(R.id.ll_null_order)
     LinearLayout llNullCollect;
     private Unbinder unbinder;
@@ -270,8 +270,8 @@ public class CollectionFragment extends BaseFragment {
                 OkHttpUtils.get()
                         .url(Constant.ADD_COLLECTION)
                         .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
-                        .addParams("type", type + "")
-                        .addParams("cid", cid + "")
+                        .addParams("type", String.valueOf(type))
+                        .addParams("cid", String.valueOf(cid))
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -303,7 +303,6 @@ public class CollectionFragment extends BaseFragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         });
 

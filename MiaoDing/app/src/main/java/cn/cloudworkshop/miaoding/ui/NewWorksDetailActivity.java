@@ -253,7 +253,6 @@ public class NewWorksDetailActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 商品规格
      */

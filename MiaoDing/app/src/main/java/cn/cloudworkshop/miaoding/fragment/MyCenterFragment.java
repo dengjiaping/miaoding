@@ -46,9 +46,9 @@ import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.BadgeView;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -67,18 +67,16 @@ public class MyCenterFragment extends BaseFragment {
     TextView tvCenterName;
     @BindView(R.id.img_center_message)
     ImageView imgMessage;
-    @BindView(R.id.rl_msg_center)
-    RelativeLayout rlMsgCenter;
     @BindView(R.id.img_center_grade)
     ImageView imgCenterGrade;
-    @BindView(R.id.rl_set_center)
-    RelativeLayout rlSetCenter;
     @BindView(R.id.rl_user_center)
     RelativeLayout rlCenterUser;
     @BindView(R.id.rl_mycenter)
     RelativeLayout rlCenter;
     @BindView(R.id.rv_center)
     RecyclerView rvCenter;
+    @BindView(R.id.img_center_set)
+    ImageView imgCenterSet;
 
     private Unbinder unbinder;
     //未读消息提醒
@@ -261,13 +259,13 @@ public class MyCenterFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.rl_msg_center, R.id.rl_set_center, R.id.rl_user_center})
+    @OnClick({R.id.img_center_set, R.id.img_center_message, R.id.rl_user_center})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_set_center:
+            case R.id.img_center_set:
                 startActivity(new Intent(getActivity(), SetUpActivity.class));
                 break;
-            case R.id.rl_msg_center:
+            case R.id.img_center_message:
                 startActivity(new Intent(getActivity(), MessageCenterActivity.class));
                 break;
             case R.id.rl_user_center:
@@ -303,7 +301,8 @@ public class MyCenterFragment extends BaseFragment {
                                 Intent intent = new Intent(getActivity(), DressingResultActivity.class);
                                 intent.putExtra("title", "邀请有礼");
                                 intent.putExtra("share_title", "邀请有礼");
-                                intent.putExtra("share_content", "TA得优惠，你得奖励");
+                                intent.putExtra("share_content", "好友" + userInfoBean.getData().getName()
+                                        + "邀请您加入妙定，为您定制绅士腔调");
                                 intent.putExtra("url", Constant.HOST + url + uid);
                                 intent.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
                                 startActivity(intent);

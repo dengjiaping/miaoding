@@ -50,6 +50,7 @@ import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -83,7 +84,8 @@ public class NewWorksActivity extends BaseActivity {
 
     //商品id
     private String id;
-
+    private String shop_id;
+    private String market_id;
     private WorksDetailBean worksBean;
 
     private List<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean> colorList = new ArrayList<>();
@@ -128,7 +130,11 @@ public class NewWorksActivity extends BaseActivity {
     }
 
     private void getData() {
-        id = getIntent().getStringExtra("id");
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        shop_id = intent.getStringExtra("shop_id");
+        market_id = intent.getStringExtra("market_id");
+
     }
 
     /**
@@ -273,9 +279,16 @@ public class NewWorksActivity extends BaseActivity {
                 break;
             case R.id.img_goods_share:
                 if (worksBean != null && worksBean.getData() != null) {
+                    String share_url = Constant.WORKS_SHARE + "?goods_id=" + id;
+                    if (shop_id != null) {
+                        share_url += "&shop_id=" + shop_id;
+                    }
+                    if (market_id != null) {
+                        share_url += "&market_id=" + market_id;
+                    }
                     ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
-                            Constant.WORKS_SHARE + "?content=2&id=" + id);
+                            share_url + "&type=2");
                 }
                 break;
             case R.id.img_works_info:
@@ -379,7 +392,8 @@ public class NewWorksActivity extends BaseActivity {
                         = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksActivity.this,
                         R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
                     @Override
-                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
+                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX
+                            positionBean, int position) {
                         TextView tvSize = holder.getView(R.id.tv_works_size);
                         tvSize.setText(positionBean.getSize_name());
 
@@ -419,8 +433,8 @@ public class NewWorksActivity extends BaseActivity {
                 colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
                         (NewWorksActivity.this, R.layout.listitem_works_color, colorList) {
                     @Override
-                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
-                            positionBean, int position) {
+                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX
+                            .SizeListBean positionBean, int position) {
                         CircleImageView imgColor = holder.getView(R.id.img_works_color);
                         CircleImageView imgMask = holder.getView(R.id.img_works_mask);
                         Glide.with(NewWorksActivity.this)
@@ -522,9 +536,17 @@ public class NewWorksActivity extends BaseActivity {
     private void addToCart() {
         Map<String, String> map = new HashMap<>();
         map.put("token", SharedPreferencesUtils.getStr(this, "token"));
-        map.put("type", type + "");
+        map.put("type", String.valueOf(type));
         map.put("goods_id", id);
         map.put("goods_type", "2");
+
+        if (shop_id != null){
+            map.put("shop_id",shop_id);
+        }
+        if (market_id != null){
+            map.put("market_id",market_id);
+        }
+
         map.put("price", worksBean.getData().getSize_list().get(currentSize).getSize_list()
                 .get(currentColor).getPrice());
         map.put("goods_name", worksBean.getData().getName());

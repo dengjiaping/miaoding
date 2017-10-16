@@ -66,13 +66,6 @@ import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -202,6 +195,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     if (code == 10001) {
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "uid");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "token");
+                                        SharedPreferencesUtils.deleteStr(MainActivity.this, "username");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "avatar");
                                         SharedPreferencesUtils.deleteStr(MainActivity.this, "phone");
                                     }

@@ -125,7 +125,10 @@ public class CustomGoodsActivity extends BaseActivity {
     LinearLayout llNoEvaluate;
     @BindView(R.id.ll_no_collection)
     LinearLayout llNoCollection;
+    //商品id
     private String id;
+    private String shop_id;
+    private String market_id;
     private CustomGoodsBean customBean;
     private long enterTime;
     private Bitmap bm0;
@@ -150,6 +153,8 @@ public class CustomGoodsActivity extends BaseActivity {
     private void getData() {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        shop_id = intent.getStringExtra("shop_id");
+        market_id = intent.getStringExtra("market_id");
         enterTime = DateUtils.getCurrentTime();
     }
 
@@ -433,6 +438,13 @@ public class CustomGoodsActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());
+                if (shop_id != null) {
+                    bundle.putString("shop_id", shop_id);
+                }
+                if (market_id != null) {
+                    bundle.putString("market_id", market_id);
+                }
+
                 bundle.putString("img_url", customBean.getData().getThumb());
                 bundle.putString("price", DisplayUtils.decimalFormat((float) customBean.getData().
                         getPrice().get(position).getPrice()));
@@ -511,9 +523,16 @@ public class CustomGoodsActivity extends BaseActivity {
                 break;
             case R.id.img_tailor_share:
                 if (customBean != null && customBean.getData() != null) {
+                    String share_url = Constant.CUSTOM_SHARE + "?goods_id=" + id;
+                    if (shop_id != null) {
+                        share_url += "&shop_id=" + shop_id;
+                    }
+                    if (market_id != null) {
+                        share_url += "&market_id=" + market_id;
+                    }
                     ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
                             customBean.getData().getName(), customBean.getData().getContent(),
-                            Constant.CUSTOM_SHARE + "?goods_id=" + id);
+                            share_url + "&type=1");
                 }
                 break;
             case R.id.tv_all_evaluate:
@@ -585,6 +604,12 @@ public class CustomGoodsActivity extends BaseActivity {
 
                 CustomItemBean tailorItemBean = new CustomItemBean();
                 tailorItemBean.setId(id);
+                if (shop_id != null) {
+                    tailorItemBean.setShop_id(shop_id);
+                }
+                if (market_id != null) {
+                    tailorItemBean.setMarket_id(market_id);
+                }
                 tailorItemBean.setGoods_name(customBean.getData().getName());
                 tailorItemBean.setPrice(DisplayUtils.decimalFormat((float) customBean.getData()
                         .getDefault_price()));
