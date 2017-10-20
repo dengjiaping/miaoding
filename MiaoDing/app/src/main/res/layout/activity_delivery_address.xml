@@ -53,4 +53,7 @@
         android:textColor="@android:color/white"
         android:gravity="center"/>
 
+    <include
+        layout="@layout/loading_error"/>
+
 </RelativeLayout>

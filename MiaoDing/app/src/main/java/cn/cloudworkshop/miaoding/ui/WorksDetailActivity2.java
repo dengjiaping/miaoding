@@ -46,10 +46,10 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.WorksDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -60,9 +60,9 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2017-08-15 15:26
  * Email：1993911441@qq.com
- * Describe：作品详情
+ * Describe：作品详情（老版）
  */
-public class NewWorksDetailActivity extends BaseActivity {
+public class WorksDetailActivity2 extends BaseActivity {
     @BindView(R.id.img_works_detail1)
     ImageView imgDetail1;
     @BindView(R.id.img_works_detail2)
@@ -81,6 +81,8 @@ public class NewWorksDetailActivity extends BaseActivity {
     ImageView imgWorksBack;
     @BindView(R.id.img_works_share)
     ImageView imgWorksShare;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //商品id
     private String id;
@@ -142,16 +144,12 @@ public class NewWorksDetailActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(NewWorksDetailActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         worksBean = GsonUtils.jsonToBean(response, WorksDetailBean.class);
                         if (worksBean.getData() != null) {
                             initView();
@@ -211,7 +209,7 @@ public class NewWorksDetailActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_works_collect, R.id.img_works_consult, R.id.tv_add_cart, R.id.tv_confirm_buy,
-            R.id.img_works_back, R.id.img_works_share})
+            R.id.img_works_back, R.id.img_works_share, R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_works_collect:
@@ -250,6 +248,9 @@ public class NewWorksDetailActivity extends BaseActivity {
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
 
@@ -274,7 +275,7 @@ public class NewWorksDetailActivity extends BaseActivity {
             mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    DisplayUtils.setBackgroundAlpha(NewWorksDetailActivity.this, false);
+                    DisplayUtils.setBackgroundAlpha(WorksDetailActivity2.this, false);
                     currentColor = 0;
                     currentSize = 0;
                     count = 1;
@@ -312,10 +313,11 @@ public class NewWorksDetailActivity extends BaseActivity {
                 //尺码
                 rvSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 final CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX> sizeAdapter
-                        = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(NewWorksDetailActivity.this,
+                        = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX>(WorksDetailActivity2.this,
                         R.layout.listitem_works_size, worksBean.getData().getSize_list()) {
                     @Override
-                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX positionBean, int position) {
+                    protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX
+                            positionBean, int position) {
                         TextView tvSize = holder.getView(R.id.tv_works_size);
                         tvSize.setText(positionBean.getSize_name());
 
@@ -324,7 +326,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                             tvSize.setBackgroundResource(R.drawable.circle_black);
 
                         } else {
-                            tvSize.setTextColor(ContextCompat.getColor(NewWorksDetailActivity.this, R.color.dark_gray_22));
+                            tvSize.setTextColor(ContextCompat.getColor(WorksDetailActivity2.this, R.color.dark_gray_22));
                             tvSize.setBackgroundResource(R.drawable.ring_gray);
                         }
                     }
@@ -353,13 +355,13 @@ public class NewWorksDetailActivity extends BaseActivity {
                 //颜色
                 rvColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 colorAdapter = new CommonAdapter<WorksDetailBean.DataBean.SizeListBeanX.SizeListBean>
-                        (NewWorksDetailActivity.this, R.layout.listitem_works_color, colorList) {
+                        (WorksDetailActivity2.this, R.layout.listitem_works_color, colorList) {
                     @Override
                     protected void convert(ViewHolder holder, WorksDetailBean.DataBean.SizeListBeanX.SizeListBean
                             positionBean, int position) {
                         CircleImageView imgColor = holder.getView(R.id.img_works_color);
                         CircleImageView imgMask = holder.getView(R.id.img_works_mask);
-                        Glide.with(NewWorksDetailActivity.this)
+                        Glide.with(WorksDetailActivity2.this)
                                 .load(Constant.HOST + positionBean.getColor_img())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(imgColor);
@@ -375,7 +377,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         currentColor = holder.getLayoutPosition();
-                        ToastUtils.showToast(NewWorksDetailActivity.this, colorList.get(position).getColor_name());
+                        ToastUtils.showToast(WorksDetailActivity2.this, colorList.get(position).getColor_name());
                         reSelectWorks();
                     }
 
@@ -412,10 +414,10 @@ public class NewWorksDetailActivity extends BaseActivity {
                 tvBuy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(NewWorksDetailActivity.this, "token"))) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getStr(WorksDetailActivity2.this, "token"))) {
                             addToCart();
                         } else {
-                            Intent login = new Intent(NewWorksDetailActivity.this, LoginActivity.class);
+                            Intent login = new Intent(WorksDetailActivity2.this, LoginActivity.class);
                             login.putExtra("page_name", "立即购买");
                             startActivity(login);
                         }
@@ -439,7 +441,7 @@ public class NewWorksDetailActivity extends BaseActivity {
      */
     private void reSelectWorks() {
         colorAdapter.notifyDataSetChanged();
-        tvPrice.setTypeface(DisplayUtils.setTextType(NewWorksDetailActivity.this));
+        tvPrice.setTypeface(DisplayUtils.setTextType(WorksDetailActivity2.this));
         tvPrice.setText("¥" + worksBean.getData().getSize_list().get(currentSize).getSize_list()
                 .get(currentColor).getPrice());
         tvStock.setText("库存：" + worksBean.getData().getSize_list()
@@ -493,9 +495,9 @@ public class NewWorksDetailActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                         if (cartId != null) {
-                            MobclickAgent.onEvent(NewWorksDetailActivity.this, "add_cart");
+                            MobclickAgent.onEvent(WorksDetailActivity2.this, "add_cart");
                             if (index == 1) {
-                                Intent intent = new Intent(NewWorksDetailActivity.this,
+                                Intent intent = new Intent(WorksDetailActivity2.this,
                                         ConfirmOrderActivity.class);
                                 intent.putExtra("cart_id", cartId);
                                 mPopupWindow.dismiss();
@@ -503,7 +505,7 @@ public class NewWorksDetailActivity extends BaseActivity {
                                 startActivity(intent);
 
                             } else if (index == 2) {
-                                ToastUtils.showToast(NewWorksDetailActivity.this, "加入购物袋成功");
+                                ToastUtils.showToast(WorksDetailActivity2.this, "加入购物袋成功");
                                 mPopupWindow.dismiss();
                             }
                         }
@@ -552,13 +554,13 @@ public class NewWorksDetailActivity extends BaseActivity {
                             String msg = jsonObject.getString("msg");
                             switch (msg) {
                                 case "成功":
-                                    MobclickAgent.onEvent(NewWorksDetailActivity.this, "collection");
+                                    MobclickAgent.onEvent(WorksDetailActivity2.this, "collection");
                                     imgWorksCollect.setImageResource(R.mipmap.icon_add_like);
-                                    ToastUtils.showToast(NewWorksDetailActivity.this, "收藏成功");
+                                    ToastUtils.showToast(WorksDetailActivity2.this, "收藏成功");
                                     break;
                                 case "取消成功":
                                     imgWorksCollect.setImageResource(R.mipmap.icon_cancel_like);
-                                    ToastUtils.showToast(NewWorksDetailActivity.this, "已取消收藏");
+                                    ToastUtils.showToast(WorksDetailActivity2.this, "已取消收藏");
                                     break;
 
                             }

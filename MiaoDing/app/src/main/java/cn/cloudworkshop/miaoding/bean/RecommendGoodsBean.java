@@ -110,6 +110,24 @@ public class RecommendGoodsBean {
             private String thumb;
             private int classify_id;
             private int type;
+            private String sub_name;
+            private String price;
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+
+            public String getSub_name() {
+                return sub_name;
+            }
+
+            public void setSub_name(String sub_name) {
+                this.sub_name = sub_name;
+            }
 
             public int getId() {
                 return id;

@@ -82,7 +82,8 @@ public class AboutUsActivity extends BaseActivity {
      */
     private void checkUpdate() {
         if (MyApplication.updateUrl != null) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(AboutUsActivity.this, R.style.AlertDialog);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(AboutUsActivity.this,
+                    R.style.Theme_AppCompat_DayNight_Dialog_Alert);
             dialog.setTitle("检测到新版本，请更新");
             dialog.setMessage(MyApplication.updateContent);
             //为“确定”按钮注册监听事件

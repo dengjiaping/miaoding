@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -45,6 +46,8 @@ public class CouponActivity extends BaseActivity {
     SlidingTabLayout tabCoupon;
     @BindView(R.id.vp_my_order)
     ViewPager vpCoupon;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private List<String> titleList;
     private List<Fragment> fragmentList;
@@ -70,16 +73,13 @@ public class CouponActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(CouponActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             couponRule = jsonObject.getString("introduce_img");
@@ -126,8 +126,7 @@ public class CouponActivity extends BaseActivity {
     }
 
 
-
-    @OnClick({R.id.img_header_back, R.id.img_header_share})
+    @OnClick({R.id.img_header_back, R.id.img_header_share,R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -141,6 +140,10 @@ public class CouponActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
+
 }

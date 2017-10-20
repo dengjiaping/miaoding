@@ -228,6 +228,8 @@ public class OrderDetailActivity extends BaseActivity {
                 holder.setVisible(R.id.view_cart_divide, true);
                 Glide.with(OrderDetailActivity.this)
                         .load(Constant.HOST + carListBean.getGoods_thumb())
+                        .placeholder(R.mipmap.place_goods)
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
                 TextView tvGoodsName = holder.getView(R.id.tv_goods_name);
@@ -387,7 +389,7 @@ public class OrderDetailActivity extends BaseActivity {
      * 确认收货
      */
     private void confirmReceive(final String id) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("确认收货");
         dialog.setMessage("您要确认收货吗？");
         //为“确定”按钮注册监听事件
@@ -432,7 +434,7 @@ public class OrderDetailActivity extends BaseActivity {
      * 删除订单
      */
     private void deleteOrder() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("删除订单");
         dialog.setMessage("您确定要删除订单吗？");
         //为“确定”按钮注册监听事件
@@ -474,7 +476,7 @@ public class OrderDetailActivity extends BaseActivity {
      * 取消订单
      */
     private void cancelOrder() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("取消订单");
         dialog.setMessage("您确定要取消订单吗？");
         //为“确定”按钮注册监听事件

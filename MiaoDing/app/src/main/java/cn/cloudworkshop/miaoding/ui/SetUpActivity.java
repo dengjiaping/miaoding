@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +42,10 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DataManagerUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -100,6 +98,8 @@ public class SetUpActivity extends BaseActivity {
     TextView tvSetBirthday;
     @BindView(R.id.ll_feed_back)
     LinearLayout llFeedBack;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //用户头像
     private String userIcon;
@@ -190,16 +190,13 @@ public class SetUpActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(SetUpActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -221,7 +218,7 @@ public class SetUpActivity extends BaseActivity {
      * 退出登录
      */
     public void logOut() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("退出登录");
         dialog.setMessage("您确定要退出登录吗？");
         //为“确定”按钮注册监听事件
@@ -276,7 +273,7 @@ public class SetUpActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_header_back, R.id.ll_deliver_address, R.id.tv_log_out, R.id.ll_user_icon,
-            R.id.ll_user_name, R.id.ll_user_sex, R.id.ll_measure_data,
+            R.id.ll_user_name, R.id.ll_user_sex, R.id.ll_measure_data,R.id.img_load_error,
             R.id.ll_user_birthday, R.id.ll_clean_data, R.id.ll_about_us, R.id.ll_feed_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -314,6 +311,9 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.ll_feed_back:
                 startActivity(new Intent(SetUpActivity.this, UserHelpActivity.class));
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
 
@@ -458,7 +458,7 @@ public class SetUpActivity extends BaseActivity {
      * 清除缓存
      */
     private void cleanData() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("清除缓存");
         dialog.setMessage("您确定要清空缓存吗？");
         //确定

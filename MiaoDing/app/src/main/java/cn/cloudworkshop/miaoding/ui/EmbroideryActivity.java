@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -31,13 +32,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.EmbroideryBean;
 import cn.cloudworkshop.miaoding.bean.CustomItemBean;
+import cn.cloudworkshop.miaoding.bean.EmbroideryBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.CharacterUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -67,6 +68,8 @@ public class EmbroideryActivity extends BaseActivity {
     ScrollView scrollView;
     @BindView(R.id.tv_confirm_embroidery)
     TextView tvPreview;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private EmbroideryBean embroideryBean;
     //当前绣花位置
     private int flowerPosition = 0;
@@ -112,21 +115,18 @@ public class EmbroideryActivity extends BaseActivity {
                 .addParams("goods_id", customItemBean.getId())
                 .addParams("phone_type", "6")
                 .addParams("price_type", customItemBean.getPrice_type())
-                .addParams("classify_id", classifyId + "")
+                .addParams("classify_id", String.valueOf(classifyId))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(EmbroideryActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         embroideryBean = GsonUtils.jsonToBean(response, EmbroideryBean.class);
                         if (embroideryBean.getData() != null) {
                             initView();
@@ -365,7 +365,7 @@ public class EmbroideryActivity extends BaseActivity {
         }, 300);
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.tv_confirm_embroidery})
+    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.tv_confirm_embroidery,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -376,6 +376,9 @@ public class EmbroideryActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm_embroidery:
                 nextStep(true);
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
 
         }

@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -36,7 +39,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +53,9 @@ import cn.cloudworkshop.miaoding.bean.RecommendGoodsBean;
 import cn.cloudworkshop.miaoding.bean.ShoppingCartBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -91,6 +93,8 @@ public class ShoppingCartActivity extends BaseActivity {
     RecyclerView rvRecommend;
     @BindView(R.id.rv_goods_cart)
     LRecyclerView rvGoodsCart;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private List<ShoppingCartBean.DataBeanX.DataBean> dataList = new ArrayList<>();
     //页数
@@ -101,10 +105,8 @@ public class ShoppingCartActivity extends BaseActivity {
     private boolean isLoadMore;
     private CommonAdapter<ShoppingCartBean.DataBeanX.DataBean> adapter;
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
-
-    //编辑状态
+    //是否编辑状态
     private boolean isEdited;
-    private RecommendGoodsBean recommendBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +130,7 @@ public class ShoppingCartActivity extends BaseActivity {
     }
 
     /**
-     * 获取网络数据
+     * 获取数据
      */
     private void initData() {
 
@@ -140,16 +142,12 @@ public class ShoppingCartActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(ShoppingCartActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         ShoppingCartBean cartBean = GsonUtils.jsonToBean(response, ShoppingCartBean.class);
                         if (cartBean.getData().getData() != null && cartBean.getData().getData().size() > 0) {
                             if (isRefresh) {
@@ -199,9 +197,10 @@ public class ShoppingCartActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        recommendBean = GsonUtils.jsonToBean(response, RecommendGoodsBean.class);
+                        RecommendGoodsBean recommendBean = GsonUtils.jsonToBean(response,
+                                RecommendGoodsBean.class);
                         if (recommendBean.getData().getData() != null) {
-                            recommendGoods();
+                            recommendGoods(recommendBean.getData().getData());
                         }
                     }
                 });
@@ -210,33 +209,44 @@ public class ShoppingCartActivity extends BaseActivity {
     /**
      * 推荐商品
      */
-    private void recommendGoods() {
+    private void recommendGoods(final List<RecommendGoodsBean.DataBeanX.DataBean> recommendBean) {
         rvRecommend.setLayoutManager(new GridLayoutManager(ShoppingCartActivity.this, 2));
+
         CommonAdapter<RecommendGoodsBean.DataBeanX.DataBean> adapter = new CommonAdapter<RecommendGoodsBean
-                .DataBeanX.DataBean>(this,
-                R.layout.listitem_goods_recommend, recommendBean.getData().getData()) {
+                .DataBeanX.DataBean>(this, R.layout.listitem_sub_goods, recommendBean) {
             @Override
             protected void convert(ViewHolder holder, RecommendGoodsBean.DataBeanX.DataBean dataBean,
                                    int position) {
-                Glide.with(ShoppingCartActivity.this)
-                        .load(Constant.HOST + dataBean.getThumb())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_goods_recommend));
+
+                SimpleDraweeView imgGoods = holder.getView(R.id.img_sub_goods);
+
+
+                GenericDraweeHierarchy hierarchy = imgGoods.getHierarchy();
+                hierarchy.setPlaceholderImage(R.mipmap.place_banner, ScalingUtils.ScaleType.CENTER_CROP);
+                hierarchy.setRoundingParams(hierarchy.getRoundingParams().setCornersRadius
+                        (DisplayUtils.dp2px(ShoppingCartActivity.this, 3)));
+                imgGoods.setHierarchy(hierarchy);
+                imgGoods.setHierarchy(hierarchy);
+                imgGoods.setImageURI(Constant.HOST + dataBean.getThumb());
+                holder.setText(R.id.tv_sub_title, dataBean.getName());
+                holder.setText(R.id.tv_sub_price, dataBean.getPrice());
+                holder.setText(R.id.tv_sub_content, dataBean.getSub_name());
             }
         };
         rvRecommend.setAdapter(adapter);
+
+
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent;
-                if (recommendBean.getData().getData().get(position).getType() == 1) {
+                if (recommendBean.get(position).getType() == 1) {
                     intent = new Intent(ShoppingCartActivity.this, CustomGoodsActivity.class);
                 } else {
-                    intent = new Intent(ShoppingCartActivity.this, NewWorksActivity.class);
+                    intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
                 }
 
-                intent.putExtra("id", String.valueOf(recommendBean.getData().getData().get(position)
-                        .getGoods_id()));
+                intent.putExtra("id", String.valueOf(recommendBean.get(position).getGoods_id()));
                 startActivity(intent);
 
             }
@@ -266,6 +276,8 @@ public class ShoppingCartActivity extends BaseActivity {
                     dataBean, final int position) {
                 Glide.with(ShoppingCartActivity.this)
                         .load(Constant.HOST + dataBean.getGoods_thumb())
+                        .placeholder(R.mipmap.place_goods)
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
                 TextView tvGoodsName = holder.getView(R.id.tv_goods_name);
@@ -280,9 +292,9 @@ public class ShoppingCartActivity extends BaseActivity {
                         break;
                 }
 
-                holder.setText(R.id.tv_goods_price, "¥" + DisplayUtils.decimalFormat(Float
-                        .parseFloat(dataBean.getPrice())));
-                holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum() + "");
+                holder.setText(R.id.tv_goods_price, "¥" + DisplayUtils.decimalFormat(
+                        Float.parseFloat(dataBean.getPrice())));
+                holder.setText(R.id.tv_goods_count, "x" + dataBean.getNum());
                 holder.setVisible(R.id.ll_cart_edit, isEdited);
                 holder.setVisible(R.id.tv_goods_content, !isEdited);
                 holder.setVisible(R.id.tv_goods_price, !isEdited);
@@ -330,6 +342,7 @@ public class ShoppingCartActivity extends BaseActivity {
                         getTotalPrice();
                     }
                 });
+
             }
         };
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
@@ -364,13 +377,13 @@ public class ShoppingCartActivity extends BaseActivity {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (tvHeaderNext.getText().toString().equals("编辑")) {
+                if (!isEdited) {
                     switch (dataList.get(position).getGoods_type()) {
                         case 1:
                             cartToCustomResult(position);
                             break;
                         case 2:
-                            Intent intent = new Intent(ShoppingCartActivity.this, NewWorksActivity.class);
+                            Intent intent = new Intent(ShoppingCartActivity.this, WorksDetailActivity.class);
                             intent.putExtra("id", String.valueOf(dataList.get(position).getGoods_id()));
                             startActivity(intent);
                             break;
@@ -497,12 +510,12 @@ public class ShoppingCartActivity extends BaseActivity {
     /**
      * @param position 改变购物车数量
      */
-    private void changeCartCount(final int position, final int counts) {
+    private void changeCartCount(final int position, final int count) {
         OkHttpUtils.post()
                 .url(Constant.CART_COUNT)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("car_id", dataList.get(position).getId() + "")
-                .addParams("num", counts + "")
+                .addParams("car_id", String.valueOf(dataList.get(position).getId()))
+                .addParams("num", String.valueOf(count))
                 .addParams("type", "1")
                 .build()
                 .execute(new StringCallback() {
@@ -516,7 +529,7 @@ public class ShoppingCartActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             int code = jsonObject.getInt("code");
                             if (code == 1) {
-                                dataList.get(position).setNum(counts);
+                                dataList.get(position).setNum(count);
                                 adapter.notifyDataSetChanged();
                                 getTotalPrice();
                                 getTotalCount();
@@ -537,7 +550,7 @@ public class ShoppingCartActivity extends BaseActivity {
      * 删除购物车
      */
     private void deleteGoods(final List<Integer> itemList) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("删除宝贝");
         dialog.setMessage("您确定要删除该宝贝吗？");
         //为“确定”按钮注册监听事件
@@ -575,7 +588,6 @@ public class ShoppingCartActivity extends BaseActivity {
                                             if (i != dataList.size()) {
                                                 adapter.notifyItemRangeChanged(i, dataList.size() - i);
                                             }
-
                                         }
                                     }
                                 }
@@ -603,21 +615,21 @@ public class ShoppingCartActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_header_back, R.id.tv_my_bag, R.id.tv_header_next, R.id.tv_goods_buy})
+    @OnClick({R.id.img_header_back, R.id.tv_my_bag, R.id.tv_header_next, R.id.tv_goods_buy,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
                 finish();
                 break;
             case R.id.tv_goods_buy:
-                if (tvGoodsBuy.getText().toString().equals("删除")) {
-                    if (getTotalCount() != 0) {
+                if (isEdited) {
+                    if (getTotalCount() > 0) {
                         deleteGoods(getSelected());
                     } else {
                         ToastUtils.showToast(this, "请选择商品");
                     }
                 } else {
-                    if (getTotalCount() != 0) {
+                    if (getTotalCount() > 0) {
                         buyGoods();
                     } else {
                         ToastUtils.showToast(this, "请选择商品");
@@ -632,17 +644,20 @@ public class ShoppingCartActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_header_next:
-                if (tvHeaderNext.getText().toString().equals("编辑")) {
+                if (!isEdited) {
                     isEdited = true;
                     adapter.notifyDataSetChanged();
                     tvHeaderNext.setText("确定");
                     tvGoodsBuy.setText("删除");
-                } else if (tvHeaderNext.getText().toString().equals("确定")) {
+                } else {
                     isEdited = false;
                     adapter.notifyDataSetChanged();
                     tvHeaderNext.setText("编辑");
                     getTotalCount();
                 }
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -662,7 +677,7 @@ public class ShoppingCartActivity extends BaseActivity {
     }
 
     /**
-     * @return 已选
+     * @return 已勾选商品
      */
     private List<Integer> getSelected() {
         List<Integer> list = new ArrayList<>();
@@ -724,9 +739,9 @@ public class ShoppingCartActivity extends BaseActivity {
                 selectCount += dataList.get(i).getNum();
             }
         }
-        if (tvHeaderNext.getText().toString().trim().equals("确定")) {
+        if (isEdited) {
             tvGoodsBuy.setText("删除");
-        } else if (tvHeaderNext.getText().toString().trim().equals("编辑")) {
+        } else {
             tvGoodsBuy.setText("下单(" + selectCount + ")");
         }
         return selectCount;

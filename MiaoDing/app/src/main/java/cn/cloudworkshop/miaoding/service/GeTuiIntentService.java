@@ -11,10 +11,8 @@ import cn.cloudworkshop.miaoding.bean.GeTuiBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
-import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.HomepageInfoActivity;
 import cn.cloudworkshop.miaoding.ui.MessageDetailActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -63,7 +61,7 @@ public class GeTuiIntentService extends GTIntentService {
                 startActivity(intent3);
                 break;
             case "4":
-                Intent intent4 = new Intent(context, HomepageDetailActivity.class);
+                Intent intent4 = new Intent(context, HomepageInfoActivity.class);
                 intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent4.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" + bean.getId());
                 intent4.putExtra("title", bean.getTitle());
@@ -73,7 +71,7 @@ public class GeTuiIntentService extends GTIntentService {
                 startActivity(intent4);
                 break;
             case "5":
-                Intent intent5 = new Intent(context, NewWorksActivity.class);
+                Intent intent5 = new Intent(context, WorksDetailActivity.class);
                 intent5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent5.putExtra("id", bean.getId());
                 startActivity(intent5);

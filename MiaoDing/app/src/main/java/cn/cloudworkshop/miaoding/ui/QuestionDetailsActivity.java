@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +15,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.QuestionDetailBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import okhttp3.Call;
 
 /**
@@ -32,6 +33,8 @@ public class QuestionDetailsActivity extends BaseActivity {
     TextView tvQuestionTitle;
     @BindView(R.id.tv_question_content)
     TextView tvQuestionContent;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private String title;
     private String id;
     private QuestionDetailBean question;
@@ -52,22 +55,18 @@ public class QuestionDetailsActivity extends BaseActivity {
         tvHeaderTitle.setText(title);
         OkHttpUtils.get()
                 .url(Constant.QUESTION_DETAIL)
-                .addParams("id",id)
+                .addParams("id", id)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(QuestionDetailsActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        question = GsonUtils.jsonToBean(response,QuestionDetailBean.class);
+                        imgLoadError.setVisibility(View.GONE);
+                        question = GsonUtils.jsonToBean(response, QuestionDetailBean.class);
                         initView();
                     }
                 });
@@ -86,8 +85,16 @@ public class QuestionDetailsActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
     }
 
-    @OnClick(R.id.img_header_back)
-    public void onClick() {
-        finish();
+
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

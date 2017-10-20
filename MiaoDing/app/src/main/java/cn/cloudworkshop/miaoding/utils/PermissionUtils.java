@@ -50,7 +50,8 @@ public class PermissionUtils {
      * 提示对话框
      */
     public void showPermissionDialog(String msg) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext,
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("帮助");
         dialog.setMessage("当前应用缺少" + msg + "权限，请点击\"设置\" - \"权限管理\"，打开所需权限。");
         //为“确定”按钮注册监听事件

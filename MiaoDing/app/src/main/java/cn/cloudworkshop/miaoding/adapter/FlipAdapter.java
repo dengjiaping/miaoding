@@ -17,11 +17,8 @@ import java.util.List;
 
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.bean.DesignerWorksBean;
-import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 
@@ -85,7 +82,7 @@ public class FlipAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(itemBean.getId())) {
-                    Intent intent = new Intent(context, NewWorksActivity.class);
+                    Intent intent = new Intent(context, WorksDetailActivity.class);
                     intent.putExtra("id", String.valueOf(itemBean.getId() + ""));
                     context.startActivity(intent);
                 }

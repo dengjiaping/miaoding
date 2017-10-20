@@ -22,7 +22,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.umeng.analytics.MobclickAgent;
@@ -50,9 +49,9 @@ import cn.cloudworkshop.miaoding.ui.EvaluateActivity;
 import cn.cloudworkshop.miaoding.ui.LogisticsActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -74,6 +73,8 @@ public class MyOrderFragment extends BaseFragment {
     LinearLayout llNullOrder;
     @BindView(R.id.img_no_order)
     ImageView imgNoOrder;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private CommonAdapter<OrderInfoBean.DataBeanX.DataBean> adapter;
     private List<OrderInfoBean.DataBeanX.DataBean> dataList = new ArrayList<>();
@@ -136,16 +137,12 @@ public class MyOrderFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         OrderInfoBean orderInfoBean = GsonUtils.jsonToBean(response, OrderInfoBean.class);
                         if (orderInfoBean.getData().getData() != null && orderInfoBean.getData().getData().size() > 0) {
                             if (isRefresh) {
@@ -163,8 +160,8 @@ public class MyOrderFragment extends BaseFragment {
                             llNullOrder.setVisibility(View.GONE);
                             rvGoods.setVisibility(View.VISIBLE);
                         } else {
-                            RecyclerViewStateUtils.setFooterViewState(getActivity(),
-                                    rvGoods, 0, LoadingFooter.State.NoMore, null);
+                            RecyclerViewStateUtils.setFooterViewState(getActivity(), rvGoods, 0,
+                                    LoadingFooter.State.NoMore, null);
                             if (page == 1) {
                                 rvGoods.setVisibility(View.GONE);
                                 imgNoOrder.setImageResource(R.mipmap.icon_null_order);
@@ -192,6 +189,8 @@ public class MyOrderFragment extends BaseFragment {
                 if (dataBean.getList() != null && dataBean.getList().size() > 0) {
                     Glide.with(getActivity())
                             .load(Constant.HOST + dataBean.getList().get(0).getGoods_thumb())
+                            .placeholder(R.mipmap.place_goods)
+                            .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into((ImageView) holder.getView(R.id.img_order_info));
                     TextView tvGoodsName = holder.getView(R.id.tv_order_name);
@@ -378,7 +377,8 @@ public class MyOrderFragment extends BaseFragment {
      * 确认收货
      */
     private void confirmReceive(final int id) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("确认收货");
         dialog.setMessage("您要确认收货吗？");
         //为“确定”按钮注册监听事件
@@ -424,7 +424,8 @@ public class MyOrderFragment extends BaseFragment {
      * 删除订单
      */
     private void deleteOrder(final int id, final int position) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("删除订单");
         dialog.setMessage("您确定要删除订单吗？");
         //为“确定”按钮注册监听事件
@@ -484,7 +485,8 @@ public class MyOrderFragment extends BaseFragment {
      * 取消订单
      */
     private void cancelOrder(final int id) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("取消订单");
         dialog.setMessage("您确定要取消订单吗？");
         //为“确定”按钮注册监听事件
@@ -538,12 +540,19 @@ public class MyOrderFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.tv_my_order)
-    public void onClick() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("page", 1);
-        startActivity(intent);
-        getActivity().finish();
+    @OnClick({R.id.tv_my_order, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_my_order:
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("page", 1);
+                startActivity(intent);
+                getActivity().finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 
 

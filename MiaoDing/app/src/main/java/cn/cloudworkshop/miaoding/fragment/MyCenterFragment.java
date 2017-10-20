@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -77,6 +78,8 @@ public class MyCenterFragment extends BaseFragment {
     RecyclerView rvCenter;
     @BindView(R.id.img_center_set)
     ImageView imgCenterSet;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private Unbinder unbinder;
     //未读消息提醒
@@ -138,16 +141,13 @@ public class MyCenterFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         userInfoBean = GsonUtils.jsonToBean(response, UserInfoBean.class);
                         if (userInfoBean.getData() != null && userInfoBean.getIcon_list() != null
                                 && userInfoBean.getIcon_list().size() > 0) {
@@ -167,6 +167,8 @@ public class MyCenterFragment extends BaseFragment {
 
         Glide.with(getActivity())
                 .load(Constant.HOST + userInfoBean.getData().getAvatar())
+                .placeholder(R.mipmap.place_banner)
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgIcon);
         Glide.with(getActivity())
@@ -259,7 +261,7 @@ public class MyCenterFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.img_center_set, R.id.img_center_message, R.id.rl_user_center})
+    @OnClick({R.id.img_center_set, R.id.img_center_message, R.id.rl_user_center,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_center_set:
@@ -270,6 +272,9 @@ public class MyCenterFragment extends BaseFragment {
                 break;
             case R.id.rl_user_center:
                 startActivity(new Intent(getActivity(), MemberCenterActivity.class));
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -328,5 +333,6 @@ public class MyCenterFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
 }

@@ -47,7 +47,7 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomepageNewsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
-import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.HomepageInfoActivity;
 import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
@@ -59,7 +59,7 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2017-06-15 09:52
  * Email：1993911441@qq.com
- * Describe：推荐
+ * Describe：推荐（老版）
  */
 public class HomeRecommendFragment extends BaseFragment implements SectionedRVAdapter.SectionTitle {
     @BindView(R.id.rv_recommend)
@@ -158,7 +158,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     public void onClick(View view) {
                         homepageLog(dataBean.getTag_name());
 
-                        Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                        Intent intent = new Intent(getParentFragment().getActivity(), HomepageInfoActivity.class);
                         intent.putExtra("url", dataBean.getLink());
                         intent.putExtra("title", dataBean.getTitle());
                         intent.putExtra("content", dataBean.getSub_title());
@@ -264,7 +264,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     switch (homepageBean.getLunbo().get(position).getBanner_type()) {
                         //咨询页webview
                         case 1:
-                            Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                            Intent intent = new Intent(getParentFragment().getActivity(), HomepageInfoActivity.class);
                             intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
                                     .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());

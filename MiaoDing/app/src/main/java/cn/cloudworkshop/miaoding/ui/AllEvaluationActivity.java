@@ -34,7 +34,6 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.GoodsCommentBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -51,6 +50,8 @@ public class AllEvaluationActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.rv_all_evaluate)
     LRecyclerView rvComment;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
 
     private String goodsId;
     private List<GoodsCommentBean.ListBean.DataBean> dataList = new ArrayList<>();
@@ -88,16 +89,18 @@ public class AllEvaluationActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(AllEvaluationActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+//                        LoadErrorUtils.showDialog(AllEvaluationActivity.this, new LoadErrorUtils.OnRefreshListener() {
+//                            @Override
+//                            public void onRefresh() {
+//                                initData();
+//                            }
+//                        });
+                        imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadingError.setVisibility(View.GONE);
                         GoodsCommentBean commentBean = GsonUtils.jsonToBean(response, GoodsCommentBean.class);
                         if (commentBean.getList().getData() != null && commentBean.getList().getData().size() > 0) {
                             if (isRefresh) {
@@ -177,7 +180,7 @@ public class AllEvaluationActivity extends BaseActivity {
         rvComment.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;
@@ -200,8 +203,15 @@ public class AllEvaluationActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.img_header_back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

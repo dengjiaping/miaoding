@@ -7,13 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,7 +24,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.QuestionClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
@@ -38,6 +40,8 @@ public class CommonQuestionActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.rv_common_question)
     RecyclerView rvQuestion;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
     private String id;
     private String title;
 
@@ -65,16 +69,12 @@ public class CommonQuestionActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(CommonQuestionActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                       imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadingError.setVisibility(View.GONE);
                         QuestionClassifyBean question = GsonUtils.jsonToBean(response, QuestionClassifyBean.class);
                         if (question.getData() != null) {
                             dataList.addAll(question.getData());
@@ -119,8 +119,16 @@ public class CommonQuestionActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
     }
 
-    @OnClick(R.id.img_header_back)
-    public void onClick() {
-        finish();
+
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

@@ -3,6 +3,7 @@ package cn.cloudworkshop.miaoding.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,8 +33,8 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.QuestionClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ContactService;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import okhttp3.Call;
 
@@ -57,6 +58,8 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
     LinearLayout llServiceConsult;
     @BindView(R.id.tv_server_phone)
     TextView tvServerPhone;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private List<QuestionClassifyBean.DataBean> dataList = new ArrayList<>();
 
@@ -89,16 +92,13 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(UserHelpActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         QuestionClassifyBean question = GsonUtils.jsonToBean(response,
                                 QuestionClassifyBean.class);
                         if (question.getData() != null) {
@@ -139,7 +139,8 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
         });
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_feedback, R.id.ll_service_phone, R.id.ll_service_consult})
+    @OnClick({R.id.img_header_back, R.id.tv_feedback, R.id.ll_service_phone, R.id.ll_service_consult,
+    R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -154,6 +155,9 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
             case R.id.ll_service_consult:
                 ContactService.contactService(this);
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
 
@@ -164,9 +168,9 @@ public class UserHelpActivity extends BaseActivity implements ActivityCompat.OnR
         if (isRequireCheck) {
             //权限没有授权，进入授权界面
             if (mPermissionUtils.judgePermissions(permissionStr)) {
-                if (Build.VERSION.SDK_INT >= 23){
+                if (Build.VERSION.SDK_INT >= 23) {
                     ActivityCompat.requestPermissions(this, permissionStr, 1);
-                }else {
+                } else {
                     mPermissionUtils.showPermissionDialog("打电话");
                 }
             }

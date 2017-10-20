@@ -43,11 +43,10 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.OrderDetailsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
+import cn.cloudworkshop.miaoding.utils.PhoneNumberUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import me.iwf.photopicker.PhotoPicker;
@@ -95,6 +94,8 @@ public class ChangeOrderActivity extends BaseActivity {
     LinearLayout llSelectGoods;
     @BindView(R.id.view_loading)
     AVLoadingIndicatorView loadingView;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
 
 
     //字数限制
@@ -132,16 +133,18 @@ public class ChangeOrderActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(ChangeOrderActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+//                        LoadErrorUtils.showDialog(ChangeOrderActivity.this, new LoadErrorUtils.OnRefreshListener() {
+//                            @Override
+//                            public void onRefresh() {
+//                                initData();
+//                            }
+//                        });
+                        imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadingError.setVisibility(View.GONE);
                         orderBean = GsonUtils.jsonToBean(response, OrderDetailsBean.class);
                         if (orderBean.getData() != null) {
                             initView();
@@ -335,7 +338,7 @@ public class ChangeOrderActivity extends BaseActivity {
 
 
     @OnClick({R.id.img_header_back, R.id.img_select_photo, R.id.tv_next_step, R.id.tv_back_sales,
-            R.id.tv_first_next})
+            R.id.tv_first_next,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -357,6 +360,9 @@ public class ChangeOrderActivity extends BaseActivity {
                 break;
             case R.id.tv_first_next:
                 nextStep();
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }

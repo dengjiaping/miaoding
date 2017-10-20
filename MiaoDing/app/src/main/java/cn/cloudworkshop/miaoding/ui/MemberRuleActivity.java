@@ -25,8 +25,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberRuleBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -43,6 +43,8 @@ public class MemberRuleActivity extends BaseActivity {
     TextView tvHeaderTitle;
     @BindView(R.id.rv_member_rule)
     RecyclerView rvMemberRule;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private List<MemberRuleBean.DataBean> dataList = new ArrayList<>();
 
@@ -63,17 +65,12 @@ public class MemberRuleActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(MemberRuleActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-
+                        imgLoadError.setVisibility(View.GONE);
                         MemberRuleBean bean = GsonUtils.jsonToBean(response, MemberRuleBean.class);
                         if (bean.getData() != null && bean.getData().size() > 0) {
                             dataList.addAll(bean.getData());
@@ -116,9 +113,15 @@ public class MemberRuleActivity extends BaseActivity {
         });
     }
 
-
-    @OnClick(R.id.img_header_back)
-    public void onClick() {
-        finish();
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

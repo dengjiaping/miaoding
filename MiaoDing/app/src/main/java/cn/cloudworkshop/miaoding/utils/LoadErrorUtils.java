@@ -20,11 +20,13 @@ public class LoadErrorUtils {
     private static Dialog dialog;
 
     //显示dialog的方法
-    public static void showDialog(Context context, final OnRefreshListener onRefreshListener) {
-        if (context != null && !((Activity)context).isFinishing()){
+    public static void showDialog(final Context context, final OnRefreshListener onRefreshListener) {
+        if (context != null && !((Activity) context).isFinishing()) {
             dialog = new Dialog(context, R.style.MyDialog);//dialog样式
-            View view = LayoutInflater.from(context).inflate(R.layout.layout_loading,null);
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_loading, null);
             dialog.setContentView(view);
+//            dialog.setCancelable(false);
+//            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             ToastUtils.showToast(context, "网络连接失败，请检查网络后点击刷新");
             view.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +36,14 @@ public class LoadErrorUtils {
                     onRefreshListener.onRefresh();
                 }
             });
+
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    onRefreshListener.onRefresh();
+                }
+            });
+
         }
     }
 
@@ -49,7 +59,7 @@ public class LoadErrorUtils {
     /**
      * 点击刷新
      */
-    public interface OnRefreshListener{
+    public interface OnRefreshListener {
         void onRefresh();
     }
 

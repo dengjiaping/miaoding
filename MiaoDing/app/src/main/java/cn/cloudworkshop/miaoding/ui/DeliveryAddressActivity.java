@@ -18,7 +18,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -37,8 +36,8 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -58,6 +57,8 @@ public class DeliveryAddressActivity extends BaseActivity {
     LinearLayout llNoAddress;
     @BindView(R.id.tv_add_address)
     TextView tvAddAddress;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     //edit：编辑地址 select:选择地址
     private String type;
     //地址id
@@ -115,16 +116,12 @@ public class DeliveryAddressActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(DeliveryAddressActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         DeliveryAddressBean addressBean = GsonUtils.jsonToBean(response, DeliveryAddressBean.class);
                         if (addressBean.getData() != null && addressBean.getData().size() > 0) {
                             if (isRefresh) {
@@ -306,7 +303,8 @@ public class DeliveryAddressActivity extends BaseActivity {
      */
     private void deleteAddress(final int id) {
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("删除地址");
         dialog.setMessage("您确定要删除该地址吗？");
         //为“确定”按钮注册监听事件
@@ -359,6 +357,9 @@ public class DeliveryAddressActivity extends BaseActivity {
                 intent1.putExtras(bundle1);
                 startActivity(intent1);
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
 
@@ -397,4 +398,7 @@ public class DeliveryAddressActivity extends BaseActivity {
         finish();
     }
 
+    @OnClick(R.id.img_load_error)
+    public void onViewClicked() {
+    }
 }

@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -26,8 +27,8 @@ import cn.cloudworkshop.miaoding.bean.DesignerInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.fragment.DesignerGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerStoryFragment;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -54,6 +55,8 @@ public class DesignerDetailActivity extends BaseActivity {
     ImageView imgBack;
     @BindView(R.id.img_designer_share)
     ImageView imgShare;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //设计师id
     private String id;
@@ -85,16 +88,13 @@ public class DesignerDetailActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(DesignerDetailActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         designerBean = GsonUtils.jsonToBean(response, DesignerInfoBean.class);
                         if (designerBean.getData() != null) {
                             initView();
@@ -132,7 +132,7 @@ public class DesignerDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_back_designer, R.id.img_designer_share})
+    @OnClick({R.id.img_back_designer, R.id.img_designer_share,R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back_designer:
@@ -143,6 +143,11 @@ public class DesignerDetailActivity extends BaseActivity {
                         designerBean.getData().getName(), designerBean.getData().getContent(),
                         Constant.DESIGNER_SHARE + "?id=" + id);
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
+
+
 }

@@ -23,7 +23,6 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
@@ -34,7 +33,7 @@ import okhttp3.Call;
  * Describe：主界面详情页
  */
 
-public class HomepageDetailActivity extends BaseActivity {
+public class HomepageInfoActivity extends BaseActivity {
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.img_header_back)
@@ -61,7 +60,7 @@ public class HomepageDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homepage_detail);
+        setContentView(R.layout.activity_homepage_info);
         ButterKnife.bind(this);
         enterTime = DateUtils.getCurrentTime();
         initData();
@@ -138,7 +137,7 @@ public class HomepageDetailActivity extends BaseActivity {
             if (split[1].equals("1")) {
                 intent = new Intent(this, CustomGoodsActivity.class);
             } else {
-                intent = new Intent(this, NewWorksActivity.class);
+                intent = new Intent(this, WorksDetailActivity.class);
             }
             intent.putExtra("id", split[0]);
             startActivity(intent);

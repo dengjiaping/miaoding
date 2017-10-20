@@ -292,5 +292,7 @@
         android:layout_alignParentRight="true"
         android:scaleType="center"
         android:src="@mipmap/icon_share_goods"/>
+    <include
+        layout="@layout/loading_error"/>
 
 </RelativeLayout>

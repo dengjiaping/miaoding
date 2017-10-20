@@ -19,8 +19,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -41,6 +41,8 @@ public class JoinUsActivity extends BaseActivity {
     TextView tvApplyJoin;
     @BindView(R.id.img_join_us)
     ImageView imgJoinUs;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private JoinUsBean joinUsBean;
 
     //是否已申请入驻
@@ -75,16 +77,12 @@ public class JoinUsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(JoinUsActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         joinUsBean = GsonUtils.jsonToBean(response, JoinUsBean.class);
                         if (joinUsBean.getData() != null) {
                             initView();
@@ -103,7 +101,7 @@ public class JoinUsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_apply_join})
+    @OnClick({R.id.img_header_back, R.id.tv_apply_join,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -122,8 +120,12 @@ public class JoinUsActivity extends BaseActivity {
                     startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
+
 
 }
 

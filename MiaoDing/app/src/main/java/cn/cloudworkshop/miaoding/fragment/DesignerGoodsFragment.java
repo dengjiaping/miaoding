@@ -11,11 +11,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -31,10 +29,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.DesignerInfoBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
-import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 
 /**
@@ -71,9 +66,17 @@ public class DesignerGoodsFragment extends BaseFragment {
                 @Override
                 protected void convert(ViewHolder holder, DesignerInfoBean.DataBean.GoodsListBean
                         goodsListBean, int position) {
+
+                    RelativeLayout relativeLayout = holder.getView(R.id.rl_layout_goods);
+                    ViewGroup.LayoutParams layoutParams = relativeLayout.getLayoutParams();
+                    int widthPixels = DisplayUtils.getMetrics(getActivity()).widthPixels;
+                    layoutParams.width = (int) ((widthPixels - DisplayUtils.dp2px(getActivity(), 24)));
+                    layoutParams.height = layoutParams.width * 1038 / 696;
+                    relativeLayout.setLayoutParams(layoutParams);
+
+
                     SimpleDraweeView imgWorks = holder.getView(R.id.img_designer);
                     imgWorks.setImageURI(Constant.HOST + goodsListBean.getThumb());
-
                     TextView tvTitle = holder.getView(R.id.tv_works_title);
                     tvTitle.setTypeface(DisplayUtils.setTextType(getActivity()));
                     tvTitle.setText(goodsListBean.getName());
@@ -86,7 +89,7 @@ public class DesignerGoodsFragment extends BaseFragment {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (!TextUtils.isEmpty(worksList.get(position).getId() + "")) {
-                        Intent intent = new Intent(getActivity(), NewWorksActivity.class);
+                        Intent intent = new Intent(getActivity(), WorksDetailActivity.class);
                         intent.putExtra("id", String.valueOf(worksList.get(position).getId()));
                         startActivity(intent);
                     }

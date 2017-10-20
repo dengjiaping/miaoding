@@ -3,60 +3,57 @@ package cn.cloudworkshop.miaoding.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.adapter.MyPagerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.PopDesignerBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
+import cn.cloudworkshop.miaoding.utils.FadePageTransformer;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：Libin on 2017-06-08 11:30
+ * Author：Libin on 2017/9/25 16:09
  * Email：1993911441@qq.com
- * Describe：腔调设计师
+ * Describe：腔调设计师（当前版）
  */
 public class DesignerFragment extends BaseFragment {
-    @BindView(R.id.rv_works)
-    RecyclerView rvDesigner;
+    @BindView(R.id.vp_designers)
+    ViewPager vpDesigner;
+    @BindView(R.id.rgs_designer)
+    RadioGroup rgsDesigner;
     private Unbinder unbinder;
-    private List<PopDesignerBean.DataBean> designerList = new ArrayList<>();
+    private PopDesignerBean designerBean;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_designer, container, false);
+        View view = inflater.inflate(R.layout.fragment_designer_new, container, false);
         unbinder = ButterKnife.bind(this, view);
         initData();
         return view;
     }
 
-    /**
-     * 加载数据
-     */
     private void initData() {
         OkHttpUtils.get()
                 .url(Constant.DESIGNER_LIST)
@@ -69,64 +66,124 @@ public class DesignerFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        PopDesignerBean designerBean = GsonUtils.jsonToBean(response, PopDesignerBean.class);
+                        designerBean = GsonUtils.jsonToBean(response, PopDesignerBean.class);
                         if (designerBean.getData() != null) {
-                            designerList.addAll(designerBean.getData());
                             initView();
                         }
                     }
                 });
+
+
     }
 
     private void initView() {
-        rvDesigner.setLayoutManager(new GridLayoutManager(getParentFragment().getActivity(), 2));
-        CommonAdapter<PopDesignerBean.DataBean> adapter = new CommonAdapter<PopDesignerBean.DataBean>
-                (getParentFragment().getActivity(), R.layout.listitem_designer, designerList) {
-            @Override
-            protected void convert(ViewHolder holder, PopDesignerBean.DataBean dataBean, int position) {
-                Glide.with(getParentFragment().getActivity())
-                        .load(Constant.HOST + dataBean.getAvatar())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_avatar_designer));
-                holder.setText(R.id.tv_nickname_designer, dataBean.getName());
-                holder.setText(R.id.tv_designer_tag, dataBean.getTag());
-            }
 
-        };
-        rvDesigner.setAdapter(adapter);
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        ViewGroup.LayoutParams layoutParams1 = vpDesigner.getLayoutParams();
+        int widthPixels = DisplayUtils.getMetrics(getParentFragment().getActivity()).widthPixels;
+        layoutParams1.width = (int) ((widthPixels - DisplayUtils.dp2px(getActivity(), 50)));
+        layoutParams1.height = layoutParams1.width * 365 / 280;
+        vpDesigner.setLayoutParams(layoutParams1);
+
+        vpDesigner.setOffscreenPageLimit(designerBean.getData().size());
+        vpDesigner.setPageTransformer(false, new FadePageTransformer());
+
+        MyPagerAdapter adapter = new MyPagerAdapter(designerBean.getData(), getParentFragment().getActivity());
+        vpDesigner.setAdapter(adapter);
+        vpDesigner.setCurrentItem(0);
+
+        for (int i = 0; i < designerBean.getData().size(); i++) {
+            RadioButton radioButton = new RadioButton(getParentFragment().getActivity());
+
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(18, 18);
+            layoutParams.setMargins(10, 10, 10, 10);
+            radioButton.setLayoutParams(layoutParams);
+            radioButton.setButtonDrawable(null);
+            radioButton.setClickable(false);
+            radioButton.setBackgroundResource(R.drawable.vp_indicator);
+            rgsDesigner.addView(radioButton);
+        }
+        ((RadioButton) rgsDesigner.getChildAt(0)).setChecked(true);
+
+        //手指左右滑动不超过48px,上下滑动不超过250px
+        vpDesigner.setOnTouchListener(new View.OnTouchListener() {
+            int touchFlag = 0;
+            float x = 0, y = 0;
+
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (!TextUtils.isEmpty(designerList.get(position).getId() + "") && position < designerList.size() - 1) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), DesignerDetailActivity.class);
-                    intent.putExtra("id", String.valueOf(designerList.get(position).getId()));
-                    startActivity(intent);
-                }else {
-                    ToastUtils.showToast(getParentFragment().getActivity(),"敬请期待");
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchFlag = 0;
+                        x = event.getX();
+                        y = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ViewConfiguration configuration = ViewConfiguration.get(getActivity());
+                        int mTouchSlop = configuration.getScaledPagingTouchSlop();
+
+                        float xDiff = Math.abs(event.getX() - x);
+                        float yDiff = Math.abs(event.getY() - y);
+                        if (xDiff < mTouchSlop && yDiff < 250)
+                            touchFlag = 0;
+                        else
+                            touchFlag = -1;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+
+                        if (touchFlag == 0) {
+                            int currentItem = vpDesigner.getCurrentItem();
+                            if (designerBean.getData().get(currentItem).getId() != 0 &&
+                                    currentItem < designerBean.getData().size() - 1) {
+                                Intent intent = new Intent(getParentFragment().getActivity(),
+                                        DesignerDetailActivity.class);
+                                intent.putExtra("id", String.valueOf(designerBean.getData()
+                                        .get(currentItem).getId()));
+                                startActivity(intent);
+                            } else {
+                                ToastUtils.showToast(getParentFragment().getActivity(), "敬请期待");
+                            }
+                        }
+                        break;
+
                 }
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
         });
 
 
-    }
+        vpDesigner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-    public static DesignerFragment newInstance() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        Bundle args = new Bundle();
 
-        DesignerFragment fragment = new DesignerFragment();
-        fragment.setArguments(args);
-        return fragment;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((RadioButton) rgsDesigner.getChildAt(position)).setChecked(true);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public static DesignerFragment newInstance() {
+        Bundle args = new Bundle();
+        DesignerFragment fragment = new DesignerFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }

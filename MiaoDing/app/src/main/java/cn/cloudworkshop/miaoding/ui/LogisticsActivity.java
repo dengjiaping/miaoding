@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,8 +25,8 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.LogisticsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import okhttp3.Call;
 
 /**
@@ -46,6 +47,8 @@ public class LogisticsActivity extends BaseActivity {
     RecyclerView rvLogistics;
     @BindView(R.id.img_goods_thumb)
     ImageView imgGoods;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //快递单号
     private String number;
@@ -85,16 +88,12 @@ public class LogisticsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(LogisticsActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         LogisticsBean entity = GsonUtils.jsonToBean(response, LogisticsBean.class);
                         if (entity.getData() != null && entity.getData().size() > 0) {
                             dataList.addAll(entity.getData());
@@ -142,8 +141,15 @@ public class LogisticsActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.img_header_back)
-    public void onClick() {
-        finish();
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

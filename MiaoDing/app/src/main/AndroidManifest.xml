@@ -85,7 +85,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".ui.TailorActivity"/>
+        <activity android:name=".ui.OldCustomizeActivity"/>
         <activity android:name=".ui.CustomResultActivity"/>
         <activity android:name=".ui.JoinUsActivity"/>
         <activity android:name=".ui.ShoppingCartActivity"/>
@@ -95,12 +95,11 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.MyOrderActivity"/>
         <activity android:name=".ui.DressingTestActivity"/>
-        <activity android:name=".ui.ClothMaterialInfo"/>
         <activity android:name=".ui.NewClothInfoActivity"/>
         <activity android:name=".ui.ConfirmOrderActivity"/>
         <activity android:name=".ui.DeliveryAddressActivity"/>
         <activity android:name=".ui.AddAddressActivity"/>
-        <activity android:name=".ui.HomepageDetailActivity"/>
+        <activity android:name=".ui.HomepageInfoActivity"/>
         <activity
             android:name=".ui.EmbroideryActivity"
             android:windowSoftInputMode="adjustPan"/>
@@ -197,7 +196,7 @@
         <activity android:name=".ui.MemberRuleActivity"/>
         <activity android:name=".ui.MemberGrowthActivity"/>
         <activity android:name=".ui.CustomGoodsActivity"/>
-        <activity android:name=".ui.WorksDetailActivity"/>
+        <activity android:name=".ui.WorksDetailActivity1"/>
         <activity android:name=".ui.CustomizeActivity"/>
         <activity android:name=".ui.DesignerDetailActivity"/>
         <activity
@@ -206,8 +205,8 @@
         <activity android:name=".ui.AllEvaluationActivity"/>
         <activity android:name=".ui.ScanCodeActivity"/>
         <activity android:name=".ui.CollectionActivity"/>
-        <activity android:name=".ui.NewWorksDetailActivity"/>
-        <activity android:name=".ui.NewWorksActivity"/>
+        <activity android:name=".ui.WorksDetailActivity2"/>
+        <activity android:name=".ui.WorksDetailActivity"/>
         <activity
             android:name=".ui.GoodsDetailActivity"
             android:theme="@style/NoTitleTranslucentTheme"/>

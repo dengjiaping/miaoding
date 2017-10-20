@@ -35,14 +35,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.bean.CustomizeBean;
 import cn.cloudworkshop.miaoding.bean.CustomItemBean;
+import cn.cloudworkshop.miaoding.bean.CustomizeBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
@@ -50,7 +50,7 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2017-04-25 10:52
  * Email：1993911441@qq.com
- * Describe：个性定制界面
+ * Describe：定制界面（新版）
  */
 public class CustomizeActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
@@ -89,6 +89,8 @@ public class CustomizeActivity extends BaseActivity {
     TextView tvItemTitle;
     @BindView(R.id.img_cloth_large)
     CircleImageView imgClothLarge;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //商品id
     private String id;
@@ -162,16 +164,12 @@ public class CustomizeActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(CustomizeActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         customizeBean = GsonUtils.jsonToBean(response, CustomizeBean.class);
                         if (customizeBean.getData() != null) {
                             initView();
@@ -317,7 +315,7 @@ public class CustomizeActivity extends BaseActivity {
 
 
     @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.img_reset_tailor, R.id.tv_cloth_fabric
-            , R.id.tv_cloth_type, R.id.tv_cloth_item})
+            , R.id.tv_cloth_type, R.id.tv_cloth_item,R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -338,6 +336,9 @@ public class CustomizeActivity extends BaseActivity {
                 break;
             case R.id.tv_cloth_item:
                 selectParts();
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -757,8 +758,7 @@ public class CustomizeActivity extends BaseActivity {
 
     /**
      * @param rl
-     * @param imgUrl
-     * 切换衣服部件图片
+     * @param imgUrl 切换衣服部件图片
      */
     private void switchParts(RelativeLayout rl, String imgUrl) {
         ImageView imageView = (ImageView) rl.getChildAt(currentParts);
@@ -888,4 +888,6 @@ public class CustomizeActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 }

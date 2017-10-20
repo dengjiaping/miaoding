@@ -10,7 +10,6 @@ import android.os.Vibrator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.yanzhenjie.zbar.camera.CameraPreview;
 import com.yanzhenjie.zbar.camera.ScanCallback;
@@ -20,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
@@ -90,7 +88,7 @@ public class ScanCodeActivity extends BaseActivity {
                                         toGoodsDetail(CustomGoodsActivity.class, goods_id, shop_id, market_id);
                                         break;
                                     case "2":
-                                        toGoodsDetail(NewWorksActivity.class, goods_id, shop_id, market_id);
+                                        toGoodsDetail(WorksDetailActivity.class, goods_id, shop_id, market_id);
                                         break;
                                     default:
                                         ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");

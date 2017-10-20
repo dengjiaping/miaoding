@@ -1,51 +1,66 @@
 package cn.cloudworkshop.miaoding.utils;
 
+
 import android.content.Context;
-import android.support.design.widget.TabLayout;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
+
 import java.util.List;
 
-/**
- * Author：Libin on 2017/9/25 15:49
- * Email：1993911441@qq.com
- * Describe：
- */
-public class FragmentUtils implements OnTabSelectListener {
+import cn.cloudworkshop.miaoding.R;
+import cn.cloudworkshop.miaoding.application.MyApplication;
 
+/**
+ * 主界面 底部切换tab工具类（老版）
+ */
+public class OldFragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
     private List<Fragment> fragmentList; // 一个tab页面对应一个Fragment
+    private RadioGroup rgs; // 用于切换tab
     private FragmentManager fragmentManager; // Fragment所属的Activity
     private int fragmentContentId; // Activity中当前fragment的区域的id
     private int currentTab; // 当前Tab页面索引
+    private Context mContext;
 
 
     /**
      * @param fragmentManager
      * @param fragmentList
      * @param fragmentContentId
-     * @param tabLayout
+     * @param rgs
      */
-    public FragmentUtils(FragmentManager fragmentManager, List<Fragment> fragmentList,
-                         int fragmentContentId, CommonTabLayout tabLayout) {
+    public OldFragmentTabUtils(Context context, FragmentManager fragmentManager, List<Fragment> fragmentList,
+                               int fragmentContentId, RadioGroup rgs) {
+        this.mContext = context;
         this.fragmentList = fragmentList;
+        this.rgs = rgs;
         this.fragmentManager = fragmentManager;
         this.fragmentContentId = fragmentContentId;
-        tabLayout.setOnTabSelectListener(this);
-        tabLayout.setCurrentTab(0);
-        initFragment(0);
+        rgs.setOnCheckedChangeListener(this);
+        ((RadioButton) rgs.getChildAt(0)).setChecked(true);
+        MyApplication.homeEnterTime = DateUtils.getCurrentTime();
     }
 
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        for (int i = 0; i < rgs.getChildCount(); i++) {
+            RadioButton rBtn = ((RadioButton) rgs.getChildAt(i));
+            if (i == 0) {
+                MyApplication.homeEnterTime = DateUtils.getCurrentTime();
+            }
+
+            if (rBtn.getId() == checkedId) {
+                initFragment(i);
+            }
+        }
+
+    }
 
     /**
      * @param i 加载fragment
@@ -58,16 +73,21 @@ public class FragmentUtils implements OnTabSelectListener {
             fragment.onStart(); // 启动目标tab的fragment onStart()
         } else {
             ft.add(fragmentContentId, fragment, fragment.getClass().getName());
-            ft.commitAllowingStateLoss();
+            ft.commit();
         }
         showTab(i); // 显示目标tab
     }
 
+    /**
+     * @param position 设置当前fragment
+     */
+    public void setCurrentFragment(int position) {
+        ((RadioButton) rgs.getChildAt(position)).setChecked(true);
+    }
 
 
     /**
-     * 切换fragment
-     *
+     * 切换tab
      * @param index
      */
     private void showTab(int index) {
@@ -79,18 +99,8 @@ public class FragmentUtils implements OnTabSelectListener {
             } else {
                 ft.hide(fragment);
             }
-            ft.commitAllowingStateLoss();
+            ft.commit();
         }
         currentTab = index; // 更新目标tab为当前tab
-    }
-
-    @Override
-    public void onTabSelect(int position) {
-        initFragment(position);
-    }
-
-    @Override
-    public void onTabReselect(int position) {
-
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +21,8 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import okhttp3.Call;
 
@@ -41,6 +42,8 @@ public class UserRuleActivity extends BaseActivity {
     ImageView imgUserRule1;
     @BindView(R.id.img_user_rule2)
     ImageView imgUserRule2;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private String title;
     private String imgUrl;
     private Bitmap bm0;
@@ -73,16 +76,12 @@ public class UserRuleActivity extends BaseActivity {
                 .execute(new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(UserRuleActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initView();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(Bitmap response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         try {
                             if (response != null) {
                                 InputStream inputStream = ImageEncodeUtils.bitmap2InputStream(response);
@@ -112,10 +111,6 @@ public class UserRuleActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.img_header_back)
-    public void onClick() {
-        finish();
-    }
 
     @Override
     protected void onDestroy() {
@@ -123,5 +118,17 @@ public class UserRuleActivity extends BaseActivity {
         MemoryCleanUtils.bmpRecycle(bm0);
         MemoryCleanUtils.bmpRecycle(bm1);
         MemoryCleanUtils.bmpRecycle(bm2);
+    }
+
+    @OnClick({R.id.img_header_back, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_header_back:
+                finish();
+                break;
+            case R.id.img_load_error:
+                initView();
+                break;
+        }
     }
 }

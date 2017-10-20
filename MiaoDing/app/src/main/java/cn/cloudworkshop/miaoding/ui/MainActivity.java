@@ -38,7 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +45,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
@@ -53,15 +53,13 @@ import cn.cloudworkshop.miaoding.bean.AppIconBean;
 import cn.cloudworkshop.miaoding.bean.AppIndexBean;
 import cn.cloudworkshop.miaoding.bean.GuideBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.fragment.CustomGoodsFragment;
 import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
-import cn.cloudworkshop.miaoding.fragment.GoodsFragment;
+import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
-import cn.cloudworkshop.miaoding.fragment.NewHomeRecommendFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
-import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -77,10 +75,12 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     @BindView(R.id.tab_main)
     TabLayout tabMain;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
 
     //fragment
     private List<Fragment> fragmentList = new ArrayList<>();
-    private NewFragmentTabUtils fragmentUtils;
+    private FragmentTabUtils fragmentUtils;
     //下载服务
     private DownloadService downloadService;
     //退出应用
@@ -118,16 +118,18 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(MainActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initIcon();
-                            }
-                        });
+                        imgLoadingError.setVisibility(View.VISIBLE);
+//                        LoadErrorUtils.showDialog(MainActivity.this, new LoadErrorUtils.OnRefreshListener() {
+//                            @Override
+//                            public void onRefresh() {
+//                                initIcon();
+//                            }
+//                        });
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadingError.setVisibility(View.GONE);
                         iconBean = GsonUtils.jsonToBean(response, AppIconBean.class);
                         if (iconBean.getData() != null && iconBean.getData().size() > 0) {
                             initView();
@@ -183,7 +185,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            SharedPreferencesUtils.deleteStr(MainActivity.this, "token");
                         }
 
                         @Override
@@ -239,7 +240,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 //取消检测更新
                                 isCheckUpdate = false;
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this,
-                                        R.style.AlertDialog);
+                                        R.style.Theme_AppCompat_DayNight_Dialog_Alert);
                                 dialog.setTitle("检测到新版本，请更新");
                                 dialog.setMessage(appIndexBean.getData().getVersion().getAndroid().getRemark());
                                 //确定
@@ -321,11 +322,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
      * 加载Fragment
      */
     public void initView() {
-        fragmentList.add(NewHomeRecommendFragment.newInstance());
-        fragmentList.add(GoodsFragment.newInstance());
+        fragmentList.add(HomepageFragment.newInstance());
+        fragmentList.add(CustomGoodsFragment.newInstance());
         fragmentList.add(DesignerWorksFragment.newInstance());
         fragmentList.add(MyCenterFragment.newInstance());
-        fragmentUtils = new NewFragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
+        fragmentUtils = new FragmentTabUtils(this, getSupportFragmentManager(), fragmentList,
                 R.id.frame_container, tabMain, iconBean.getData());
 
     }
@@ -462,5 +463,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             unregisterReceiver(downloadService);
         }
         super.onDestroy();
+    }
+
+    @OnClick(R.id.img_load_error)
+    public void onViewClicked() {
+        initIcon();
     }
 }

@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,7 +25,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -54,13 +52,13 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.view.ScrollViewContainer;
 import okhttp3.Call;
 
@@ -125,6 +123,8 @@ public class CustomGoodsActivity extends BaseActivity {
     LinearLayout llNoEvaluate;
     @BindView(R.id.ll_no_collection)
     LinearLayout llNoCollection;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     //商品id
     private String id;
     private String shop_id;
@@ -177,16 +177,12 @@ public class CustomGoodsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(CustomGoodsActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         customBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
                         if (customBean.getData() != null) {
                             initView();
@@ -434,7 +430,7 @@ public class CustomGoodsActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 mPopupWindow.dismiss();
-                Intent intent = new Intent(CustomGoodsActivity.this, TailorActivity.class);
+                Intent intent = new Intent(CustomGoodsActivity.this, OldCustomizeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());
@@ -468,7 +464,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
 
     @OnClick({R.id.tv_goods_tailor, R.id.img_tailor_back, R.id.img_add_like, R.id.img_tailor_consult,
-            R.id.img_tailor_share, R.id.tv_custom_goods, R.id.tv_all_evaluate})
+            R.id.img_tailor_share, R.id.tv_custom_goods, R.id.tv_all_evaluate,R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goods_tailor:
@@ -542,6 +538,9 @@ public class CustomGoodsActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
 
@@ -595,7 +594,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 Intent intent;
                 Bundle bundle = new Bundle();
                 int classifyId = customBean.getData().getClassify_id();
-                if (classifyId == 1) {
+                if (classifyId == 1 || classifyId == 2) {
                     intent = new Intent(CustomGoodsActivity.this, EmbroideryActivity.class);
                     bundle.putInt("classify_id", classifyId);
                 } else {
@@ -742,4 +741,5 @@ public class CustomGoodsActivity extends BaseActivity {
         MemoryCleanUtils.bmpRecycle(bm1);
         MemoryCleanUtils.bmpRecycle(bm2);
     }
+
 }

@@ -12,7 +12,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
 /**
  * Author：Libin on 2016/10/9 14:13
  * Email：1993911441@qq.com
- * Describe：地址选择器
+ * Describe：地址选择
  */
 public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>> {
     private Activity activity;

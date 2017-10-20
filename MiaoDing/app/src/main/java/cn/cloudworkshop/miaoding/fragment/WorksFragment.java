@@ -9,18 +9,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -38,10 +36,7 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.NewDesignWorksBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
 import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
-import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
@@ -49,7 +44,7 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2017-06-08 11:29
  * Email：1993911441@qq.com
- * Describe：腔调作品
+ * Describe：腔调作品（当前版）
  */
 public class WorksFragment extends BaseFragment {
 
@@ -121,7 +116,21 @@ public class WorksFragment extends BaseFragment {
                 .DataBeanX.DataBean>(getParentFragment().getActivity(), R.layout.listitem_works, worksList) {
             @Override
             protected void convert(ViewHolder holder, NewDesignWorksBean.DataBeanX.DataBean itemBean, int position) {
+                RelativeLayout relativeLayout = holder.getView(R.id.rl_layout_goods);
+                ViewGroup.LayoutParams layoutParams = relativeLayout.getLayoutParams();
+                int widthPixels = DisplayUtils.getMetrics(getParentFragment().getActivity()).widthPixels;
+                layoutParams.width = (int) ((widthPixels - DisplayUtils.dp2px(getActivity(), 24)));
+                layoutParams.height = layoutParams.width * 1038 / 696;
+                relativeLayout.setLayoutParams(layoutParams);
+
                 SimpleDraweeView imgWorks = holder.getView(R.id.img_designer);
+
+                GenericDraweeHierarchy hierarchy = imgWorks.getHierarchy();
+                hierarchy.setPlaceholderImage(R.mipmap.place_banner, ScalingUtils.ScaleType.CENTER_CROP);
+                hierarchy.setRoundingParams(hierarchy.getRoundingParams().setCornersRadius
+                        (DisplayUtils.dp2px(getParentFragment().getActivity(), 4)));
+                imgWorks.setHierarchy(hierarchy);
+
                 imgWorks.setImageURI(Constant.HOST + itemBean.getImg());
                 TextView tvTitle = holder.getView(R.id.tv_works_title);
                 tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
@@ -164,7 +173,7 @@ public class WorksFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if (!TextUtils.isEmpty(String.valueOf(worksList.get(position).getId()))) {
-                    Intent intent = new Intent(getParentFragment().getActivity(), NewWorksActivity.class);
+                    Intent intent = new Intent(getParentFragment().getActivity(), WorksDetailActivity.class);
                     intent.putExtra("id", String.valueOf(worksList.get(position).getRecommend_goods_ids()));
                     startActivity(intent);
                 }

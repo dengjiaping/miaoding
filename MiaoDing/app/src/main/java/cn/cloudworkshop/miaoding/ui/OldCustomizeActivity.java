@@ -42,7 +42,6 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -51,9 +50,9 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2016/8/31 09:24
  * Email：1993911441@qq.com
- * Describe：定制页面
+ * Describe：定制页面（当前版）
  */
-public class TailorActivity extends BaseActivity {
+public class OldCustomizeActivity extends BaseActivity {
 
     @BindView(R.id.rv_tailor_cloth)
     RecyclerView rvTailor;
@@ -87,6 +86,8 @@ public class TailorActivity extends BaseActivity {
     ImageView imgReset;
     @BindView(R.id.img_tailor_guide)
     ImageView imgGuide;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     //部件
     private List<String> typeList = new ArrayList<>();
@@ -325,10 +326,10 @@ public class TailorActivity extends BaseActivity {
         });
 
         rvTailor.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
-        adapter = new CommonAdapter<String>(TailorActivity.this, R.layout.listitem_custom_parts, typeList) {
+        adapter = new CommonAdapter<String>(OldCustomizeActivity.this, R.layout.listitem_custom_parts, typeList) {
             @Override
             protected void convert(ViewHolder holder, String imgUrl, int position) {
-                Glide.with(TailorActivity.this)
+                Glide.with(OldCustomizeActivity.this)
                         .load(Constant.HOST + imgUrl)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -350,13 +351,13 @@ public class TailorActivity extends BaseActivity {
                 rvTailorButton.setVisibility(View.GONE);
 
                 rvTailorItem.setVisibility(View.VISIBLE);
-                rvTailorItem.setLayoutManager(new GridLayoutManager(TailorActivity.this, 1,
+                rvTailorItem.setLayoutManager(new GridLayoutManager(OldCustomizeActivity.this, 1,
                         GridLayoutManager.HORIZONTAL, false));
-                itemAdapter = new CommonAdapter<String>(TailorActivity.this,
+                itemAdapter = new CommonAdapter<String>(OldCustomizeActivity.this,
                         R.layout.listitem_custom_parts, itemList.get(index)) {
                     @Override
                     protected void convert(ViewHolder holder, String imgUrl, int position) {
-                        Glide.with(TailorActivity.this)
+                        Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + imgUrl)
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -367,23 +368,14 @@ public class TailorActivity extends BaseActivity {
 
                 if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null) {
                     imgGuide.setVisibility(View.VISIBLE);
-                    Glide.with(TailorActivity.this)
+                    Glide.with(OldCustomizeActivity.this)
                             .load(Constant.HOST + guideBean.getData().getImg_urls().get(1))
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(imgGuide);
                     isFirstEntry = false;
-                    SharedPreferencesUtils.saveBoolean(TailorActivity.this, "tailor_guide", false);
+                    SharedPreferencesUtils.saveBoolean(OldCustomizeActivity.this, "tailor_guide", false);
                 }
 
-                rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                            imgLargeMaterial.setVisibility(View.GONE);
-                        }
-                        return false;
-                    }
-                });
 
                 itemAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
@@ -423,7 +415,7 @@ public class TailorActivity extends BaseActivity {
 
                         CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(index)
                                 .itemView.findViewById(R.id.img_tailor_item);
-                        Glide.with(TailorActivity.this)
+                        Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + itemList.get(index).get(position))
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(img);
@@ -447,7 +439,7 @@ public class TailorActivity extends BaseActivity {
                         switch (positionList.get(index)) {
                             case 1:
                                 ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(index);
-                                Glide.with(TailorActivity.this)
+                                Glide.with(OldCustomizeActivity.this)
                                         .load(Constant.HOST + largeList.get(index).get(position))
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -462,7 +454,7 @@ public class TailorActivity extends BaseActivity {
                                 break;
                             case 2:
                                 ImageView backImg = (ImageView) rlBackTailor.getChildAt(index);
-                                Glide.with(TailorActivity.this)
+                                Glide.with(OldCustomizeActivity.this)
                                         .load(Constant.HOST + largeList.get(index).get(position))
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -480,7 +472,7 @@ public class TailorActivity extends BaseActivity {
 //                                        imgTailorIcon.setVisibility(View.VISIBLE);
 //                                        animation.start();
 //                                        rvTailorButton.setVisibility(View.GONE);
-//                                        ToastUtils.showToast(TailorActivity.this, "您选择了法式袖，请挑选扣子");
+//                                        ToastUtils.showToast(OldCustomizeActivity.this, "您选择了法式袖，请挑选扣子");
 //                                    } else {
 //                                        imgTailorIcon.setVisibility(View.GONE);
 //                                        animation.stop();
@@ -492,7 +484,7 @@ public class TailorActivity extends BaseActivity {
                                 break;
                             case 3:
                                 ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(index);
-                                Glide.with(TailorActivity.this)
+                                Glide.with(OldCustomizeActivity.this)
                                         .load(Constant.HOST + largeList.get(index).get(position))
                                         .fitCenter()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -506,7 +498,7 @@ public class TailorActivity extends BaseActivity {
                                 break;
                         }
 
-                        ToastUtils.showToast(TailorActivity.this, nameList.get(index).get(position));
+                        ToastUtils.showToast(OldCustomizeActivity.this, nameList.get(index).get(position));
 
                         if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
                             imgLargeMaterial.setVisibility(View.GONE);
@@ -520,16 +512,29 @@ public class TailorActivity extends BaseActivity {
 
                     @Override
                     public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        Glide.with(TailorActivity.this)
+                        Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + checkedList.get(index).get(position))
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(imgLargeMaterial);
                         if (imgLargeMaterial.getVisibility() == View.GONE) {
                             imgLargeMaterial.setVisibility(View.VISIBLE);
+
                         }
                         return false;
                     }
                 });
+
+
+                rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            imgLargeMaterial.setVisibility(View.GONE);
+                        }
+                        return true;
+                    }
+                });
+
 
             }
 
@@ -646,7 +651,7 @@ public class TailorActivity extends BaseActivity {
             switch (dataBean.getSpec_templets_recommend().get(k).getList().get(i).getPosition_id()) {
                 case 1:
                     ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
-                    Glide.with(TailorActivity.this)
+                    Glide.with(OldCustomizeActivity.this)
                             .load(Constant.HOST + dataBean.getSpec_templets_recommend()
                                     .get(k).getList().get(i).getImg_c())
                             .fitCenter()
@@ -656,7 +661,7 @@ public class TailorActivity extends BaseActivity {
                     break;
                 case 2:
                     ImageView backImg = (ImageView) rlBackTailor.getChildAt(i);
-                    Glide.with(TailorActivity.this)
+                    Glide.with(OldCustomizeActivity.this)
                             .load(Constant.HOST + dataBean.getSpec_templets_recommend().get(k)
                                     .getList().get(i).getImg_c())
                             .fitCenter()
@@ -681,7 +686,7 @@ public class TailorActivity extends BaseActivity {
                     break;
                 case 3:
                     ImageView insideImg = (ImageView) rlInsideTailor.getChildAt(i);
-                    Glide.with(TailorActivity.this)
+                    Glide.with(OldCustomizeActivity.this)
                             .load(Constant.HOST + dataBean.getSpec_templets_recommend().get(k)
                                     .getList().get(i).getImg_c())
                             .fitCenter()
@@ -731,7 +736,7 @@ public class TailorActivity extends BaseActivity {
                             if (guideBean.getData().getImg_urls() != null && guideBean.getData()
                                     .getImg_urls().size() > 0) {
                                 imgGuide.setVisibility(View.VISIBLE);
-                                Glide.with(TailorActivity.this)
+                                Glide.with(OldCustomizeActivity.this)
                                         .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(imgGuide);
@@ -748,16 +753,12 @@ public class TailorActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(TailorActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         dataBean = GsonUtils.jsonToBean(response, TailorBean.class).getData();
                         loadData();
                     }
@@ -792,7 +793,7 @@ public class TailorActivity extends BaseActivity {
         initView();
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor,
+    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor,R.id.img_load_error,
             R.id.img_large_material, R.id.img_tailor_icon, R.id.img_tailor_reset, R.id.img_tailor_guide})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -816,6 +817,9 @@ public class TailorActivity extends BaseActivity {
                 break;
             case R.id.img_tailor_guide:
                 imgGuide.setVisibility(View.GONE);
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
 
         }
@@ -862,7 +866,7 @@ public class TailorActivity extends BaseActivity {
         if (idMap.size() > 0 && typeMap.size() > 0 && nameMap.size() > 0 && positionMap.size() > 0) {
             Intent intent;
             Bundle bundle = new Bundle();
-            if (classifyId == 1) {
+            if (classifyId == 1 || classifyId == 2) {
                 intent = new Intent(this, EmbroideryActivity.class);
                 bundle.putInt("classify_id", classifyId);
             } else {
@@ -950,7 +954,7 @@ public class TailorActivity extends BaseActivity {
                     @Override
                     protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean
                             .ListBean.ChildBean childBean, int position) {
-                        Glide.with(TailorActivity.this)
+                        Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + dataBean.getSpec_list().get(index).getList()
                                         .get(itemIndex).getChild_list().get(position).getImg_a())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -976,7 +980,7 @@ public class TailorActivity extends BaseActivity {
                     imgLargeMaterial.setVisibility(View.GONE);
                 }
 
-                ToastUtils.showToast(TailorActivity.this, dataBean.getSpec_list().get(index).getList()
+                ToastUtils.showToast(OldCustomizeActivity.this, dataBean.getSpec_list().get(index).getList()
                         .get(itemIndex).getChild_list().get(position).getName());
                 buttonName = dataBean.getSpec_list().get(index).getList().get(itemIndex)
                         .getChild_list().get(position).getName();
@@ -985,7 +989,7 @@ public class TailorActivity extends BaseActivity {
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Glide.with(TailorActivity.this)
+                Glide.with(OldCustomizeActivity.this)
                         .load(Constant.HOST + dataBean.getSpec_list().get(index).getList()
                                 .get(itemIndex).getChild_list().get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -993,7 +997,7 @@ public class TailorActivity extends BaseActivity {
                 if (imgLargeMaterial.getVisibility() == View.GONE) {
                     imgLargeMaterial.setVisibility(View.VISIBLE);
                 }
-                return false;
+                return true;
             }
         });
     }

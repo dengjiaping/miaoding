@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +39,6 @@ import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -101,6 +99,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     TextView tvCardMoney;
     @BindView(R.id.ll_select_card)
     LinearLayout llSelectCard;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
 
     //购物车id
     private String cartIds;
@@ -170,17 +170,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(ConfirmOrderActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadingError.setBackgroundColor(Color.WHITE);
+                        imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.log(response);
+                        imgLoadingError.setVisibility(View.GONE);
                         if (canCouponSelect) {
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
@@ -274,6 +270,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                 holder.setVisible(R.id.view_cart_divide, true);
                 Glide.with(ConfirmOrderActivity.this)
                         .load(Constant.HOST + carListBean.getGoods_thumb())
+                        .placeholder(R.mipmap.place_goods)
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
                 holder.setVisible(R.id.tv_goods_count, false);
@@ -501,7 +499,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_header_back, R.id.rl_select_address, R.id.tv_confirm_order,
-            R.id.ll_select_coupon, R.id.ll_select_card})
+            R.id.ll_select_coupon, R.id.ll_select_card, R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -547,6 +545,9 @@ public class ConfirmOrderActivity extends BaseActivity {
                 Intent intent = new Intent(this, GiftCardActivity.class);
                 intent.putExtra("type", "select");
                 startActivityForResult(intent, 4);
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -607,7 +608,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     MobclickAgent.onEvent(ConfirmOrderActivity.this, "place_order", map);
                                     ToastUtils.showToast(ConfirmOrderActivity.this, msg);
 
-                                    ActivityManagerUtils.getInstance().finishActivityClass(TailorActivity.class);
+                                    ActivityManagerUtils.getInstance().finishActivityClass(OldCustomizeActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(EmbroideryActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(CustomResultActivity.class);
                                     ActivityManagerUtils.getInstance().finishActivityClass(ShoppingCartActivity.class);

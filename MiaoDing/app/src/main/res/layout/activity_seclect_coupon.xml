@@ -112,5 +112,7 @@
             android:textColor="@android:color/white"
             android:textSize="17sp"/>
     </LinearLayout>
+    <include
+        layout="@layout/loading_error"/>
 
 </RelativeLayout>

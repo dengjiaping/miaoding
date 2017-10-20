@@ -103,7 +103,16 @@ public class GoodsListBean {
             private String name;
             private String sub_name;
             private String thumb;
+            private String price;
             private int type;
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
 
             public int getId() {
                 return id;

@@ -38,5 +38,8 @@
         android:overScrollMode="never">
     </cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager>
 
+    <include
+        layout="@layout/loading_error"/>
+
 
 </RelativeLayout>

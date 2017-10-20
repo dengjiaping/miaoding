@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.github.jdsjlzx.recyclerview.AppBarStateChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +27,13 @@ import cn.cloudworkshop.miaoding.adapter.GoodsFragmentAdapter;
 import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 
 /**
  * Author：Libin on 2017-06-08 11:25
  * Email：1993911441@qq.com
- * Describe：腔调
+ * Describe：腔调作品（老版）
  */
-public class NewDesignerWorksFragment extends BaseFragment {
+public class DesignerWorksFragment2 extends BaseFragment {
 
     @BindView(R.id.tab_designer_works)
     SlidingTabLayout tabDesignerWorks;
@@ -76,7 +74,7 @@ public class NewDesignerWorksFragment extends BaseFragment {
         titleList.add("腔调");
         titleList.add("设计师");
         fragmentList.add(WorksFragment.newInstance());
-        fragmentList.add(DesignerFragment.newInstance());
+        fragmentList.add(OldDesignerFragment.newInstance());
 
         GoodsFragmentAdapter adapter = new GoodsFragmentAdapter(getChildFragmentManager(),
                 fragmentList, titleList);
@@ -98,9 +96,9 @@ public class NewDesignerWorksFragment extends BaseFragment {
     }
 
 
-    public static NewDesignerWorksFragment newInstance() {
+    public static DesignerWorksFragment2 newInstance() {
         Bundle args = new Bundle();
-        NewDesignerWorksFragment fragment = new NewDesignerWorksFragment();
+        DesignerWorksFragment2 fragment = new DesignerWorksFragment2();
         fragment.setArguments(args);
         return fragment;
     }

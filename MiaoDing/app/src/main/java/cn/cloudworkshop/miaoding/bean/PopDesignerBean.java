@@ -100,6 +100,15 @@ public class PopDesignerBean {
         private String tag;
         private String introduce;
         private Object story;
+        private String icon;
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
 
         public int getId() {
             return id;

@@ -261,4 +261,7 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <include
+        layout="@layout/loading_error"/>
+
 </RelativeLayout>

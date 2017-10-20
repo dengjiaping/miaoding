@@ -105,8 +105,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="220dp"
-                android:layout_height="211dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/icon_null_bag"/>
@@ -114,8 +114,8 @@
 
             <TextView
                 android:id="@+id/tv_my_bag"
-                android:layout_width="95dp"
-                android:layout_height="35dp"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/btn_black_6dp"
@@ -125,49 +125,46 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/rv_cart_recommend"
-            android:layout_marginBottom="20dp">
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="22dp"
+                android:background="@color/dark_gray_22"
+                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:id="@+id/tv_goods_recommend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="猜您喜欢"
-                android:textColor="#808080"
-                android:textSize="17sp"/>
+                android:text="为您推荐"
+                android:textColor="@color/dark_gray_22"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="6dp"/>
 
-            <View
-                android:layout_width="60dp"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@id/tv_goods_recommend"
-                android:background="@android:color/darker_gray"/>
-
-            <View
-                android:layout_width="60dp"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/tv_goods_recommend"
-                android:background="@android:color/darker_gray"/>
-
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_cart_recommend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="4.5dp"
+            android:layout_marginRight="3.5dp"
+            android:layout_marginBottom="3.5dp"
             android:overScrollMode="never">
         </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
+
+    <include
+        layout="@layout/loading_error"/>
 
 </RelativeLayout>

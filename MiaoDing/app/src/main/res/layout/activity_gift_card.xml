@@ -97,4 +97,7 @@
         </LinearLayout>
     </ScrollView>
 
+    <include
+        layout="@layout/loading_error"/>
+
 </RelativeLayout>

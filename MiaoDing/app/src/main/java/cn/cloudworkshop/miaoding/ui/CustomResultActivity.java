@@ -252,6 +252,8 @@ public class CustomResultActivity extends BaseActivity {
 
                 Glide.with(getApplicationContext())
                         .load(Constant.HOST + customBean.getDefault_img())
+                        .placeholder(R.mipmap.place_banner)
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgDefaultItem);
                 break;

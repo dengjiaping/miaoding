@@ -44,9 +44,9 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberBean;
 import cn.cloudworkshop.miaoding.bean.MemberTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -82,6 +82,8 @@ public class MemberCenterActivity extends BaseActivity {
     CommonTabLayout tabMemberGrade;
     @BindView(R.id.vp_member_rights)
     ViewPager vpMemberRights;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private MemberBean memberBean;
     private List<List<MemberBean.DataBean.UserPrivilegeBean>> dataList = new ArrayList<>();
     private CommonAdapter<MemberBean.DataBean.UserPrivilegeBean> adapter;
@@ -116,16 +118,12 @@ public class MemberCenterActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(MemberCenterActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         memberBean = GsonUtils.jsonToBean(response, MemberBean.class);
                         if (memberBean.getData() != null) {
                             birthday = memberBean.getData().getUser_info().getBirthday();
@@ -364,7 +362,7 @@ public class MemberCenterActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.img_header_back, R.id.img_header_share, R.id.tv_check_member})
+    @OnClick({R.id.img_header_back, R.id.img_header_share, R.id.tv_check_member,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -377,6 +375,9 @@ public class MemberCenterActivity extends BaseActivity {
                 Intent intent = new Intent(this, MemberGrowthActivity.class);
                 intent.putExtra("value", credit + "");
                 startActivity(intent);
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -432,4 +433,6 @@ public class MemberCenterActivity extends BaseActivity {
             birthday = data.getStringExtra("birthday");
         }
     }
+
+
 }

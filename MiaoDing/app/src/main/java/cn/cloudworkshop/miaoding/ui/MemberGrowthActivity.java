@@ -30,8 +30,8 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.MemberGrowthBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 
@@ -53,6 +53,8 @@ public class MemberGrowthActivity extends BaseActivity {
     LRecyclerView rvMemberGrow;
     @BindView(R.id.tv_null_growth)
     TextView tvNullGrowth;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     //当前页
     private int page = 1;
     //刷新
@@ -61,7 +63,6 @@ public class MemberGrowthActivity extends BaseActivity {
     private boolean isLoadMore;
     private LRecyclerViewAdapter mLRecyclerViewAdapter;
     private List<MemberGrowthBean.DataBean> dataList = new ArrayList<>();
-
 
 
     @Override
@@ -86,16 +87,12 @@ public class MemberGrowthActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(MemberGrowthActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         MemberGrowthBean bean = GsonUtils.jsonToBean(response, MemberGrowthBean.class);
                         if (bean.getData() != null && bean.getData().size() > 0) {
                             if (isRefresh) {
@@ -152,7 +149,7 @@ public class MemberGrowthActivity extends BaseActivity {
         rvMemberGrow.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         isRefresh = true;
                         page = 1;
@@ -175,7 +172,7 @@ public class MemberGrowthActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.img_header_back, R.id.img_header_share})
+    @OnClick({R.id.img_header_back, R.id.img_header_share,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -184,6 +181,10 @@ public class MemberGrowthActivity extends BaseActivity {
             case R.id.img_header_share:
                 startActivity(new Intent(this, MemberRuleActivity.class));
                 break;
+            case R.id.img_load_error:
+                initData();
+                break;
         }
     }
+
 }

@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -20,9 +19,7 @@ import butterknife.Unbinder;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.MemberTabBean;
-import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
-import cn.cloudworkshop.miaoding.utils.FragmentUtils;
-import cn.cloudworkshop.miaoding.utils.NewFragmentTabUtils;
+import cn.cloudworkshop.miaoding.utils.DesignerTabUtils;
 
 /**
  * Author：Libin on 2017-04-21 10:24
@@ -50,7 +47,7 @@ public class DesignerWorksFragment extends BaseFragment {
 
     private void initView() {
         fragmentList.add(WorksFragment.newInstance());
-        fragmentList.add(NewDesignerFragment.newInstance());
+        fragmentList.add(DesignerFragment.newInstance());
 
         ArrayList<CustomTabEntity> tabList = new ArrayList<>();
 
@@ -59,7 +56,7 @@ public class DesignerWorksFragment extends BaseFragment {
 
         tabWorks.setTabData(tabList);
 
-        new FragmentUtils(getChildFragmentManager(), fragmentList, R.id.fl_works, tabWorks);
+        new DesignerTabUtils(getChildFragmentManager(), fragmentList, R.id.fl_works, tabWorks);
 
     }
 

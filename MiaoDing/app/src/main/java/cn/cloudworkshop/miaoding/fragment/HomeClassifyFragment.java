@@ -35,7 +35,7 @@ import cn.cloudworkshop.miaoding.application.MyApplication;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.HomeClassifyBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.HomepageInfoActivity;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
@@ -165,7 +165,7 @@ public class HomeClassifyFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, int position) {
                 homepageLog(itemList.get(position).getTags_name());
-                Intent intent = new Intent(getParentFragment().getActivity(), HomepageDetailActivity.class);
+                Intent intent = new Intent(getParentFragment().getActivity(), HomepageInfoActivity.class);
                 intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" + itemList.get(position).getId());
                 intent.putExtra("title", itemList.get(position).getTitle());
                 intent.putExtra("content", itemList.get(position).getContent());

@@ -44,11 +44,9 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.CollectionBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
-import cn.cloudworkshop.miaoding.ui.HomepageDetailActivity;
+import cn.cloudworkshop.miaoding.ui.HomepageInfoActivity;
 import cn.cloudworkshop.miaoding.ui.MainActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksActivity;
-import cn.cloudworkshop.miaoding.ui.NewWorksDetailActivity;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.ui.WorksDetailActivity;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -68,6 +66,8 @@ public class CollectionFragment extends BaseFragment {
     TextView tvCollection;
     @BindView(R.id.ll_null_order)
     LinearLayout llNullCollect;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadingError;
     private Unbinder unbinder;
 
     private List<CollectionBean.DataBean> itemList = new ArrayList<>();
@@ -107,16 +107,12 @@ public class CollectionFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadingError.setVisibility(View.GONE);
                         CollectionBean collectionBean = GsonUtils.jsonToBean(response, CollectionBean.class);
                         if (collectionBean.getData() != null && collectionBean.getData().size() > 0) {
                             if (isRefresh) {
@@ -163,6 +159,8 @@ public class CollectionFragment extends BaseFragment {
                         holder.setVisible(R.id.view_homepage2, true);
                         Glide.with(getActivity())
                                 .load(Constant.HOST + itemBean.getImg())
+                                .placeholder(R.mipmap.place_news)
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_homepage_item));
                         holder.setText(R.id.tv_recommend_title, itemBean.getTitle());
@@ -178,6 +176,8 @@ public class CollectionFragment extends BaseFragment {
                     protected void convert(ViewHolder holder, CollectionBean.DataBean itemBean, int position) {
                         Glide.with(getActivity())
                                 .load(Constant.HOST + itemBean.getThumb())
+                                .placeholder(R.mipmap.place_goods)
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_collect_goods));
                         holder.setText(R.id.tv_collect_title, itemBean.getName());
@@ -222,7 +222,7 @@ public class CollectionFragment extends BaseFragment {
                 Intent intent = null;
                 switch (type) {
                     case 1:
-                        intent = new Intent(getActivity(), HomepageDetailActivity.class);
+                        intent = new Intent(getActivity(), HomepageInfoActivity.class);
                         intent.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id="
                                 + itemList.get(position).getCid());
                         intent.putExtra("title", itemList.get(position).getTitle());
@@ -236,7 +236,7 @@ public class CollectionFragment extends BaseFragment {
                         if (itemList.get(position).getGoods_type() == 1) {
                             intent = new Intent(getActivity(), CustomGoodsActivity.class);
                         } else {
-                            intent = new Intent(getActivity(), NewWorksActivity.class);
+                            intent = new Intent(getActivity(), WorksDetailActivity.class);
                         }
 
                         intent.putExtra("id", String.valueOf(itemList.get(position).getCid()));
@@ -260,7 +260,8 @@ public class CollectionFragment extends BaseFragment {
      * 取消收藏
      */
     private void cancelCollection(final int cid, final int position) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("取消收藏");
         dialog.setMessage("您确定要取消收藏？");
         //为“确定”按钮注册监听事件
@@ -335,11 +336,19 @@ public class CollectionFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.tv_my_order)
-    public void onViewClicked() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("page", type - 1);
-        startActivity(intent);
-        getActivity().finish();
+
+    @OnClick({R.id.tv_my_order, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_my_order:
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("page", type - 1);
+                startActivity(intent);
+                getActivity().finish();
+                break;
+            case R.id.img_load_error:
+                initData();
+                break;
+        }
     }
 }

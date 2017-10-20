@@ -5,10 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,24 +12,21 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
-import com.wang.avi.AVLoadingIndicatorView;
-import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +37,7 @@ import cn.cloudworkshop.miaoding.adapter.JazzyPagerAdapter;
 import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.GoodsTitleBean;
+import cn.cloudworkshop.miaoding.bean.MemberTabBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
@@ -55,66 +49,70 @@ import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
 
 /**
- * Author：Libin on 2017-05-27 20:29
+ * Author：Libin on 2017-09-15 17:40
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：定制商品（老版）
  */
-public class NewCustomGoodsFragment extends BaseFragment {
-    @BindView(R.id.img_select_type)
-    ImageView imgSelectType;
-    @BindView(R.id.tv_custom_title)
-    TextView tvCustomTitle;
-    @BindView(R.id.vp_custom_goods)
-    JazzyViewPager vpCustomGoods;
-    @BindView(R.id.img_code)
+public class CustomGoodsFragment3 extends BaseFragment {
+    @BindView(R.id.img_qr_code)
     ImageView imgCode;
-
+    @BindView(R.id.vp_custom)
+    JazzyViewPager vpGoods;
+    @BindView(R.id.tab_custom)
+    CommonTabLayout tabGoods;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private Unbinder unbinder;
 
-    private int page = 1;
-    private GoodsListBean listBean;
     private GoodsTitleBean titleBean;
-    private GoodsTitleBean.DataBean currentGoods;
-    private int currentItem = 0;
 
     // 是否需要系统权限检测
     private boolean isRequireCheck = true;
     static final String[] permissionStr = new String[]{Manifest.permission.CAMERA};
     //是否授权
     private boolean isGrant;
+    //监听banner滑动状态
+    private boolean isScrolled;
+    private int page = 1;
+    //加载更多
+    private boolean isLoadMore;
+    //选择类型
+    private boolean isSelectType;
+    private int currentItem;
+    private List<GoodsListBean.DataBean.itemDataBean> dataList = new ArrayList<>();
+    private JazzyPagerAdapter adapter;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_custom_goods_new, container, false);
+        View view = inflater.inflate(R.layout.fragment_goods_custom, container, false);
         unbinder = ButterKnife.bind(this, view);
         initTitle();
         return view;
     }
 
+
+    /**
+     * 定制商品种类
+     */
     private void initTitle() {
-        OkHttpUtils
-                .get()
+        OkHttpUtils.get()
                 .url(Constant.GOODS_TITLE)
                 .addParams("token", SharedPreferencesUtils.getStr(getActivity(), "token"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initTitle();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         titleBean = GsonUtils.jsonToBean(response, GoodsTitleBean.class);
                         if (titleBean.getData() != null) {
-                            currentGoods = titleBean.getData().get(0);
-                            initGoods();
+                            selectType();
                         }
                     }
                 });
@@ -122,47 +120,94 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
 
     /**
-     * 加载商品
+     * 选择商品种类
      */
-    public void initGoods() {
-        OkHttpUtils
-                .get()
+    public void selectType() {
+
+        ArrayList<CustomTabEntity> tabList = new ArrayList<>();
+        for (int i = 0; i < titleBean.getData().size(); i++) {
+            tabList.add(new MemberTabBean(titleBean.getData().get(i).getName()));
+        }
+
+        tabGoods.setTabData(tabList);
+        tabGoods.setCurrentTab(0);
+        initGoods(titleBean.getData().get(0).getId() + "");
+
+        tabGoods.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                page = 1;
+                isSelectType = true;
+                isLoadMore = false;
+                initGoods(titleBean.getData().get(position).getId() + "");
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+    }
+
+    /**
+     * @param id 加载商品
+     */
+    private void initGoods(String id) {
+        OkHttpUtils.get()
                 .url(Constant.GOODS_LIST)
                 .addParams("type", "1")
-                .addParams("classify_id", String.valueOf(currentGoods.getId()))
+                .addParams("classify_id", id)
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        imgSelectType.setEnabled(true);
-                        listBean = GsonUtils.jsonToBean(response, GoodsListBean.class);
+                        GoodsListBean listBean = GsonUtils.jsonToBean(response, GoodsListBean.class);
                         if (listBean.getData().getData() != null && listBean.getData().getData().size() > 0) {
-                            initView();
+                            if (isSelectType) {
+                                dataList.clear();
+                            }
+                            dataList.addAll(listBean.getData().getData());
+                            if (isLoadMore) {
+                                adapter.notifyDataSetChanged();
+                                vpGoods.setCurrentItem(currentItem + 1);
+                                isLoadMore = false;
+                            } else if (isSelectType) {
+                                adapter.notifyDataSetChanged();
+                                initView();
+                                vpGoods.setCurrentItem(0);
+                                isSelectType = false;
+                            } else {
+                                initView();
+                            }
+                        } else {
+                            if (page != 1) {
+                                ToastUtils.showToast(getActivity(), "已经是最后一页了");
+                                page--;
+                            }
                         }
                     }
                 });
-
     }
 
     /**
      * 加载视图
      */
     private void initView() {
+        vpGoods.setOffscreenPageLimit(dataList.size());
+        vpGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
+        adapter = new JazzyPagerAdapter(dataList, getActivity(), vpGoods);
+        vpGoods.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        tvCustomTitle.setText(currentGoods.getName());
-        vpCustomGoods.setOffscreenPageLimit(listBean.getData().getData().size());
-        vpCustomGoods.setTransitionEffect(JazzyViewPager.TransitionEffect.ZoomIn);
-        JazzyPagerAdapter adapter = new JazzyPagerAdapter(listBean.getData().getData(),
-                getActivity(), vpCustomGoods);
-        vpCustomGoods.setAdapter(adapter);
 
         //手指左右滑动不超过48px,上下滑动不超过250px
-        vpCustomGoods.setOnTouchListener(new View.OnTouchListener() {
+        vpGoods.setOnTouchListener(new View.OnTouchListener() {
             int touchFlag = 0;
             float x = 0, y = 0;
 
@@ -191,19 +236,17 @@ public class NewCustomGoodsFragment extends BaseFragment {
                     case MotionEvent.ACTION_UP:
                         if (touchFlag == 0) {
                             Intent intent = new Intent(getActivity(), CustomGoodsActivity.class);
-                            intent.putExtra("id", String.valueOf(listBean.getData().getData()
-                                    .get(vpCustomGoods.getCurrentItem()).getId()));
+                            intent.putExtra("id", String.valueOf(dataList.get(vpGoods.getCurrentItem()).getId()));
                             startActivity(intent);
                         }
                         break;
-
 
                 }
                 return false;
             }
         });
 
-        vpCustomGoods.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        vpGoods.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -211,9 +254,7 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == listBean.getData().getData().size() - 1) {
-                    ToastUtils.showToast(getActivity(), "已经是最后一页了");
-                }
+
                 if (position == 0) {
                     ToastUtils.showToast(getActivity(), "已经是第一页了");
                 }
@@ -222,95 +263,37 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                switch (state) {
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        if (!isScrolled && vpGoods.getCurrentItem() == dataList.size() - 1) {
+                            isLoadMore = true;
+                            currentItem = vpGoods.getCurrentItem();
+                            page++;
+                            initGoods(titleBean.getData().get(tabGoods.getCurrentTab()).getId() + "");
+                        }
+                        isScrolled = true;
+                        break;
+                    case ViewPager.SCROLL_STATE_DRAGGING:
+                        isScrolled = false;
+                        break;
+                    case ViewPager.SCROLL_STATE_SETTLING:
+                        isScrolled = true;
+                        break;
 
-            }
-        });
-
-    }
-
-
-    /**
-     * 选择种类
-     */
-    private void selectType() {
-        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.ppw_goods_type, null);
-        final PopupWindow mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setContentView(contentView);
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-        mPopupWindow.showAsDropDown(imgSelectType);
-
-        RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.rv_goods_type);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        CommonAdapter<GoodsTitleBean.DataBean> adapter = new CommonAdapter<GoodsTitleBean.DataBean>
-                (getActivity(), R.layout.listitem_goods_type, titleBean.getData()) {
-            @Override
-            protected void convert(ViewHolder holder, GoodsTitleBean.DataBean dataBean, int position) {
-                TextView tvGoods = holder.getView(R.id.tv_goods_type);
-                tvGoods.setText(dataBean.getName());
-                if (currentItem == position) {
-                    tvGoods.setTypeface(Typeface.DEFAULT_BOLD);
-                } else {
-                    tvGoods.setTypeface(Typeface.DEFAULT);
                 }
             }
-        };
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                currentGoods = titleBean.getData().get(position);
-                currentItem = position;
-                imgSelectType.setEnabled(false);
-                initGoods();
-                mPopupWindow.dismiss();
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
         });
+
     }
 
 
-    public static NewCustomGoodsFragment newInstance() {
-
+    public static CustomGoodsFragment3 newInstance() {
         Bundle args = new Bundle();
-
-        NewCustomGoodsFragment fragment = new NewCustomGoodsFragment();
+        CustomGoodsFragment3 fragment = new CustomGoodsFragment3();
         fragment.setArguments(args);
         return fragment;
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.img_select_type, R.id.img_code})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.img_select_type:
-                if (titleBean != null) {
-                    selectType();
-                }
-                break;
-            case R.id.img_code:
-                judgePermission();
-                if (isGrant) {
-                    Intent intent = new Intent(getActivity(), ScanCodeActivity.class);
-                    startActivity(intent);
-                }
-                break;
-        }
-    }
 
     /**
      * 检测权限
@@ -370,7 +353,8 @@ public class NewCustomGoodsFragment extends BaseFragment {
      * 提示对话框
      */
     public void showPermissionDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.setTitle("帮助");
         dialog.setMessage("当前应用缺少相机权限，请点击\"设置\" - \"权限管理\"，打开所需权限。");
         //为“确定”按钮注册监听事件
@@ -396,4 +380,26 @@ public class NewCustomGoodsFragment extends BaseFragment {
 
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.img_qr_code, R.id.img_load_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_qr_code:
+                judgePermission();
+                if (isGrant) {
+                    Intent intent = new Intent(getActivity(), ScanCodeActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.img_load_error:
+                initTitle();
+                break;
+        }
+    }
 }

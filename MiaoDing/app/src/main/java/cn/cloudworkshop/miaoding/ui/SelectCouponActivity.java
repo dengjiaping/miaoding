@@ -30,11 +30,11 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.SelectCouponBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
+import cn.cloudworkshop.miaoding.utils.MyLinearLayoutManager;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -61,6 +61,8 @@ public class SelectCouponActivity extends BaseActivity {
     EditText etCouponCode;
     @BindView(R.id.tv_exchange)
     TextView tvExchange;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
 
     private String cartIds;
     //优惠券数量
@@ -94,16 +96,12 @@ public class SelectCouponActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(SelectCouponActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         SelectCouponBean couponBean = GsonUtils.jsonToBean(response, SelectCouponBean.class);
                         if (couponBean.getData().getUsable() != null && couponBean.getData()
                                 .getUsable().size() > 0) {
@@ -223,7 +221,7 @@ public class SelectCouponActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_not_use, R.id.tv_exchange})
+    @OnClick({R.id.img_header_back, R.id.tv_not_use, R.id.tv_exchange,R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -242,6 +240,9 @@ public class SelectCouponActivity extends BaseActivity {
                 break;
             case R.id.tv_exchange:
                 exchangeCoupon();
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }
@@ -295,4 +296,5 @@ public class SelectCouponActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

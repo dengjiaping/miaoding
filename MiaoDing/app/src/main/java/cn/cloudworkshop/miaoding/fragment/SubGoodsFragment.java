@@ -1,6 +1,7 @@
 package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -8,6 +9,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -20,8 +27,10 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -30,13 +39,14 @@ import cn.cloudworkshop.miaoding.base.BaseFragment;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.CustomGoodsActivity;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import okhttp3.Call;
 
 /**
  * Author：Libin on 2017/9/25 19:
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：定制商品（当前版）
  */
 public class SubGoodsFragment extends BaseFragment {
 
@@ -110,13 +120,22 @@ public class SubGoodsFragment extends BaseFragment {
 
     private void initView() {
         rvGoods.setLayoutManager(new GridLayoutManager(getParentFragment().getActivity(), 2));
-        CommonAdapter<GoodsListBean.DataBean.itemDataBean> adapter = new CommonAdapter<GoodsListBean.DataBean.itemDataBean>(getParentFragment().getActivity(),
+        CommonAdapter<GoodsListBean.DataBean.itemDataBean> adapter = new CommonAdapter<
+                GoodsListBean.DataBean.itemDataBean>(getParentFragment().getActivity(),
                 R.layout.listitem_sub_goods, dataList) {
             @Override
-            protected void convert(ViewHolder holder, GoodsListBean.DataBean.itemDataBean itemDataBean, int position) {
+            protected void convert(ViewHolder holder, GoodsListBean.DataBean.itemDataBean
+                    itemDataBean, int position) {
                 SimpleDraweeView imgGoods = holder.getView(R.id.img_sub_goods);
+
+                GenericDraweeHierarchy hierarchy = imgGoods.getHierarchy();
+                hierarchy.setPlaceholderImage(R.mipmap.place_banner, ScalingUtils.ScaleType.CENTER_CROP);
+                float px = DisplayUtils.dp2px(getParentFragment().getActivity(), 3);
+                hierarchy.setRoundingParams(hierarchy.getRoundingParams().setCornersRadii(px,px,0,0));
+                imgGoods.setHierarchy(hierarchy);
                 imgGoods.setImageURI(Constant.HOST + itemDataBean.getThumb());
                 holder.setText(R.id.tv_sub_title, itemDataBean.getName());
+                holder.setText(R.id.tv_sub_price, itemDataBean.getPrice());
                 holder.setText(R.id.tv_sub_content, itemDataBean.getSub_name());
             }
 

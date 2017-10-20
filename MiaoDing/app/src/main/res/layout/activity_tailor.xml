@@ -168,4 +168,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:visibility="gone"/>
+
+    <include
+        layout="@layout/loading_error"/>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,8 +24,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,7 +34,6 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -60,6 +58,8 @@ public class GiftCardActivity extends BaseActivity {
     ImageView imgCardRule;
     @BindView(R.id.sv_card_rule)
     ScrollView svCardRule;
+    @BindView(R.id.img_load_error)
+    ImageView imgLoadError;
     private GiftCardBean cardBean;
     //选择礼品卡
     private String type;
@@ -86,16 +86,13 @@ public class GiftCardActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LoadErrorUtils.showDialog(GiftCardActivity.this, new LoadErrorUtils.OnRefreshListener() {
-                            @Override
-                            public void onRefresh() {
-                                initData();
-                            }
-                        });
+                        imgLoadError.setBackgroundColor(Color.WHITE);
+                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
                         cardBean = GsonUtils.jsonToBean(response, GiftCardBean.class);
                         if (cardBean.getInfo() != null) {
                             initView();
@@ -120,7 +117,7 @@ public class GiftCardActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_add_card})
+    @OnClick({R.id.img_header_back, R.id.tv_add_card,R.id.img_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -133,6 +130,9 @@ public class GiftCardActivity extends BaseActivity {
                 break;
             case R.id.tv_add_card:
                 addGiftCard();
+                break;
+            case R.id.img_load_error:
+                initData();
                 break;
         }
     }

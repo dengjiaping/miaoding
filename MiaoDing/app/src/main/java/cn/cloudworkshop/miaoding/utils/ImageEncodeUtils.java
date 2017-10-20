@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Author：Libin on 2016/10/24 17:48
  * Email：1993911441@qq.com
- * Describe:图片加密处理
+ * Describe:图片base64编码
  */
 public class ImageEncodeUtils {
     /**
