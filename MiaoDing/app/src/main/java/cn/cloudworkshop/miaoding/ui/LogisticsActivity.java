@@ -26,7 +26,6 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.LogisticsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import okhttp3.Call;
 
 /**

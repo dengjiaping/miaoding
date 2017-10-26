@@ -43,13 +43,12 @@ import cn.cloudworkshop.miaoding.ui.JoinUsActivity;
 import cn.cloudworkshop.miaoding.ui.LoginActivity;
 import cn.cloudworkshop.miaoding.ui.MemberCenterActivity;
 import cn.cloudworkshop.miaoding.ui.MessageCenterActivity;
-import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
+import cn.cloudworkshop.miaoding.ui.OrderActivity;
 import cn.cloudworkshop.miaoding.ui.SetUpActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.utils.ContactService;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.BadgeView;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -211,7 +210,7 @@ public class MyCenterFragment extends BaseFragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(getActivity(), MyOrderActivity.class));
+                        startActivity(new Intent(getActivity(), OrderActivity.class));
                         break;
                     case 1:
                         startActivity(new Intent(getActivity(), ShoppingCartActivity.class));

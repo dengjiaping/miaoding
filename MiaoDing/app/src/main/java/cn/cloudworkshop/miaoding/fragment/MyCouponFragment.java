@@ -60,8 +60,6 @@ public class MyCouponFragment extends BaseFragment {
     RecyclerView rvCoupon;
     @BindView(R.id.img_null_coupon)
     ImageView imgNullCoupon;
-    @BindView(R.id.img_load_error)
-    ImageView imgLoadError;
 
     //兑换优惠券
     private int currentPos;
@@ -119,12 +117,11 @@ public class MyCouponFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        imgLoadError.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        imgLoadError.setVisibility(View.GONE);
+
                         couponList = new ArrayList<>();
                         CouponBean couponBean = GsonUtils.jsonToBean(response, CouponBean.class);
                         if (couponBean.getData() != null && couponBean.getData().size() > 0) {
@@ -258,15 +255,8 @@ public class MyCouponFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_exchange_coupon, R.id.img_load_error})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_exchange_coupon:
-                exchangeCoupon();
-                break;
-            case R.id.img_load_error:
-                initData();
-                break;
-        }
+    @OnClick(R.id.tv_exchange_coupon)
+    public void onViewClicked() {
+        exchangeCoupon();
     }
 }

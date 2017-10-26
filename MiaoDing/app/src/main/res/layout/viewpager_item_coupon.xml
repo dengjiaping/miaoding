@@ -69,7 +69,4 @@
         android:src="@mipmap/icon_null_coupon"
         android:visibility="gone"/>
 
-    <include
-        layout="@layout/loading_error"/>
-
 </RelativeLayout>

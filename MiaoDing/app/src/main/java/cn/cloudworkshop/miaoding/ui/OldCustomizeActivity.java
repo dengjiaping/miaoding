@@ -41,7 +41,6 @@ import cn.cloudworkshop.miaoding.bean.TailorBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;

@@ -51,7 +51,6 @@ import cn.cloudworkshop.miaoding.ui.MainActivity;
 import cn.cloudworkshop.miaoding.ui.OrderDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.PayOrderUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;

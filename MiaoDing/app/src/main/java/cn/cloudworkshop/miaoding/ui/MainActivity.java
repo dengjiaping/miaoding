@@ -119,12 +119,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         imgLoadingError.setVisibility(View.VISIBLE);
-//                        LoadErrorUtils.showDialog(MainActivity.this, new LoadErrorUtils.OnRefreshListener() {
-//                            @Override
-//                            public void onRefresh() {
-//                                initIcon();
-//                            }
-//                        });
                     }
 
                     @Override

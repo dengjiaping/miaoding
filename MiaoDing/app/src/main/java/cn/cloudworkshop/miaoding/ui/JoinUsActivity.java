@@ -20,7 +20,6 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;

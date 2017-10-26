@@ -93,7 +93,7 @@
         <activity
             android:name=".ui.FeedbackActivity"
             android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ui.MyOrderActivity"/>
+        <activity android:name=".ui.OrderActivity"/>
         <activity android:name=".ui.DressingTestActivity"/>
         <activity android:name=".ui.NewClothInfoActivity"/>
         <activity android:name=".ui.ConfirmOrderActivity"/>

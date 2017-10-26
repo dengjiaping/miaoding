@@ -22,7 +22,6 @@ import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import okhttp3.Call;
 

@@ -19,5 +19,5 @@ android {
 
 
 dependencies {
-    compile 'cn.qqtheme.framework:Common:1.5.1'
+    compile 'cn.qqtheme.framework:Common:1.5.5'
 }

@@ -26,7 +26,7 @@ import cn.cloudworkshop.miaoding.fragment.MyOrderFragment;
  * Email：1993911441@qq.com
  * Describe：我的订单
  */
-public class MyOrderActivity extends BaseActivity implements MyOrderFragment.OnStateChangeListener {
+public class OrderActivity extends BaseActivity implements MyOrderFragment.OnStateChangeListener {
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)

@@ -80,12 +80,7 @@ public class CustomGoodsFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        LoadErrorUtils.showDialog(getActivity(), new LoadErrorUtils.OnRefreshListener() {
-//                            @Override
-//                            public void onRefresh() {
-//                                initTitle();
-//                            }
-//                        });
+
                         imgLoadingError.setVisibility(View.VISIBLE);
                     }
 

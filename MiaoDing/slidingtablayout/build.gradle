@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "2.1.0"
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.0'
@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 210
-        versionName version
+        versionName "2.1.0"
     }
     buildTypes {
         release {

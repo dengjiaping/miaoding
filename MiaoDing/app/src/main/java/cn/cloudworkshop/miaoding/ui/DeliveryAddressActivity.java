@@ -37,7 +37,6 @@ import cn.cloudworkshop.miaoding.bean.ConfirmOrderBean;
 import cn.cloudworkshop.miaoding.bean.DeliveryAddressBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LoadErrorUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import okhttp3.Call;
 

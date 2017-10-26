@@ -45,7 +45,7 @@ import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.ui.AppointmentActivity;
 import cn.cloudworkshop.miaoding.ui.CustomResultActivity;
 import cn.cloudworkshop.miaoding.ui.EmbroideryActivity;
-import cn.cloudworkshop.miaoding.ui.MyOrderActivity;
+import cn.cloudworkshop.miaoding.ui.OrderActivity;
 import cn.cloudworkshop.miaoding.ui.ShoppingCartActivity;
 import cn.cloudworkshop.miaoding.ui.OldCustomizeActivity;
 import okhttp3.Call;
@@ -146,7 +146,7 @@ public class PayOrderUtils {
 
                 if (!isConfirmBuy) {
                     ToastUtils.showToast(context, "取消支付");
-                    Intent intent = new Intent(context, MyOrderActivity.class);
+                    Intent intent = new Intent(context, OrderActivity.class);
                     intent.putExtra("page", 1);
                     context.startActivity(intent);
                     ((Activity) context).finish();
@@ -245,7 +245,7 @@ public class PayOrderUtils {
                             ((Activity) context).finish();
                         } else {
                             ToastUtils.showToast(context, weChatPay.getMsg());
-                            Intent intent = new Intent(context, MyOrderActivity.class);
+                            Intent intent = new Intent(context, OrderActivity.class);
                             intent.putExtra("page", 0);
                             context.startActivity(intent);
                             ((Activity) context).finish();
