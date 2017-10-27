@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
+import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
@@ -96,6 +97,7 @@ public class ScanCodeActivity extends BaseActivity {
                                         break;
                                 }
 
+
                             } else {
                                 ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
                                 finish();
@@ -142,7 +144,9 @@ public class ScanCodeActivity extends BaseActivity {
      */
     private void vibrator() {
         Vibrator vib = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-        vib.vibrate(100);
+        if (vib != null) {
+            vib.vibrate(100);
+        }
     }
 
 

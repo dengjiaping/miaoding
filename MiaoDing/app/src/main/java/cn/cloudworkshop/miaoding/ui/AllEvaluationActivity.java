@@ -89,12 +89,6 @@ public class AllEvaluationActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        LoadErrorUtils.showDialog(AllEvaluationActivity.this, new LoadErrorUtils.OnRefreshListener() {
-//                            @Override
-//                            public void onRefresh() {
-//                                initData();
-//                            }
-//                        });
                         imgLoadingError.setVisibility(View.VISIBLE);
                     }
 

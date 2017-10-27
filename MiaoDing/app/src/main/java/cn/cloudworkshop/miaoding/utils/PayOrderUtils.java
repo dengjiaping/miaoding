@@ -77,10 +77,10 @@ public class PayOrderUtils {
 
     private static final int SDK_PAY_FLAG = 1;
 
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case SDK_PAY_FLAG: {
                     PayResultBean payResultBean = new PayResultBean((Map<String, String>) msg.obj);
@@ -109,8 +109,9 @@ public class PayOrderUtils {
                     break;
                 }
             }
+            return false;
         }
-    };
+    });
 
     /**
      * 支付

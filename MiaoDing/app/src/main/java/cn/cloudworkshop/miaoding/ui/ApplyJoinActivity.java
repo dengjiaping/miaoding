@@ -28,6 +28,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ import okhttp3.Call;
 
 /**
  * Created by Libin on 2016/10/24.
- * 提交入驻申请
+ * 入驻申请
  */
 
 public class ApplyJoinActivity extends BaseActivity {
@@ -100,10 +101,9 @@ public class ApplyJoinActivity extends BaseActivity {
     }
 
 
-    Handler handler = new Handler() {
+    Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public boolean handleMessage(Message msg) {
             OkHttpUtils.post()
                     .url(Constant.APPLY_JOIN)
                     .addParams("token", SharedPreferencesUtils.getStr(ApplyJoinActivity.this, "token"))
@@ -131,8 +131,9 @@ public class ApplyJoinActivity extends BaseActivity {
                             finish();
                         }
                     });
+            return false;
         }
-    };
+    });
 
 
     /**

@@ -279,6 +279,8 @@ public class CustomizeActivity extends BaseActivity {
                 }
                 return true;
             }
+
+
         });
 
         rlClothInside.setOnTouchListener(new View.OnTouchListener() {
@@ -305,9 +307,11 @@ public class CustomizeActivity extends BaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     rlClothDetail.setVisibility(View.GONE);
+
                 }
                 return false;
             }
+
         });
 
     }

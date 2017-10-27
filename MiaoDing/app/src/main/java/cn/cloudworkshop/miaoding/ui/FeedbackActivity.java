@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -126,10 +127,9 @@ public class FeedbackActivity extends BaseActivity {
     }
 
 
-    Handler handler = new Handler() {
+    Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public boolean handleMessage(Message msg) {
 
             Map<String, String> map = new HashMap<>();
             map.put("token", SharedPreferencesUtils.getStr(FeedbackActivity.this, "token"));
@@ -161,9 +161,9 @@ public class FeedbackActivity extends BaseActivity {
                         }
                     });
 
-
+            return false;
         }
-    };
+    });
 
     /**
      * 提交反馈

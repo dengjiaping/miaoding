@@ -24,11 +24,13 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -103,7 +105,6 @@ public class EvaluateActivity extends BaseActivity {
         tvGoodsType.setText(goodsType);
 
 
-
         rvGoodsPicture.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         adapter = new CommonAdapter<String>(this, R.layout.listitem_picker_photo, selectedPhotos) {
             @Override
@@ -141,7 +142,6 @@ public class EvaluateActivity extends BaseActivity {
                 return false;
             }
         });
-
 
 
         loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
@@ -207,11 +207,9 @@ public class EvaluateActivity extends BaseActivity {
     };
 
 
-    Handler handler = new Handler() {
+    Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
+        public boolean handleMessage(Message msg) {
             Map<String, String> map = new HashMap<>();
             map.put("order_id", orderId);
             map.put("car_id", cartId);
@@ -240,9 +238,9 @@ public class EvaluateActivity extends BaseActivity {
                         }
                     });
 
-
+            return false;
         }
-    };
+    });
 
     /**
      * 用户权限处理,

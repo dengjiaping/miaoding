@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -184,6 +185,7 @@ public class OldCustomizeActivity extends BaseActivity {
     /**
      * 加载视图
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         tvHeaderTitle.setText("选版型");
         animation = (AnimationDrawable) imgTailorIcon.getDrawable();

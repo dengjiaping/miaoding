@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -76,6 +77,7 @@ public class DesignerFragment extends BaseFragment {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
 
         ViewGroup.LayoutParams layoutParams1 = vpDesigner.getLayoutParams();

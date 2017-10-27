@@ -72,8 +72,9 @@ public class LoginActivity extends BaseActivity {
     private boolean isCode;
     private String logId;
 
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
             if (msg.what == -9) {
                 tvVerificationCode.setText("重发(" + i + ")");
                 tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
@@ -83,8 +84,10 @@ public class LoginActivity extends BaseActivity {
                 tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
                 i = 30;
             }
+
+            return false;
         }
-    };
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

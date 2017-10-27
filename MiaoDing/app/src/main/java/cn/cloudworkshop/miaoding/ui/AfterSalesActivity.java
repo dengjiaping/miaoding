@@ -16,7 +16,7 @@ import cn.cloudworkshop.miaoding.utils.ContactService;
 /**
  * Author：Libin on 2016/12/22 13:43
  * Email：1993911441@qq.com
- * Describe：
+ * Describe：售后
  */
 public class AfterSalesActivity extends BaseActivity {
     @BindView(R.id.img_header_back)
