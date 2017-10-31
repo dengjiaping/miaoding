@@ -131,6 +131,7 @@ public class LogisticsActivity extends BaseActivity {
         rvLogistics.setAdapter(adapter);
     }
 
+
     private void getData() {
         Intent intent = getIntent();
         number = intent.getStringExtra("number");

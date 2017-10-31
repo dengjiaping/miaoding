@@ -110,6 +110,9 @@ public class WorksFragment extends BaseFragment {
                 });
     }
 
+    /**
+     * 加载视图
+     */
     private void initView() {
         rvWorks.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
         CommonAdapter<NewDesignWorksBean.DataBeanX.DataBean> adapter = new CommonAdapter<NewDesignWorksBean

@@ -1,8 +1,11 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -46,6 +50,7 @@ public class JoinUsActivity extends BaseActivity {
 
     //是否已申请入驻
     private int isApply = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +103,10 @@ public class JoinUsActivity extends BaseActivity {
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgJoinUs);
         }
+
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_apply_join,R.id.img_load_error})
+    @OnClick({R.id.img_header_back, R.id.tv_apply_join, R.id.img_load_error})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
@@ -118,13 +124,14 @@ public class JoinUsActivity extends BaseActivity {
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));
                 }
+
                 break;
             case R.id.img_load_error:
                 initData();
                 break;
         }
-    }
 
+    }
 
 }
 

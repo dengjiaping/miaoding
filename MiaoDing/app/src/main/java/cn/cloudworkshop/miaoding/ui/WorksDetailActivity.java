@@ -405,7 +405,8 @@ public class WorksDetailActivity extends BaseActivity {
                             tvSize.setBackgroundResource(R.drawable.circle_black);
 
                         } else {
-                            tvSize.setTextColor(ContextCompat.getColor(WorksDetailActivity.this, R.color.dark_gray_22));
+                            tvSize.setTextColor(ContextCompat.getColor(WorksDetailActivity.this,
+                                    R.color.dark_gray_22));
                             tvSize.setBackgroundResource(R.drawable.ring_gray);
                         }
                     }

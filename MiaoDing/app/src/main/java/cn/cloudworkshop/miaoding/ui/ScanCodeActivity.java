@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
-import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 
 /**
@@ -92,33 +91,34 @@ public class ScanCodeActivity extends BaseActivity {
                                         toGoodsDetail(WorksDetailActivity.class, goods_id, shop_id, market_id);
                                         break;
                                     default:
-                                        ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
-                                        finish();
+                                        scanFail();
                                         break;
                                 }
-
-
                             } else {
-                                ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
-                                finish();
+                                scanFail();
                             }
                         } else {
-                            ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
-                            finish();
+                            scanFail();
                         }
                     } else {
-                        ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
-                        finish();
+                        scanFail();
                     }
 
                 } else {
-                    ToastUtils.showToast(ScanCodeActivity.this, "仅支持本平台商品");
-                    finish();
+                    scanFail();
                 }
             }
 
 
         });
+    }
+
+    /**
+     * 二维码扫描结果非本平台商品
+     */
+    private void scanFail() {
+        ToastUtils.showToast(this, "仅支持本平台商品");
+        finish();
     }
 
     /**

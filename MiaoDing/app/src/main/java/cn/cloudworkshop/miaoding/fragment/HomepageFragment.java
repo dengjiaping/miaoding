@@ -167,8 +167,8 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                             intent.putExtra("title", dataBean.getTitle());
                             intent.putExtra("content", dataBean.getSub_title());
                             intent.putExtra("img_url", dataBean.getImg());
-                            intent.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id="
-                                    + dataBean.getId());
+                            intent.putExtra("share_url", Constant.HOMEPAGE_SHARE
+                                    + "?content=1&id=" + dataBean.getId());
                             startActivity(intent);
                         }
                     });

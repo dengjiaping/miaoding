@@ -181,7 +181,6 @@ public class WorksDetailActivity1 extends BaseActivity {
      * 加载数据
      */
     private void initData() {
-
         OkHttpUtils.get()
                 .url(Constant.GOODS_DETAILS)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))

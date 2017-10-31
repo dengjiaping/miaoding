@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -148,11 +149,11 @@ public class OldCustomizeActivity extends BaseActivity {
     private boolean firstSelect = true;
     private String default_img;
 
-
     private CommonAdapter<String> itemAdapter;
     private GuideBean guideBean;
     //首次进入引导
     private boolean isFirstEntry;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +186,6 @@ public class OldCustomizeActivity extends BaseActivity {
     /**
      * 加载视图
      */
-    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         tvHeaderTitle.setText("选版型");
         animation = (AnimationDrawable) imgTailorIcon.getDrawable();
@@ -358,10 +358,18 @@ public class OldCustomizeActivity extends BaseActivity {
                         R.layout.listitem_custom_parts, itemList.get(index)) {
                     @Override
                     protected void convert(ViewHolder holder, String imgUrl, int position) {
+                        CircleImageView imgItem = holder.getView(R.id.img_tailor_item);
                         Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + imgUrl)
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into((ImageView) holder.getView(R.id.img_tailor_item));
+                                .into(imgItem);
+
+                        imgItem.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return false;
+                            }
+                        });
 
                     }
                 };
@@ -376,7 +384,6 @@ public class OldCustomizeActivity extends BaseActivity {
                     isFirstEntry = false;
                     SharedPreferencesUtils.saveBoolean(OldCustomizeActivity.this, "tailor_guide", false);
                 }
-
 
                 itemAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
@@ -794,7 +801,7 @@ public class OldCustomizeActivity extends BaseActivity {
         initView();
     }
 
-    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor,R.id.img_load_error,
+    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor, R.id.img_load_error,
             R.id.img_large_material, R.id.img_tailor_icon, R.id.img_tailor_reset, R.id.img_tailor_guide})
     public void onClick(View view) {
         switch (view.getId()) {

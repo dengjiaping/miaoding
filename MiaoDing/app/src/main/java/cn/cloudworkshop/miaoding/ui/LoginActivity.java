@@ -408,8 +408,5 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
         handler.removeCallbacks(myRunnable);
     }
-
-    @OnClick(R.id.img_login_bg)
-    public void onViewClicked() {
-    }
+    
 }
