@@ -28,6 +28,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -43,6 +44,7 @@ import cn.cloudworkshop.miaoding.bean.TailorBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
@@ -51,7 +53,7 @@ import okhttp3.Call;
 /**
  * Author：Libin on 2016/8/31 09:24
  * Email：1993911441@qq.com
- * Describe：定制页面（当前版）
+ * Describe：定制页面（老版）
  */
 public class OldCustomizeActivity extends BaseActivity {
 
@@ -140,7 +142,7 @@ public class OldCustomizeActivity extends BaseActivity {
 
     private AnimationDrawable animation;
     //选择部件位置
-    private int index = 0;
+    private int index;
     //选择子部件
     private int itemIndex;
     //纽扣名称
@@ -184,10 +186,91 @@ public class OldCustomizeActivity extends BaseActivity {
     }
 
     /**
+     * 获取网络数据
+     */
+    private void initData() {
+        isFirstEntry = SharedPreferencesUtils.getBoolean(this, "tailor_guide", true);
+        if (isFirstEntry) {
+            OkHttpUtils.get()
+                    .url(Constant.GUIDE_IMG)
+                    .addParams("id", "2")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+
+                            guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
+                            if (guideBean.getData().getImg_urls() != null && guideBean.getData()
+                                    .getImg_urls().size() > 0) {
+                                imgGuide.setVisibility(View.VISIBLE);
+                                Glide.with(OldCustomizeActivity.this)
+                                        .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                        .into(imgGuide);
+                            }
+                        }
+                    });
+        }
+        OkHttpUtils.get()
+                .url(Constant.TAILOR_INFO)
+                .addParams("goods_id", id)
+                .addParams("phone_type", "3")
+                .addParams("price_type", priceType)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        imgLoadError.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        imgLoadError.setVisibility(View.GONE);
+                        dataBean = GsonUtils.jsonToBean(response, TailorBean.class).getData();
+                        loadData();
+                    }
+                });
+
+    }
+
+    private void loadData() {
+        for (int i = 0; i < dataBean.getSpec_list().size(); i++) {
+            typeList.add(dataBean.getSpec_list().get(i).getImg());
+            titleList.add(dataBean.getSpec_list().get(i).getSpec_name());
+            positionList.add(dataBean.getSpec_list().get(i).getPosition_id());
+            List<String> imgItem = new ArrayList<>();
+            List<String> imgCheck = new ArrayList<>();
+            List<String> imgLarge = new ArrayList<>();
+            List<Integer> goodsId = new ArrayList<>();
+            List<String> goodsName = new ArrayList<>();
+            for (int j = 0; j < dataBean.getSpec_list().get(i).getList().size(); j++) {
+                imgItem.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_a());
+                imgCheck.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_b());
+                imgLarge.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_c());
+                goodsId.add(dataBean.getSpec_list().get(i).getList().get(j).getId());
+                goodsName.add(dataBean.getSpec_list().get(i).getList().get(j).getName());
+            }
+            itemList.add(imgItem);
+            checkedList.add(imgCheck);
+            largeList.add(imgLarge);
+            idList.add(goodsId);
+            nameList.add(goodsName);
+
+        }
+        initView();
+    }
+
+
+    /**
      * 加载视图
      */
     private void initView() {
-        tvHeaderTitle.setText("选版型");
+        tvHeaderTitle.setText("选部件");
         animation = (AnimationDrawable) imgTailorIcon.getDrawable();
         ((RadioButton) rgsSelectOrientation.getChildAt(0)).setChecked(true);
 
@@ -326,7 +409,7 @@ public class OldCustomizeActivity extends BaseActivity {
             }
         });
 
-        rvTailor.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        rvTailor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         adapter = new CommonAdapter<String>(OldCustomizeActivity.this, R.layout.listitem_custom_parts, typeList) {
             @Override
             protected void convert(ViewHolder holder, String imgUrl, int position) {
@@ -352,24 +435,16 @@ public class OldCustomizeActivity extends BaseActivity {
                 rvTailorButton.setVisibility(View.GONE);
 
                 rvTailorItem.setVisibility(View.VISIBLE);
-                rvTailorItem.setLayoutManager(new GridLayoutManager(OldCustomizeActivity.this, 1,
-                        GridLayoutManager.HORIZONTAL, false));
+                rvTailorItem.setLayoutManager(new LinearLayoutManager(OldCustomizeActivity.this,
+                        LinearLayoutManager.HORIZONTAL, false));
                 itemAdapter = new CommonAdapter<String>(OldCustomizeActivity.this,
                         R.layout.listitem_custom_parts, itemList.get(index)) {
                     @Override
                     protected void convert(ViewHolder holder, String imgUrl, int position) {
-                        CircleImageView imgItem = holder.getView(R.id.img_tailor_item);
                         Glide.with(OldCustomizeActivity.this)
                                 .load(Constant.HOST + imgUrl)
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(imgItem);
-
-                        imgItem.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View v, MotionEvent event) {
-                                return false;
-                            }
-                        });
+                                .into((CircleImageView)holder.getView(R.id.img_tailor_item));
 
                     }
                 };
@@ -385,10 +460,19 @@ public class OldCustomizeActivity extends BaseActivity {
                     SharedPreferencesUtils.saveBoolean(OldCustomizeActivity.this, "tailor_guide", false);
                 }
 
+                rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            imgLargeMaterial.setVisibility(View.GONE);
+                        }
+                        return false;
+                    }
+                });
+
                 itemAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
                         if (firstSelect && index != 0) {
                             for (int i = 0; i < rlPositiveTailor.getChildCount(); i++) {
                                 ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
@@ -414,9 +498,8 @@ public class OldCustomizeActivity extends BaseActivity {
                         idMap.put(index, idList.get(index).get(position));
 
                         if (dataBean.getSpec_list().get(index).getList().get(position)
-                                .getNotmatch_spec_ids() != null &&
-                                dataBean.getSpec_list().get(index).getList().get(position)
-                                        .getNotmatch_spec_ids().length() > 0) {
+                                .getNotmatch_spec_ids() != null && dataBean.getSpec_list()
+                                .get(index).getList().get(position).getNotmatch_spec_ids().length() > 0) {
                             noMatchSpec();
                         }
 
@@ -505,8 +588,7 @@ public class OldCustomizeActivity extends BaseActivity {
 
                                 break;
                         }
-
-                        ToastUtils.showToast(OldCustomizeActivity.this, nameList.get(index).get(position));
+                        tvHeaderTitle.setText(nameList.get(index).get(position));
 
                         if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
                             imgLargeMaterial.setVisibility(View.GONE);
@@ -532,16 +614,6 @@ public class OldCustomizeActivity extends BaseActivity {
                     }
                 });
 
-
-                rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                            imgLargeMaterial.setVisibility(View.GONE);
-                        }
-                        return true;
-                    }
-                });
 
 
             }
@@ -611,9 +683,7 @@ public class OldCustomizeActivity extends BaseActivity {
                         if (dataBean.getSpec_list().get(i).getList().get(j).getNotmatch_spec_ids() != null) {
                             String[] split = dataBean.getSpec_list().get(i).getList().get(j)
                                     .getNotmatch_spec_ids().split(",");
-                            for (int k = 0; k < split.length; k++) {
-                                noMatchIds.add(split[k]);
-                            }
+                            noMatchIds.addAll(Arrays.asList(split));
                         }
                     }
                 }
@@ -641,6 +711,7 @@ public class OldCustomizeActivity extends BaseActivity {
             largeList.add(imgLarge);
             idList.add(goodsId);
             nameList.add(goodsName);
+
         }
     }
 
@@ -721,85 +792,6 @@ public class OldCustomizeActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 获取网络数据
-     */
-    private void initData() {
-        isFirstEntry = SharedPreferencesUtils.getBoolean(this, "tailor_guide", true);
-        if (isFirstEntry) {
-            OkHttpUtils.get()
-                    .url(Constant.GUIDE_IMG)
-                    .addParams("id", "2")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-
-                            guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
-                            if (guideBean.getData().getImg_urls() != null && guideBean.getData()
-                                    .getImg_urls().size() > 0) {
-                                imgGuide.setVisibility(View.VISIBLE);
-                                Glide.with(OldCustomizeActivity.this)
-                                        .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
-                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                        .into(imgGuide);
-                            }
-                        }
-                    });
-        }
-        OkHttpUtils.get()
-                .url(Constant.TAILOR_INFO)
-                .addParams("goods_id", id)
-                .addParams("phone_type", "3")
-                .addParams("price_type", priceType)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        imgLoadError.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        imgLoadError.setVisibility(View.GONE);
-                        dataBean = GsonUtils.jsonToBean(response, TailorBean.class).getData();
-                        loadData();
-                    }
-                });
-
-    }
-
-    private void loadData() {
-        for (int i = 0; i < dataBean.getSpec_list().size(); i++) {
-            typeList.add(dataBean.getSpec_list().get(i).getImg());
-            titleList.add(dataBean.getSpec_list().get(i).getSpec_name());
-            positionList.add(dataBean.getSpec_list().get(i).getPosition_id());
-            List<String> imgItem = new ArrayList<>();
-            List<String> imgCheck = new ArrayList<>();
-            List<String> imgLarge = new ArrayList<>();
-            List<Integer> goodsId = new ArrayList<>();
-            List<String> goodsName = new ArrayList<>();
-            for (int j = 0; j < dataBean.getSpec_list().get(i).getList().size(); j++) {
-                imgItem.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_a());
-                imgCheck.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_b());
-                imgLarge.add(dataBean.getSpec_list().get(i).getList().get(j).getImg_c());
-                goodsId.add(dataBean.getSpec_list().get(i).getList().get(j).getId());
-                goodsName.add(dataBean.getSpec_list().get(i).getList().get(j).getName());
-            }
-            itemList.add(imgItem);
-            checkedList.add(imgCheck);
-            largeList.add(imgLarge);
-            idList.add(goodsId);
-            nameList.add(goodsName);
-
-        }
-        initView();
-    }
 
     @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor, R.id.img_load_error,
             R.id.img_large_material, R.id.img_tailor_icon, R.id.img_tailor_reset, R.id.img_tailor_guide})
@@ -988,8 +980,9 @@ public class OldCustomizeActivity extends BaseActivity {
                     imgLargeMaterial.setVisibility(View.GONE);
                 }
 
-                ToastUtils.showToast(OldCustomizeActivity.this, dataBean.getSpec_list().get(index).getList()
-                        .get(itemIndex).getChild_list().get(position).getName());
+                tvHeaderTitle.setText(dataBean.getSpec_list().get(index).getList().get(itemIndex)
+                        .getChild_list().get(position).getName());
+
                 buttonName = dataBean.getSpec_list().get(index).getList().get(itemIndex)
                         .getChild_list().get(position).getName();
 
@@ -1009,5 +1002,6 @@ public class OldCustomizeActivity extends BaseActivity {
             }
         });
     }
+
 
 }

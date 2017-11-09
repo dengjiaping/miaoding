@@ -290,7 +290,8 @@ public class ApplyJoinActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
         super.onDestroy();
-        handler.removeCallbacks(myRunnable);
+
     }
 }

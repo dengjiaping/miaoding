@@ -64,8 +64,7 @@ public class LoginActivity extends BaseActivity {
     private String msgToken;
     //登录返回token
     private String loginToken;
-    //重发验证码时间
-    private int i = 30;
+
     //是否输入手机号
     private boolean isPhone;
     //是否输入验证码
@@ -75,16 +74,14 @@ public class LoginActivity extends BaseActivity {
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            if (msg.what == -9) {
-                tvVerificationCode.setText("重发(" + i + ")");
+            if (msg.what == 1) {
+                tvVerificationCode.setText("重发(" + msg.arg1 + ")");
                 tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
-            } else if (msg.what == -8) {
+            } else if (msg.what == 2) {
                 tvVerificationCode.setText("获取验证码");
                 tvVerificationCode.setClickable(true);
                 tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
-                i = 30;
             }
-
             return false;
         }
     });
@@ -336,18 +333,21 @@ public class LoginActivity extends BaseActivity {
     Runnable myRunnable = new Runnable() {
         @Override
         public void run() {
-            for (; i > 0; i--) {
-                handler.sendEmptyMessage(-9);
+            for (int i = 30; i > 0; i--) {
                 if (i <= 0) {
                     break;
                 }
+                Message msg = new Message();
+                msg.what = 1;
+                msg.arg1 = i;
+                handler.sendMessage(msg);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            handler.sendEmptyMessage(-8);
+            handler.sendEmptyMessage(2);
         }
     };
 
@@ -405,8 +405,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
         super.onDestroy();
-        handler.removeCallbacks(myRunnable);
     }
+
     
 }

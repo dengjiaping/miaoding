@@ -156,11 +156,15 @@ public class EmbroideryActivity extends BaseActivity {
                 tvPosition.setText(positionBean.getName());
                 isAllSelect();
                 if (flowerPosition == position) {
-                    tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.dark_gray_22));
-                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_3d));
+                    tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this,
+                            R.color.dark_gray_22));
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,
+                            R.color.light_gray_3d));
                 } else {
-                    tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_7a));
-                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this, R.color.light_gray_97));
+                    tvPosition.setTextColor(ContextCompat.getColor(EmbroideryActivity.this,
+                            R.color.light_gray_7a));
+                    imgPosition.setBorderColor(ContextCompat.getColor(EmbroideryActivity.this,
+                            R.color.light_gray_97));
                 }
             }
         };
@@ -181,8 +185,8 @@ public class EmbroideryActivity extends BaseActivity {
         });
         //绣花颜色
         rvEmbroideryColor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        final CommonAdapter<EmbroideryBean.DataBean.ColorBean> colorAdapter
-                = new CommonAdapter<EmbroideryBean.DataBean.ColorBean>(EmbroideryActivity.this,
+        final CommonAdapter<EmbroideryBean.DataBean.ColorBean> colorAdapter = new
+                CommonAdapter<EmbroideryBean.DataBean.ColorBean>(EmbroideryActivity.this,
                 R.layout.listitem_embroidery_color, embroideryBean.getData().getColor()) {
             @Override
             protected void convert(ViewHolder holder, EmbroideryBean.DataBean.ColorBean colorBean, int position) {

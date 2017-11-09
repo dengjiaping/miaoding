@@ -550,14 +550,14 @@ public class WorksDetailActivity2 extends BaseActivity {
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            String msg = jsonObject.getString("msg");
-                            switch (msg) {
-                                case "成功":
+                            int code = jsonObject.getInt("code");
+                            switch (code) {
+                                case 1:
                                     MobclickAgent.onEvent(WorksDetailActivity2.this, "collection");
                                     imgWorksCollect.setImageResource(R.mipmap.icon_add_like);
                                     ToastUtils.showToast(WorksDetailActivity2.this, "收藏成功");
                                     break;
-                                case "取消成功":
+                                case 2:
                                     imgWorksCollect.setImageResource(R.mipmap.icon_cancel_like);
                                     ToastUtils.showToast(WorksDetailActivity2.this, "已取消收藏");
                                     break;

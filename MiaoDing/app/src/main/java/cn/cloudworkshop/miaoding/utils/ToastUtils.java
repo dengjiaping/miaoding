@@ -13,7 +13,7 @@ public class ToastUtils {
 
     public static void showToast(Context context, String content) {
         if (mToast == null) {
-            mToast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT);
         } else {
             mToast.setText(content);
             mToast.setDuration(Toast.LENGTH_SHORT);

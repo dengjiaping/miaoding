@@ -77,7 +77,7 @@ public class DesignerFragment extends BaseFragment {
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     private void initView() {
 
         ViewGroup.LayoutParams layoutParams1 = vpDesigner.getLayoutParams();

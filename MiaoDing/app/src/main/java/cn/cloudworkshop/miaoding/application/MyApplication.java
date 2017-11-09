@@ -15,7 +15,6 @@ import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.zhy.http.okhttp.OkHttpUtils;
-
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
@@ -76,6 +75,8 @@ public class MyApplication extends Application {
             StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder1.build());
         }
+
+
 
     }
 

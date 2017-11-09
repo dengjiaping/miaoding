@@ -1,9 +1,12 @@
 package cn.cloudworkshop.miaoding.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Author：Libin on 2017-07-03 14:49
@@ -45,7 +48,6 @@ public class ActivityManagerUtils {
      */
 
     private void finishActivity(Activity activity) {
-
         if (activity != null) {
             this.activities.remove(activity);
             activity.finish();

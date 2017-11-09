@@ -29,7 +29,7 @@ public class DownloadService extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+        if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
             Intent install = new Intent(Intent.ACTION_VIEW);
             install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Uri contentUri;

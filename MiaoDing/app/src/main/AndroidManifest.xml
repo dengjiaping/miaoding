@@ -95,7 +95,6 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.OrderActivity"/>
         <activity android:name=".ui.DressingTestActivity"/>
-        <activity android:name=".ui.NewClothInfoActivity"/>
         <activity android:name=".ui.ConfirmOrderActivity"/>
         <activity android:name=".ui.DeliveryAddressActivity"/>
         <activity android:name=".ui.AddAddressActivity"/>
@@ -211,6 +210,7 @@
             android:name=".ui.GoodsDetailActivity"
             android:theme="@style/NoTitleTranslucentTheme"/>
         <activity android:name=".ui.GiftCardActivity"/>
+        <activity android:name=".ui.NewCustomizeActivity"/>
 
 
         <service android:name="com.amap.api.location.APSService"/>

@@ -84,22 +84,17 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
     @BindView(R.id.tv_submit_appointment)
     TextView tvSubmit;
 
-    //定位需要的声明
-    private AMapLocationClient mLocationClient = null;//定位发起端
-    private AMapLocationClientOption mLocationOption = null;//定位参数
     private OnLocationChangedListener mListener = null;//定位监听器
 
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
-    //商品名称
-    private String goodsName;
     //搜索地图
     private boolean isSearch;
     //是否定位
     private boolean isLocation;
     // 是否需要系统权限检测
     private boolean isRequireCheck = true;
-    //危险权限（运行时权限）
+    //定位权限（运行时权限）
     static final String[] permissionStr = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -115,7 +110,6 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
         mMapView.onCreate(savedInstanceState);
         aMap = mMapView.getMap();
         tvHeaderTitle.setText("预约量体");
-        getData();
         setUpMap();
 
         if (isRequireCheck) {
@@ -178,19 +172,15 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
     }
 
 
-    private void getData() {
-        goodsName = getIntent().getStringExtra("goods_name");
-    }
-
 
     //定位
     private void initLocation() {
         //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
+        AMapLocationClient mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
         //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置是否返回地址信息（默认返回地址信息）
@@ -341,18 +331,10 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
      */
     private void showPopupWindow() {
         tvSubmit.setEnabled(false);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("token", SharedPreferencesUtils.getStr(this, "token"));
-        map.put("address", etCurrentAddress.getText().toString());
-        if (goodsName != null) {
-            map.put("goods_name", goodsName);
-        }
-
-
         OkHttpUtils.post()
                 .url(Constant.APPOINTMENT_ORDER)
-                .params(map)
+                .addParams("token",SharedPreferencesUtils.getStr(this, "token"))
+                .addParams("address",etCurrentAddress.getText().toString())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -363,9 +345,6 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                     @Override
                     public void onResponse(String response, final int id) {
                         MobclickAgent.onEvent(ApplyMeasureActivity.this, "measure");
-                        if (goodsName != null) {
-                            setResult(1, getIntent());
-                        }
                         tvSubmit.setEnabled(true);
                         Intent intent = new Intent(ApplyMeasureActivity.this, AppointmentActivity.class);
                         intent.putExtra("type", "appoint_measure");

@@ -187,10 +187,10 @@ public class CustomResultActivity extends BaseActivity {
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         switch (motionEvent.getAction()) {
                             case MotionEvent.ACTION_DOWN:
-                                x1 = motionEvent.getRawX();
+                                x1 = motionEvent.getX();
                                 break;
                             case MotionEvent.ACTION_MOVE:
-                                x2 = motionEvent.getRawX();
+                                x2 = motionEvent.getX();
                             case MotionEvent.ACTION_UP:
                                 if (x1 < x2) {
                                     if (rgsTailorPosition.getChildAt(1).getVisibility() == View.VISIBLE) {

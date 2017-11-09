@@ -601,7 +601,6 @@ public class WorksDetailActivity extends BaseActivity {
                             e.printStackTrace();
                         }
 
-
                     }
                 });
 

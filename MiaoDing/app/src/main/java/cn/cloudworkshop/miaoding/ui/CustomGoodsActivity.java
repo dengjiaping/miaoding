@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -52,6 +54,7 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -124,6 +127,18 @@ public class CustomGoodsActivity extends BaseActivity {
     LinearLayout llNoCollection;
     @BindView(R.id.img_load_error)
     ImageView imgLoadError;
+    @BindView(R.id.view_evaluate)
+    View viewEvaluate;
+    @BindView(R.id.tv_goods_tip)
+    TextView tvGoodsTip;
+    @BindView(R.id.view_goods_tip)
+    View viewGoodsTip;
+    @BindView(R.id.ll_goods_tip)
+    LinearLayout llGoodsTip;
+    @BindView(R.id.card_goods)
+    CardView cardGoods;
+
+
     //商品id
     private String id;
     private String shop_id;
@@ -135,6 +150,7 @@ public class CustomGoodsActivity extends BaseActivity {
     private Bitmap bm2;
     //监听banner滑动状态
     private boolean isScrolled;
+    private boolean isShow = true;
 
 
     @Override
@@ -358,6 +374,7 @@ public class CustomGoodsActivity extends BaseActivity {
                                 rect.set(0, height / 3 * 2, width, height);
                                 bm2 = decoder.decodeRegion(rect, opts);
                                 imgDetails2.setImageBitmap(bm2);
+
                             }
 
                         } catch (IOException e) {
@@ -368,16 +385,22 @@ public class CustomGoodsActivity extends BaseActivity {
                 });
 
 
-//        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
-//            @Override
-//            public void getCurrentPage(int page) {
-//                if (page == 0) {
-//                    llGoodsTailor.setVisibility(View.GONE);
-//                } else {
-//                    llGoodsTailor.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
+        ViewGroup.LayoutParams layoutParams = llGoodsTip.getLayoutParams();
+
+        layoutParams.height = DisplayUtils.getMetrics(this).heightPixels;
+        llGoodsTip.setLayoutParams(layoutParams);
+        tvGoodsTip.setText(customBean.getData().getContent());
+
+        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
+            @Override
+            public void getCurrentPage(int page) {
+                if (page == 1) {
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(cardGoods, "translationX", 150, 0);
+                    animator.setDuration(350);
+                    animator.start();
+                }
+            }
+        });
     }
 
     /**
@@ -429,7 +452,7 @@ public class CustomGoodsActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 mPopupWindow.dismiss();
-                Intent intent = new Intent(CustomGoodsActivity.this, OldCustomizeActivity.class);
+                Intent intent = new Intent(CustomGoodsActivity.this, NewCustomizeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());
@@ -441,8 +464,8 @@ public class CustomGoodsActivity extends BaseActivity {
                 }
 
                 bundle.putString("img_url", customBean.getData().getThumb());
-                bundle.putString("price", DisplayUtils.decimalFormat((float) customBean.getData().
-                        getPrice().get(position).getPrice()));
+                bundle.putString("price", DisplayUtils.decimalFormat((float) customBean.getData()
+                        .getPrice().get(position).getPrice()));
                 bundle.putString("price_type", customBean.getData().getPrice().get(position).getId() + "");
                 bundle.putInt("classify_id", customBean.getData().getClassify_id());
                 bundle.putString("log_id", customBean.getId());
@@ -463,7 +486,8 @@ public class CustomGoodsActivity extends BaseActivity {
 
 
     @OnClick({R.id.tv_goods_tailor, R.id.img_tailor_back, R.id.img_add_like, R.id.img_tailor_consult,
-            R.id.img_tailor_share, R.id.tv_custom_goods, R.id.tv_all_evaluate,R.id.img_load_error})
+            R.id.img_tailor_share, R.id.tv_custom_goods, R.id.tv_all_evaluate, R.id.img_load_error,
+            R.id.view_goods_tip})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goods_tailor:
@@ -539,6 +563,21 @@ public class CustomGoodsActivity extends BaseActivity {
                 break;
             case R.id.img_load_error:
                 initData();
+                break;
+            case R.id.view_goods_tip:
+                if (isShow) {
+                    ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(cardGoods,
+                            "translationY", 0, 400);
+                    hideAnimator.setDuration(300);
+                    hideAnimator.start();
+                    isShow = false;
+                } else {
+                    ObjectAnimator showAnimator = ObjectAnimator.ofFloat(cardGoods,
+                            "translationY", 400, 0);
+                    showAnimator.setDuration(300);
+                    showAnimator.start();
+                    isShow = true;
+                }
                 break;
         }
     }
@@ -692,14 +731,14 @@ public class CustomGoodsActivity extends BaseActivity {
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            String msg = jsonObject.getString("msg");
-                            switch (msg) {
-                                case "成功":
+                            int code = jsonObject.getInt("code");
+                            switch (code) {
+                                case 1:
                                     MobclickAgent.onEvent(CustomGoodsActivity.this, "collection");
                                     imgAddLike.setImageResource(R.mipmap.icon_add_like);
                                     ToastUtils.showToast(CustomGoodsActivity.this, "收藏成功");
                                     break;
-                                case "取消成功":
+                                case 2:
                                     imgAddLike.setImageResource(R.mipmap.icon_cancel_like);
                                     ToastUtils.showToast(CustomGoodsActivity.this, "已取消收藏");
                                     break;
