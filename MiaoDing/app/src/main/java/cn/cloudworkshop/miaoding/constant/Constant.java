@@ -7,6 +7,7 @@ package cn.cloudworkshop.miaoding.constant;
  */
 public class Constant {
     //        public static final String HOST = "http://139.196.113.61";
+//    public static final String HOST = "http://101.132.194.67";
     public static final String HOST = "http://www.cloudworkshop.cn";
 //    public static final String HOST = "http://192.168.1.156";
 
@@ -21,7 +22,7 @@ public class Constant {
     public static final String DESIGNER_WORKS = HOST_INDEX + "cobbler";
     public static final String NEW_DESIGNER_WORKS = HOST_INDEX + "cobbler_goods_list";
     public static final String GOODS_DETAILS = HOST_INDEX + "new_goods_detail";
-    public static final String TAILOR_INFO = "http://139.196.113.61" + INDEX + "customize";
+    public static final String CUSTOMIZE = "http://139.196.113.61" + INDEX + "customize";
     public static final String NEW_CUSTOMIZE = HOST_INDEX + "new_customize";
     public static final String VERIFICATION_CODE = HOST + "/index.php/index/login/send_sms";
     public static final String LOGIN = HOST + "/index.php/index/login/do_login";

@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -110,6 +111,7 @@ public class AboutUsActivity extends BaseActivity {
 
     /**
      * 下载文件
+     *
      */
     private void downloadFile() {
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);

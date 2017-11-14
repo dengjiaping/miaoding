@@ -100,7 +100,7 @@ public class MessageDetailActivity extends BaseActivity {
      */
     private void initView(int layoutId) {
         rvMessage.setLayoutManager(new LinearLayoutManager(this));
-        final CommonAdapter<MsgDetailBean.DataBean> adapter = new CommonAdapter<MsgDetailBean.DataBean>(this, layoutId, msgList) {
+        CommonAdapter<MsgDetailBean.DataBean> adapter = new CommonAdapter<MsgDetailBean.DataBean>(this, layoutId, msgList) {
             @Override
             protected void convert(ViewHolder holder, MsgDetailBean.DataBean dataBean, int position) {
                 switch (type) {

@@ -3,7 +3,6 @@ package cn.cloudworkshop.miaoding.ui;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
@@ -39,9 +38,7 @@ import cn.cloudworkshop.miaoding.bean.TailorBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
-import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -117,9 +114,9 @@ public class NewCustomizeActivity extends BaseActivity {
     private long enterTime;
 
     //当前部件位置
-    private int index;
-    //当前子部件
-    private int itemIndex;
+    private int currentPart;
+    //当前子部件位置
+    private int currentItem;
     //是否选择法式袖扣
     private String buttonName;
     //首次选择
@@ -199,7 +196,7 @@ public class NewCustomizeActivity extends BaseActivity {
                     });
         }
         OkHttpUtils.get()
-                .url(Constant.TAILOR_INFO)
+                .url(Constant.CUSTOMIZE)
                 .addParams("goods_id", id)
                 .addParams("phone_type", "3")
                 .addParams("price_type", priceType)
@@ -386,10 +383,10 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 //选择正反面
-                ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list().get(position)
-                        .getPosition_id() - 1)).setChecked(true);
+                ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list()
+                        .get(position).getPosition_id() - 1)).setChecked(true);
                 tvHeaderTitle.setText(dataBean.getSpec_list().get(position).getSpec_name());
-                index = position;
+                currentPart = position;
 
                 imgLargeMaterial.setVisibility(View.GONE);
                 rvTailorButton.setVisibility(View.GONE);
@@ -444,8 +441,8 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (!isLongPress) {
-                    itemIndex = position;
-                    if (firstSelect && index != 0) {
+                    currentItem = position;
+                    if (firstSelect && currentPart != 0) {
                         for (int i = 0; i < rlPositiveTailor.getChildCount(); i++) {
                             ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
                             positiveImg.setImageDrawable(null);
@@ -465,31 +462,31 @@ public class NewCustomizeActivity extends BaseActivity {
 
                     imgReset.setVisibility(View.VISIBLE);
 
-                    itemArray.put(index, itemList.get(position).getId());
+                    itemArray.put(currentPart, itemList.get(position).getId());
 
 
-                    CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(index)
+                    CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(currentPart)
                             .itemView.findViewById(R.id.img_tailor_item);
                     Glide.with(NewCustomizeActivity.this)
                             .load(Constant.HOST + itemList.get(position).getImg_a())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img);
 
-                    View itemBg = rvTailor.findViewHolderForAdapterPosition(index).itemView
+                    View itemBg = rvTailor.findViewHolderForAdapterPosition(currentPart).itemView
                             .findViewById(R.id.view_tailor_item);
                     itemBg.setVisibility(View.VISIBLE);
 
-                    if (dataBean.getSpec_list().get(index).getSpec_name().equals("面料")) {
+                    if (dataBean.getSpec_list().get(currentPart).getSpec_name().equals("面料")) {
                         default_img = itemList.get(position).getMianliao_img();
                     }
 
                     //选择正反面
-                    ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list().get(index)
+                    ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list().get(currentPart)
                             .getPosition_id() - 1)).setChecked(true);
 
-                    switch (dataBean.getSpec_list().get(index).getPosition_id()) {
+                    switch (dataBean.getSpec_list().get(currentPart).getPosition_id()) {
                         case 1:
-                            ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(index);
+                            ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
                                     .load(Constant.HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
@@ -502,7 +499,7 @@ public class NewCustomizeActivity extends BaseActivity {
 
                             break;
                         case 2:
-                            ImageView backImg = (ImageView) rlBackTailor.getChildAt(index);
+                            ImageView backImg = (ImageView) rlBackTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
                                     .load(Constant.HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
@@ -527,7 +524,7 @@ public class NewCustomizeActivity extends BaseActivity {
 
                             break;
                         case 3:
-                            ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(index);
+                            ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
                                     .load(Constant.HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
@@ -595,10 +592,10 @@ public class NewCustomizeActivity extends BaseActivity {
 
         itemList.clear();
 
-        for (int j = 0; j < dataBean.getSpec_list().get(index).getList().size(); j++) {
-            if (!noMatchIds.contains(String.valueOf(dataBean.getSpec_list().get(index)
+        for (int j = 0; j < dataBean.getSpec_list().get(currentPart).getList().size(); j++) {
+            if (!noMatchIds.contains(String.valueOf(dataBean.getSpec_list().get(currentPart)
                     .getList().get(j).getId()))) {
-                itemList.add(dataBean.getSpec_list().get(index).getList().get(j));
+                itemList.add(dataBean.getSpec_list().get(currentPart).getList().get(j));
             }
         }
 
@@ -636,7 +633,7 @@ public class NewCustomizeActivity extends BaseActivity {
                 selectButton();
                 break;
             case R.id.img_tailor_reset:
-                resetTailor();
+                reselect();
                 break;
             case R.id.img_tailor_guide:
                 imgGuide.setVisibility(View.GONE);
@@ -651,7 +648,7 @@ public class NewCustomizeActivity extends BaseActivity {
     /**
      * 重置
      */
-    private void resetTailor() {
+    private void reselect() {
 
         itemArray.clear();
         itemList.clear();
@@ -762,7 +759,7 @@ public class NewCustomizeActivity extends BaseActivity {
                 LinearLayoutManager.HORIZONTAL, false));
         CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean> buttonAdapter = new
                 CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this,
-                        R.layout.listitem_custom_parts, itemList.get(itemIndex).getChild_list()) {
+                        R.layout.listitem_custom_parts, itemList.get(currentItem).getChild_list()) {
                     @Override
                     protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean
                             .ListBean.ChildBean childBean, int position) {
@@ -789,8 +786,8 @@ public class NewCustomizeActivity extends BaseActivity {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                 if (!isLongPress) {
-                    tvHeaderTitle.setText(itemList.get(itemIndex).getChild_list().get(position).getName());
-                    buttonName = itemList.get(itemIndex).getChild_list().get(position).getName();
+                    tvHeaderTitle.setText(itemList.get(currentItem).getChild_list().get(position).getName());
+                    buttonName = itemList.get(currentItem).getChild_list().get(position).getName();
                 } else {
                     isLongPress = false;
                     if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
@@ -804,7 +801,7 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.HOST + itemList.get(itemIndex).getChild_list()
+                        .load(Constant.HOST + itemList.get(currentItem).getChild_list()
                                 .get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgLargeMaterial);

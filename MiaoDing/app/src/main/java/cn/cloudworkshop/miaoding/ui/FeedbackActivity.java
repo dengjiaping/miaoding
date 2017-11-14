@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -83,10 +82,9 @@ public class FeedbackActivity extends BaseActivity {
     @BindView(R.id.view_loading)
     AVLoadingIndicatorView loadingView;
 
-    //字数限制
-    private int num = 300;
+
     private CommonAdapter adapter;
-    private ArrayList<String> selectedPhotos = new ArrayList<>();
+    private ArrayList<String> photoList = new ArrayList<>();
     private String imgEncode;
 
 
@@ -186,8 +184,8 @@ public class FeedbackActivity extends BaseActivity {
     Runnable myRunnable = new Runnable() {
         @Override
         public void run() {
-            if (selectedPhotos.size() != 0) {
-                imgEncode = ImageEncodeUtils.encodeFile(selectedPhotos);
+            if (photoList.size() != 0) {
+                imgEncode = ImageEncodeUtils.encodeFile(photoList);
                 handler.sendEmptyMessage(1);
             } else {
                 handler.sendEmptyMessage(2);
@@ -237,11 +235,10 @@ public class FeedbackActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int number = num - editable.length();
-                tvCurrentCount.setText(num - number + "/" + num);
+                tvCurrentCount.setText(editable.length() + "/" + 300);
                 selectionStart = etFeedBack.getSelectionStart();
                 selectionEnd = etFeedBack.getSelectionEnd();
-                if (temp.length() > num) {
+                if (temp.length() > 300) {
                     editable.delete(selectionStart - 1, selectionEnd);
                     int tempSelection = selectionEnd;
                     etFeedBack.setText(editable);
@@ -254,7 +251,7 @@ public class FeedbackActivity extends BaseActivity {
         rvFeedBack.setLayoutManager(new LinearLayoutManager(FeedbackActivity.this,
                 LinearLayoutManager.HORIZONTAL, false));
         adapter = new CommonAdapter<String>(FeedbackActivity.this,
-                R.layout.listitem_picker_photo, selectedPhotos) {
+                R.layout.listitem_picker_photo, photoList) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
 
@@ -280,7 +277,7 @@ public class FeedbackActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 PhotoPreview.builder()
-                        .setPhotos(selectedPhotos)
+                        .setPhotos(photoList)
                         .setCurrentItem(position)
                         .start(FeedbackActivity.this);
             }
@@ -301,7 +298,7 @@ public class FeedbackActivity extends BaseActivity {
                 PhotoPicker.builder()
                         .setPhotoCount(4)
                         .setShowCamera(true)
-                        .setSelected(selectedPhotos)
+                        .setSelected(photoList)
                         .start(this);
                 break;
             case R.id.tv_submit_feed_back:
@@ -324,10 +321,10 @@ public class FeedbackActivity extends BaseActivity {
             if (data != null) {
                 photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
-            selectedPhotos.clear();
+            photoList.clear();
 
             if (photos != null) {
-                selectedPhotos.addAll(photos);
+                photoList.addAll(photos);
                 adapter.notifyDataSetChanged();
             }
 

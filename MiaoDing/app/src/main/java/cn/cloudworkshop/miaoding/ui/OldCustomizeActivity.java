@@ -1,14 +1,11 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,9 +41,7 @@ import cn.cloudworkshop.miaoding.bean.TailorBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
-import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
@@ -217,7 +212,7 @@ public class OldCustomizeActivity extends BaseActivity {
                     });
         }
         OkHttpUtils.get()
-                .url(Constant.TAILOR_INFO)
+                .url(Constant.CUSTOMIZE)
                 .addParams("goods_id", id)
                 .addParams("phone_type", "3")
                 .addParams("price_type", priceType)

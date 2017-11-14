@@ -1,5 +1,6 @@
 package cn.cloudworkshop.miaoding.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,20 +73,44 @@ public class LoginActivity extends BaseActivity {
     private boolean isCode;
     private String logId;
 
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            if (msg.what == 1) {
-                tvVerificationCode.setText("重发(" + msg.arg1 + ")");
-                tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
-            } else if (msg.what == 2) {
-                tvVerificationCode.setText("获取验证码");
-                tvVerificationCode.setClickable(true);
-                tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
-            }
-            return false;
+    private MyHandler mHandler = new MyHandler(this);
+
+//    Handler handler = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            if (msg.what == 1) {
+//                tvVerificationCode.setText("重发(" + msg.arg1 + ")");
+//                tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
+//            } else if (msg.what == 2) {
+//                tvVerificationCode.setText("获取验证码");
+//                tvVerificationCode.setClickable(true);
+//                tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
+//            }
+//            return false;
+//        }
+//    });
+
+    private static class MyHandler extends Handler {
+        private WeakReference<LoginActivity> mActivity;
+        private MyHandler(LoginActivity activity) {
+            mActivity = new WeakReference<>(activity);
         }
-    });
+        @Override
+        public void handleMessage(Message msg) {
+            LoginActivity activity = mActivity.get();
+            if (activity != null){
+                if (msg.what == 1) {
+                    activity.tvVerificationCode.setText("重发(" + msg.arg1 + ")");
+                    activity.tvVerificationCode.setBackgroundResource(R.drawable.bound_c7_15dp);
+                } else if (msg.what == 2) {
+                    activity.tvVerificationCode.setText("获取验证码");
+                    activity.tvVerificationCode.setClickable(true);
+                    activity.tvVerificationCode.setBackgroundResource(R.drawable.bound_3d_15dp);
+                }
+            }
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +140,6 @@ public class LoginActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response, int id) {
-
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 logId = jsonObject.getString("id");
@@ -324,32 +349,30 @@ public class LoginActivity extends BaseActivity {
         if (PhoneNumberUtils.judgePhoneNumber(etUserName.getText().toString().trim())) {
             sendPhoneNumber();
             tvVerificationCode.setClickable(false);
-            new Thread(myRunnable).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 30; i > 0; i--) {
+                        if (i <= 0) {
+                            break;
+                        }
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.arg1 = i;
+                        mHandler.sendMessage(msg);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mHandler.sendEmptyMessage(2);
+                }
+            }).start();
         } else {
             ToastUtils.showToast(this, "手机号输入有误，请重新输入");
         }
     }
-
-    Runnable myRunnable = new Runnable() {
-        @Override
-        public void run() {
-            for (int i = 30; i > 0; i--) {
-                if (i <= 0) {
-                    break;
-                }
-                Message msg = new Message();
-                msg.what = 1;
-                msg.arg1 = i;
-                handler.sendMessage(msg);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            handler.sendEmptyMessage(2);
-        }
-    };
 
 
     /**
@@ -405,7 +428,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        handler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
 

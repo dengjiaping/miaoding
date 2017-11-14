@@ -340,7 +340,7 @@ public class CustomGoodsActivity extends BaseActivity {
         llNoEvaluate.setVisibility(View.GONE);
 
 
-        //详情页图片尺寸超过手机支持最大尺寸
+        //详情页图片尺寸超过部分手机支持最大尺寸
         //分割图片显示
 
         OkHttpUtils.get()
@@ -385,22 +385,22 @@ public class CustomGoodsActivity extends BaseActivity {
                 });
 
 
-        ViewGroup.LayoutParams layoutParams = llGoodsTip.getLayoutParams();
-
-        layoutParams.height = DisplayUtils.getMetrics(this).heightPixels;
-        llGoodsTip.setLayoutParams(layoutParams);
-        tvGoodsTip.setText(customBean.getData().getContent());
-
-        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
-            @Override
-            public void getCurrentPage(int page) {
-                if (page == 1) {
-                    ObjectAnimator animator = ObjectAnimator.ofFloat(cardGoods, "translationX", 150, 0);
-                    animator.setDuration(350);
-                    animator.start();
-                }
-            }
-        });
+//        ViewGroup.LayoutParams layoutParams = llGoodsTip.getLayoutParams();
+//
+//        layoutParams.height = DisplayUtils.getMetrics(this).heightPixels;
+//        llGoodsTip.setLayoutParams(layoutParams);
+//        tvGoodsTip.setText(customBean.getData().getContent());
+//
+//        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
+//            @Override
+//            public void getCurrentPage(int page) {
+//                if (page == 1) {
+//                    ObjectAnimator animator = ObjectAnimator.ofFloat(cardGoods, "translationX", 150, 0);
+//                    animator.setDuration(350);
+//                    animator.start();
+//                }
+//            }
+//        });
     }
 
     /**

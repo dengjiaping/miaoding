@@ -80,10 +80,12 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
     private boolean mInitialized = false;
     private float mLastX = 0;
     private float mLastY = 0;
+
     private float mLastZ = 0;
 
     //照片保存路径
     private String[] photoArray = new String[4];
+
     //背景图片
     private int[] positionArray = {R.mipmap.positive, R.mipmap.left, R.mipmap.back, R.mipmap.right};
     //拍照次数

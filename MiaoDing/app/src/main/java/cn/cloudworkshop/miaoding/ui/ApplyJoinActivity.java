@@ -237,7 +237,14 @@ public class ApplyJoinActivity extends BaseActivity {
         } else {
             loadingView.smoothToShow();
             tvSubmitApply.setEnabled(false);
-            new Thread(myRunnable).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    imgList1 = ImageEncodeUtils.encodeFile(selectedPhotos1);
+                    imgList2 = ImageEncodeUtils.encodeFile(selectedPhotos2);
+                    handler.sendEmptyMessage(1);
+                }
+            }).start();
 
         }
     }
@@ -275,18 +282,6 @@ public class ApplyJoinActivity extends BaseActivity {
         }
     }
 
-
-    /**
-     * 开启线程处理图片
-     */
-    Runnable myRunnable = new Runnable() {
-        @Override
-        public void run() {
-            imgList1 = ImageEncodeUtils.encodeFile(selectedPhotos1);
-            imgList2 = ImageEncodeUtils.encodeFile(selectedPhotos2);
-            handler.sendEmptyMessage(1);
-        }
-    };
 
     @Override
     protected void onDestroy() {
