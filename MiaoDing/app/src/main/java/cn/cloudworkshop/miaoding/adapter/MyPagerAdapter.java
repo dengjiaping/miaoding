@@ -1,36 +1,24 @@
 package cn.cloudworkshop.miaoding.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.CardView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
 import cn.cloudworkshop.miaoding.R;
-import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.bean.PopDesignerBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.jazzyviewpager.JazzyViewPager;
-import cn.cloudworkshop.miaoding.ui.DesignerDetailActivity;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
-import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 
 /**
@@ -77,10 +65,10 @@ public class MyPagerAdapter extends PagerAdapter {
 
         imgDesigner.setHierarchy(hierarchy);
         imgDesigner.setAspectRatio(1.0646f);
-        imgDesigner.setImageURI(Uri.parse(Constant.HOST + designerList.get(position).getAvatar()));
+        imgDesigner.setImageURI(Uri.parse(Constant.IMG_HOST + designerList.get(position).getAvatar()));
 
         Glide.with(context)
-                .load(Constant.HOST + designerList.get(position).getIcon())
+                .load(Constant.IMG_HOST + designerList.get(position).getIcon())
                 .placeholder(R.mipmap.place_banner)
                 .dontAnimate()
                 .into(imgTag);

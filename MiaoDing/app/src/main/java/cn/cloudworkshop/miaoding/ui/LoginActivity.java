@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -158,7 +157,7 @@ public class LoginActivity extends BaseActivity {
     private void initView() {
         if (MyApplication.loginBg != null) {
             Glide.with(this)
-                    .load(Constant.HOST + MyApplication.loginBg)
+                    .load(Constant.IMG_HOST + MyApplication.loginBg)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(bgLogin);
         }
@@ -292,10 +291,8 @@ public class LoginActivity extends BaseActivity {
                                     int uid = jsonObject1.getInt("uid");
                                     SharedPreferencesUtils.saveStr(LoginActivity.this, "uid", String.valueOf(uid));
                                     SharedPreferencesUtils.saveStr(LoginActivity.this, "token", loginToken);
-
-                                    getUserInfo();
                                     MobclickAgent.onEvent(LoginActivity.this, "log_in");
-                                    finish();
+                                    getUserInfo();
                                 }
                                 ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
 
@@ -334,6 +331,7 @@ public class LoginActivity extends BaseActivity {
                                     jsonObject1.getString("name"));
                             SharedPreferencesUtils.saveStr(LoginActivity.this, "phone",
                                     jsonObject1.getString("phone"));
+                            finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

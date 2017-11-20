@@ -135,7 +135,7 @@ public class CustomGoodsFragment1 extends BaseFragment {
                             treeMap.clear();
                             loadingView.smoothToShow();
                             for (int i = 0; i < listBean.getData().getData().size(); i++) {
-                                initBitmap(Constant.HOST + listBean.getData().getData().get(i).getThumb(), i);
+                                initBitmap(Constant.IMG_HOST + listBean.getData().getData().get(i).getThumb(), i);
                             }
                         } else {
                             imgGoodsType.setEnabled(true);

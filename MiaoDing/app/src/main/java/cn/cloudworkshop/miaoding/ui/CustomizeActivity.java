@@ -371,7 +371,7 @@ public class CustomizeActivity extends BaseActivity {
                             case 1:
                                 ImageView imgPositive = (ImageView) rlClothPositive.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -381,7 +381,7 @@ public class CustomizeActivity extends BaseActivity {
                             case 2:
                                 ImageView imgBack = (ImageView) rlClothBack.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -391,7 +391,7 @@ public class CustomizeActivity extends BaseActivity {
                             case 3:
                                 ImageView imgInSide = (ImageView) rlClothInside.getChildAt(i);
                                 Glide.with(CustomizeActivity.this)
-                                        .load(Constant.HOST + customizeBean.getData().getBanxin()
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
                                                 .get(currentType).getPeijian().get(i).getSpec_list()
                                                 .get(j).getImg_c())
                                         .fitCenter()
@@ -426,7 +426,7 @@ public class CustomizeActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, CustomizeBean.DataBean.MianliaoBean
                                 mianliaoBean, int position) {
                             Glide.with(CustomizeActivity.this)
-                                    .load(Constant.HOST + mianliaoBean.getImg_a())
+                                    .load(Constant.IMG_HOST + mianliaoBean.getImg_a())
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into((ImageView) holder.getView(R.id.img_tailor_item));
                             if (currentFabric == position) {
@@ -459,7 +459,7 @@ public class CustomizeActivity extends BaseActivity {
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                     Glide.with(CustomizeActivity.this)
-                            .load(Constant.HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
+                            .load(Constant.IMG_HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
                             .into(imgClothLarge);
@@ -514,7 +514,7 @@ public class CustomizeActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, CustomizeBean.DataBean.BanxinBean
                                 banxinBean, int position) {
                             Glide.with(CustomizeActivity.this)
-                                    .load(Constant.HOST + banxinBean.getImg_a())
+                                    .load(Constant.IMG_HOST + banxinBean.getImg_a())
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into((ImageView) holder.getView(R.id.img_tailor_item));
                             if (currentType == position) {
@@ -545,7 +545,7 @@ public class CustomizeActivity extends BaseActivity {
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                     Glide.with(CustomizeActivity.this)
-                            .load(Constant.HOST + customizeBean.getData().getBanxin().get(position).getImg_b())
+                            .load(Constant.IMG_HOST + customizeBean.getData().getBanxin().get(position).getImg_b())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .fitCenter()
                             .into(imgClothLarge);
@@ -580,7 +580,7 @@ public class CustomizeActivity extends BaseActivity {
                                 .PeijianBean peijianBean, int position) {
 
                             Glide.with(CustomizeActivity.this)
-                                    .load(Constant.HOST + peijianBean.getSpec_list().get(itemArray
+                                    .load(Constant.IMG_HOST + peijianBean.getSpec_list().get(itemArray
                                             .get(position)).getImg_a())
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into((ImageView) holder.getView(R.id.img_tailor_item));
@@ -673,7 +673,7 @@ public class CustomizeActivity extends BaseActivity {
                     .BanxinBean.PeijianBean.SpecListBean specListBean, int position) {
 
                 Glide.with(CustomizeActivity.this)
-                        .load(Constant.HOST + specListBean.getImg_a())
+                        .load(Constant.IMG_HOST + specListBean.getImg_a())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
 
@@ -705,7 +705,7 @@ public class CustomizeActivity extends BaseActivity {
 
 
                 Glide.with(CustomizeActivity.this)
-                        .load(Constant.HOST + itemList.get(position).getImg_a())
+                        .load(Constant.IMG_HOST + itemList.get(position).getImg_a())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgItem);
 
@@ -744,7 +744,7 @@ public class CustomizeActivity extends BaseActivity {
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
 
                 Glide.with(CustomizeActivity.this)
-                        .load(Constant.HOST + itemList.get(position).getImg_b())
+                        .load(Constant.IMG_HOST + itemList.get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .fitCenter()
                         .into(imgClothLarge);
@@ -766,7 +766,7 @@ public class CustomizeActivity extends BaseActivity {
     private void switchParts(RelativeLayout rl, String imgUrl) {
         ImageView imageView = (ImageView) rl.getChildAt(currentParts);
         Glide.with(CustomizeActivity.this)
-                .load(Constant.HOST + imgUrl)
+                .load(Constant.IMG_HOST + imgUrl)
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);

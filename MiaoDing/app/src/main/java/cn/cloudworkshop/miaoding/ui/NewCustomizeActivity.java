@@ -188,7 +188,7 @@ public class NewCustomizeActivity extends BaseActivity {
                                     .getImg_urls().size() > 0) {
                                 imgGuide.setVisibility(View.VISIBLE);
                                 Glide.with(NewCustomizeActivity.this)
-                                        .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
+                                        .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(0))
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(imgGuide);
                             }
@@ -244,14 +244,14 @@ public class NewCustomizeActivity extends BaseActivity {
             switch (dataBean.getSpec_list().get(i).getPosition_id()) {
                 case 1:
                     Glide.with(getApplicationContext())
-                            .load(Constant.HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
+                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img1);
                     break;
                 case 2:
                     Glide.with(getApplicationContext())
-                            .load(Constant.HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
+                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img2);
@@ -259,7 +259,7 @@ public class NewCustomizeActivity extends BaseActivity {
                 case 3:
                     rgsSelectOrientation.getChildAt(2).setVisibility(View.VISIBLE);
                     Glide.with(getApplicationContext())
-                            .load(Constant.HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
+                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img3);
@@ -372,7 +372,7 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean specListBean, int position) {
                 Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.HOST + specListBean.getImg())
+                        .load(Constant.IMG_HOST + specListBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_tailor_item));
             }
@@ -409,7 +409,7 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean.ListBean listBean, int position) {
                 Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.HOST + listBean.getImg_a())
+                        .load(Constant.IMG_HOST + listBean.getImg_a())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((CircleImageView) holder.getView(R.id.img_tailor_item));
             }
@@ -419,7 +419,7 @@ public class NewCustomizeActivity extends BaseActivity {
         if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null) {
             imgGuide.setVisibility(View.VISIBLE);
             Glide.with(NewCustomizeActivity.this)
-                    .load(Constant.HOST + guideBean.getData().getImg_urls().get(1))
+                    .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(1))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgGuide);
             isFirstEntry = false;
@@ -468,7 +468,7 @@ public class NewCustomizeActivity extends BaseActivity {
                     CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(currentPart)
                             .itemView.findViewById(R.id.img_tailor_item);
                     Glide.with(NewCustomizeActivity.this)
-                            .load(Constant.HOST + itemList.get(position).getImg_a())
+                            .load(Constant.IMG_HOST + itemList.get(position).getImg_a())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img);
 
@@ -488,7 +488,7 @@ public class NewCustomizeActivity extends BaseActivity {
                         case 1:
                             ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.HOST + itemList.get(position).getImg_c())
+                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into(positiveImg);
@@ -501,7 +501,7 @@ public class NewCustomizeActivity extends BaseActivity {
                         case 2:
                             ImageView backImg = (ImageView) rlBackTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.HOST + itemList.get(position).getImg_c())
+                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into(backImg);
@@ -526,7 +526,7 @@ public class NewCustomizeActivity extends BaseActivity {
                         case 3:
                             ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(currentPart);
                             Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.HOST + itemList.get(position).getImg_c())
+                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
                                     .fitCenter()
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into(inSideImg);
@@ -555,7 +555,7 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.HOST + itemList.get(position).getImg_b())
+                        .load(Constant.IMG_HOST + itemList.get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgLargeMaterial);
                 isLongPress = true;
@@ -764,7 +764,7 @@ public class NewCustomizeActivity extends BaseActivity {
                     protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean
                             .ListBean.ChildBean childBean, int position) {
                         Glide.with(NewCustomizeActivity.this)
-                                .load(Constant.HOST + childBean.getImg_a())
+                                .load(Constant.IMG_HOST + childBean.getImg_a())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_tailor_item));
                     }
@@ -801,7 +801,7 @@ public class NewCustomizeActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.HOST + itemList.get(currentItem).getChild_list()
+                        .load(Constant.IMG_HOST + itemList.get(currentItem).getChild_list()
                                 .get(position).getImg_b())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgLargeMaterial);

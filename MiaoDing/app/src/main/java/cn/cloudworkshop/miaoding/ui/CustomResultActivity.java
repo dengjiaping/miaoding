@@ -131,7 +131,7 @@ public class CustomResultActivity extends BaseActivity {
                 for (int i = 0; i < customBean.getItemBean().size(); i++) {
                     ImageView img = new ImageView(this);
                     Glide.with(getApplicationContext())
-                            .load(Constant.HOST + customBean.getItemBean().get(i).getImg())
+                            .load(Constant.IMG_HOST + customBean.getItemBean().get(i).getImg())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(img);
@@ -251,7 +251,7 @@ public class CustomResultActivity extends BaseActivity {
                 imgDefaultItem.setVisibility(View.VISIBLE);
 
                 Glide.with(getApplicationContext())
-                        .load(Constant.HOST + customBean.getDefault_img())
+                        .load(Constant.IMG_HOST + customBean.getDefault_img())
                         .placeholder(R.mipmap.place_banner)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -418,9 +418,9 @@ public class CustomResultActivity extends BaseActivity {
         final ImageView imgGoods = new ImageView(this);
         String imgUrl;
         if (TextUtils.isEmpty(customBean.getDefault_img())) {
-            imgUrl = Constant.HOST + customBean.getImg_url();
+            imgUrl = Constant.IMG_HOST + customBean.getImg_url();
         } else {
-            imgUrl = Constant.HOST + customBean.getDefault_img();
+            imgUrl = Constant.IMG_HOST + customBean.getDefault_img();
         }
         Glide.with(this)
                 .load(imgUrl)

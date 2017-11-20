@@ -54,7 +54,6 @@ import cn.cloudworkshop.miaoding.utils.DateUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.MemoryCleanUtils;
 import cn.cloudworkshop.miaoding.utils.NetworkImageHolderView;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
@@ -197,6 +196,7 @@ public class CustomGoodsActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
+
                         imgLoadError.setVisibility(View.GONE);
                         customBean = GsonUtils.jsonToBean(response, CustomGoodsBean.class);
                         if (customBean.getData() != null) {
@@ -291,7 +291,7 @@ public class CustomGoodsActivity extends BaseActivity {
                 protected void convert(ViewHolder holder, CustomGoodsBean.DataBean.CollectUserBean
                         collectUserBean, int position) {
                     Glide.with(CustomGoodsActivity.this)
-                            .load(Constant.HOST + collectUserBean.getAvatar())
+                            .load(Constant.IMG_HOST + collectUserBean.getAvatar())
                             .centerCrop()
                             .into((ImageView) holder.getView(R.id.img_avatar_collect));
                 }
@@ -306,12 +306,12 @@ public class CustomGoodsActivity extends BaseActivity {
 //        if (customBean.getData().getComment_num() > 0) {
 //            tvCommentCount.setText("评价  （" + customBean.getData().getComment_num() + "）");
 //            Glide.with(getApplicationContext())
-//                    .load(Constant.HOST + customBean.getData().getNew_comment().getAvatar())
+//                    .load(Constant.IMG_HOST + customBean.getData().getNew_comment().getAvatar())
 //                    .centerCrop()
 //                    .into(imgUser);
 //            tvUserName.setText(customBean.getData().getNew_comment().getUser_name());
 //            Glide.with(getApplicationContext())
-//                    .load(Constant.HOST + customBean.getData().getNew_comment().getUser_grade().getImg2())
+//                    .load(Constant.IMG_HOST + customBean.getData().getNew_comment().getUser_grade().getImg2())
 //                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                    .into(imgUserGrade);
 //            tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", customBean.getData().getNew_comment().getC_time()));
@@ -324,7 +324,7 @@ public class CustomGoodsActivity extends BaseActivity {
 //                    @Override
 //                    protected void convert(ViewHolder holder, String s, int position) {
 //                        Glide.with(CustomGoodsActivity.this)
-//                                .load(Constant.HOST + s)
+//                                .load(Constant.IMG_HOST + s)
 //                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                                .centerCrop()
 //                                .into((ImageView) holder.getView(R.id.img_user_comment));
@@ -344,7 +344,7 @@ public class CustomGoodsActivity extends BaseActivity {
         //分割图片显示
 
         OkHttpUtils.get()
-                .url(Constant.HOST + customBean.getData().getContent2())
+                .url(Constant.IMG_HOST + customBean.getData().getContent2())
                 .build()
                 .execute(new BitmapCallback() {
                     @Override
@@ -385,22 +385,22 @@ public class CustomGoodsActivity extends BaseActivity {
                 });
 
 
-//        ViewGroup.LayoutParams layoutParams = llGoodsTip.getLayoutParams();
-//
-//        layoutParams.height = DisplayUtils.getMetrics(this).heightPixels;
-//        llGoodsTip.setLayoutParams(layoutParams);
-//        tvGoodsTip.setText(customBean.getData().getContent());
-//
-//        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
-//            @Override
-//            public void getCurrentPage(int page) {
-//                if (page == 1) {
-//                    ObjectAnimator animator = ObjectAnimator.ofFloat(cardGoods, "translationX", 150, 0);
-//                    animator.setDuration(350);
-//                    animator.start();
-//                }
-//            }
-//        });
+        ViewGroup.LayoutParams layoutParams = llGoodsTip.getLayoutParams();
+
+        layoutParams.height = DisplayUtils.getMetrics(this).heightPixels;
+        llGoodsTip.setLayoutParams(layoutParams);
+        tvGoodsTip.setText(customBean.getData().getContent());
+
+        scrollContainer.getCurrentView(new ScrollViewContainer.CurrentPageListener() {
+            @Override
+            public void getCurrentPage(int page) {
+                if (page == 1) {
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(cardGoods, "translationX", 150, 0);
+                    animator.setDuration(350);
+                    animator.start();
+                }
+            }
+        });
     }
 
     /**
@@ -549,7 +549,7 @@ public class CustomGoodsActivity extends BaseActivity {
                     if (market_id != null) {
                         share_url += "&market_id=" + market_id;
                     }
-                    ShareUtils.showShare(this, Constant.HOST + customBean.getData().getThumb(),
+                    ShareUtils.showShare(this, Constant.IMG_HOST + customBean.getData().getThumb(),
                             customBean.getData().getName(), customBean.getData().getContent(),
                             share_url + "&type=1");
                 }

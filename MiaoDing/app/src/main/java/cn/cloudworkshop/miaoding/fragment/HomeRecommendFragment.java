@@ -111,7 +111,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                                 for (int j = 0; j < homepageBean.getData().get(i).size(); j++) {
 
                                     HomepageNewsBean.DataBean dataBean = homepageBean.getData().get(i).get(j);
-                                    dataBean.setImg(Constant.HOST + dataBean.getImg());
+                                    dataBean.setImg(Constant.IMG_HOST + dataBean.getImg());
                                     dataBean.setLink(Constant.HOMEPAGE_INFO + "?content=1&id=" + dataBean.getId());
                                     dataList.add(dataBean);
                                 }
@@ -265,13 +265,13 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                         //咨询页webview
                         case 1:
                             Intent intent = new Intent(getParentFragment().getActivity(), HomepageInfoActivity.class);
-                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                             intent.putExtra("content", "");
-                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("img_url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getImg());
-                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("share_url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getShare_link());
                             startActivity(intent);
                             break;
@@ -310,7 +310,7 @@ public class HomeRecommendFragment extends BaseFragment implements SectionedRVAd
                     tvName.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
                     tvName.setText(designerListBean.getName());
                     holder.setText(R.id.tv_info_designer, designerListBean.getTag());
-                    imageView.setImageURI(Constant.HOST + designerListBean.getAvatar());
+                    imageView.setImageURI(Constant.IMG_HOST + designerListBean.getAvatar());
                 }
             };
             recyclerView.setAdapter(adapter);

@@ -187,7 +187,7 @@ public class MyOrderFragment extends BaseFragment {
 
                 if (dataBean.getList() != null && dataBean.getList().size() > 0) {
                     Glide.with(getActivity())
-                            .load(Constant.HOST + dataBean.getList().get(0).getGoods_thumb())
+                            .load(Constant.IMG_HOST + dataBean.getList().get(0).getGoods_thumb())
                             .placeholder(R.mipmap.place_goods)
                             .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)

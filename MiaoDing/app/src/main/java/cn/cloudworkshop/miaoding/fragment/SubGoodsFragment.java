@@ -1,7 +1,6 @@
 package cn.cloudworkshop.miaoding.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,11 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -133,7 +129,7 @@ public class SubGoodsFragment extends BaseFragment {
                 float px = DisplayUtils.dp2px(getParentFragment().getActivity(), 3);
                 hierarchy.setRoundingParams(hierarchy.getRoundingParams().setCornersRadii(px,px,0,0));
                 imgGoods.setHierarchy(hierarchy);
-                imgGoods.setImageURI(Constant.HOST + itemDataBean.getThumb());
+                imgGoods.setImageURI(Constant.IMG_HOST + itemDataBean.getThumb());
                 holder.setText(R.id.tv_sub_title, itemDataBean.getName());
                 holder.setText(R.id.tv_sub_price, itemDataBean.getPrice());
                 holder.setText(R.id.tv_sub_content, itemDataBean.getSub_name());

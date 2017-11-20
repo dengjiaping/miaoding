@@ -26,8 +26,10 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +61,7 @@ import cn.cloudworkshop.miaoding.fragment.DesignerWorksFragment;
 import cn.cloudworkshop.miaoding.fragment.HomepageFragment;
 import cn.cloudworkshop.miaoding.fragment.MyCenterFragment;
 import cn.cloudworkshop.miaoding.service.DownloadService;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.FragmentTabUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
@@ -98,8 +102,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         ButterKnife.bind(this);
 
         storagePermiss();
-        initIcon();
-        checkUpdate();
+        checkUpdate1();
+
+//        initIcon();
+//        checkUpdate();
+
         isLogin();
         submitClientId();
 
@@ -202,6 +209,65 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     });
         }
     }
+
+
+    /**
+     * 检测更新
+     */
+    private void checkUpdate1() {
+            OkHttpUtils.get()
+                    .url(Constant.APP_INDEX)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            final AppIndexBean appIndexBean = GsonUtils.jsonToBean(response, AppIndexBean.class);
+                            MyApplication.serverPhone = appIndexBean.getData().getKf_tel();
+                            MyApplication.userAgreement = appIndexBean.getData().getUser_manual();
+                            MyApplication.cobbler_banner = appIndexBean.getData().getCobbler_banner();
+                            MyApplication.loginBg = appIndexBean.getData().getLogin_img();
+                            if (appIndexBean.getData().getVersion().getAndroid() != null &&
+                                    Integer.valueOf(appIndexBean.getData().getVersion().getAndroid()
+                                            .getVersion()) > getVersionCode()) {
+                                MyApplication.updateUrl = appIndexBean.getData().getDownload_url();
+                                MyApplication.updateContent = appIndexBean.getData().getVersion()
+                                        .getAndroid().getRemark();
+
+                                View popupView = getLayoutInflater().inflate(R.layout.ppw_check_update, null);
+                                final PopupWindow mPopupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                                if (!isFinishing()){
+                                    mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                                }
+
+                                DisplayUtils.setBackgroundAlpha(MainActivity.this, true);
+
+                                TextView tvContent = (TextView) popupView.findViewById(R.id.tv_update_content);
+                                final TextView tvUpdate = (TextView) popupView.findViewById(R.id.tv_confirm_update);
+
+                                tvContent.setText(appIndexBean.getData().getVersion().getAndroid().getRemark());
+
+                                tvUpdate.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        tvUpdate.setText("正在下载");
+                                        tvUpdate.setEnabled(false);
+                                        downloadFile(appIndexBean.getData().getDownload_url());
+                                    }
+                                });
+                            }else {
+                                initIcon();
+                            }
+                        }
+                    });
+
+    }
+
 
     /**
      * 检测更新
@@ -365,7 +431,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 ImageView imgRegister = (ImageView) popupView.findViewById(R.id.img_register);
 
                                 Glide.with(MainActivity.this)
-                                        .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
+                                        .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(0))
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(imgRegister);
                                 viewRegister.setOnClickListener(new View.OnClickListener() {

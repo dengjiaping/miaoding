@@ -141,7 +141,9 @@ public class AboutUsActivity extends BaseActivity {
         request.setDestinationUri(Uri.fromFile(file));
         service = new DownloadService(file);
         registerReceiver(service, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        manager.enqueue(request);
+        if (manager != null) {
+            manager.enqueue(request);
+        }
     }
 
     /**
@@ -155,10 +157,11 @@ public class AboutUsActivity extends BaseActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return pi.versionName;
+        return pi != null ? pi.versionName : null;
     }
 
     @Override
+
     protected void onDestroy() {
         if (service != null) {
             unregisterReceiver(service);

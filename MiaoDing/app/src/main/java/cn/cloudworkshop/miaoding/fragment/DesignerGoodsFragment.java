@@ -76,7 +76,7 @@ public class DesignerGoodsFragment extends BaseFragment {
 
 
                     SimpleDraweeView imgWorks = holder.getView(R.id.img_designer);
-                    imgWorks.setImageURI(Constant.HOST + goodsListBean.getThumb());
+                    imgWorks.setImageURI(Constant.IMG_HOST + goodsListBean.getThumb());
                     TextView tvTitle = holder.getView(R.id.tv_works_title);
                     tvTitle.setTypeface(DisplayUtils.setTextType(getActivity()));
                     tvTitle.setText(goodsListBean.getName());

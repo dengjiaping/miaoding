@@ -45,6 +45,7 @@ import cn.cloudworkshop.miaoding.utils.DataManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.ImageDisposeUtils;
 import cn.cloudworkshop.miaoding.utils.ImageEncodeUtils;
+import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.PermissionUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
@@ -134,7 +135,7 @@ public class SetUpActivity extends BaseActivity {
      */
     private void initView() {
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + userIcon)
+                .load(Constant.IMG_HOST + userIcon)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCircleIcon);
         tvSetName.setText(userName);
@@ -424,6 +425,7 @@ public class SetUpActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        LogUtils.log("error："+e.toString());
 
                     }
 
@@ -435,8 +437,8 @@ public class SetUpActivity extends BaseActivity {
                             setResult(1, intent);
                             finish();
                         }
-                        initData();
                         ToastUtils.showToast(SetUpActivity.this, "修改成功");
+                        initData();
 
                     }
                 });

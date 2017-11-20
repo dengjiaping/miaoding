@@ -107,7 +107,7 @@ public class GiftCardActivity extends BaseActivity {
             imgNullCard.setVisibility(View.GONE);
             svCardRule.setVisibility(View.VISIBLE);
             Glide.with(this)
-                    .load(Constant.HOST + cardBean.getInfo().getCard_rule())
+                    .load(Constant.IMG_HOST + cardBean.getInfo().getCard_rule())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgCardRule);
         } else {

@@ -85,7 +85,7 @@ public class OldDesignerFragment extends BaseFragment {
             @Override
             protected void convert(ViewHolder holder, PopDesignerBean.DataBean dataBean, int position) {
                 Glide.with(getParentFragment().getActivity())
-                        .load(Constant.HOST + dataBean.getAvatar())
+                        .load(Constant.IMG_HOST + dataBean.getAvatar())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_avatar_designer));
                 holder.setText(R.id.tv_nickname_designer, dataBean.getName());

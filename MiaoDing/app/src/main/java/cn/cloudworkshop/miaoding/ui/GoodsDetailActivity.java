@@ -61,7 +61,7 @@ public class GoodsDetailActivity extends SwipeBackActivity {
         //分割图片显示
 
         OkHttpUtils.get()
-                .url(Constant.HOST + imgUrl)
+                .url(Constant.IMG_HOST + imgUrl)
                 .build()
                 .execute(new BitmapCallback() {
                     @Override

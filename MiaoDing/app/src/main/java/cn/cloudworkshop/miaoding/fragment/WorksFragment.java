@@ -134,7 +134,7 @@ public class WorksFragment extends BaseFragment {
                         (DisplayUtils.dp2px(getParentFragment().getActivity(), 4)));
                 imgWorks.setHierarchy(hierarchy);
 
-                imgWorks.setImageURI(Constant.HOST + itemBean.getImg());
+                imgWorks.setImageURI(Constant.IMG_HOST + itemBean.getImg());
                 TextView tvTitle = holder.getView(R.id.tv_works_title);
                 tvTitle.setTypeface(DisplayUtils.setTextType(getParentFragment().getActivity()));
                 tvTitle.setText(itemBean.getName());

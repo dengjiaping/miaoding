@@ -66,7 +66,7 @@ public class GeTuiIntentService extends GTIntentService {
                 intent4.putExtra("url", Constant.HOMEPAGE_INFO + "?content=1&id=" + bean.getId());
                 intent4.putExtra("title", bean.getTitle());
                 intent4.putExtra("content", bean.getContent());
-                intent4.putExtra("img_url", Constant.HOST + bean.getImg_url());
+                intent4.putExtra("img_url", Constant.IMG_HOST + bean.getImg_url());
                 intent4.putExtra("share_url", Constant.HOMEPAGE_SHARE + "?content=1&id=" + bean.getId());
                 startActivity(intent4);
                 break;

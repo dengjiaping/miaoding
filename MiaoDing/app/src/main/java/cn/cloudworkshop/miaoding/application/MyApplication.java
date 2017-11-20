@@ -88,7 +88,7 @@ public class MyApplication extends Application {
         options.statusBarNotificationConfig = new StatusBarNotificationConfig();
         options.savePowerConfig = new SavePowerConfig();
         UICustomization uiCustomization = new UICustomization();
-        uiCustomization.rightAvatar = Constant.HOST + SharedPreferencesUtils.getStr(this, "avatar");
+        uiCustomization.rightAvatar = Constant.IMG_HOST + SharedPreferencesUtils.getStr(this, "avatar");
         options.uiCustomization = uiCustomization;
         return options;
     }

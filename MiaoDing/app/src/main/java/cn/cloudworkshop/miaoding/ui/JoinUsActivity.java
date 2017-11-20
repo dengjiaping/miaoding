@@ -1,11 +1,8 @@
 package cn.cloudworkshop.miaoding.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +20,6 @@ import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.JoinUsBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.utils.ToastUtils;
 import okhttp3.Call;
@@ -99,7 +95,7 @@ public class JoinUsActivity extends BaseActivity {
         isApply = joinUsBean.getData().getIs_apply();
         if (joinUsBean.getData().getImg_list() != null && joinUsBean.getData().getImg_list().size() > 0) {
             Glide.with(getApplicationContext())
-                    .load(Constant.HOST + joinUsBean.getData().getImg_list().get(0).getImg())
+                    .load(Constant.IMG_HOST + joinUsBean.getData().getImg_list().get(0).getImg())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgJoinUs);
         }

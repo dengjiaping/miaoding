@@ -167,7 +167,7 @@ public class WorksDetailActivity2 extends BaseActivity {
         //分割图片显示
 
         OkHttpUtils.get()
-                .url(Constant.HOST + worksBean.getData().getContent2())
+                .url(Constant.IMG_HOST + worksBean.getData().getContent2())
                 .build()
                 .execute(new BitmapCallback() {
                     @Override
@@ -242,7 +242,7 @@ public class WorksDetailActivity2 extends BaseActivity {
                 break;
             case R.id.img_works_share:
                 if (worksBean != null && worksBean.getData() != null) {
-                    ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
+                    ShareUtils.showShare(this, Constant.IMG_HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
@@ -294,7 +294,7 @@ public class WorksDetailActivity2 extends BaseActivity {
             tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
 
             Glide.with(getApplicationContext())
-                    .load(Constant.HOST + worksBean.getData().getThumb())
+                    .load(Constant.IMG_HOST + worksBean.getData().getThumb())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);
             tvPrice.setTypeface(DisplayUtils.setTextType(this));
@@ -361,7 +361,7 @@ public class WorksDetailActivity2 extends BaseActivity {
                         CircleImageView imgColor = holder.getView(R.id.img_works_color);
                         CircleImageView imgMask = holder.getView(R.id.img_works_mask);
                         Glide.with(WorksDetailActivity2.this)
-                                .load(Constant.HOST + positionBean.getColor_img())
+                                .load(Constant.IMG_HOST + positionBean.getColor_img())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(imgColor);
                         if (currentColor == position) {

@@ -133,12 +133,6 @@ public class ChangeOrderActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        LoadErrorUtils.showDialog(ChangeOrderActivity.this, new LoadErrorUtils.OnRefreshListener() {
-//                            @Override
-//                            public void onRefresh() {
-//                                initData();
-//                            }
-//                        });
                         imgLoadingError.setVisibility(View.VISIBLE);
                     }
 
@@ -178,7 +172,7 @@ public class ChangeOrderActivity extends BaseActivity {
                                    final int position) {
                 holder.setChecked(R.id.checkbox_goods_select, false);
                 Glide.with(ChangeOrderActivity.this)
-                        .load(Constant.HOST + orderBean.getData().getCar_list().get(position).getGoods_thumb())
+                        .load(Constant.IMG_HOST + orderBean.getData().getCar_list().get(position).getGoods_thumb())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_item_goods));
                 holder.setText(R.id.tv_goods_name, orderBean.getData().getCar_list().get(position)

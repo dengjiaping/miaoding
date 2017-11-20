@@ -177,7 +177,8 @@
 
                 <View
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"/>
+                    android:layout_height="100dp"
+                    android:layout_below="@id/img_tailor_details2"/>
 
                 <LinearLayout
                     android:id="@+id/ll_goods_tip"
@@ -185,7 +186,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingBottom="60dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <View
                         android:id="@+id/view_goods_tip"

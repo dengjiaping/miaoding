@@ -19,7 +19,6 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -227,7 +226,7 @@ public class OrderDetailActivity extends BaseActivity {
                 holder.setVisible(R.id.checkbox_goods_select, false);
                 holder.setVisible(R.id.view_cart_divide, true);
                 Glide.with(OrderDetailActivity.this)
-                        .load(Constant.HOST + carListBean.getGoods_thumb())
+                        .load(Constant.IMG_HOST + carListBean.getGoods_thumb())
                         .placeholder(R.mipmap.place_goods)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

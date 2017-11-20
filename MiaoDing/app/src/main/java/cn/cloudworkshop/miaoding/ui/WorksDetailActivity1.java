@@ -210,11 +210,11 @@ public class WorksDetailActivity1 extends BaseActivity {
     private void initView() {
 
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getData().getThumb())
+                .load(Constant.IMG_HOST + worksBean.getData().getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getData().getDesigner().getAvatar())
+                .load(Constant.IMG_HOST + worksBean.getData().getDesigner().getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgDesigner);
 
@@ -242,7 +242,7 @@ public class WorksDetailActivity1 extends BaseActivity {
                 protected void convert(ViewHolder holder, WorksDetailBean.DataBean.CollectUserBean
                         collectUserBean, int position) {
                     Glide.with(WorksDetailActivity1.this)
-                            .load(Constant.HOST + collectUserBean.getAvatar())
+                            .load(Constant.IMG_HOST + collectUserBean.getAvatar())
                             .centerCrop()
                             .into((ImageView) holder.getView(R.id.img_avatar_collect));
                 }
@@ -256,12 +256,12 @@ public class WorksDetailActivity1 extends BaseActivity {
         if (worksBean.getData().getComment_num() > 0) {
             tvCommentCount.setText("评价  （" + worksBean.getData().getComment_num() + "）");
             Glide.with(getApplicationContext())
-                    .load(Constant.HOST + worksBean.getData().getNew_comment().getAvatar())
+                    .load(Constant.IMG_HOST + worksBean.getData().getNew_comment().getAvatar())
                     .centerCrop()
                     .into(imgUser);
             tvUserName.setText(worksBean.getData().getNew_comment().getUser_name());
             Glide.with(getApplicationContext())
-                    .load(Constant.HOST + worksBean.getData().getNew_comment().getUser_grade().getImg2())
+                    .load(Constant.IMG_HOST + worksBean.getData().getNew_comment().getUser_grade().getImg2())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgUserGrade);
             tvCommentTime.setText(DateUtils.getDate("yyyy-MM-dd", worksBean.getData().getNew_comment().getC_time()));
@@ -274,7 +274,7 @@ public class WorksDetailActivity1 extends BaseActivity {
                     @Override
                     protected void convert(ViewHolder holder, String s, int position) {
                         Glide.with(WorksDetailActivity1.this)
-                                .load(Constant.HOST + s)
+                                .load(Constant.IMG_HOST + s)
                                 .centerCrop()
                                 .into((ImageView) holder.getView(R.id.img_user_comment));
                     }
@@ -294,7 +294,7 @@ public class WorksDetailActivity1 extends BaseActivity {
         //分割图片显示
 
         OkHttpUtils.get()
-                .url(Constant.HOST + worksBean.getData().getContent2())
+                .url(Constant.IMG_HOST + worksBean.getData().getContent2())
                 .build()
                 .execute(new BitmapCallback() {
                     @Override
@@ -367,7 +367,7 @@ public class WorksDetailActivity1 extends BaseActivity {
                 break;
             case R.id.img_share_works:
                 if (worksBean != null) {
-                    ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
+                    ShareUtils.showShare(this, Constant.IMG_HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
                             Constant.WORKS_SHARE + "?content=2&id=" + id);
                 }
@@ -442,7 +442,7 @@ public class WorksDetailActivity1 extends BaseActivity {
         tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
 
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + worksBean.getData().getThumb())
+                .load(Constant.IMG_HOST + worksBean.getData().getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
         tvPrice.setTypeface(DisplayUtils.setTextType(this));
@@ -508,7 +508,7 @@ public class WorksDetailActivity1 extends BaseActivity {
                     CircleImageView imgColor = holder.getView(R.id.img_works_color);
                     CircleImageView imgMask = holder.getView(R.id.img_works_mask);
                     Glide.with(WorksDetailActivity1.this)
-                            .load(Constant.HOST + positionBean.getColor_img())
+                            .load(Constant.IMG_HOST + positionBean.getColor_img())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(imgColor);
                     if (currentColor == position) {

@@ -124,13 +124,13 @@ public class AllEvaluationActivity extends BaseActivity {
             @Override
             protected void convert(ViewHolder holder, final GoodsCommentBean.ListBean.DataBean dataBean, int position) {
                 Glide.with(AllEvaluationActivity.this)
-                        .load(Constant.HOST + dataBean.getAvatar())
+                        .load(Constant.IMG_HOST + dataBean.getAvatar())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .centerCrop()
                         .into((CircleImageView) holder.getView(R.id.img_user_avatar));
                 holder.setText(R.id.tv_name_user, dataBean.getUser_name());
                 Glide.with(AllEvaluationActivity.this)
-                        .load(Constant.HOST + dataBean.getUser_grade().getImg2())
+                        .load(Constant.IMG_HOST + dataBean.getUser_grade().getImg2())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_user_grade));
                 holder.setText(R.id.tv_comment_time, DateUtils.getDate("yyyy-MM-dd", dataBean.getC_time()));
@@ -147,7 +147,7 @@ public class AllEvaluationActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, String s, final int position) {
                             ImageView imageView = holder.getView(R.id.img_user_comment);
                             Glide.with(AllEvaluationActivity.this)
-                                    .load(Constant.HOST + s)
+                                    .load(Constant.IMG_HOST + s)
                                     .centerCrop()
                                     .into(imageView);
                             imageView.setOnClickListener(new View.OnClickListener() {

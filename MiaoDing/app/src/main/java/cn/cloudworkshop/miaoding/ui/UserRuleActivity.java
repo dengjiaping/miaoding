@@ -70,7 +70,7 @@ public class UserRuleActivity extends BaseActivity {
     private void initView() {
         tvHeaderTitle.setText(title);
         OkHttpUtils.get()
-                .url(Constant.HOST + imgUrl)
+                .url(Constant.IMG_HOST + imgUrl)
                 .build()
                 .execute(new BitmapCallback() {
                     @Override

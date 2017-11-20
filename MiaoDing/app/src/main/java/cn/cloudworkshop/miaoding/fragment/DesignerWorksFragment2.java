@@ -63,7 +63,7 @@ public class DesignerWorksFragment2 extends BaseFragment {
     private void initView() {
         if (!TextUtils.isEmpty(MyApplication.cobbler_banner)) {
             Glide.with(getActivity())
-                    .load(Constant.HOST + MyApplication.cobbler_banner)
+                    .load(Constant.IMG_HOST + MyApplication.cobbler_banner)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgDesignerWorks);
         }

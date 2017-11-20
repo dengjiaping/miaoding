@@ -60,7 +60,7 @@ public class JazzyPagerAdapter extends PagerAdapter {
         tvContent.setText(dataList.get(position).getSub_name());
 
         Glide.with(context)
-                .load(Constant.HOST + dataList.get(position).getThumb())
+                .load(Constant.IMG_HOST + dataList.get(position).getThumb())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgWorks);
 

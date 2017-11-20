@@ -21,7 +21,7 @@ public class SharedPreferencesUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
         editor.putString(key, value);
-        editor.apply();//提交修改
+        editor.commit();//提交修改
     }
 
     /**
@@ -42,7 +42,7 @@ public class SharedPreferencesUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
         editor.putBoolean(key, value);
-        editor.apply();
+        editor.commit();
     }
 
     /**
@@ -59,7 +59,8 @@ public class SharedPreferencesUtils {
     public static void deleteStr(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
-        editor.remove(key);
-        editor.apply();//提交修改
+        editor.clear();
+        editor.commit();//提交修改
+
     }
 }

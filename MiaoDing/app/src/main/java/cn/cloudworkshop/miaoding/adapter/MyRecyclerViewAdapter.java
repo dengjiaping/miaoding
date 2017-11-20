@@ -45,7 +45,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Glide.with(context)
-                .load(Constant.HOST + list.get(position).getImg())
+                .load(Constant.IMG_HOST + list.get(position).getImg())
                 .into(holder.img);
         holder.tvTitle.setText(list.get(position).getTitle());
         holder.tvContent.setText(list.get(position).getContent());

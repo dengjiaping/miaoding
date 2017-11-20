@@ -72,13 +72,13 @@ public class FragmentTabUtils implements TabLayout.OnTabSelectedListener {
             if (i == 0) {
                 tvTab.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_22));
                 Glide.with(mContext)
-                        .load(Constant.HOST + iconList.get(i).getSelect_img())
+                        .load(Constant.IMG_HOST + iconList.get(i).getSelect_img())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgTab);
             } else {
                 tvTab.setTextColor(ContextCompat.getColor(mContext, R.color.light_gray_B3));
                 Glide.with(mContext)
-                        .load(Constant.HOST + iconList.get(i).getImg())
+                        .load(Constant.IMG_HOST + iconList.get(i).getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgTab);
             }
@@ -124,7 +124,7 @@ public class FragmentTabUtils implements TabLayout.OnTabSelectedListener {
         ImageView imgTab = (ImageView) customView.findViewById(R.id.img_tab);
         tvTab.setTextColor(ContextCompat.getColor(mContext, cid));
         Glide.with(mContext)
-                .load(Constant.HOST + imgUrl)
+                .load(Constant.IMG_HOST + imgUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgTab);
     }

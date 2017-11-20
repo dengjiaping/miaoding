@@ -6,10 +6,9 @@ package cn.cloudworkshop.miaoding.constant;
  * Describe：接口常量
  */
 public class Constant {
-    //        public static final String HOST = "http://139.196.113.61";
+            public static final String HOST = "http://www.cloudworkshop.cn";
 //    public static final String HOST = "http://101.132.194.67";
-    public static final String HOST = "http://www.cloudworkshop.cn";
-//    public static final String HOST = "http://192.168.1.156";
+    public static final String IMG_HOST = "http://source.cloudworkshop.cn";
 
     public static final String APP_ID = "wx07c2173e7686741e";
     private static final String INDEX = "/index.php/index/index5_4/";
@@ -22,7 +21,7 @@ public class Constant {
     public static final String DESIGNER_WORKS = HOST_INDEX + "cobbler";
     public static final String NEW_DESIGNER_WORKS = HOST_INDEX + "cobbler_goods_list";
     public static final String GOODS_DETAILS = HOST_INDEX + "new_goods_detail";
-    public static final String CUSTOMIZE = "http://139.196.113.61" + INDEX + "customize";
+    public static final String CUSTOMIZE = "http://www.cloudworkshop.cn" + INDEX + "customize";
     public static final String NEW_CUSTOMIZE = HOST_INDEX + "new_customize";
     public static final String VERIFICATION_CODE = HOST + "/index.php/index/login/send_sms";
     public static final String LOGIN = HOST + "/index.php/index/login/do_login";

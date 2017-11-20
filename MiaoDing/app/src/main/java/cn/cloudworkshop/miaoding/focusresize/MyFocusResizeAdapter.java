@@ -15,7 +15,6 @@ import java.util.List;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.bean.GoodsListBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.focusresize.FocusResizeAdapter;
 
 
 /**
@@ -66,7 +65,7 @@ public class MyFocusResizeAdapter extends FocusResizeAdapter<RecyclerView.ViewHo
     private void fill(CustomViewHolder holder, final GoodsListBean.DataBean.itemDataBean customObject, int position) {
         holder.titleTextView.setText(customObject.getName());
         holder.subtitleTextView.setText(customObject.getSub_name());
-        holder.image.setImageURI(Uri.parse(Constant.HOST + customObject.getThumb()));
+        holder.image.setImageURI(Uri.parse(Constant.IMG_HOST + customObject.getThumb()));
         holder.itemView.setTag(position);
 
 

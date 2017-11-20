@@ -138,12 +138,12 @@ public class MemberCenterActivity extends BaseActivity {
      */
     private void initView() {
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + memberBean.getData().getUser_info().getAvatar())
+                .load(Constant.IMG_HOST + memberBean.getData().getUser_info().getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgMemberHead);
         tvMemberName.setText(memberBean.getData().getUser_info().getName());
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + memberBean.getData().getUser_info().getUser_grade().getImg2())
+                .load(Constant.IMG_HOST + memberBean.getData().getUser_info().getUser_grade().getImg2())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgGradeIcon);
 
@@ -189,7 +189,7 @@ public class MemberCenterActivity extends BaseActivity {
                             userPrivilegeBean, int position) {
                         holder.setText(R.id.tv_rights_name, userPrivilegeBean.getName());
                         Glide.with(MemberCenterActivity.this)
-                                .load(Constant.HOST + userPrivilegeBean.getImg())
+                                .load(Constant.IMG_HOST + userPrivilegeBean.getImg())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_rights_icon));
                     }
@@ -280,7 +280,7 @@ public class MemberCenterActivity extends BaseActivity {
         final TextView tvReceive = (TextView) popupView.findViewById(R.id.tv_receive_gift);
 
         Glide.with(this)
-                .load(Constant.HOST + dataList.get(grade).get(position).getImg())
+                .load(Constant.IMG_HOST + dataList.get(grade).get(position).getImg())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgGift);
 
@@ -349,8 +349,8 @@ public class MemberCenterActivity extends BaseActivity {
             List<MemberBean.DataBean.UserPrivilegeBean> itemList = new ArrayList<>();
             String[] idStr = memberBean.getData().getUser_grade().get(i).getUser_privilege_ids().split(",");
             for (int j = 0; j < memberBean.getData().getUser_privilege().size(); j++) {
-                for (int k = 0; k < idStr.length; k++) {
-                    if (idStr[k].equals(String.valueOf(memberBean.getData().getUser_privilege()
+                for (String anIdStr : idStr) {
+                    if (anIdStr.equals(String.valueOf(memberBean.getData().getUser_privilege()
                             .get(j).getId()))) {
                         itemList.add(memberBean.getData().getUser_privilege().get(j));
                         break;

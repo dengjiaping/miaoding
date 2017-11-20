@@ -165,13 +165,13 @@ public class MyCenterFragment extends BaseFragment {
         tvCenterName.setTypeface(DisplayUtils.setTextType(getActivity()));
 
         Glide.with(getActivity())
-                .load(Constant.HOST + userInfoBean.getData().getAvatar())
+                .load(Constant.IMG_HOST + userInfoBean.getData().getAvatar())
                 .placeholder(R.mipmap.place_banner)
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgIcon);
         Glide.with(getActivity())
-                .load(Constant.HOST + userInfoBean.getData().getUser_grade().getImg())
+                .load(Constant.IMG_HOST + userInfoBean.getData().getUser_grade().getImg())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCenterGrade);
 
@@ -195,7 +195,7 @@ public class MyCenterFragment extends BaseFragment {
             @Override
             protected void convert(ViewHolder holder, UserInfoBean.IconListBean iconListBean, int position) {
                 Glide.with(getActivity())
-                        .load(Constant.HOST + iconListBean.getImg())
+                        .load(Constant.IMG_HOST + iconListBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_center_item));
                 holder.setText(R.id.tv_center_item, iconListBean.getName());
@@ -307,7 +307,7 @@ public class MyCenterFragment extends BaseFragment {
                                 intent.putExtra("share_title", "邀请有礼");
                                 intent.putExtra("share_content", "好友" + userInfoBean.getData().getName()
                                         + "邀请您加入妙定，为您定制绅士腔调");
-                                intent.putExtra("url", Constant.HOST + url + uid);
+                                intent.putExtra("url", Constant.IMG_HOST + url + uid);
                                 intent.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
                                 startActivity(intent);
                             }

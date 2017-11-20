@@ -68,7 +68,7 @@ public class FlipAdapter extends BaseAdapter {
         }
         final DesignerWorksBean.DataBeanX.DataBean itemBean = dataList.get(position);
         Glide.with(context)
-                .load(Constant.HOST + itemBean.getImg())
+                .load(Constant.IMG_HOST + itemBean.getImg())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.imgWorks);
         if (!TextUtils.isEmpty(itemBean.getId())) {

@@ -97,7 +97,7 @@ public class EvaluateActivity extends BaseActivity {
     private void initView() {
         tvHeaderTitle.setText("发表评论");
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + goodsImg)
+                .load(Constant.IMG_HOST + goodsImg)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .into(imgGoods);

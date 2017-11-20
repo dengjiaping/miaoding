@@ -2,10 +2,8 @@ package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +73,7 @@ public class ImagePreviewActivity extends BaseActivity {
                         .inflate(R.layout.viewpager_item_preview, null);
                 final PhotoView photoView = (PhotoView) view.findViewById(R.id.img_preview);
                 Glide.with(ImagePreviewActivity.this)
-                        .load(Constant.HOST + imgList.get(position))
+                        .load(Constant.IMG_HOST + imgList.get(position))
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(photoView);
                 PhotoViewAttacher mAttach = new PhotoViewAttacher(photoView);

@@ -100,7 +100,7 @@ public class MessageCenterActivity extends BaseActivity {
             @Override
             protected void convert(ViewHolder holder, MsgCenterBean.DataBean dataBean, int position) {
                 Glide.with(MessageCenterActivity.this)
-                        .load(Constant.HOST + dataBean.getImg())
+                        .load(Constant.IMG_HOST + dataBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into((ImageView) holder.getView(R.id.img_message_icon));
                 if (msgList.get(position).getNum() > 0 && dataBean.getLast_msg().getIs_read() == 0) {

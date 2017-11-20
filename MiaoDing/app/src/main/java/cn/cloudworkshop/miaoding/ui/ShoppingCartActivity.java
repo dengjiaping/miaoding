@@ -226,7 +226,7 @@ public class ShoppingCartActivity extends BaseActivity {
                         (DisplayUtils.dp2px(ShoppingCartActivity.this, 3)));
                 imgGoods.setHierarchy(hierarchy);
                 imgGoods.setHierarchy(hierarchy);
-                imgGoods.setImageURI(Constant.HOST + dataBean.getThumb());
+                imgGoods.setImageURI(Constant.IMG_HOST + dataBean.getThumb());
                 holder.setText(R.id.tv_sub_title, dataBean.getName());
                 holder.setText(R.id.tv_sub_price, dataBean.getPrice());
                 holder.setText(R.id.tv_sub_content, dataBean.getSub_name());
@@ -274,7 +274,7 @@ public class ShoppingCartActivity extends BaseActivity {
             protected void convert(final ViewHolder holder, final ShoppingCartBean.DataBeanX.DataBean
                     dataBean, final int position) {
                 Glide.with(ShoppingCartActivity.this)
-                        .load(Constant.HOST + dataBean.getGoods_thumb())
+                        .load(Constant.IMG_HOST + dataBean.getGoods_thumb())
                         .placeholder(R.mipmap.place_goods)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

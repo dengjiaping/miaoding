@@ -1,7 +1,6 @@
 package cn.cloudworkshop.miaoding.utils;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +30,7 @@ public class NetworkImageHolderView implements Holder<String> {
     @Override
     public void UpdateUI(Context context, int position, String data) {
         Glide.with(context)
-                .load(Constant.HOST + data)
+                .load(Constant.IMG_HOST + data)
                 .placeholder(R.mipmap.place_banner)
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

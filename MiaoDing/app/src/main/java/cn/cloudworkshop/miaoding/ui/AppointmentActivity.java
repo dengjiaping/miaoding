@@ -190,14 +190,14 @@ public class AppointmentActivity extends BaseActivity {
                             ImageView imgCoupon = (ImageView) popupView.findViewById(R.id.img_coupon);
 
                             Glide.with(AppointmentActivity.this)
-                                    .load(Constant.HOST + guideBean.getData().getImg_urls().get(0))
+                                    .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(0))
                                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                     .into(imgCoupon);
                             viewShare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     ShareUtils.showShare(AppointmentActivity.this,
-                                            Constant.HOST + guideBean.getData().getImg_urls().get(0),
+                                            Constant.IMG_HOST + guideBean.getData().getImg_urls().get(0),
                                             "【妙定APP】送你1000元定制红包，手快有，手慢无！",
                                             "做你不敢想的黑科技服饰定制，雅痞还是绅士，成熟还是睿智，先从一件衬衣开始。",
                                             Constant.SHARE_COUPON + "?pay_ids=" + MyApplication.payId

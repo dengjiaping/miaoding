@@ -76,7 +76,7 @@ public class LogisticsActivity extends BaseActivity {
         tvNumber.setText(number);
         tvCompany.setText(companyName);
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + imgUrl)
+                .load(Constant.IMG_HOST + imgUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgGoods);
         OkHttpUtils.get()

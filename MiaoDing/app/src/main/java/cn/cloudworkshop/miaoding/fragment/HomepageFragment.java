@@ -115,7 +115,7 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                             for (int i = 0; i < homepageBean.getData().size(); i++) {
                                 for (int j = 0; j < homepageBean.getData().get(i).size(); j++) {
                                     HomepageNewsBean.DataBean dataBean = homepageBean.getData().get(i).get(j);
-                                    dataBean.setImg(Constant.HOST + dataBean.getImg());
+                                    dataBean.setImg(Constant.IMG_HOST + dataBean.getImg());
                                     dataBean.setLink(Constant.HOMEPAGE_INFO + "?content=1&id=" + dataBean.getId());
                                     dataList.add(dataBean);
                                 }
@@ -268,13 +268,13 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                         //咨询页webview
                         case 1:
                             Intent intent = new Intent(getActivity(), HomepageInfoActivity.class);
-                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                             intent.putExtra("content", "");
-                            intent.putExtra("img_url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("img_url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getImg());
-                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo()
+                            intent.putExtra("share_url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getShare_link());
                             startActivity(intent);
                             break;
@@ -291,7 +291,7 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                                 invite.putExtra("share_title", "邀请有礼");
                                 invite.putExtra("share_content", "好友" + SharedPreferencesUtils
                                         .getStr(getActivity(), "username") + "邀请您加入妙定，为您定制绅士腔调");
-                                invite.putExtra("url", Constant.HOST + homepageBean.getLunbo()
+                                invite.putExtra("url", Constant.IMG_HOST + homepageBean.getLunbo()
                                         .get(position).getLink() + uid);
                                 invite.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
                                 startActivity(invite);
@@ -316,7 +316,7 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
             protected void convert(ViewHolder holder, HomepageNewsBean.RecommendListBean recommendListBean, int position) {
 
                 Glide.with(getActivity())
-                        .load(Constant.HOST + recommendListBean.getRecommend_img())
+                        .load(Constant.IMG_HOST + recommendListBean.getRecommend_img())
                         .placeholder(R.mipmap.place_news)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

@@ -116,7 +116,7 @@ public class MessageDetailActivity extends BaseActivity {
                                 dataBean.getC_time()));
                         holder.setText(R.id.tv_select_title, dataBean.getTitle());
                         Glide.with(MessageDetailActivity.this)
-                                .load(Constant.HOST + dataBean.getImg())
+                                .load(Constant.IMG_HOST + dataBean.getImg())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_select_goods));
                         holder.setText(R.id.tv_select_content, dataBean.getContent());
@@ -126,7 +126,7 @@ public class MessageDetailActivity extends BaseActivity {
                                 msgList.get(position).getC_time()));
                         holder.setText(R.id.tv_logistics_title, "您的订单：" + dataBean.getTitle());
                         Glide.with(MessageDetailActivity.this)
-                                .load(Constant.HOST + dataBean.getImg())
+                                .load(Constant.IMG_HOST + dataBean.getImg())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into((ImageView) holder.getView(R.id.img_logistics_goods));
                         logisticsStr = dataBean.getContent().split(",");

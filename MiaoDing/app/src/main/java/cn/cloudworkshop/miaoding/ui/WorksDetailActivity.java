@@ -191,7 +191,7 @@ public class WorksDetailActivity extends BaseActivity {
                         .inflate(R.layout.viewpager_goods_details, null);
                 final ImageView img = (ImageView) view.findViewById(R.id.img_goods_picture);
                 Glide.with(WorksDetailActivity.this)
-                        .load(Constant.HOST + worksBean.getData().getImg_list().get(position))
+                        .load(Constant.IMG_HOST + worksBean.getData().getImg_list().get(position))
                         .placeholder(R.mipmap.place_goods)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -284,7 +284,7 @@ public class WorksDetailActivity extends BaseActivity {
                     if (market_id != null) {
                         share_url += "&market_id=" + market_id;
                     }
-                    ShareUtils.showShare(this, Constant.HOST + worksBean.getData().getThumb(),
+                    ShareUtils.showShare(this, Constant.IMG_HOST + worksBean.getData().getThumb(),
                             worksBean.getData().getName(), worksBean.getData().getContent(),
                             share_url + "&type=2");
                 }
@@ -371,7 +371,7 @@ public class WorksDetailActivity extends BaseActivity {
             tvBuy = (TextView) contentView.findViewById(R.id.tv_buy_works);
 
             Glide.with(getApplicationContext())
-                    .load(Constant.HOST + worksBean.getData().getThumb())
+                    .load(Constant.IMG_HOST + worksBean.getData().getThumb())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.mipmap.place_goods)
                     .dontAnimate()
@@ -442,7 +442,7 @@ public class WorksDetailActivity extends BaseActivity {
                         CircleImageView imgColor = holder.getView(R.id.img_works_color);
                         CircleImageView imgMask = holder.getView(R.id.img_works_mask);
                         Glide.with(WorksDetailActivity.this)
-                                .load(Constant.HOST + positionBean.getColor_img())
+                                .load(Constant.IMG_HOST + positionBean.getColor_img())
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(imgColor);
                         if (currentColor == position) {

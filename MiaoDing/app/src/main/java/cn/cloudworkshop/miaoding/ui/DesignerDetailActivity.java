@@ -107,7 +107,7 @@ public class DesignerDetailActivity extends BaseActivity {
      */
     private void initView() {
         Glide.with(getApplicationContext())
-                .load(Constant.HOST + designerBean.getData().getAvatar())
+                .load(Constant.IMG_HOST + designerBean.getData().getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgAvatar);
         tvName.setText(designerBean.getData().getName());
@@ -138,7 +138,7 @@ public class DesignerDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_designer_share:
-                ShareUtils.showShare(this, Constant.HOST + designerBean.getData().getAvatar(),
+                ShareUtils.showShare(this, Constant.IMG_HOST + designerBean.getData().getAvatar(),
                         designerBean.getData().getName(), designerBean.getData().getContent(),
                         Constant.DESIGNER_SHARE + "?id=" + id);
                 break;

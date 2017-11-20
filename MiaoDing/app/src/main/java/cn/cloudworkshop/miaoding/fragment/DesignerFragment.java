@@ -1,6 +1,5 @@
 package cn.cloudworkshop.miaoding.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -73,8 +71,6 @@ public class DesignerFragment extends BaseFragment {
                         }
                     }
                 });
-
-
     }
 
 
@@ -107,8 +103,9 @@ public class DesignerFragment extends BaseFragment {
         ((RadioButton) rgsDesigner.getChildAt(0)).setChecked(true);
 
         //手指左右滑动不超过48px,上下滑动不超过250px
+
         vpDesigner.setOnTouchListener(new View.OnTouchListener() {
-            int touchFlag = 0;
+            boolean isClick = true;
             float x = 0, y = 0;
 
             @Override
@@ -116,7 +113,7 @@ public class DesignerFragment extends BaseFragment {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        touchFlag = 0;
+                        isClick = true;
                         x = event.getX();
                         y = event.getY();
                         break;
@@ -124,17 +121,18 @@ public class DesignerFragment extends BaseFragment {
                         ViewConfiguration configuration = ViewConfiguration.get(getActivity());
                         int mTouchSlop = configuration.getScaledPagingTouchSlop();
 
+
                         float xDiff = Math.abs(event.getX() - x);
                         float yDiff = Math.abs(event.getY() - y);
                         if (xDiff < mTouchSlop && yDiff < 250)
-                            touchFlag = 0;
+                            isClick = true;
                         else
-                            touchFlag = -1;
+                            isClick = false;
                         break;
 
                     case MotionEvent.ACTION_UP:
 
-                        if (touchFlag == 0) {
+                        if (isClick) {
                             int currentItem = vpDesigner.getCurrentItem();
                             if (designerBean.getData().get(currentItem).getId() != 0 &&
                                     currentItem < designerBean.getData().size() - 1) {
@@ -153,6 +151,7 @@ public class DesignerFragment extends BaseFragment {
                 return false;
             }
         });
+
 
 
         vpDesigner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -269,7 +269,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 holder.setVisible(R.id.checkbox_goods_select, false);
                 holder.setVisible(R.id.view_cart_divide, true);
                 Glide.with(ConfirmOrderActivity.this)
-                        .load(Constant.HOST + carListBean.getGoods_thumb())
+                        .load(Constant.IMG_HOST + carListBean.getGoods_thumb())
                         .placeholder(R.mipmap.place_goods)
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)

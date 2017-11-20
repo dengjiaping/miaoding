@@ -150,7 +150,7 @@ public class EmbroideryActivity extends BaseActivity {
                 CircleImageView imgPosition = holder.getView(R.id.img_embroidery_position);
                 TextView tvPosition = holder.getView(R.id.tv_embroidery_position);
                 Glide.with(EmbroideryActivity.this)
-                        .load(Constant.HOST + positionBean.getImg())
+                        .load(Constant.IMG_HOST + positionBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgPosition);
                 tvPosition.setText(positionBean.getName());
@@ -193,7 +193,7 @@ public class EmbroideryActivity extends BaseActivity {
                 CircleImageView imgColor = holder.getView(R.id.img_embroidery_color);
                 CircleImageView imgMask = holder.getView(R.id.img_color_mask);
                 Glide.with(EmbroideryActivity.this)
-                        .load(Constant.HOST + colorBean.getImg())
+                        .load(Constant.IMG_HOST + colorBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgColor);
                 isAllSelect();
@@ -234,7 +234,7 @@ public class EmbroideryActivity extends BaseActivity {
                 ImageView imgFont = holder.getView(R.id.img_embroidery_font);
                 TextView tvFont = holder.getView(R.id.tv_embroidery_font);
                 Glide.with(EmbroideryActivity.this)
-                        .load(Constant.HOST + positionBean.getImg())
+                        .load(Constant.IMG_HOST + positionBean.getImg())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(imgFont);
                 tvFont.setText(positionBean.getName());

@@ -158,7 +158,7 @@ public class CollectionFragment extends BaseFragment {
                         holder.setVisible(R.id.view_homepage1, false);
                         holder.setVisible(R.id.view_homepage2, true);
                         Glide.with(getActivity())
-                                .load(Constant.HOST + itemBean.getImg())
+                                .load(Constant.IMG_HOST + itemBean.getImg())
                                 .placeholder(R.mipmap.place_news)
                                 .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -175,7 +175,7 @@ public class CollectionFragment extends BaseFragment {
                     @Override
                     protected void convert(ViewHolder holder, CollectionBean.DataBean itemBean, int position) {
                         Glide.with(getActivity())
-                                .load(Constant.HOST + itemBean.getThumb())
+                                .load(Constant.IMG_HOST + itemBean.getThumb())
                                 .placeholder(R.mipmap.place_goods)
                                 .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

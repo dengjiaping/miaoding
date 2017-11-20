@@ -44,7 +44,7 @@ public class DesignerStoryFragment extends BaseFragment {
     private void initView() {
         if (!TextUtils.isEmpty(imgStory)) {
             Glide.with(getActivity())
-                    .load(Constant.HOST + imgStory)
+                    .load(Constant.IMG_HOST + imgStory)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imgDesignerStory);
         } else {

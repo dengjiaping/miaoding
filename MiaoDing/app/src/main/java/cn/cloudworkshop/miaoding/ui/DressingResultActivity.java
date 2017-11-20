@@ -1,20 +1,14 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +16,6 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.constant.Constant;
-import cn.cloudworkshop.miaoding.utils.LogUtils;
 import cn.cloudworkshop.miaoding.utils.ShareUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 
@@ -113,7 +106,7 @@ public class DressingResultActivity extends BaseActivity {
                 }
                 break;
             case R.id.img_header_share:
-                ShareUtils.showShare(this, Constant.HOST + SharedPreferencesUtils
+                ShareUtils.showShare(this, Constant.IMG_HOST + SharedPreferencesUtils
                         .getStr(this, "avatar"), shareTitle, shareContent, shareUrl);
                 break;
         }
