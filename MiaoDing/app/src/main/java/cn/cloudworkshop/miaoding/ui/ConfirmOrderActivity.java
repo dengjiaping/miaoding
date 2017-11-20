@@ -163,7 +163,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private void initData() {
 
         OkHttpUtils.get()
-                .url(Constant.CONFIRM_INFO)
+                .url(Constant.ORDER_INFO)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("car_ids", cartIds)
                 .build()

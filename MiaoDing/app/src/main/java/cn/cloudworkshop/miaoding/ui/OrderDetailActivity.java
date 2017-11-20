@@ -108,7 +108,7 @@ public class OrderDetailActivity extends BaseActivity {
      */
     private void initData() {
         OkHttpUtils.get()
-                .url(Constant.NEW_ORDER_DETAIL)
+                .url(Constant.ORDER_DETAIL)
                 .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
                 .addParams("id", orderId)
                 .build()

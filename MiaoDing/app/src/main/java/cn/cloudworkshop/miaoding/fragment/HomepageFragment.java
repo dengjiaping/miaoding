@@ -95,7 +95,7 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
      */
     private void initData() {
         OkHttpUtils.get()
-                .url(Constant.NEW_HOMEPAGE_LIST)
+                .url(Constant.HOMEPAGE_LIST)
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {

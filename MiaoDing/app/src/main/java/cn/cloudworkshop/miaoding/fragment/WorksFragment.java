@@ -77,7 +77,7 @@ public class WorksFragment extends BaseFragment {
     private void initData() {
 
         OkHttpUtils.get()
-                .url(Constant.NEW_DESIGNER_WORKS)
+                .url(Constant.DESIGNER_WORKS)
                 .addParams("page", String.valueOf(page))
                 .build()
                 .execute(new StringCallback() {

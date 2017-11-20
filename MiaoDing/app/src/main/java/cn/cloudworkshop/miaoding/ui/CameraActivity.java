@@ -24,16 +24,21 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.wang.avi.AVLoadingIndicatorView;
 
 import com.wang.avi.indicators.BallSpinFadeLoaderIndicator;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -50,12 +55,19 @@ import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CustomCameraView;
 import cn.cloudworkshop.miaoding.view.SensorView;
 import okhttp3.Call;
-*/
-/**
- * Author：binge on 2017/3/6 12:17
- * Email：1993911441@qq.com
- * Describe：拍照
- *//*
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+*
+        *Author：binge on 2017/3/6 12:17
+        *Email：1993911441
+
+@qq.com
+ *Describe：拍照
 
 
 public class CameraActivity extends BaseActivity implements SensorEventListener {
@@ -98,12 +110,10 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
     private String[] scaleStr = new String[4];
     //A4纸左上角Y轴坐标
     private String[] yPosition = new String[4];
-    //图片编码
-    private String[] picEncode = new String[4];
+
 
     private float userHeight;
     private Thread myThread;
-
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -147,7 +157,6 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
     };
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,7 +192,6 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -213,7 +221,7 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
                 } else {
                     scaleStr[count] = map.get("scale");
                     yPosition[count] = map.get("y");
-                    picEncode[count] = ImageEncodeUtils.fileToBase64(photoArray[count]);
+
 
                     loadingView.smoothToHide();
                     Toast.makeText(CameraActivity.this, "拍摄成功，下一步", Toast.LENGTH_SHORT).show();
@@ -270,40 +278,60 @@ public class CameraActivity extends BaseActivity implements SensorEventListener 
 
     private void submitData() {
         loadingView.smoothToShow();
-        StringBuilder sb1 = new StringBuilder();
+
         StringBuilder sb2 = new StringBuilder();
         StringBuilder sb3 = new StringBuilder();
         for (int i = 0; i < photoArray.length; i++) {
             if (i < photoArray.length - 1) {
-                sb1.append(picEncode[i]).append(",");
                 sb2.append(scaleStr[i]).append(",");
                 sb3.append(yPosition[i]).append(",");
             } else {
-                sb1.append(picEncode[i]);
                 sb2.append(scaleStr[i]);
                 sb3.append(yPosition[i]);
             }
         }
 
-        OkHttpUtils.post()
-                .url(Constant.TAKE_PHOTO)
-                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("img_list", sb1.toString())
-                .addParams("scale", sb2.toString())
-                .addParams("y_position", sb3.toString())
-                .addParams("height", String.valueOf(userHeight))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
+        for (int i = 0; i < photoArray.length; i++) {
+            File file = new File(photoArray[i]);
+            builder.addFormDataPart("img" + i, file.getName(),
+                    RequestBody.create(MediaType.parse("image/png"), file));
+        }
+
+
+        builder.addFormDataPart("token", SharedPreferencesUtils.getStr(this, "token"));
+        builder.addFormDataPart("scale", sb2.toString());
+        builder.addFormDataPart("y_position", sb3.toString());
+        builder.addFormDataPart("height", String.valueOf(userHeight));
+
+
+        MultipartBody requestBody = builder.build();
+        //构建请求
+        Request request = new Request.Builder()
+                .url(Constant.TAKE_PHOTO)//地址
+                .post(requestBody)//添加请求体
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void run() {
                         loadingView.smoothToHide();
                         Toast.makeText(CameraActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+            }
+        });
 
     }
 
