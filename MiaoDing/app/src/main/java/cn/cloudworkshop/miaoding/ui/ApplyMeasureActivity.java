@@ -172,7 +172,6 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
     }
 
 
-
     //定位
     private void initLocation() {
         //初始化定位
@@ -248,20 +247,21 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
                     setMark(aMapLocation);
                     //获取定位信息
                     StringBuilder sb = new StringBuilder();
-                    sb.append(aMapLocation.getProvince()).append("")
-                            .append(aMapLocation.getCity()).append("")
-                            .append(aMapLocation.getDistrict()).append("")
-                            .append(aMapLocation.getStreet()).append("")
+                    sb.append(aMapLocation.getProvince())
+                            .append(aMapLocation.getCity())
+                            .append(aMapLocation.getDistrict())
+                            .append(aMapLocation.getStreet())
                             .append(aMapLocation.getStreetNum());
                     if (TextUtils.isEmpty(sb.toString())) {
                         ActivityCompat.requestPermissions(this, permissionStr, 1);
                     }
                     etCurrentAddress.setText(sb.toString());
-                    etCurrentAddress.setSelection(etCurrentAddress.getText().length());
+                    etCurrentAddress.setSelection(sb.toString().length());
                     isFirstLoc = false;
                 }
             }
         }
+
 
     }
 
@@ -333,8 +333,8 @@ public class ApplyMeasureActivity extends BaseActivity implements LocationSource
         tvSubmit.setEnabled(false);
         OkHttpUtils.post()
                 .url(Constant.APPOINTMENT_ORDER)
-                .addParams("token",SharedPreferencesUtils.getStr(this, "token"))
-                .addParams("address",etCurrentAddress.getText().toString())
+                .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
+                .addParams("address", etCurrentAddress.getText().toString())
                 .build()
                 .execute(new StringCallback() {
                     @Override

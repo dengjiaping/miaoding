@@ -1,15 +1,18 @@
 package cn.cloudworkshop.miaoding.ui;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -20,11 +23,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,116 +36,102 @@ import butterknife.OnClick;
 import cn.cloudworkshop.miaoding.R;
 import cn.cloudworkshop.miaoding.base.BaseActivity;
 import cn.cloudworkshop.miaoding.bean.CustomItemBean;
-import cn.cloudworkshop.miaoding.bean.GuideBean;
-import cn.cloudworkshop.miaoding.bean.TailorBean;
+import cn.cloudworkshop.miaoding.bean.CustomizeBean;
 import cn.cloudworkshop.miaoding.constant.Constant;
+import cn.cloudworkshop.miaoding.utils.ActivityManagerUtils;
 import cn.cloudworkshop.miaoding.utils.DateUtils;
+import cn.cloudworkshop.miaoding.utils.DisplayUtils;
 import cn.cloudworkshop.miaoding.utils.GsonUtils;
 import cn.cloudworkshop.miaoding.utils.SharedPreferencesUtils;
 import cn.cloudworkshop.miaoding.view.CircleImageView;
 import okhttp3.Call;
 
 /**
- * Author：Libin on 2016/8/31 09:24
+ * Author：Libin on 2017-04-25 10:52
  * Email：1993911441@qq.com
- * Describe：定制页面（当前版）
+ * Describe：定制界面（新版）
  */
 public class NewCustomizeActivity extends BaseActivity {
-
-    @BindView(R.id.rv_tailor_cloth)
-    RecyclerView rvTailor;
     @BindView(R.id.img_header_back)
     ImageView imgHeaderBack;
     @BindView(R.id.tv_header_title)
     TextView tvHeaderTitle;
-    @BindView(R.id.img_header_share)
-    ImageView imgHeaderShare;
-    @BindView(R.id.rv_tailor_item)
-    RecyclerView rvTailorItem;
     @BindView(R.id.tv_header_next)
     TextView tvHeaderNext;
-    @BindView(R.id.img_large_material)
-    ImageView imgLargeMaterial;
-    @BindView(R.id.rl_positive_tailor)
-    RelativeLayout rlPositiveTailor;
-    @BindView(R.id.rl_back_tailor)
-    RelativeLayout rlBackTailor;
-    @BindView(R.id.rgs_select_orientation)
-    RadioGroup rgsSelectOrientation;
-    @BindView(R.id.img_tailor_icon)
-    ImageView imgTailorIcon;
-    @BindView(R.id.rv_tailor_button)
-    RecyclerView rvTailorButton;
-    @BindView(R.id.rl_inside_tailor)
-    RelativeLayout rlInsideTailor;
-    @BindView(R.id.img_tailor_reset)
-    ImageView imgReset;
-    @BindView(R.id.img_tailor_guide)
-    ImageView imgGuide;
+    @BindView(R.id.tv_cloth_fabric)
+    TextView tvClothFabric;
+    @BindView(R.id.tv_cloth_type)
+    TextView tvClothType;
+    @BindView(R.id.tv_cloth_item)
+    TextView tvClothItem;
+    @BindView(R.id.ll_select_type)
+    LinearLayout llSelectType;
+    @BindView(R.id.rv_select_type)
+    RecyclerView rvSelectType;
+    @BindView(R.id.rv_select_item)
+    RecyclerView rvSelectItem;
+    @BindView(R.id.rl_cloth_positive)
+    RelativeLayout rlClothPositive;
+    @BindView(R.id.rl_cloth_back)
+    RelativeLayout rlClothBack;
+    @BindView(R.id.rl_cloth_inside)
+    RelativeLayout rlClothInside;
+    @BindView(R.id.rgs_select_cloth)
+    RadioGroup rgsSelect;
+    @BindView(R.id.img_reset_tailor)
+    ImageView imgResetTailor;
+    @BindView(R.id.tv_item_introduce)
+    TextView tvIntroduce;
+    @BindView(R.id.rl_cloth_detail)
+    RelativeLayout rlClothDetail;
+    @BindView(R.id.tv_item_title)
+    TextView tvItemTitle;
+    @BindView(R.id.img_cloth_large)
+    CircleImageView imgClothLarge;
     @BindView(R.id.img_load_error)
     ImageView imgLoadError;
 
-    private TailorBean.DataBean dataBean;
-    //配件
-//    private List<TailorBean.DataBean.SpecListBean> specList = new ArrayList<>();
-    private List<TailorBean.DataBean.SpecListBean.ListBean> itemList = new ArrayList<>();
-    //稀疏数组
-    //选择部件id
-    private SparseIntArray itemArray = new SparseIntArray();
-
-    private CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean> itemAdapter;
-
     //商品id
     private String id;
-    //商店id
-    private String shop_id;
-    //工厂id
-    private String market_id;
-    //商品名称
+    //商品名
     private String goodsName;
     //商品图
     private String imgUrl;
     //价格
     private String price;
-    //价格类型
+    //价格id
     private String priceType;
-    //商品分类
     private int classifyId;
     private String logId;
     private long goodsTime;
-    //进入页面时间
-    private long enterTime;
+    private CustomizeBean customizeBean;
 
-    //当前部件位置
-    private int currentPart;
-    //当前子部件位置
-    private int currentItem;
-    //是否选择法式袖扣
-    private String buttonName;
-    //首次选择
-    private boolean firstSelect = true;
-    //默认面料图片
-    private String default_img;
-    //选择钮扣动画
-    private AnimationDrawable animation;
-    //展示图滑动监听
+    //当前面料
+    private int currentFabric = 0;
+    //当前版型
+    private int currentType = 0;
+    //当前部位
+    private int currentParts;
+
     private float x1 = 0;
     private float x2 = 0;
 
-    private GuideBean guideBean;
-    //首次进入引导页面
-    private boolean isFirstEntry;
-    private boolean isLongPress;
+    //稀疏数组
+    //选择部件
+    private SparseIntArray itemArray = new SparseIntArray();
+    //进入页面时间
+    private long enterTime;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tailor);
+        setContentView(R.layout.activity_customize_new);
         ButterKnife.bind(this);
-
+        ActivityManagerUtils.getInstance().addActivity(this);
         getData();
         initData();
+
     }
 
     /**
@@ -151,8 +140,6 @@ public class NewCustomizeActivity extends BaseActivity {
     private void getData() {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
-        shop_id = bundle.getString("shop_id");
-        market_id = bundle.getString("market_id");
         goodsName = bundle.getString("goods_name");
         imgUrl = bundle.getString("img_url");
         price = bundle.getString("price");
@@ -160,45 +147,17 @@ public class NewCustomizeActivity extends BaseActivity {
         classifyId = bundle.getInt("classify_id");
         logId = bundle.getString("log_id");
         goodsTime = bundle.getLong("goods_time");
+
         enterTime = DateUtils.getCurrentTime();
     }
 
-
-    /**
-     * 获取网络数据
-     */
     private void initData() {
-        isFirstEntry = SharedPreferencesUtils.getBoolean(this, "tailor_guide", true);
-        if (isFirstEntry) {
-            OkHttpUtils.get()
-                    .url(Constant.GUIDE_IMG)
-                    .addParams("id", "2")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
 
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-
-                            guideBean = GsonUtils.jsonToBean(response, GuideBean.class);
-                            if (guideBean.getData().getImg_urls() != null && guideBean.getData()
-                                    .getImg_urls().size() > 0) {
-                                imgGuide.setVisibility(View.VISIBLE);
-                                Glide.with(NewCustomizeActivity.this)
-                                        .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(0))
-                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                        .into(imgGuide);
-                            }
-                        }
-                    });
-        }
-        OkHttpUtils.get()
-                .url(Constant.CUSTOMIZE)
+        OkHttpUtils
+                .get()
+                .url(Constant.NEW_CUSTOMIZE)
                 .addParams("goods_id", id)
-                .addParams("phone_type", "3")
+                .addParams("phone_type", "6")
                 .addParams("price_type", priceType)
                 .build()
                 .execute(new StringCallback() {
@@ -210,109 +169,88 @@ public class NewCustomizeActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         imgLoadError.setVisibility(View.GONE);
-                        dataBean = GsonUtils.jsonToBean(response, TailorBean.class).getData();
-                        if (dataBean.getSpec_list() != null && dataBean.getSpec_list().size() > 0) {
+                        customizeBean = GsonUtils.jsonToBean(response, CustomizeBean.class);
+                        if (customizeBean.getData() != null) {
                             initView();
                         }
                     }
                 });
-
     }
-
 
     /**
      * 加载视图
      */
     private void initView() {
-        tvHeaderTitle.setText("选版型");
-        animation = (AnimationDrawable) imgTailorIcon.getDrawable();
-        ((RadioButton) rgsSelectOrientation.getChildAt(0)).setChecked(true);
+        tvHeaderNext.setVisibility(View.VISIBLE);
+        tvHeaderNext.setText("下一步");
+        tvItemTitle.setTypeface(DisplayUtils.setTextType(this));
+        ((RadioButton) rgsSelect.getChildAt(0)).setChecked(true);
 
-        for (int i = 0; i < dataBean.getSpec_list().size(); i++) {
-            ImageView img1 = new ImageView(this);
-            img1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
+            ImageView imgPositive = new ImageView(this);
+            imgPositive.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
 
-            ImageView img2 = new ImageView(this);
-            img2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ImageView imgBack = new ImageView(this);
+            imgBack.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
 
-            ImageView img3 = new ImageView(this);
-            img3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ImageView imgInside = new ImageView(this);
+            imgInside.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
 
-            switch (dataBean.getSpec_list().get(i).getPosition_id()) {
-                case 1:
-                    Glide.with(getApplicationContext())
-                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(img1);
-                    break;
-                case 2:
-                    Glide.with(getApplicationContext())
-                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(img2);
-                    break;
-                case 3:
-                    rgsSelectOrientation.getChildAt(2).setVisibility(View.VISIBLE);
-                    Glide.with(getApplicationContext())
-                            .load(Constant.IMG_HOST + dataBean.getSpec_list().get(i).getList().get(0).getImg_c())
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(img3);
 
-                    break;
-            }
-            rlPositiveTailor.addView(img1);
-            rlBackTailor.addView(img2);
-            rlInsideTailor.addView(img3);
+            rlClothPositive.addView(imgPositive);
+            rlClothBack.addView(imgBack);
+            rlClothInside.addView(imgInside);
         }
 
+        initCloth();
+        selectFabric();
 
-        rgsSelectOrientation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgsSelect.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
-                for (int m = 0; m < rgsSelectOrientation.getChildCount(); m++) {
+                for (int m = 0; m < rgsSelect.getChildCount(); m++) {
                     RadioButton rBtn = (RadioButton) radioGroup.getChildAt(m);
                     if (rBtn.getId() == i) {
                         switch (m) {
                             case 0:
-                                rlPositiveTailor.setVisibility(View.VISIBLE);
-                                rlBackTailor.setVisibility(View.GONE);
-                                rlInsideTailor.setVisibility(View.GONE);
+                                rlClothPositive.setVisibility(View.VISIBLE);
+                                rlClothBack.setVisibility(View.GONE);
+                                rlClothInside.setVisibility(View.GONE);
                                 break;
                             case 1:
-                                rlBackTailor.setVisibility(View.VISIBLE);
-                                rlPositiveTailor.setVisibility(View.GONE);
-                                rlInsideTailor.setVisibility(View.GONE);
+                                rlClothBack.setVisibility(View.VISIBLE);
+                                rlClothPositive.setVisibility(View.GONE);
+                                rlClothInside.setVisibility(View.GONE);
                                 break;
                             case 2:
-                                rlInsideTailor.setVisibility(View.VISIBLE);
-                                rlPositiveTailor.setVisibility(View.GONE);
-                                rlBackTailor.setVisibility(View.GONE);
+                                rlClothInside.setVisibility(View.VISIBLE);
+                                rlClothPositive.setVisibility(View.GONE);
+                                rlClothPositive.setVisibility(View.GONE);
                                 break;
                         }
+
+
                     }
                 }
             }
         });
 
-        rlPositiveTailor.setOnTouchListener(new View.OnTouchListener() {
+        rlClothPositive.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        x1 = motionEvent.getX();
+                        x1 = motionEvent.getRawX();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        x2 = motionEvent.getX();
+                        x2 = motionEvent.getRawX();
                     case MotionEvent.ACTION_UP:
                         if (x1 < x2) {
-                            ((RadioButton) rgsSelectOrientation.getChildAt(1)).setChecked(true);
+                            ((RadioButton) rgsSelect.getChildAt(1)).setChecked(true);
                         }
                         break;
                 }
@@ -320,7 +258,7 @@ public class NewCustomizeActivity extends BaseActivity {
             }
         });
 
-        rlBackTailor.setOnTouchListener(new View.OnTouchListener() {
+        rlClothBack.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -331,19 +269,21 @@ public class NewCustomizeActivity extends BaseActivity {
                         x2 = motionEvent.getX();
                     case MotionEvent.ACTION_UP:
                         if (x1 > x2) {
-                            ((RadioButton) rgsSelectOrientation.getChildAt(0)).setChecked(true);
+                            ((RadioButton) rgsSelect.getChildAt(0)).setChecked(true);
                         } else if (x1 < x2) {
-                            if (rgsSelectOrientation.getChildAt(2).getVisibility() == View.VISIBLE) {
-                                ((RadioButton) rgsSelectOrientation.getChildAt(2)).setChecked(true);
+                            if (rgsSelect.getChildAt(2).getVisibility() == View.VISIBLE) {
+                                ((RadioButton) rgsSelect.getChildAt(2)).setChecked(true);
                             }
                         }
                         break;
                 }
                 return true;
             }
+
+
         });
 
-        rlInsideTailor.setOnTouchListener(new View.OnTouchListener() {
+        rlClothInside.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -354,342 +294,501 @@ public class NewCustomizeActivity extends BaseActivity {
                         x2 = motionEvent.getX();
                     case MotionEvent.ACTION_UP:
                         if (x1 > x2) {
-                            ((RadioButton) rgsSelectOrientation.getChildAt(1)).setChecked(true);
+                            ((RadioButton) rgsSelect.getChildAt(1)).setChecked(true);
                         }
                         break;
                 }
                 return true;
             }
-
         });
 
-        //部件
-        rvTailor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
-                false));
-        CommonAdapter<TailorBean.DataBean.SpecListBean> adapter = new CommonAdapter<TailorBean
-                .DataBean.SpecListBean>(NewCustomizeActivity.this,
-                R.layout.listitem_custom_parts, dataBean.getSpec_list()) {
-            @Override
-            protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean specListBean, int position) {
-                Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.IMG_HOST + specListBean.getImg())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((ImageView) holder.getView(R.id.img_tailor_item));
-            }
-        };
-        rvTailor.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                //选择正反面
-                ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list()
-                        .get(position).getPosition_id() - 1)).setChecked(true);
-                tvHeaderTitle.setText(dataBean.getSpec_list().get(position).getSpec_name());
-                currentPart = position;
-
-                imgLargeMaterial.setVisibility(View.GONE);
-                rvTailorButton.setVisibility(View.GONE);
-                rvTailorItem.setVisibility(View.VISIBLE);
-
-                noMatchSpec();
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
-
-        //配件
-        rvTailorItem.setLayoutManager(new LinearLayoutManager(NewCustomizeActivity.this,
-                LinearLayoutManager.HORIZONTAL, false));
-        itemAdapter = new CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean>(
-                NewCustomizeActivity.this, R.layout.listitem_custom_parts, itemList) {
-            @Override
-            protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean.ListBean listBean, int position) {
-                Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.IMG_HOST + listBean.getImg_a())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into((CircleImageView) holder.getView(R.id.img_tailor_item));
-            }
-        };
-        rvTailorItem.setAdapter(itemAdapter);
-
-        if (isFirstEntry && guideBean.getData().getImg_urls().get(1) != null) {
-            imgGuide.setVisibility(View.VISIBLE);
-            Glide.with(NewCustomizeActivity.this)
-                    .load(Constant.IMG_HOST + guideBean.getData().getImg_urls().get(1))
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imgGuide);
-            isFirstEntry = false;
-            SharedPreferencesUtils.saveBoolean(NewCustomizeActivity.this,
-                    "tailor_guide", false);
-        }
-
-        rvTailorItem.setOnTouchListener(new View.OnTouchListener() {
+        rvSelectItem.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    imgLargeMaterial.setVisibility(View.GONE);
+                    rlClothDetail.setVisibility(View.GONE);
+
                 }
                 return false;
             }
+
         });
 
-        itemAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (!isLongPress) {
-                    currentItem = position;
-                    if (firstSelect && currentPart != 0) {
-                        for (int i = 0; i < rlPositiveTailor.getChildCount(); i++) {
-                            ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(i);
-                            positiveImg.setImageDrawable(null);
-                        }
-
-                        for (int i = 0; i < rlBackTailor.getChildCount(); i++) {
-                            ImageView backImg = (ImageView) rlBackTailor.getChildAt(i);
-                            backImg.setImageDrawable(null);
-                        }
-
-                        for (int i = 0; i < rlInsideTailor.getChildCount(); i++) {
-                            ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(i);
-                            inSideImg.setImageDrawable(null);
-                        }
-                        firstSelect = false;
-                    }
-
-                    imgReset.setVisibility(View.VISIBLE);
-
-                    itemArray.put(currentPart, itemList.get(position).getId());
-
-
-                    CircleImageView img = (CircleImageView) rvTailor.findViewHolderForAdapterPosition(currentPart)
-                            .itemView.findViewById(R.id.img_tailor_item);
-                    Glide.with(NewCustomizeActivity.this)
-                            .load(Constant.IMG_HOST + itemList.get(position).getImg_a())
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(img);
-
-                    View itemBg = rvTailor.findViewHolderForAdapterPosition(currentPart).itemView
-                            .findViewById(R.id.view_tailor_item);
-                    itemBg.setVisibility(View.VISIBLE);
-
-                    if (dataBean.getSpec_list().get(currentPart).getSpec_name().equals("面料")) {
-                        default_img = itemList.get(position).getMianliao_img();
-                    }
-
-                    //选择正反面
-                    ((RadioButton) rgsSelectOrientation.getChildAt(dataBean.getSpec_list().get(currentPart)
-                            .getPosition_id() - 1)).setChecked(true);
-
-                    switch (dataBean.getSpec_list().get(currentPart).getPosition_id()) {
-                        case 1:
-                            ImageView positiveImg = (ImageView) rlPositiveTailor.getChildAt(currentPart);
-                            Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
-                                    .fitCenter()
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                    .into(positiveImg);
-
-                            imgTailorIcon.setVisibility(View.GONE);
-                            animation.stop();
-                            rvTailorButton.setVisibility(View.GONE);
-
-                            break;
-                        case 2:
-                            ImageView backImg = (ImageView) rlBackTailor.getChildAt(currentPart);
-                            Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
-                                    .fitCenter()
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                    .into(backImg);
-
-//                        if (itemList.get(position).getName().contains("袖")) {
-//                            if (itemList.get(position).getName().contains("法式")) {
-//
-//                                imgTailorIcon.setVisibility(View.VISIBLE);
-//                                animation.start();
-//                                rvTailorButton.setVisibility(View.GONE);
-//                                ToastUtils.showToast(NewCustomizeActivity.this,
-//                                        "您选择了法式袖，请挑选扣子");
-//                            } else {
-//                                imgTailorIcon.setVisibility(View.GONE);
-//                                animation.stop();
-//                                rvTailorButton.setVisibility(View.GONE);
-//                                buttonName = null;
-//                            }
-//                        }
-
-                            break;
-                        case 3:
-                            ImageView inSideImg = (ImageView) rlInsideTailor.getChildAt(currentPart);
-                            Glide.with(NewCustomizeActivity.this)
-                                    .load(Constant.IMG_HOST + itemList.get(position).getImg_c())
-                                    .fitCenter()
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                    .into(inSideImg);
-
-                            imgTailorIcon.setVisibility(View.GONE);
-                            animation.stop();
-                            rvTailorButton.setVisibility(View.GONE);
-
-                            break;
-                    }
-
-                    tvHeaderTitle.setText(itemList.get(position).getName());
-
-
-                    isAllSelect();
-                } else {
-                    isLongPress = false;
-                    if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
-                        imgLargeMaterial.setVisibility(View.GONE);
-                    }
-                }
-
-
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.IMG_HOST + itemList.get(position).getImg_b())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imgLargeMaterial);
-                isLongPress = true;
-                if (imgLargeMaterial.getVisibility() == View.GONE) {
-                    imgLargeMaterial.setVisibility(View.VISIBLE);
-                }
-                return false;
-            }
-        });
-
-
-    }
-
-    /**
-     * 不可搭配
-     */
-    private void noMatchSpec() {
-
-        List<String> noMatchIds = new ArrayList<>();
-        for (int k = 0; k < itemArray.size(); k++) {
-            for (int i = 0; i < dataBean.getSpec_list().size(); i++) {
-                for (int j = 0; j < dataBean.getSpec_list().get(i).getList().size(); j++) {
-                    if (itemArray.valueAt(k) == dataBean.getSpec_list().get(i).getList().get(j).getId()) {
-                        if (dataBean.getSpec_list().get(i).getList().get(j).getNotmatch_spec_ids() != null) {
-                            String[] split = dataBean.getSpec_list().get(i).getList().get(j)
-                                    .getNotmatch_spec_ids().split(",");
-                            noMatchIds.addAll(Arrays.asList(split));
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        itemList.clear();
-
-        for (int j = 0; j < dataBean.getSpec_list().get(currentPart).getList().size(); j++) {
-            if (!noMatchIds.contains(String.valueOf(dataBean.getSpec_list().get(currentPart)
-                    .getList().get(j).getId()))) {
-                itemList.add(dataBean.getSpec_list().get(currentPart).getList().get(j));
-            }
-        }
-
-        itemAdapter.notifyDataSetChanged();
-
-    }
-
-    /**
-     * 部件是否都选择
-     *
-     * @param
-     */
-    private void isAllSelect() {
-        if (itemArray.size() == dataBean.getSpec_list().size()) {
-            tvHeaderNext.setVisibility(View.VISIBLE);
-            tvHeaderNext.setText("下一步");
-        }
     }
 
 
-    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.rl_positive_tailor, R.id.img_load_error,
-           R.id.img_tailor_icon, R.id.img_tailor_reset, R.id.img_tailor_guide})
-    public void onClick(View view) {
+    @OnClick({R.id.img_header_back, R.id.tv_header_next, R.id.img_reset_tailor, R.id.tv_cloth_fabric
+            , R.id.tv_cloth_type, R.id.tv_cloth_item,R.id.img_load_error})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_header_back:
+                customGoodsLog();
                 finish();
                 break;
             case R.id.tv_header_next:
                 nextStep();
                 break;
-            case R.id.rl_positive_tailor:
-                imgLargeMaterial.setVisibility(View.GONE);
+            case R.id.img_reset_tailor:
+                resetTailor();
                 break;
-            case R.id.img_tailor_icon:
-                selectButton();
+            case R.id.tv_cloth_fabric:
+                selectFabric();
                 break;
-            case R.id.img_tailor_reset:
-                reselect();
+            case R.id.tv_cloth_type:
+                selectType();
                 break;
-            case R.id.img_tailor_guide:
-                imgGuide.setVisibility(View.GONE);
+            case R.id.tv_cloth_item:
+                selectParts();
                 break;
             case R.id.img_load_error:
                 initData();
                 break;
-
         }
+    }
+
+
+    /**
+     * 初始化部件
+     */
+    private void initCloth() {
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian().size(); i++) {
+
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(i)
+                    .getSpec_list() != null && customizeBean.getData().getBanxin()
+                    .get(currentType).getPeijian().get(i).getSpec_list().size() > 0) {
+                int currentItem = 0;
+                for (int j = 0; j < customizeBean.getData().getBanxin().get(currentType)
+                        .getPeijian().get(i).getSpec_list().size(); j++) {
+
+                    if (customizeBean.getData().getMianliao().get(currentFabric).getId() == customizeBean
+                            .getData().getBanxin().get(currentType).getPeijian().get(i)
+                            .getSpec_list().get(j).getMianliao_id()) {
+                        currentItem = j;
+                        //选择正反面
+                        int positionId = customizeBean.getData().getBanxin().get(currentType)
+                                .getPeijian().get(i).getPosition_id();
+                        switch (positionId) {
+                            case 1:
+                                ImageView imgPositive = (ImageView) rlClothPositive.getChildAt(i);
+                                Glide.with(NewCustomizeActivity.this)
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
+                                                .get(currentType).getPeijian().get(i).getSpec_list()
+                                                .get(j).getImg_c())
+                                        .fitCenter()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                        .into(imgPositive);
+                                break;
+                            case 2:
+                                ImageView imgBack = (ImageView) rlClothBack.getChildAt(i);
+                                Glide.with(NewCustomizeActivity.this)
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
+                                                .get(currentType).getPeijian().get(i).getSpec_list()
+                                                .get(j).getImg_c())
+                                        .fitCenter()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                        .into(imgBack);
+                                break;
+                            case 3:
+                                ImageView imgInSide = (ImageView) rlClothInside.getChildAt(i);
+                                Glide.with(NewCustomizeActivity.this)
+                                        .load(Constant.IMG_HOST + customizeBean.getData().getBanxin()
+                                                .get(currentType).getPeijian().get(i).getSpec_list()
+                                                .get(j).getImg_c())
+                                        .fitCenter()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                        .into(imgInSide);
+                                break;
+                        }
+                        break;
+                    }
+                }
+                itemArray.put(i, currentItem);
+            }
+        }
+
+    }
+
+    /**
+     * 选择面料
+     */
+    private void selectFabric() {
+        if (customizeBean != null && customizeBean.getData().getMianliao() != null) {
+            rvSelectItem.setVisibility(View.VISIBLE);
+            tvHeaderTitle.setText("面料");
+            tvClothFabric.setTextColor(Color.WHITE);
+            tvClothFabric.setBackgroundResource(R.drawable.circle_black);
+            tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
+            tvClothType.setBackgroundResource(R.drawable.ring_gray);
+            final CommonAdapter<CustomizeBean.DataBean.MianliaoBean> fabricAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.MianliaoBean>(NewCustomizeActivity.this,
+                            R.layout.listitem_custom_parts, customizeBean.getData().getMianliao()) {
+                        @Override
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.MianliaoBean
+                                mianliaoBean, int position) {
+                            Glide.with(NewCustomizeActivity.this)
+                                    .load(Constant.IMG_HOST + mianliaoBean.getImg_a())
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
+                            if (currentFabric == position) {
+                                holder.setVisible(R.id.img_tailor_bg, true);
+                            } else {
+                                holder.setVisible(R.id.img_tailor_bg, false);
+                            }
+                        }
+                    };
+            rvSelectItem.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvSelectItem.setAdapter(fabricAdapter);
+
+
+            fabricAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    currentFabric = position;
+                    fabricAdapter.notifyDataSetChanged();
+                    tvHeaderTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
+                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                        rlClothDetail.setVisibility(View.GONE);
+                    }
+
+                    initCloth();
+
+                    imgResetTailor.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+                    Glide.with(NewCustomizeActivity.this)
+                            .load(Constant.IMG_HOST + customizeBean.getData().getMianliao().get(position).getImg_b())
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .fitCenter()
+                            .into(imgClothLarge);
+                    tvItemTitle.setText(customizeBean.getData().getMianliao().get(position).getName());
+                    tvIntroduce.setText(customizeBean.getData().getMianliao().get(position).getIntroduce());
+                    if (rlClothDetail.getVisibility() == View.GONE) {
+                        rlClothDetail.setVisibility(View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
+        }
+
     }
 
     /**
      * 重置
      */
-    private void reselect() {
-
+    private void resetTailor() {
+        imgResetTailor.setVisibility(View.GONE);
         itemArray.clear();
-        itemList.clear();
-        itemAdapter.notifyDataSetChanged();
-
-        buttonName = null;
-        firstSelect = true;
-        tvHeaderNext.setVisibility(View.GONE);
-        rvTailorItem.setVisibility(View.GONE);
-        rvTailorButton.setVisibility(View.GONE);
-        imgReset.setVisibility(View.GONE);
-        rlPositiveTailor.removeAllViews();
-        rlBackTailor.removeAllViews();
-        rlInsideTailor.removeAllViews();
-
-        initView();
+        llSelectType.setVisibility(View.VISIBLE);
+        rvSelectType.setVisibility(View.INVISIBLE);
+        rvSelectItem.setVisibility(View.INVISIBLE);
+        currentFabric = 0;
+        currentType = 0;
+        tvClothFabric.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
+        tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
+        tvClothType.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
+        tvClothType.setBackgroundResource(R.drawable.ring_gray);
+        ((RadioButton) rgsSelect.getChildAt(0)).setChecked(true);
+        initCloth();
+        selectFabric();
     }
 
 
     /**
-     * 定制完成
+     * 选择版型
+     */
+    private void selectType() {
+        if (customizeBean != null && customizeBean.getData().getBanxin() != null) {
+            rvSelectItem.setVisibility(View.VISIBLE);
+            tvHeaderTitle.setText("版型");
+            tvClothType.setTextColor(Color.WHITE);
+            tvClothType.setBackgroundResource(R.drawable.circle_black);
+            tvClothFabric.setTextColor(ContextCompat.getColor(this, R.color.dark_gray_22));
+            tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
+            final CommonAdapter<CustomizeBean.DataBean.BanxinBean> typeAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.BanxinBean>(NewCustomizeActivity.this,
+                            R.layout.listitem_custom_parts, customizeBean.getData().getBanxin()) {
+                        @Override
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.BanxinBean
+                                banxinBean, int position) {
+                            Glide.with(NewCustomizeActivity.this)
+                                    .load(Constant.IMG_HOST + banxinBean.getImg_a())
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
+                            if (currentType == position) {
+                                holder.setVisible(R.id.img_tailor_bg, true);
+                            } else {
+                                holder.setVisible(R.id.img_tailor_bg, false);
+                            }
+                        }
+                    };
+            rvSelectItem.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvSelectItem.setAdapter(typeAdapter);
+            typeAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    currentType = position;
+                    typeAdapter.notifyDataSetChanged();
+                    tvHeaderTitle.setText(customizeBean.getData().getBanxin().get(position).getName());
+                    if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                        rlClothDetail.setVisibility(View.GONE);
+                    }
+
+                    initCloth();
+
+                    imgResetTailor.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+                    Glide.with(NewCustomizeActivity.this)
+                            .load(Constant.IMG_HOST + customizeBean.getData().getBanxin().get(position).getImg_b())
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .fitCenter()
+                            .into(imgClothLarge);
+                    tvItemTitle.setText(customizeBean.getData().getBanxin().get(position).getName());
+                    tvIntroduce.setText("");
+                    if (rlClothDetail.getVisibility() == View.GONE) {
+                        rlClothDetail.setVisibility(View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
+        }
+
+    }
+
+    /**
+     * 选择衣服部位
+     */
+    private void selectParts() {
+        if (customizeBean != null && customizeBean.getData() != null) {
+            tvHeaderTitle.setText("细节");
+            llSelectType.setVisibility(View.INVISIBLE);
+            rvSelectType.setVisibility(View.VISIBLE);
+            rvSelectItem.setVisibility(View.INVISIBLE);
+            imgResetTailor.setVisibility(View.VISIBLE);
+            CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean> partsAdapter = new
+                    CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean>
+                            (NewCustomizeActivity.this, R.layout.listitem_custom_parts, customizeBean.getData()
+                                    .getBanxin().get(currentType).getPeijian()) {
+                        @Override
+                        protected void convert(ViewHolder holder, CustomizeBean.DataBean.BanxinBean
+                                .PeijianBean peijianBean, int position) {
+
+                            Glide.with(NewCustomizeActivity.this)
+                                    .load(Constant.IMG_HOST + peijianBean.getSpec_list().get(itemArray
+                                            .get(position)).getImg_a())
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into((ImageView) holder.getView(R.id.img_tailor_item));
+
+                            holder.setVisible(R.id.view_tailor_item, true);
+
+                        }
+                    };
+
+            HeaderAndFooterWrapper headerAndFooterWrapper = new HeaderAndFooterWrapper(partsAdapter);
+
+            LinearLayout layout = new LinearLayout(this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layoutParams.setMargins((int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6),
+                    (int) DisplayUtils.dp2px(this, 10), (int) DisplayUtils.dp2px(this, 6));
+            layout.setLayoutParams(layoutParams);
+
+            ImageView imgClose = new ImageView(this);
+            imgClose.setImageResource(R.mipmap.icon_close);
+            ViewGroup.LayoutParams param1 = new ViewGroup.LayoutParams((int) DisplayUtils.dp2px(this, 50)
+                    , (int) DisplayUtils.dp2px(this, 50));
+
+            layout.addView(imgClose, param1);
+            headerAndFooterWrapper.addFootView(layout);
+
+            imgClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tvHeaderTitle.setText("细节");
+                    llSelectType.setVisibility(View.VISIBLE);
+                    rvSelectType.setVisibility(View.INVISIBLE);
+                    rvSelectItem.setVisibility(View.INVISIBLE);
+                    tvClothFabric.setTextColor(ContextCompat.getColor(NewCustomizeActivity.this, R.color.dark_gray_22));
+                    tvClothFabric.setBackgroundResource(R.drawable.ring_gray);
+                    tvClothType.setTextColor(ContextCompat.getColor(NewCustomizeActivity.this, R.color.dark_gray_22));
+                    tvClothType.setBackgroundResource(R.drawable.ring_gray);
+                }
+            });
+
+            rvSelectType.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL
+                    , false));
+            rvSelectType.setAdapter(headerAndFooterWrapper);
+
+            selectItem(0);
+
+            partsAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    selectItem(position);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
+
+        }
+    }
+
+    /**
+     * @param position 选择部件
+     */
+    private void selectItem(int position) {
+        currentParts = position;
+        rvSelectItem.setVisibility(View.VISIBLE);
+        tvHeaderTitle.setText(customizeBean.getData().getBanxin().get(currentType)
+                .getPeijian().get(currentParts).getName());
+
+        ((RadioButton) rgsSelect.getChildAt(customizeBean.getData().getBanxin().get(currentType)
+                .getPeijian().get(currentParts).getPosition_id() - 1)).setChecked(true);
+        final List<CustomizeBean.DataBean.BanxinBean.PeijianBean.SpecListBean> itemList = new ArrayList<>();
+
+        for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                .get(position).getSpec_list().size(); i++) {
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(position)
+                    .getSpec_list().get(i).getMianliao_id() == customizeBean.getData()
+                    .getMianliao().get(currentFabric).getId()) {
+                itemList.add(customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                        .get(position).getSpec_list().get(i));
+            }
+        }
+        final CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean.SpecListBean>
+                itemAdapter = new CommonAdapter<CustomizeBean.DataBean.BanxinBean.PeijianBean
+                .SpecListBean>(NewCustomizeActivity.this, R.layout.listitem_custom_parts, itemList) {
+            @Override
+            protected void convert(ViewHolder holder, CustomizeBean.DataBean
+                    .BanxinBean.PeijianBean.SpecListBean specListBean, int position) {
+
+                Glide.with(NewCustomizeActivity.this)
+                        .load(Constant.IMG_HOST + specListBean.getImg_a())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into((ImageView) holder.getView(R.id.img_tailor_item));
+
+                if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                        .get(currentParts).getSpec_list().get(itemArray.get(currentParts)).getId()
+                        == specListBean.getId()) {
+                    holder.setVisible(R.id.img_tailor_bg, true);
+                } else {
+                    holder.setVisible(R.id.img_tailor_bg, false);
+                }
+
+            }
+        };
+        rvSelectItem.setLayoutManager(new LinearLayoutManager(NewCustomizeActivity.this,
+                LinearLayoutManager.HORIZONTAL, false));
+        rvSelectItem.setAdapter(itemAdapter);
+
+        itemAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+                if (rlClothDetail.getVisibility() == View.VISIBLE) {
+                    rlClothDetail.setVisibility(View.GONE);
+                }
+
+                CircleImageView imgItem = (CircleImageView) rvSelectType
+                        .findViewHolderForAdapterPosition(currentParts)
+                        .itemView.findViewById(R.id.img_tailor_item);
+
+
+                Glide.with(NewCustomizeActivity.this)
+                        .load(Constant.IMG_HOST + itemList.get(position).getImg_a())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(imgItem);
+
+
+                //选择正反面
+                int positionId = customizeBean.getData().getBanxin().get(currentType)
+                        .getPeijian().get(currentParts).getPosition_id();
+                ((RadioButton) rgsSelect.getChildAt(positionId - 1)).setChecked(true);
+
+                switch (positionId) {
+                    case 1:
+                        switchParts(rlClothPositive, itemList.get(position).getImg_c());
+                        break;
+                    case 2:
+                        switchParts(rlClothBack, itemList.get(position).getImg_c());
+                        break;
+                    case 3:
+                        switchParts(rlClothInside, itemList.get(position).getImg_c());
+                        break;
+                }
+
+                tvHeaderTitle.setText(itemList.get(position).getName());
+
+                for (int i = 0; i < customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                        .get(currentParts).getSpec_list().size(); i++) {
+                    if (customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                            .get(currentParts).getSpec_list().get(i).getId() == itemList
+                            .get(position).getId()) {
+                        itemArray.put(currentParts, i);
+                    }
+                }
+                itemAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+                Glide.with(NewCustomizeActivity.this)
+                        .load(Constant.IMG_HOST + itemList.get(position).getImg_b())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .fitCenter()
+                        .into(imgClothLarge);
+                tvItemTitle.setText(itemList.get(position).getName());
+                tvIntroduce.setText(itemList.get(position).getIntroduce());
+                if (rlClothDetail.getVisibility() == View.GONE) {
+                    rlClothDetail.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
+    }
+
+
+    /**
+     * @param rl
+     * @param imgUrl 切换衣服部件图片
+     */
+    private void switchParts(RelativeLayout rl, String imgUrl) {
+        ImageView imageView = (ImageView) rl.getChildAt(currentParts);
+        Glide.with(NewCustomizeActivity.this)
+                .load(Constant.IMG_HOST + imgUrl)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+    }
+
+    /**
+     * 下一步
      */
     private void nextStep() {
-
         Intent intent;
         Bundle bundle = new Bundle();
+
         if (classifyId == 1 || classifyId == 2) {
             intent = new Intent(this, EmbroideryActivity.class);
             bundle.putInt("classify_id", classifyId);
         } else {
-            intent = new Intent(this, EmbroideryActivity.class);
+            intent = new Intent(this, CustomResultActivity.class);
         }
+
 
         CustomItemBean customItemBean = new CustomItemBean();
         customItemBean.setId(id);
-        if (shop_id != null) {
-            customItemBean.setShop_id(shop_id);
-        }
-        if (market_id != null) {
-            customItemBean.setMarket_id(market_id);
-        }
         customItemBean.setGoods_name(goodsName);
         customItemBean.setPrice(price);
         customItemBean.setImg_url(imgUrl);
@@ -698,120 +797,100 @@ public class NewCustomizeActivity extends BaseActivity {
         customItemBean.setGoods_time(goodsTime);
         customItemBean.setDingzhi_time(DateUtils.getCurrentTime() - enterTime);
         customItemBean.setIs_scan(0);
-
+        //面料
+        customItemBean.setFabric_id(customizeBean.getData().getMianliao().get(currentFabric).getId() + "");
+        customItemBean.setBanxing_id(customizeBean.getData().getBanxin().get(currentType).getId() + "");
+        customItemBean.setDefault_img(customizeBean.getData().getMianliao().get(currentFabric).getGoods_img());
 
         //部件
         List<CustomItemBean.ItemBean> itemList = new ArrayList<>();
         StringBuilder sbIds = new StringBuilder();
         StringBuilder sbContent = new StringBuilder();
-
-
         for (int i = 0; i < itemArray.size(); i++) {
             CustomItemBean.ItemBean itemBean = new CustomItemBean.ItemBean();
+            int key = itemArray.keyAt(i);
             int value = itemArray.valueAt(i);
+            if (customizeBean.getData().getBanxin().get(currentType).getPeijian().get(key)
+                    .getSpec_list().get(value) != null) {
 
+                sbIds.append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                        .get(key).getSpec_list().get(value).getId())
+                        .append(",");
 
-            sbIds.append(value).append(",");
+                sbContent.append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                        .get(key).getName())
+                        .append(":")
+                        .append(customizeBean.getData().getBanxin().get(currentType).getPeijian()
+                                .get(key).getSpec_list().get(value).getName())
+                        .append(";");
 
-            for (int j = 0; j < dataBean.getSpec_list().size(); j++) {
+                itemBean.setImg(customizeBean.getData().getBanxin().get(currentType)
+                        .getPeijian().get(key).getSpec_list().get(value).getImg_c());
+                itemBean.setPosition_id(customizeBean.getData().getBanxin().get(currentType)
+                        .getPeijian().get(key).getPosition_id());
 
-                for (int k = 0; k < dataBean.getSpec_list().get(j).getList().size(); k++) {
-                    if (value == dataBean.getSpec_list().get(j).getList().get(k).getId()) {
-                        sbContent.append(dataBean.getSpec_list().get(j).getSpec_name())
-                                .append(":")
-                                .append(dataBean.getSpec_list().get(j).getList().get(k).getName())
-                                .append(";");
-                        itemBean.setPosition_id(dataBean.getSpec_list().get(j).getPosition_id());
-                        itemBean.setImg(dataBean.getSpec_list().get(j).getList().get(k).getImg_c());
-                        itemList.add(itemBean);
-                        break;
-                    }
-                }
+                itemList.add(itemBean);
+
             }
-
         }
 
+        sbContent.append("面料:")
+                .append(customizeBean.getData().getMianliao().get(currentFabric).getName())
+                .append(";版型:")
+                .append(customizeBean.getData().getBanxin().get(currentType).getName())
+                .append(";");
 
-//        if (buttonName != null) {
-//            sbContent.append("法式袖扣子:")
-//                    .append(buttonName)
-//                    .append(";");
-//        }
-
-        customItemBean.setDefault_img(default_img);
-        customItemBean.setItemBean(itemList);
         customItemBean.setSpec_ids(sbIds.deleteCharAt(sbIds.length() - 1).toString());
         customItemBean.setSpec_content(sbContent.toString());
+
+        customItemBean.setItemBean(itemList);
         bundle.putSerializable("tailor", customItemBean);
+
         intent.putExtras(bundle);
         startActivity(intent);
 
     }
 
+
     /**
-     * 选择钮扣
+     * 商品订制跟踪
      */
-    private void selectButton() {
-        animation.stop();
-        imgTailorIcon.setVisibility(View.GONE);
-        rvTailorButton.setVisibility(View.VISIBLE);
-        rvTailorButton.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false));
-        CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean> buttonAdapter = new
-                CommonAdapter<TailorBean.DataBean.SpecListBean.ListBean.ChildBean>(this,
-                        R.layout.listitem_custom_parts, itemList.get(currentItem).getChild_list()) {
-                    @Override
-                    protected void convert(ViewHolder holder, TailorBean.DataBean.SpecListBean
-                            .ListBean.ChildBean childBean, int position) {
-                        Glide.with(NewCustomizeActivity.this)
-                                .load(Constant.IMG_HOST + childBean.getImg_a())
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into((ImageView) holder.getView(R.id.img_tailor_item));
-                    }
-                };
+    private void customGoodsLog() {
+        if (customizeBean != null) {
+            OkHttpUtils.post()
+                    .url(Constant.GOODS_LOG)
+                    .addParams("token", SharedPreferencesUtils.getStr(this, "token"))
+                    .addParams("id", logId)
+                    .addParams("goods_time", (DateUtils.getCurrentTime() - goodsTime) + "")
+                    .addParams("dingzhi_time", (DateUtils.getCurrentTime() - enterTime) + "")
+                    .addParams("goods_id", id)
+                    .addParams("goods_name", goodsName)
+                    .addParams("click_dingzhi", "1")
+                    .addParams("click_pay", "0")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
 
-        rvTailorButton.setAdapter(buttonAdapter);
-        rvTailorButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    imgLargeMaterial.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        });
+                        }
 
-        buttonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        @Override
+                        public void onResponse(String response, int id) {
+                        }
+                    });
+        }
 
-                if (!isLongPress) {
-                    tvHeaderTitle.setText(itemList.get(currentItem).getChild_list().get(position).getName());
-                    buttonName = itemList.get(currentItem).getChild_list().get(position).getName();
-                } else {
-                    isLongPress = false;
-                    if (imgLargeMaterial.getVisibility() == View.VISIBLE) {
-                        imgLargeMaterial.setVisibility(View.GONE);
-                    }
-                }
-
-
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Glide.with(NewCustomizeActivity.this)
-                        .load(Constant.IMG_HOST + itemList.get(currentItem).getChild_list()
-                                .get(position).getImg_b())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imgLargeMaterial);
-                isLongPress = true;
-                if (imgLargeMaterial.getVisibility() == View.GONE) {
-                    imgLargeMaterial.setVisibility(View.VISIBLE);
-                }
-                return false;
-            }
-        });
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            customGoodsLog();
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 }

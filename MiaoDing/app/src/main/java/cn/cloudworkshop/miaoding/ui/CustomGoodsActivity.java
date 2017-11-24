@@ -452,7 +452,7 @@ public class CustomGoodsActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 mPopupWindow.dismiss();
-                Intent intent = new Intent(CustomGoodsActivity.this, NewCustomizeActivity.class);
+                Intent intent = new Intent(CustomGoodsActivity.this, CustomizeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
                 bundle.putString("goods_name", customBean.getData().getName());

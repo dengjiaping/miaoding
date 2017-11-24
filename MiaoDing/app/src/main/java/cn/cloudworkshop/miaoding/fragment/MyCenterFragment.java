@@ -307,7 +307,7 @@ public class MyCenterFragment extends BaseFragment {
                                 intent.putExtra("share_title", "邀请有礼");
                                 intent.putExtra("share_content", "好友" + userInfoBean.getData().getName()
                                         + "邀请您加入妙定，为您定制绅士腔调");
-                                intent.putExtra("url", Constant.IMG_HOST + url + uid);
+                                intent.putExtra("url", Constant.HOST + url + uid);
                                 intent.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
                                 startActivity(intent);
                             }

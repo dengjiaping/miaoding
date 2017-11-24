@@ -28,7 +28,8 @@ public class Constant {
     //商品详情
     public static final String GOODS_DETAILS = HOST_INDEX + "new_goods_detail";
     //定制配件（当前版）
-    public static final String CUSTOMIZE = "http://139.196.113.61" + INDEX + "customize";
+    public static final String CUSTOMIZE = HOST_INDEX + "customize";
+//    public static final String CUSTOMIZE = "http://139.196.113.61" + INDEX + "customize";
     //定制配件（新版）
     public static final String NEW_CUSTOMIZE = HOST_INDEX + "new_customize";
     //发送验证码

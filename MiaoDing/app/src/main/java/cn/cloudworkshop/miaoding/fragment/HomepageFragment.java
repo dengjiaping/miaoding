@@ -268,13 +268,13 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                         //咨询页webview
                         case 1:
                             Intent intent = new Intent(getActivity(), HomepageInfoActivity.class);
-                            intent.putExtra("url", Constant.IMG_HOST + homepageBean.getLunbo()
+                            intent.putExtra("url", Constant.HOST + homepageBean.getLunbo()
                                     .get(position).getLink());
                             intent.putExtra("title", homepageBean.getLunbo().get(position).getTitle());
                             intent.putExtra("content", "");
                             intent.putExtra("img_url", Constant.IMG_HOST + homepageBean.getLunbo()
                                     .get(position).getImg());
-                            intent.putExtra("share_url", Constant.IMG_HOST + homepageBean.getLunbo()
+                            intent.putExtra("share_url", Constant.HOST + homepageBean.getLunbo()
                                     .get(position).getShare_link());
                             startActivity(intent);
                             break;
@@ -291,7 +291,7 @@ public class HomepageFragment extends BaseFragment implements SectionedRVAdapter
                                 invite.putExtra("share_title", "邀请有礼");
                                 invite.putExtra("share_content", "好友" + SharedPreferencesUtils
                                         .getStr(getActivity(), "username") + "邀请您加入妙定，为您定制绅士腔调");
-                                invite.putExtra("url", Constant.IMG_HOST + homepageBean.getLunbo()
+                                invite.putExtra("url", Constant.HOST + homepageBean.getLunbo()
                                         .get(position).getLink() + uid);
                                 invite.putExtra("share_url", Constant.INVITE_SHARE + "?id=" + uid);
                                 startActivity(invite);
